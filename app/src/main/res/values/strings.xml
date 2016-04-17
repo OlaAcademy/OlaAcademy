@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">欧拉学院</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="kTabBarTitle0">页A</string>
+    <string name="kTabBarTitle1">页B</string>
+    <string name="kTabBarTitle2">页C</string>
+    <string name="kTabBarTitle3">页D</string>
+    <string name="kTabBarTitle4">页E</string>
+    <string name="title_activity_base_search">BaseSearchActivity</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_course">CourseActivity</string>
+    <string name="title_activity_image_pager">ImagePagerActivity</string>
+    <string name="viewpager_indicator">%1$d/%2$d</string>
+    <string name="title_activity_course_detail">CourseDetailActivity</string>
+    <string name="title_activity_teacher">TeacherActivity</string>
+    <string name="title_activity_organization">OrganizationActivity</string>
+    <string name="title_activity_student">StudentActivity</string>
+    <string name="title_activity_info_detail">InfoDetailActivity</string>
+    <string name="title_activity_student_info">StudentInfoActivity</string>
+    <string name="title_activity_course_list">CourseListActivity</string>
+    <string name="title_activity_show_web_image">ShowWebImageActivity</string>
+    <string name="title_activity_course_pay">CoursePayActivity</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="logining">使用%s帐号登录中…</string>
+    <string name="title_activity_user_reg">UserRegActivity</string>
+    <string name="title_activity_user_update">UserUpdateActivity</string>
+    <string name="title_activity_download">DownloadActivity</string>
+    <string name="app_tip">提示</string>
+
+    <!-- PayActivity -->
+    <string name="pay_by_wx">通过微信支付</string>
+    <string name="check_pay">检查微信版本是否支持支付</string>
+    <string name="input_reqkey">输入reqkey</string>
+    <string name="input_package_value">输入package value</string>
+    <string name="input_sign">输入sign</string>
+    <string name="getting_access_token">正在获取access token...</string>
+    <string name="get_access_token_succ">获取access token成功</string>
+    <string name="get_access_token_fail" formatted="false">获取access token失败，原因%s</string>
+    <string name="getting_prepayid">正在获取预支付订单...</string>
+    <string name="paying">支付中</string>
+    <string name="get_prepayid_succ">获取prepayid成功</string>
+    <string name="get_prepayid_fail" formatted="false">获取prepayid失败，原因%s</string>
+
+    <!-- WXPayEntryActivity -->
+    <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+    <string name="title_activity_wxpay_entry">WXPayEntryActivity</string>
+    <string name="title_activity_subject">SubjectActivity</string>
+    <string name="title_activity_exam">ExamActivity</string>
+    <string name="title_activity_sub_item">SubItemActivity</string>
+    <string name="title_activity_exam_article">ExamArticleActivity</string>
+    <string name="title_activity_msg">MsgActivity</string>
+    <string name="title_activity_index">IndexActivity</string>
+    <string name="title_activity_deply_story">DeplyStoryActivity</string>
+    <string name="title_activity_user_course">UserCourseActivity</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
+    <string name="title_activity_evaluation">EvaluationActivity</string>
+    <string name="title_activity_user_password">UserPasswordActivity</string>
+    <string name="title_activity_video_play">VideoPlayActivity</string>
+    <string name="title_activity_teacher_info">TeacherInfoActivity</string>
+    <string name="title_activity_organization_info">OrganizationInfoActivity</string>
+    <string name="title_activity_user_login">UserLoginActivity</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_user_collection">UserCollectionActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_chenxing_plan">ChenxingPlanActivity</string>
+    <string name="title_activity_question_web">QuestionWebActivity</string>
+    <string name="title_activity_orgnization">OrgnizationActivity</string>
+    <string name="title_activity_turtor">TurtorActivity</string>
+    <string name="title_activity_commodity">CommodityActivity</string>
+
+</resources>

@@ -1,0 +1,150 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/regLL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.snail.olaxueyuan.ui.me.com.snailedu.photo.com.snailedu.photo.activity.UserUpdateActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_back" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_logo" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="您的电话号码是什么?"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="不用担心, 我们不会公开您的号码"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp">
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_toLeftOf="@+id/btn_code"
+            android:background="@null"
+            android:hint="请输入您的手机号"
+            android:inputType="phone"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_btn"
+            android:text="验证"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/line_divider_1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/et_name"
+            android:layout_toLeftOf="@+id/btn_code"
+            android:background="@color/common_grey" />
+
+        <EditText
+            android:id="@+id/et_code"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/line_divider_1"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:hint="请输入验证码"
+            android:inputType="number"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/line_divider_2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/et_code"
+            android:layout_toLeftOf="@+id/btn_code"
+            android:background="@color/common_grey" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/line_divider_2"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/et_password"
+            android:layout_toLeftOf="@+id/btn_code"
+            android:background="@color/common_grey" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_protocol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:lineSpacingExtra="5dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/btn_reg"
+            android:background="@color/lightgrey" />
+
+        <Button
+            android:id="@+id/btn_reg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_btn"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

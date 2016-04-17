@@ -1,0 +1,78 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type"  content="text/html;charset=gb2312">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      });
+    </script>
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+    <script type="text/javascript">
+
+    function javacalljswithargs(arg){
+         document.getElementById("question").innerHTML = arg;
+    }
+
+    </script>
+
+    <style type='text/css'>
+        .optionLine { border-bottom:5px solid #f0f0f0; padding:10px 2px; font-size:18px; }
+        input[type="checkbox"] {
+        -webkit-appearance: none;
+        height: 24px;
+        vertical-align: middle;
+        width: 24px;
+        border-width:0px;
+        }
+        input[type="checkbox"]:checked {
+        background: #fff url(ic_selected.png);
+        }
+        input[type="checkbox"]:not(:checked){
+        background: #fff url(ic_unselect.png);
+        }
+    </style>
+</head>
+<body>
+<p>$$\int_x^y f(x) dx $$</p>
+<a onClick="window.wst.startFunction()">点击调用java代码</a><br/>
+<a onClick="window.wst.startFunction('hello world')" >点击调用java代码并传递参数</a>
+<br/>
+
+<div id='question'></div>
+
+    <table style="width: 100%; border: 0px ">
+        <tr>
+            <td align='left'><div id='option1'/></td>
+            <td align='right'><input type='checkbox'/></td>
+        </tr>
+        <tr>
+            <td colspan='2'><hr color="#f0f0f0" size="5" width="100%"/></td>
+        </tr>
+        <tr>
+            <td align='left'><div id='option2'/></td>
+            <td align='right'><input type='checkbox'/></td>
+        </tr>
+        <tr>
+            <td colspan='2'><hr color="#f0f0f0" size="5" width="100%"/></td>
+        </tr>
+        <tr>
+            <td align='left'><div id='option3'/></td>
+            <td align='right'><input type='checkbox'/></td>
+        </tr>
+        <tr>
+            <td colspan='2'><hr color="#f0f0f0" size="5" width="100%"/></td>
+        </tr>
+        <tr>
+            <td align='left'><div id='option4'/></td>
+            <td align='right'><input type='checkbox'/></td>
+        </tr>
+        <tr>
+            <td colspan='2'><hr color="#f0f0f0" size="5" width="100%"/></td>
+        </tr>
+
+    </table>
+
+</body>
+</html>

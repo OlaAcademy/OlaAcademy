@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <ListView
+        android:id="@+id/cartLV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/silver">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="支付总计" />
+
+        <TextView
+            android:id="@+id/totalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/red" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/zfbPay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_pay_selector"
+            android:drawableTop="@drawable/ic_alipay"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/wxPay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_pay_selector"
+            android:drawableTop="@drawable/ic_weixinpay"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/pay"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="createOrder"
+        android:text="支付"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/check"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="check"
+        android:text="检查账户"
+        android:visibility="gone"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

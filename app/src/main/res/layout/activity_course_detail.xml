@@ -1,0 +1,212 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_course_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.snail.olaxueyuan.ui.course.CourseDetailActivity">
+
+
+    <SurfaceView
+        android:id="@+id/surface"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="200dp">
+
+        <ProgressBar
+            android:id="@+id/waitingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="false"
+            android:indeterminateDrawable="@drawable/progress_bar_style"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/coverImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/btm"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/surface"
+        android:layout_alignParentLeft="true"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/issrt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_play" />
+
+        <SeekBar
+            android:id="@+id/seekbar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:layout_toRightOf="@+id/issrt"
+            android:background="@android:color/white"
+            android:max="255" />
+
+        <TextView
+            android:id="@+id/totalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/quanping" />
+
+        <Button
+            android:id="@+id/quanping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_full_screen" />
+
+        <Button
+            android:id="@+id/xiaoping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_small_screen"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/infoLL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="215dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lightgray"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingTop="5dp">
+
+            <RelativeLayout
+                android:id="@+id/listenRL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/listenImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_listener" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/listenImage"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="88人"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/collectRL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/collectImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_collect" />
+
+                <TextView
+                    android:id="@+id/collectionText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:layout_toRightOf="@+id/collectImage"
+                    android:text="88人" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgrey" />
+
+            <RelativeLayout
+                android:id="@+id/downloadRL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/shareImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_download" />
+
+                <TextView
+                    android:id="@+id/studentText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/shareImage"
+                    android:text="下载"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/courseInfo"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_logo_gray" />
+
+            <TextView
+                android:id="@+id/courseInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:text="暂无课程信息"
+                android:textColor="#999999" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</RelativeLayout>
