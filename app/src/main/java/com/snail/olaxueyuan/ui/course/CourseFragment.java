@@ -1,7 +1,6 @@
 package com.snail.olaxueyuan.ui.course;
 
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -20,6 +19,7 @@ import com.snail.olaxueyuan.protocol.model.MCSubCourse;
 import com.snail.olaxueyuan.protocol.model.SECourseCate;
 import com.snail.olaxueyuan.protocol.result.MCCourseListResult;
 import com.snail.olaxueyuan.ui.BaseSearchActivity;
+import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -30,7 +30,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CourseFragment extends Fragment {
+public class CourseFragment extends SuperFragment {
 
 
     private PullToRefreshListView courseListView;
@@ -118,5 +118,9 @@ public class CourseFragment extends Fragment {
         return height;
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }
 

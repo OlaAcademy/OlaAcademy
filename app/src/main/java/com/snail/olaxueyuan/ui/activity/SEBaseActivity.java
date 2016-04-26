@@ -1,5 +1,6 @@
 package com.snail.olaxueyuan.ui.activity;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ public class SEBaseActivity extends FragmentActivity {
     private ImageView leftImage;
     private ImageView rightImage;
     private TextView titleText, rightText;
+    ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,17 +27,17 @@ public class SEBaseActivity extends FragmentActivity {
         // manifest中配置主题为Translucent，因此需要在这儿通过代码设置
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setTheme(R.style.AppTheme);
-
+        actionBar=getActionBar();
         // 返回箭头（默认不显示）
-        getActionBar().setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
         // 左侧图标点击事件使能
-        getActionBar().setHomeButtonEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
         // 使左上角图标(系统)是否显示
-        getActionBar().setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
         // 显示标题
-        getActionBar().setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
         //显示自定义视图
-        getActionBar().setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
         View actionbarLayout = LayoutInflater.from(this).inflate(
                 R.layout.actionbar_layout, null);
         leftImage = (ImageView) actionbarLayout.findViewById(R.id.left_imbt);
@@ -43,7 +45,7 @@ public class SEBaseActivity extends FragmentActivity {
         rightImage = (ImageView) actionbarLayout.findViewById(R.id.right_imbt);
         titleText = (TextView) actionbarLayout.findViewById(R.id.tv_title);
         rightText = (TextView) actionbarLayout.findViewById(R.id.right_text);
-        getActionBar().setCustomView(actionbarLayout);
+        actionBar.setCustomView(actionbarLayout);
 
     }
 

@@ -156,4 +156,149 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>
     </style>
+    <style name="tag_style" parent="android:Theme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:textColor">@color/return_text_color</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="line_horizontal_margin_10dp">
+        <item name="android:background">@color/line_color</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <style name="line_horizontal_margin_15dp">
+        <item name="android:background">@color/line_color</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+    </style>
+
+    <style name="line_horizontal">
+        <item name="android:background">@color/line_color</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="line_vertical">
+        <item name="android:background">@color/line_color</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">1px</item>
+    </style>
+
+    <style name="line_horizontal_light">
+        <item name="android:background">@color/line_color</item>
+        <item name="android:layout_height">0.3px</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="padding_15_10_15_10">
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="padding_15_15_15_10">
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="padding_left_15_right_15">
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+    </style>
+
+    <style name="normal_text_15dp_style">
+        <item name="android:textColor">@color/normal_text_color</item>
+        <item name="android:textSize">15dp</item>
+    </style>
+
+    <style name="normal_text_14dp_style">
+        <item name="android:textColor">@color/normal_text_color</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="normal_text_13dp_style">
+        <item name="android:textColor">@color/normal_text_color</item>
+        <item name="android:textSize">13dp</item>
+    </style>
+
+    <style name="normal_text_12dp_style">
+        <item name="android:textColor">@color/normal_text_color</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="title_text_16dp_style">
+        <item name="android:textColor">@color/return_text_color</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="title_text_15dp_style">
+        <item name="android:textColor">@color/return_text_color</item>
+        <item name="android:textSize">15dp</item>
+    </style>
+
+    <style name="title_text_14dp_style">
+        <item name="android:textColor">@color/return_text_color</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="hint_text_14dp_style">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/special_read_text_color</item>
+    </style>
+
+    <style name="hint_text_13dp_style">
+        <item name="android:textSize">13dp</item>
+        <item name="android:textColor">@color/special_read_text_color</item>
+    </style>
+
+    <style name="hint_text_12dp_style">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/special_read_text_color</item>
+    </style>
+
+    <style name="hint_text_11dp_style">
+        <item name="android:textSize">11dp</item>
+        <item name="android:textColor">@color/special_read_text_color</item>
+    </style>
+
+    <style name="hint_text_10dp_style">
+        <item name="android:textSize">10dp</item>
+        <item name="android:textColor">@color/special_read_text_color</item>
+    </style>
+
+    <style name="video_bottom_layout_style">
+        <item name="android:layout_marginTop">29dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/selector_white_item_bg</item>
+        <item name="android:gravity">center_horizontal|bottom</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="margin_15_10_15_10">
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="pay_item_style">
+        <item name="android:background">@drawable/reward_item_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/return_text_color</item>
+        <item name="android:textSize">14dp</item>
+    </style>
 </resources>

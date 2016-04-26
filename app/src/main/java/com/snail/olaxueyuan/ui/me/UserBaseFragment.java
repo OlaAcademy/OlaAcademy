@@ -37,6 +37,7 @@ import com.snail.olaxueyuan.protocol.model.SEUser;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
 import com.snail.olaxueyuan.ui.BaseSearchActivity;
 import com.snail.olaxueyuan.ui.IndexActivity;
+import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.me.activity.UserEnrollActivity;
 import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.olaxueyuan.ui.me.activity.UserUpdateActivity;
@@ -56,7 +57,7 @@ import retrofit.client.Response;
  */
 
 
-public class UserBaseFragment extends Fragment implements View.OnClickListener {
+public class UserBaseFragment extends SuperFragment {
 
     private LocationClient locationClient = null;
     private static final int UPDATE_TIME = 5000;
@@ -354,7 +355,7 @@ public class UserBaseFragment extends Fragment implements View.OnClickListener {
         popWindow.showAtLocation(rootView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
-    private void removeAllDownload(){
+    private void removeAllDownload() {
         Intent intent = new Intent("com.swiftacademy.download.clear");
         getActivity().sendBroadcast(intent);
     }

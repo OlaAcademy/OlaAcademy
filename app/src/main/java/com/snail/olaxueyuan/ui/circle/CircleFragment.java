@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.ui.SuperFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CircleFragment extends Fragment {
+public class CircleFragment extends SuperFragment {
 
 
     public CircleFragment() {
@@ -28,4 +29,8 @@ public class CircleFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }

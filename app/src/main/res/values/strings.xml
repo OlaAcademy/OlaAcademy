@@ -10,26 +10,8 @@
     <string name="kTabBarTitle2">页C</string>
     <string name="kTabBarTitle3">页D</string>
     <string name="kTabBarTitle4">页E</string>
-    <string name="title_activity_base_search">BaseSearchActivity</string>
-    <string name="title_activity_base">BaseActivity</string>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_course">CourseActivity</string>
-    <string name="title_activity_image_pager">ImagePagerActivity</string>
     <string name="viewpager_indicator">%1$d/%2$d</string>
-    <string name="title_activity_course_detail">CourseDetailActivity</string>
-    <string name="title_activity_teacher">TeacherActivity</string>
-    <string name="title_activity_organization">OrganizationActivity</string>
-    <string name="title_activity_student">StudentActivity</string>
-    <string name="title_activity_info_detail">InfoDetailActivity</string>
-    <string name="title_activity_student_info">StudentInfoActivity</string>
-    <string name="title_activity_course_list">CourseListActivity</string>
-    <string name="title_activity_show_web_image">ShowWebImageActivity</string>
-    <string name="title_activity_course_pay">CoursePayActivity</string>
-    <string name="title_activity_sign_in">SignInActivity</string>
     <string name="logining">使用%s帐号登录中…</string>
-    <string name="title_activity_user_reg">UserRegActivity</string>
-    <string name="title_activity_user_update">UserUpdateActivity</string>
-    <string name="title_activity_download">DownloadActivity</string>
     <string name="app_tip">提示</string>
 
     <!-- PayActivity -->
@@ -49,29 +31,8 @@
     <!-- WXPayEntryActivity -->
     <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
     <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
-    <string name="title_activity_wxpay_entry">WXPayEntryActivity</string>
-    <string name="title_activity_subject">SubjectActivity</string>
-    <string name="title_activity_exam">ExamActivity</string>
-    <string name="title_activity_sub_item">SubItemActivity</string>
-    <string name="title_activity_exam_article">ExamArticleActivity</string>
-    <string name="title_activity_msg">MsgActivity</string>
-    <string name="title_activity_index">IndexActivity</string>
-    <string name="title_activity_deply_story">DeplyStoryActivity</string>
-    <string name="title_activity_user_course">UserCourseActivity</string>
-    <string name="title_activity_search_result">SearchResultActivity</string>
-    <string name="title_activity_evaluation">EvaluationActivity</string>
-    <string name="title_activity_user_password">UserPasswordActivity</string>
-    <string name="title_activity_video_play">VideoPlayActivity</string>
-    <string name="title_activity_teacher_info">TeacherInfoActivity</string>
-    <string name="title_activity_organization_info">OrganizationInfoActivity</string>
-    <string name="title_activity_user_login">UserLoginActivity</string>
-    <string name="title_activity_setting">SettingActivity</string>
-    <string name="title_activity_user_collection">UserCollectionActivity</string>
-    <string name="title_activity_about">AboutActivity</string>
-    <string name="title_activity_chenxing_plan">ChenxingPlanActivity</string>
-    <string name="title_activity_question_web">QuestionWebActivity</string>
-    <string name="title_activity_orgnization">OrgnizationActivity</string>
-    <string name="title_activity_turtor">TurtorActivity</string>
-    <string name="title_activity_commodity">CommodityActivity</string>
-
+    <string name="cancel_message">取消</string>
+    <string name="confirm_message">确认</string>
+    <string name="special">专题</string>
+    <string name="send">发送</string>
 </resources>

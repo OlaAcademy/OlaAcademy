@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.ui.SuperFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class QuestionFragment extends Fragment {
+public class QuestionFragment extends SuperFragment {
 
 
     public QuestionFragment() {
@@ -27,7 +28,7 @@ public class QuestionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_question, container, false);
-        Button temp = (Button)rootView.findViewById(R.id.temp);
+        Button temp = (Button) rootView.findViewById(R.id.temp);
         temp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,4 +40,8 @@ public class QuestionFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }

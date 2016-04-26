@@ -1,33 +1,30 @@
 package com.snail.olaxueyuan.ui;
 
-import android.view.Menu;
-import android.view.MenuItem;
-
-import com.snail.olaxueyuan.R;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
-import com.snail.olaxueyuan.common.SEThemer;
-import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.iconicdroid.IconicFontDrawable;
 import com.snail.iconicdroid.icon.EntypoIcon;
+import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.common.SEThemer;
+import com.snail.olaxueyuan.ui.activity.SuperActivity;
 import com.snail.svprogresshud.SVProgressHUD;
-
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class BaseSearchActivity extends SEBaseActivity {
+public class BaseSearchActivity extends SuperActivity {
 
 
     public final static int MENU_SEARCH = 0x1234;
@@ -187,6 +184,21 @@ public class BaseSearchActivity extends SEBaseActivity {
 
     protected EditText getSearchViewEditText() {
         return _searchViewEditText;
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
 
