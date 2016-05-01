@@ -166,6 +166,9 @@ public class CourseAdapter extends BaseAdapter {
      * 设置GirdView参数，绑定数据
      */
     private void setGridView(GridView gridView, final ArrayList<MCSubCourse> subCourseList) {
+        if (subCourseList == null) {
+            return;
+        }
         int length = 150;
         DisplayMetrics dm = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
