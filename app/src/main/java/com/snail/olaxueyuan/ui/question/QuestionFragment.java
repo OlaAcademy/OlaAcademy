@@ -69,6 +69,26 @@ public class QuestionFragment extends SuperFragment {
         });
         expandableListView.setDivider(null);
         expandableListView.setGroupIndicator(null);
+        adapter = new QuestionAdapter(getActivity());
+        expandableListView.setAdapter(adapter);
+        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                if (module != null) {
+                    module.getResult().getChild().get(groupPosition).setIsExpanded(false);
+                    adapter.updateList(module);
+                }
+            }
+        });
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (module != null) {
+                    module.getResult().getChild().get(groupPosition).setIsExpanded(true);
+                    adapter.updateList(module);
+                }
+            }
+        });
     }
 
     private void fetchData() {
@@ -79,12 +99,11 @@ public class QuestionFragment extends SuperFragment {
                     SVProgressHUD.showInViewWithoutIndicator(getActivity(), questionCourseModule.getMessage(), 2.0f);
                 } else {
                     module = questionCourseModule;
-                    adapter = new QuestionAdapter(getActivity(), module);
-                    expandableListView.setAdapter(adapter);
+                    adapter.updateList(module);
+                    expandableListView.setFocusable(false);
 //                    for (int i = 0; i < module.getResult().getChild().size(); i++) {
 //                        expandableListView.expandGroup(i);
 //                    }
-                    expandableListView.setFocusable(false);
                 }
             }
 

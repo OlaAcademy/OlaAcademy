@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <View style="@style/line_horizontal" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="77dp"
@@ -18,11 +20,14 @@
             android:src="@drawable/question_add_icon" />
 
         <View
+            android:id="@+id/line"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_below="@+id/question_add_icon"
             android:layout_marginLeft="8.5dp"
-            android:background="@color/line_color" />
+            android:layout_marginTop="5dp"
+            android:background="@color/line_color"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/question_name"
@@ -84,6 +89,4 @@
             android:layout_centerVertical="true"
             android:src="@drawable/wrong_topic_icon" />
     </RelativeLayout>
-
-    <View style="@style/line_horizontal" />
 </LinearLayout>

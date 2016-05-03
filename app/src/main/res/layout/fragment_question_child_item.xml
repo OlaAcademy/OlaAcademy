@@ -4,6 +4,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <View
+        style="@style/line_horizontal"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="77dp"
@@ -11,8 +16,9 @@
         android:paddingRight="15dp">
 
         <View
+            android:id="@+id/line_top"
             android:layout_width="1dp"
-            android:layout_height="match_parent"
+            android:layout_height="15dp"
             android:layout_marginLeft="8.5dp"
             android:background="@color/line_color" />
 
@@ -20,12 +26,13 @@
             android:id="@+id/question_add_icon"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
+            android:layout_below="@+id/line_top"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
             android:src="@drawable/blue_square" />
 
         <View
+            android:id="@+id/line_bottom"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_below="@+id/question_add_icon"
@@ -52,7 +59,7 @@
             android:layout_alignLeft="@+id/question_name"
             android:layout_alignStart="@+id/question_name"
             android:layout_below="@+id/question_add_icon"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="7dp"
             android:background="@drawable/blue_text_bg"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
@@ -93,5 +100,5 @@
             android:src="@drawable/wrong_topic_icon" />
     </RelativeLayout>
 
-    <View style="@style/line_horizontal" />
+
 </LinearLayout>

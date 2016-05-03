@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
 
 import java.util.ArrayList;
@@ -25,13 +26,17 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
     QuestionCourseModule questionCourseModule;
     List<QuestionCourseModule.ResultEntity.ChildEntity> list = new ArrayList<QuestionCourseModule.ResultEntity.ChildEntity>();
 
-    public QuestionAdapter(Context context, QuestionCourseModule questionCourseModule) {
+    public QuestionAdapter(Context context) {
         this.context = context;
+    }
+
+    public void updateList(QuestionCourseModule questionCourseModule) {
         this.questionCourseModule = questionCourseModule;
         if (questionCourseModule.getResult().getChild() != null) {
             list.clear();
             list.addAll(questionCourseModule.getResult().getChild());
         }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -79,6 +84,32 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
         } else {
             holder = (ParentViewHolder) convertView.getTag();
         }
+        holder.questionName.setText(list.get(groupPosition).getName());
+        holder.questionKnowledgeAllCount.setText(list.get(groupPosition).getSubAllNum() + "个知识点");
+        holder.questionKnowledgeCount.setText(list.get(groupPosition).getSubNum() + "/" + list.get(groupPosition).getSubAllNum());
+        try {
+            int subAllNum = list.get(groupPosition).getSubAllNum();
+            int subNum = list.get(groupPosition).getSubNum();
+//            holder.progressBar.setBackgroundResource(R.color.light_title_blue);
+            holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
+            holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
+            if (subAllNum == 0) {
+                holder.progressBar.setProgress(50);
+            } else {
+                holder.progressBar.setProgress(subNum / subAllNum);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (list.get(groupPosition).isExpanded()) {
+            Logger.e("isExpanded==" + list.get(groupPosition).isExpanded());
+            holder.line.setVisibility(View.VISIBLE);
+        } else {
+            Logger.e("isExpanded==" + list.get(groupPosition).isExpanded());
+            holder.line.setVisibility(View.GONE);
+        }
+//        Picasso.with(context).load(list.get(groupPosition).getAddress()).resize(17, 17).config(Bitmap.Config.RGB_565)
+//                .placeholder(R.drawable.ic_launcher).into(holder.questionAddIcon);
         return convertView;
     }
 
@@ -93,6 +124,8 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
         ProgressBar progressBar;
         @Bind(R.id.question_knowledge_count)
         TextView questionKnowledgeCount;
+        @Bind(R.id.line)
+        View line;
 
         ParentViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -109,12 +142,32 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
         } else {
             holder = (ChildViewHolder) convertView.getTag();
         }
+        holder.questionName.setText(list.get(groupPosition).getChild().get(childPosition).getName());
+        holder.questionKnowledgeCount.setText(list.get(groupPosition).getChild().get(childPosition).getSubNum() + "/" + list.get(groupPosition).getChild().get(childPosition).getSubAllNum());
+        try {
+            int subAllNum = list.get(groupPosition).getChild().get(childPosition).getSubAllNum();
+            int subNum = list.get(groupPosition).getChild().get(childPosition).getSubNum();
+            holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
+            holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
+            if (subAllNum == 0) {
+                holder.progressBar.setProgress(50);
+            } else {
+                holder.progressBar.setProgress(subNum / subAllNum);
+            }
+            if (childPosition == list.get(groupPosition).getChild().size() - 1) {
+                holder.lineBottom.setVisibility(View.GONE);
+            } else {
+                holder.lineBottom.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 
 
@@ -129,6 +182,8 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
         ProgressBar progressBar;
         @Bind(R.id.question_knowledge_count)
         TextView questionKnowledgeCount;
+        @Bind(R.id.line_bottom)
+        View lineBottom;
 
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);

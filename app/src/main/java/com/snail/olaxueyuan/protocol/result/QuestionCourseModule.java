@@ -156,6 +156,16 @@ public class QuestionCourseModule {
             private int subAllNum;
             private String type;
             private int subNum;
+            private boolean isExpanded;//是否展开
+
+            public boolean isExpanded() {
+                return isExpanded;
+            }
+
+            public void setIsExpanded(boolean isExpanded) {
+                this.isExpanded = isExpanded;
+            }
+
             /**
              * address :
              * id : 53
