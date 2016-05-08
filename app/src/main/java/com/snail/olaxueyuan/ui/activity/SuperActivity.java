@@ -53,6 +53,5 @@ public abstract class SuperActivity extends SEBaseActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
     }
 }
