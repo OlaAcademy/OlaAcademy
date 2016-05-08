@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
@@ -40,6 +42,7 @@ public class QuestionFragment extends SuperFragment {
     ExpandableListView expandableListView;
     QuestionAdapter adapter;
     QuestionCourseModule module;
+    PopupWindow popupWindow;
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -120,6 +123,12 @@ public class QuestionFragment extends SuperFragment {
             case R.id.title_tv:
                 break;
         }
+    }
+
+    public void showPop() {
+        View contentView = LayoutInflater.from(getActivity()).inflate(
+                R.layout.fragment_question_pop, null);
+        popupWindow = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, 300);
     }
 
     @Override

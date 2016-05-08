@@ -363,4 +363,5 @@
     <color name="title_hint_text_color">#909090</color>
     <color name="black_one">#232323</color>
     <color name="blue_light">#1B9BFC</color>
+    <color name="pop_title_bg">#E1E1E1</color>
 </resources>
