@@ -3,11 +3,13 @@ package com.snail.olaxueyuan.ui.question;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -19,12 +21,15 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.manager.TitleManager;
-import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.adapter.QuestionAdapter;
+import com.snail.olaxueyuan.ui.question.module.CourseNameModule;
 import com.snail.svprogresshud.SVProgressHUD;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,6 +54,9 @@ public class QuestionFragment extends SuperFragment {
     QuestionAdapter adapter;
     QuestionCourseModule module;
     PopupWindow popupWindow;
+    private List<CourseNameModule> list;
+    TitleManager titleManager;
+    GridAdapter gridAdapter = new GridAdapter();
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -61,13 +69,31 @@ public class QuestionFragment extends SuperFragment {
         rootView = inflater.inflate(R.layout.fragment_question, container, false);
         ButterKnife.bind(this, rootView);
         initView();
+        initTitleData();
         fetchData();
         return rootView;
     }
 
+    private void initTitleData() {
+        String[] arrays = getActivity().getResources().getStringArray(R.array.courses);
+        list = new ArrayList<>();
+        for (int i = 0; i < arrays.length; i++) {
+            CourseNameModule courseName;
+            if (i == 0) {
+                courseName = new CourseNameModule(arrays[i], true);
+            } else {
+                courseName = new CourseNameModule(arrays[i], false);
+            }
+            list.add(courseName);
+        }
+    }
+
 
     private void initView() {
-        new TitleManager("数学", this, rootView, false);
+        titleManager = new TitleManager("数学", this, rootView, false);
+        Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
+        drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
+        titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
         Button temp = (Button) rootView.findViewById(R.id.temp);
         temp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,8 +162,9 @@ public class QuestionFragment extends SuperFragment {
         View contentView = LayoutInflater.from(getActivity()).inflate(
                 R.layout.fragment_question_pop, null);
         GridView gridView = (GridView) contentView.findViewById(R.id.gridview);
-        GridAdapter adapter = new GridAdapter();
-        gridView.setAdapter(adapter);
+
+
+        gridView.setAdapter(gridAdapter);
         popupWindow = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         contentView.setFocusableInTouchMode(true);
         // 返回键可用
@@ -155,19 +182,29 @@ public class QuestionFragment extends SuperFragment {
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.showAsDropDown(popLine);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                for (int i = 0; i < list.size(); i++) {
+                    list.get(i).setSelected(false);
+                }
+                list.get(position).setSelected(true);
+                titleManager.title_tv.setText(list.get(position).getName());
+                gridAdapter.notifyDataSetChanged();
+                popupWindow.dismiss();
+            }
+        });
     }
 
     class GridAdapter extends BaseAdapter {
-        String[] arrays = getActivity().getResources().getStringArray(R.array.courses);
-
         @Override
         public int getCount() {
-            return arrays.length;
+            return list.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return arrays[position];
+            return list.get(position);
         }
 
         @Override
@@ -176,7 +213,7 @@ public class QuestionFragment extends SuperFragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
                 convertView = View.inflate(getActivity(), R.layout.fragment_question_pop_gridview_item, null);
@@ -185,6 +222,24 @@ public class QuestionFragment extends SuperFragment {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
+            holder.gridview.setText(list.get(position).getName());
+            if (list.get(position).isSelected()) {
+                holder.gridview.setBackgroundResource(R.drawable.pop_title_bg_blue_rectangle);
+                holder.gridview.setTextColor(getActivity().getResources().getColor(R.color.white));
+            } else {
+                holder.gridview.setBackgroundResource(R.drawable.pop_title_bg_rectangle);
+                holder.gridview.setTextColor(getActivity().getResources().getColor(R.color.black_one));
+            }
+           /* convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (int i = 0; i < list.size(); i++) {
+                        list.get(i).setSelected(false);
+                    }
+                    list.get(position).setSelected(true);
+                    titleManager.title_tv.setText(list.get(position).getName());
+                }
+            });*/
             return convertView;
         }
 
