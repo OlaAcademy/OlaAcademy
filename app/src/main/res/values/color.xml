@@ -362,6 +362,7 @@
     <color name="title_hint_color">#f0f0f0</color>
     <color name="title_hint_text_color">#909090</color>
     <color name="black_one">#232323</color>
+    <color name="black_323232">#323232</color>
     <color name="blue_light">#1B9BFC</color>
     <color name="pop_title_bg">#E1E1E1</color>
 </resources>

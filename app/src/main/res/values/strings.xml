@@ -35,4 +35,8 @@
     <string name="confirm_message">确认</string>
     <string name="special">专题</string>
     <string name="send">发送</string>
+    <string name="request_running">数据请求中，请稍候......</string>
+    <string name="request_failed">数据加载失败，请稍候再试</string>
+    <string name="data_request_fail">数据请求失败</string>
+
 </resources>
