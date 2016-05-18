@@ -1,36 +1,168 @@
 package com.snail.olaxueyuan.ui.circle;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.common.manager.Logger;
+import com.snail.olaxueyuan.common.manager.TitleManager;
+import com.snail.olaxueyuan.common.manager.ToastUtil;
+import com.snail.olaxueyuan.common.manager.Utils;
+import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
+import com.snail.olaxueyuan.protocol.result.OLaCircleModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
+import com.snail.svprogresshud.SVProgressHUD;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CircleFragment extends SuperFragment {
+    List<OLaCircleModule.ResultEntity> list = new ArrayList<>();
+    TitleManager titleManager;
+    View rootView;
+    @Bind(R.id.title_tv)
+    TextView titleTv;
+    @Bind(R.id.right_response)
+    ImageView rightResponse;
+    @Bind(R.id.listview)
+    ListView listview;
 
+    CircleAdapter adapter;
 
     public CircleFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_circle, container, false);
+        rootView = inflater.inflate(R.layout.fragment_circle, container, false);
+        ButterKnife.bind(this, rootView);
+        initView();
+        fetchData();
+        return rootView;
     }
 
+    private void initView() {
+        new TitleManager("欧拉圈", this, rootView, false);
+        adapter = new CircleAdapter();
+    }
+
+    private void fetchData() {
+        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        QuestionCourseManager.getInstance().getHistotyList(new Callback<OLaCircleModule>() {
+            @Override
+            public void success(OLaCircleModule oLaCircleModule, Response response) {
+                SVProgressHUD.dismiss(getActivity());
+                Logger.json(oLaCircleModule);
+                if (oLaCircleModule.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), oLaCircleModule.getMessage(), 2.0f);
+                } else {
+                    list.clear();
+                    Logger.json(oLaCircleModule);
+                    list.addAll(oLaCircleModule.getResult());
+                    listview.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+//                    adapter.updateList(module);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (getActivity() != null) {
+                    SVProgressHUD.dismiss(getActivity());
+                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchData();
+    }
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+        }
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    class CircleAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = View.inflate(getActivity(), R.layout.fragment_circle_listview_item, null);
+                holder = new ViewHolder(convertView);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.title.setText(list.get(position).getUserName());
+            Picasso.with(getActivity()).load(list.get(position).getUserAvatar())
+                    .resize(Utils.dip2px(getActivity(), 50), Utils.dip2px(getActivity(), 50)).into(holder.avatar);
+            holder.time.setText(list.get(position).getTime() + "学习记录");
+            holder.studyName.setText(list.get(position).getVideoName());
+            return convertView;
+        }
+
+        class ViewHolder {
+            @Bind(R.id.avatar)
+            ImageView avatar;
+            @Bind(R.id.title)
+            TextView title;
+            @Bind(R.id.time)
+            TextView time;
+            @Bind(R.id.study)
+            TextView study;
+            @Bind(R.id.study_name)
+            TextView studyName;
+
+            ViewHolder(View view) {
+                ButterKnife.bind(this, view);
+            }
+        }
     }
 }

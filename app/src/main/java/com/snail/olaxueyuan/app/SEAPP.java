@@ -1,6 +1,7 @@
 package com.snail.olaxueyuan.app;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -12,10 +13,12 @@ import com.snail.olaxueyuan.common.SEThemer;
  * Created by tianxiaopeng on 15-1-7.
  */
 public class SEAPP extends Application {
+    private static Context mAppContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
+        mAppContext = this;
         SEThemer.getInstance().init(this);
         SEThemer.getInstance().setActionBarBackgroundColor(getResources().getColor(R.color.ActionBarBackgroundColor));
         SEThemer.getInstance().setActionBarForegroundColor(getResources().getColor(R.color.ActionBarForegroundColor));
@@ -42,5 +45,9 @@ public class SEAPP extends Application {
                 .build();//
         ImageLoader.getInstance().init(config);
 
+    }
+
+    public static Context getAppContext() {
+        return mAppContext;
     }
 }

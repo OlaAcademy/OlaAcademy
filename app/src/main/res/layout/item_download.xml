@@ -20,7 +20,7 @@
         android:layout_height="60dp"
         android:layout_margin="5dp"
         android:layout_toRightOf="@+id/choose"
-        android:background="@drawable/ic_launcher"
+        android:background="@drawable/icon_launcher"
         android:scaleType="centerCrop" />
 
     <TextView
