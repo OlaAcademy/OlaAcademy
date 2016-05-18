@@ -365,4 +365,6 @@
     <color name="black_323232">#323232</color>
     <color name="blue_light">#1B9BFC</color>
     <color name="pop_title_bg">#E1E1E1</color>
+    <color name="exam_title_selected_color">#9ED68A</color>
+    <color name="exam_title_normal_color">#D58788</color>
 </resources>

@@ -28,7 +28,7 @@ public class Logger {
     public static final int ERROR = 4;
     public static final int NONE = 5;
     public static int level = VERBOSE;
-    public static String tag = "olaxueyuan";
+    public static String tag = "bonedict";
 
     /**
      * It is used for json pretty print
@@ -50,31 +50,48 @@ public class Logger {
 
     public static void v(String s) {
         if (VERBOSE >= level) {
-            logs(VERBOSE, s);
+            String message = getDebugInfo() + "\n" + s;
+            logs(VERBOSE, message);
         }
     }
 
     public static void i(String s) {
         if (INFO >= level) {
-            logs(INFO, s);
+            String message = getDebugInfo() + "\n" + s;
+            logs(INFO, message);
         }
     }
 
     public static void w(String s) {
         if (WARN >= level) {
-            logs(WARN, s);
+            String message = getDebugInfo() + "\n" + s;
+            logs(WARN, message);
         }
     }
 
     public static void e(String s) {
         if (ERROR >= level) {
-            logs(ERROR, s);
+            String message = getDebugInfo() + "\n" + s;
+            logs(ERROR, message);
         }
     }
 
     public static void d(String s) {
         if (DEBUG >= level) {
+            String message = getDebugInfo() + "\n" + s;
+            logs(DEBUG, message);
+        }
+    }
+
+    public static void dd(String s) {
+        if (DEBUG >= level) {
             logs(DEBUG, s);
+        }
+    }
+
+    public static void ee(String s) {
+        if (ERROR >= level) {
+            logs(ERROR, s);
         }
     }
 
@@ -85,7 +102,8 @@ public class Logger {
      */
     public static void json(String json) {
         if (TextUtils.isEmpty(json)) {
-            d("Empty/Null json content");
+            String message = getDebugInfo() + "\n" + "Empty/Null json content";
+            dd(message);
             return;
         }
         try {
@@ -93,16 +111,19 @@ public class Logger {
             if (json.startsWith("{")) {
                 JSONObject jsonObject = new JSONObject(json);
                 String message = jsonObject.toString(JSON_INDENT);
-                d(message);
+                String info = getDebugInfo() + "\n" + message;
+                dd(info);
                 return;
             }
             if (json.startsWith("[")) {
                 JSONArray jsonArray = new JSONArray(json);
                 String message = jsonArray.toString(JSON_INDENT);
-                d(message);
+                String info = getDebugInfo() + "\n" + message;
+                dd(info);
             }
         } catch (JSONException e) {
-            e(e.getCause().getMessage() + "\n" + json);
+            String info = getDebugInfo() + "\n" + e.getCause().getMessage() + "\n" + json;
+            ee(info);
         }
     }
 
@@ -114,7 +135,8 @@ public class Logger {
     public static void json(Object src) {
         String json = new Gson().toJson(src);
         if (TextUtils.isEmpty(json)) {
-            d("Empty/Null json content");
+            String message = getDebugInfo() + "\n" + "Empty/Null json content";
+            ee(message);
             return;
         }
         try {
@@ -122,16 +144,19 @@ public class Logger {
             if (json.startsWith("{")) {
                 JSONObject jsonObject = new JSONObject(json);
                 String message = jsonObject.toString(JSON_INDENT);
-                d(message);
+                String info = getDebugInfo() + "\n" + message;
+                ee(info);
                 return;
             }
             if (json.startsWith("[")) {
                 JSONArray jsonArray = new JSONArray(json);
                 String message = jsonArray.toString(JSON_INDENT);
-                d(message);
+                String info = getDebugInfo() + "\n" + message;
+                ee(info);
             }
         } catch (JSONException e) {
-            e(e.getCause().getMessage() + "\n" + json);
+            String info = getDebugInfo() + "\n" + e.getCause().getMessage() + "\n" + json;
+            ee(info);
         }
     }
 
@@ -183,22 +208,22 @@ public class Logger {
     private static void logChunk(int logType, String chunk) {
         switch (logType) {
             case ERROR:
-                Log.e(tag, getDebugInfo() + "\n" + chunk);
+                Log.e(tag, chunk);
                 break;
             case INFO:
-                Log.i(tag, getDebugInfo() + "\n" + chunk);
+                Log.i(tag, chunk);
                 break;
             case VERBOSE:
-                Log.v(tag, getDebugInfo() + "\n" + chunk);
+                Log.v(tag, chunk);
                 break;
             case WARN:
-                Log.w(tag, getDebugInfo() + "\n" + chunk);
+                Log.w(tag, chunk);
                 break;
             case DEBUG:
-                Log.d(tag, getDebugInfo() + "\n" + chunk);
+                Log.d(tag, chunk);
                 break;
             default:
-                Log.i(tag, getDebugInfo() + "\n" + chunk);
+                Log.i(tag, chunk);
                 break;
         }
     }

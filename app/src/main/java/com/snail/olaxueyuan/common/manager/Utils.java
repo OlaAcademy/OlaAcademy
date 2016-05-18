@@ -1,10 +1,7 @@
 package com.snail.olaxueyuan.common.manager;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -12,13 +9,9 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import java.io.Closeable;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by tianxiaopeng on 15/6/14.
@@ -208,5 +201,22 @@ public class Utils {
         }
         return size;
     }
+    /**
+     * 获取屏幕宽度
+     *
+     * @param context
+     * @return
+     */
+    public static int getScreenWidth(Context context) {
 
+        if (context != null) {
+            WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            DisplayMetrics dm = new DisplayMetrics();
+            manager.getDefaultDisplay().getMetrics(dm);
+            int width = dm.widthPixels;
+
+            return width;
+        }
+        return 0;
+    }
 }

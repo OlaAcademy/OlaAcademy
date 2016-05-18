@@ -2,15 +2,21 @@ package com.snail.olaxueyuan.ui.examination;
 
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.common.HorizontalScrollViewAdapter;
+import com.snail.olaxueyuan.common.MyHorizontalScrollView;
 import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
@@ -38,11 +44,21 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
     View popLine;
     TitleManager titleManager;
     View view;
+    @Bind(R.id.target_score)
+    TextView targetScore;
+    @Bind(R.id.all_rank)
+    TextView allRank;
+    @Bind(R.id.coverage_exam)
+    TextView coverageExam;
+    @Bind(R.id.id_gallery)
+    LinearLayout idGallery;
+    @Bind(R.id.id_horizontalScrollView)
+    MyHorizontalScrollView mHorizontalScrollView;
     private String courseId = "1";// 1 数学 2 英语 3 逻辑 4 协作
     ExamModule module;
+    private HorizontalScrollViewAdapter mAdapter;
 
     public ExamFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -60,6 +76,7 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
         Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
         drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
         titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
+        fetchData();
     }
 
 
@@ -83,6 +100,7 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
                     SVProgressHUD.showInViewWithoutIndicator(getActivity(), examModule.getMessage(), 2.0f);
                 } else {
                     module = examModule;
+                    handler.sendEmptyMessage(0);
                 }
             }
 
@@ -102,6 +120,49 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
             this.courseId = pid;
             fetchData();
         }
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    initAdapter();
+                    break;
+            }
+        }
+    };
+
+    private void initAdapter() {
+        if (module != null && module.getResult() != null && module.getResult().size() > 0) {
+            mAdapter = new HorizontalScrollViewAdapter(getActivity(), module.getResult());
+            //添加滚动回调
+            mHorizontalScrollView
+                    .setCurrentImageChangeListener(new MyHorizontalScrollView.CurrentImageChangeListener() {
+                        @Override
+                        public void onCurrentImgChanged(int position, View viewIndicator) {
+                            setView(viewIndicator, position);
+                        }
+                    });
+            //添加点击回调
+            mHorizontalScrollView.setOnItemClickListener(new MyHorizontalScrollView.OnItemClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    setView(view, position);
+                }
+            });
+            //设置适配器
+            mHorizontalScrollView.initDatas(mAdapter);
+        } else {
+            ToastUtil.showToastShort(getActivity(), "没有试题");
+        }
+    }
+
+    private void setView(View view, int position) {
+        view.setBackgroundColor(Color.parseColor("#AA024DA4"));
+        targetScore.setText(module.getResult().get(position).getTarget() + "分");
+        allRank.setText(module.getResult().get(position).getDegree() + "名");
+        coverageExam.setText(module.getResult().get(position).getCoverpoint() + "个");
     }
 
     @Override
