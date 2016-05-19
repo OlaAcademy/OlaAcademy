@@ -13,7 +13,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="51dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -106,6 +105,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
         android:background="@color/title_hint_color"
+        android:paddingTop="15dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -113,7 +113,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_margin="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal" />
     </com.snail.olaxueyuan.common.MyHorizontalScrollView>
 

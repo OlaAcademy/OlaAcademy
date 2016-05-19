@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="220dp"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
-    android:background="@drawable/shape_white_retangle"
+    android:background="@drawable/shape_white_retangle_selected"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/top_bg"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@color/exam_title_selected_color"
+        android:layout_height="80dp"
+        android:layout_marginBottom="40dp"
         android:orientation="vertical">
 
         <TextView
@@ -27,4 +28,123 @@
             android:textSize="16dp" />
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="30dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/important_degree"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="重要程度"
+                android:textColor="@color/black_one"
+                android:textSize="13dp" />
+
+            <RatingBar
+                android:id="@+id/important_ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_toRightOf="@+id/important_degree"
+                android:numStars="3"
+                android:rating="2" />
+
+            <TextView
+                android:id="@+id/master_degree"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_toLeftOf="@+id/master_ratingBar"
+                android:text="重要程度"
+                android:textColor="@color/black_one"
+                android:textSize="13dp" />
+
+            <RatingBar
+                android:id="@+id/master_ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_horizontal"
+                android:numStars="3"
+                android:rating="2" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="内容来源:"
+                android:textColor="@color/black_one"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/source_from"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="名师讲解"
+                android:textColor="@color/exam_title_normal_color"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/study_degree"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="名师讲解"
+                android:textColor="@color/exam_title_normal_color"
+                android:textSize="12dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="80dp"
+                android:layout_height="5dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/study_degree"
+                android:indeterminate="false" />
+
+            <TextView
+                android:id="@+id/question_knowledge_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/progressBar"
+                android:text="20%"
+                android:textColor="@color/title_hint_text_color"
+                android:textSize="12dp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/start_exam"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/blue_button_bg"
+            android:text="开始模考"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</FrameLayout>

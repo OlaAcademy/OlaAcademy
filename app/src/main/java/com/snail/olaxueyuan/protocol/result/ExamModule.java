@@ -69,6 +69,15 @@ public class ExamModule implements Serializable{
         private int degree;
         private int coverpoint;
         private String type;
+        private boolean isSelected;
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
+        }
 
         public void setId(int id) {
             this.id = id;
@@ -136,6 +145,7 @@ public class ExamModule implements Serializable{
                     ", degree=" + degree +
                     ", coverpoint=" + coverpoint +
                     ", type='" + type + '\'' +
+                    ", isSelected=" + isSelected +
                     '}';
         }
     }

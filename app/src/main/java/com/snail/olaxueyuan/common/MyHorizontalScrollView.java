@@ -1,5 +1,6 @@
 package com.snail.olaxueyuan.common;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -8,10 +9,13 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.app.SEAPP;
 import com.snail.olaxueyuan.common.manager.Utils;
 
 import java.util.HashMap;
@@ -178,7 +182,15 @@ public class MyHorizontalScrollView extends HorizontalScrollView implements
         int widthCenter = Utils.getScreenWidth(getContext()) / 2;
         for (int i = 0; i < mContainer.getChildCount(); i++) {
             View view = mContainer.getChildAt(i);
-            mContainer.getChildAt(i).setBackgroundColor(Color.WHITE);
+//            mContainer.getChildAt(i).setBackgroundColor(Color.WHITE);
+            if (isFirst) {
+                isFirst = false;
+                if (i == 0) {
+                    mContainer.getChildAt(i).setBackgroundResource(R.drawable.shape_white_retangle_selected);
+                }
+            } else {
+                mContainer.getChildAt(i).setBackgroundResource(R.drawable.shape_white_retangle);
+            }
             view.getLocationOnScreen(location);
             Rect anchorRect = new Rect(location[0], location[1], location[0] + view.getWidth(), location[1] + view.getHeight());
 //            Log.e("===", "anchorRect.left=" + anchorRect.left);
@@ -201,8 +213,16 @@ public class MyHorizontalScrollView extends HorizontalScrollView implements
         mContainer = (LinearLayout) getChildAt(0);
         // 获得适配器中第一个View
         final View view = mAdapter.getView(0, null, mContainer);
-        mContainer.addView(view);
+//        if (mFristIndex == 0) {
+//            view.setPadding(200, 0, 0, 0);
+//            mContainer.setPadding(200, 0, 0, 0);
+//        }
+//        if (mCurrentIndex == mAdapter.getCount() - 1) {
+//            view.setPadding(0, 0, 200, 0);
+//            mContainer.setPadding(0, 0, 200, 0);
+//        }
 
+        mContainer.addView(view);
         // 强制计算当前View的宽和高
         if (mChildWidth == 0 && mChildHeight == 0) {
             int w = MeasureSpec.makeMeasureSpec(0,
@@ -213,17 +233,17 @@ public class MyHorizontalScrollView extends HorizontalScrollView implements
             mChildHeight = view.getMeasuredHeight();
             mChildWidth = view.getMeasuredWidth();
 //            Log.e(TAG, view.getMeasuredWidth() + "," + view.getMeasuredHeight());
-            mChildHeight = view.getMeasuredHeight();
             // 计算每次加载多少个View
             mCountOneScreen = (mScreenWitdh / mChildWidth == 0) ? mScreenWitdh / mChildWidth + 2 : mScreenWitdh / mChildWidth + 3;
 
 //            Log.e(TAG, "mCountOneScreen = " + mCountOneScreen + " ,mChildWidth = " + mChildWidth);
 
-
         }
         //初始化第一屏幕的元素
         initFirstScreenChildren(mCountOneScreen);
     }
+
+    boolean isFirst = true;
 
     /**
      * 加载第一屏的View
@@ -276,7 +296,9 @@ public class MyHorizontalScrollView extends HorizontalScrollView implements
     public void onClick(View v) {
         if (mOnClickListener != null) {
             for (int i = 0; i < mContainer.getChildCount(); i++) {
-                mContainer.getChildAt(i).setBackgroundColor(Color.WHITE);
+//                mContainer.getChildAt(i).setBackgroundColor(Color.WHITE);
+                mContainer.getChildAt(i).setBackgroundResource(R.drawable.shape_white_retangle);
+
             }
             mOnClickListener.onClick(v, mViewPos.get(v));
         }

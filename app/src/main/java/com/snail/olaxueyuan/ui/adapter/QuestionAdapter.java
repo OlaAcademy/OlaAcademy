@@ -109,7 +109,7 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder.line.setVisibility(View.GONE);
         }
 //        Picasso.with(context).load(list.get(groupPosition).getAddress()).resize(17, 17).config(Bitmap.Config.RGB_565)
-//                .placeholder(R.drawable.ic_launcher).into(holder.questionAddIcon);
+//                .placeholder(R.drawable.ic_launcher_imageview).into(holder.questionAddIcon);
         return convertView;
     }
 
