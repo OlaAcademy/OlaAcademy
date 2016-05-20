@@ -102,10 +102,10 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             e.printStackTrace();
         }
         if (list.get(groupPosition).isExpanded()) {
-            Logger.e("isExpanded==" + list.get(groupPosition).isExpanded());
+//            Logger.e("isExpanded==" + list.get(groupPosition).isExpanded());
             holder.line.setVisibility(View.VISIBLE);
         } else {
-            Logger.e("isExpanded==" + list.get(groupPosition).isExpanded());
+//            Logger.e("isExpanded==" + list.get(groupPosition).isExpanded());
             holder.line.setVisibility(View.GONE);
         }
 //        Picasso.with(context).load(list.get(groupPosition).getAddress()).resize(17, 17).config(Bitmap.Config.RGB_565)

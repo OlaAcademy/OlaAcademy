@@ -9,6 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
+        <ImageView
+            android:id="@+id/left_icon"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/special_share_icon"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/left_text"
             android:layout_width="wrap_content"

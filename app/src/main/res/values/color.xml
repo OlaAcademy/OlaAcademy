@@ -368,4 +368,6 @@
     <color name="exam_title_selected_color">#9ED68A</color>
     <color name="exam_title_normal_color">#D58788</color>
     <color name="button_blue_color">#0099FF</color>
+    <color name="me_content_bg">#97BEE5</color>
+    <color name="month_vip_bg">#808080</color>
 </resources>

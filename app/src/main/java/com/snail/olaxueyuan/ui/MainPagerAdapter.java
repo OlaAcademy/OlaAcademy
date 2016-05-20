@@ -10,6 +10,7 @@ import com.snail.olaxueyuan.ui.information.InformationFragment;
 import com.snail.olaxueyuan.ui.course.CourseFragment;
 import com.snail.olaxueyuan.ui.index.IndexFragment;
 import com.snail.olaxueyuan.ui.me.UserBaseFragment;
+import com.snail.olaxueyuan.ui.me.UserFragment;
 import com.snail.olaxueyuan.ui.question.QuestionFragment;
 import com.snail.olaxueyuan.ui.search.SearchFragment;
 import com.snail.olaxueyuan.ui.story.StoryFragment;
@@ -18,8 +19,6 @@ import com.snail.olaxueyuan.ui.story.StoryFragment;
  * Created by tianxiaopeng on 15-1-2.
  */
 public class MainPagerAdapter extends FragmentPagerAdapter {
-
-
     private IndexFragment indexFragment;
     private InformationFragment consultFragment;
     private StoryFragment storyFragment;
@@ -29,7 +28,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private ExamFragment examFragment;
     private CourseFragment courseFragment;
     private CircleFragment circleFragment;
-    private UserBaseFragment userFragment;
+    //    private UserBaseFragment userFragment;
+    private UserFragment userFragment;
 
     public MainPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -46,12 +46,13 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         examFragment = new ExamFragment();
         courseFragment = new CourseFragment();
         circleFragment = new CircleFragment();
-        userFragment = new UserBaseFragment();
+//        userFragment = new UserBaseFragment();
+        userFragment = new UserFragment();
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 
     @Override
