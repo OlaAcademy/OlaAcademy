@@ -146,12 +146,13 @@ public interface SECourseService {
     /**
      * 首页课程列表
      *
-     * @param pid 1 数学 2 英语 3 逻辑 4 协作
+     * @param pid  1 数学 2 英语 3 逻辑 4 协作
      * @param type 1 题库课程 2 视频课程
      */
-    @GET("/ola/cour/getCourList")
-    public void fetchHomeCourseList(@Query("pid") String pid,
-                                    @Query("type") String type,
+    @FormUrlEncoded
+    @POST("/ola/cour/getCourList")
+    public void fetchHomeCourseList(@Field("pid") String pid,
+                                    @Field("type") String type,
                                     Callback<MCCourseListResult> cb);
 
     /**
@@ -250,5 +251,5 @@ public interface SECourseService {
     @Multipart
     @POST("/ola/cour/getPoiSubList")
     public void fetchQuestionList(@Part("pointId") String pointId,
-                                         Callback<MCQuestionListResult> cb);
+                                  Callback<MCQuestionListResult> cb);
 }
