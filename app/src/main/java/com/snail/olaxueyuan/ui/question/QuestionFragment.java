@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
@@ -107,7 +106,7 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
             @Override
             public void success(QuestionCourseModule questionCourseModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
-                Logger.json(questionCourseModule);
+//                Logger.json(questionCourseModule);
                 if (questionCourseModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(getActivity(), questionCourseModule.getMessage(), 2.0f);
                 } else {

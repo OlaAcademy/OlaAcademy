@@ -47,7 +47,6 @@ public class SERestManager {
             public void intercept(RequestFacade request) {
                 request.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2141.0 Safari/537.36");
                 request.addHeader("Accept", "application/json");
-
                 AccessToken accessToken = SEAuthManager.getInstance().getAccessToken();
                 if (accessToken != null) {
                     String tokenValue = accessToken.getTokenValue();

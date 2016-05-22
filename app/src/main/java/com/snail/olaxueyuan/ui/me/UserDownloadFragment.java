@@ -11,7 +11,7 @@ import com.snail.olaxueyuan.ui.SuperFragment;
 /**
  * Created by mingge on 2016/5/20.
  */
-public class UserBuyCourseFragment extends SuperFragment {
+public class UserDownloadFragment extends SuperFragment {
     View rootView;
 
     @Override

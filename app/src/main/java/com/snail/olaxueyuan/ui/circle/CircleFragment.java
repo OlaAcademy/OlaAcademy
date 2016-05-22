@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
@@ -72,12 +71,12 @@ public class CircleFragment extends SuperFragment {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
-                Logger.json(oLaCircleModule);
+//                Logger.json(oLaCircleModule);
                 if (oLaCircleModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(getActivity(), oLaCircleModule.getMessage(), 2.0f);
                 } else {
                     list.clear();
-                    Logger.json(oLaCircleModule);
+//                    Logger.json(oLaCircleModule);
                     list.addAll(oLaCircleModule.getResult());
                     listview.setAdapter(adapter);
                     adapter.notifyDataSetChanged();

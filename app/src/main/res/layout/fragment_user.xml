@@ -94,40 +94,12 @@
 
                 <ImageView
                     android:id="@+id/knowledge_bottom_indicator"
-                    android:layout_width="5dp"
-                    android:layout_height="5dp"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/indicator_index" />
 
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/course_collect_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/course_collect_v_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="课程收藏"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/course_collect_bottom_indicator"
-                    android:layout_width="5dp"
-                    android:layout_height="5dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/indicator_index"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -150,8 +122,8 @@
 
                 <ImageView
                     android:id="@+id/vip_bottom_indicator"
-                    android:layout_width="5dp"
-                    android:layout_height="5dp"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/indicator_index"
@@ -159,27 +131,56 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/buy_course_layout"
+                android:id="@+id/course_collect_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/buy_course_tv_text"
+                    android:id="@+id/course_collect_v_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="购买课程"
+                    android:text="课程收藏"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <ImageView
-                    android:id="@+id/buy_course_bottom_indicator"
-                    android:layout_width="5dp"
-                    android:layout_height="5dp"
+                    android:id="@+id/course_collect_bottom_indicator"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/indicator_index"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/download_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/download_tv_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="下载"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/download_bottom_indicator"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/indicator_index"

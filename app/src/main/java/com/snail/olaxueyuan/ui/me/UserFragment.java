@@ -50,10 +50,10 @@ public class UserFragment extends SuperFragment {
     ImageView vipBottomIndicator;
     @Bind(R.id.vip_layout)
     RelativeLayout vipLayout;
-    @Bind(R.id.buy_course_bottom_indicator)
-    ImageView buyCourseBottomIndicator;
-    @Bind(R.id.buy_course_layout)
-    RelativeLayout buyCourseLayout;
+    @Bind(R.id.download_bottom_indicator)
+    ImageView downloadBottomIndicator;
+    @Bind(R.id.download_layout)
+    RelativeLayout downloadLayout;
     @Bind(R.id.view_pager)
     ViewPager viewPager;
     private UserPageAdapter userPageAdapter;
@@ -79,7 +79,7 @@ public class UserFragment extends SuperFragment {
         viewPager.setCurrentItem(0);
     }
 
-    @OnClick({R.id.left_icon, R.id.right_response, R.id.knowledge_layout, R.id.course_collect_layout, R.id.vip_layout, R.id.buy_course_layout})
+    @OnClick({R.id.left_icon, R.id.right_response, R.id.knowledge_layout, R.id.course_collect_layout, R.id.vip_layout, R.id.download_layout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_icon:
@@ -90,15 +90,15 @@ public class UserFragment extends SuperFragment {
                 viewPager.setCurrentItem(0);
                 changeTitleTab(0);
                 break;
-            case R.id.course_collect_layout:
+            case R.id.vip_layout:
                 viewPager.setCurrentItem(1);
                 changeTitleTab(1);
                 break;
-            case R.id.vip_layout:
+            case R.id.course_collect_layout:
                 viewPager.setCurrentItem(2);
                 changeTitleTab(2);
                 break;
-            case R.id.buy_course_layout:
+            case R.id.download_layout:
                 viewPager.setCurrentItem(3);
                 changeTitleTab(3);
                 break;
@@ -124,19 +124,19 @@ public class UserFragment extends SuperFragment {
         knowledgeBottomIndicator.setVisibility(View.GONE);
         courseCollectBottomIndicator.setVisibility(View.GONE);
         vipBottomIndicator.setVisibility(View.GONE);
-        buyCourseBottomIndicator.setVisibility(View.GONE);
+        downloadBottomIndicator.setVisibility(View.GONE);
         switch (position) {
             case 0:
                 knowledgeBottomIndicator.setVisibility(View.VISIBLE);
                 break;
             case 1:
-                courseCollectBottomIndicator.setVisibility(View.VISIBLE);
-                break;
-            case 2:
                 vipBottomIndicator.setVisibility(View.VISIBLE);
                 break;
+            case 2:
+                courseCollectBottomIndicator.setVisibility(View.VISIBLE);
+                break;
             case 3:
-                buyCourseBottomIndicator.setVisibility(View.VISIBLE);
+                downloadBottomIndicator.setVisibility(View.VISIBLE);
                 break;
             default:
                 knowledgeBottomIndicator.setVisibility(View.VISIBLE);

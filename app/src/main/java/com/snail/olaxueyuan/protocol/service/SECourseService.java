@@ -19,6 +19,8 @@ import com.snail.olaxueyuan.protocol.result.SEWXPayInfoResult;
 import com.snail.olaxueyuan.protocol.result.VideoCollectionResult;
 
 import retrofit.Callback;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
@@ -135,8 +137,9 @@ public interface SECourseService {
      *
      * @param cb
      */
-    @GET("/ola/cour/getVideoByPoi")
-    public void fetchVideoInfo(@Query("pointId") String pointId,
+    @FormUrlEncoded
+    @POST("/ola/cour/getVideoByPoi")
+    public void fetchVideoInfo(@Field("pointId") String pointId,
                                Callback<MCVideoResult> cb);
 
 
@@ -156,8 +159,9 @@ public interface SECourseService {
      *
      * @param cb
      */
-    @GET("/ola/cour/getVideoByPoi")
-    public void fetchCourseSection(@Query("pointId") String courseId,
+    @FormUrlEncoded
+    @POST("/ola/cour/getVideoByPoi")
+    public void fetchCourseSection(@Field("pointId") String courseId,
                                    Callback<MCCourSectionResult> cb);
 
 

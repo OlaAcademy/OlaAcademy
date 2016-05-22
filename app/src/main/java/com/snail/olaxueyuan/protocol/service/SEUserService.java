@@ -5,6 +5,8 @@ import com.snail.olaxueyuan.protocol.result.MCUploadResult;
 import com.snail.olaxueyuan.protocol.result.SEPasswordResult;
 import com.snail.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.snail.olaxueyuan.protocol.result.SEUserResult;
+import com.snail.olaxueyuan.protocol.result.UserCourseCollectResult;
+import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
 
 import retrofit.Callback;
 import retrofit.client.Response;
@@ -78,7 +80,7 @@ public interface SEUserService {
     /**
      * 上传头像
      *
-     * @param  file
+     * @param file
      * @param cb
      */
     @Multipart
@@ -105,4 +107,25 @@ public interface SEUserService {
     @GET("/app/evaluation")
     public void evaluation(Callback<Response> cb);
 
+    /**
+     * 知识型谱列表(需要userid)
+     *
+     * @param type 1 用于考点的课程列表 2 用户视频的课程列表
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/cour/getStatisticsList")
+    void getStatisticsList(@Field("type") String type,
+                           Callback<UserKnowledgeResult> cb);
+
+    /**
+     * 需要userid
+     *
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/collection/getCollectionByUserId")
+    void getCollectionByUserId(
+            @Field("userId") String userid,
+            Callback<UserCourseCollectResult> cb);
 }

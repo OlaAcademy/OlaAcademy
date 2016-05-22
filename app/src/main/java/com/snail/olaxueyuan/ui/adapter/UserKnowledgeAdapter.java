@@ -1,0 +1,143 @@
+package com.snail.olaxueyuan.ui.adapter;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+/**
+ * Created by mingge on 16/4/28.
+ */
+public class UserKnowledgeAdapter extends BaseExpandableListAdapter {
+    Context context;
+    UserKnowledgeResult module;
+
+    public UserKnowledgeAdapter(Context context) {
+        this.context = context;
+    }
+
+    public void updateList(UserKnowledgeResult module) {
+        this.module = module;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getGroupCount() {
+        return module.getResult().size();
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return module.getResult().get(groupPosition).getChild().size();
+    }
+
+    @Override
+    public Object getGroup(int groupPosition) {
+        return module.getResult().get(groupPosition);
+    }
+
+    @Override
+    public Object getChild(int groupPosition, int childPosition) {
+        return module.getResult().get(groupPosition).getChild();
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        ParentViewHolder holder;
+        if (convertView == null) {
+            convertView = View.inflate(context, R.layout.fragment_user_knowledge_parent_item, null);
+            holder = new ParentViewHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (ParentViewHolder) convertView.getTag();
+        }
+        holder.courseName.setText(module.getResult().get(groupPosition).getName());
+        return convertView;
+    }
+
+    static class ParentViewHolder {
+        @Bind(R.id.course_name)
+        TextView courseName;
+
+        ParentViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        ChildViewHolder holder;
+        if (convertView == null) {
+            convertView = View.inflate(context, R.layout.fragment_user_knowledge_child_item, null);
+            holder = new ChildViewHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (ChildViewHolder) convertView.getTag();
+        }
+        holder.questionName.setText(module.getResult().get(groupPosition).getChild().get(childPosition).getName());
+        holder.questionKnowledgeCount.setText(module.getResult().get(groupPosition).getChild().get(childPosition).getSubAllNum() + "%");
+        holder.questionKnowledgeAllCount.setText(module.getResult().get(groupPosition).getChild().get(childPosition).getSubAllNum() + "个知识点");
+        try {
+            int subAllNum = module.getResult().get(groupPosition).getChild().get(childPosition).getSubAllNum();
+            holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
+            holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
+            if (subAllNum == 0) {
+                holder.progressBar.setProgress(50);
+            } else {
+                holder.progressBar.setProgress(50);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return convertView;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+
+    class ChildViewHolder {
+        @Bind(R.id.question_add_icon)
+        ImageView questionAddIcon;
+        @Bind(R.id.question_name)
+        TextView questionName;
+        @Bind(R.id.question_knowledge_all_count)
+        TextView questionKnowledgeAllCount;
+        @Bind(R.id.progressBar)
+        ProgressBar progressBar;
+        @Bind(R.id.question_knowledge_count)
+        TextView questionKnowledgeCount;
+        @Bind(R.id.line_bottom)
+        View lineBottom;
+
+        ChildViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+}

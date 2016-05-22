@@ -2,7 +2,6 @@ package com.snail.olaxueyuan.ui.examination;
 
 
 import android.app.Fragment;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.HorizontalScrollViewAdapter;
 import com.snail.olaxueyuan.common.MyHorizontalScrollView;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
@@ -95,7 +93,7 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
             @Override
             public void success(ExamModule examModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
-                Logger.json(examModule);
+//                Logger.json(examModule);
                 if (examModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(getActivity(), examModule.getMessage(), 2.0f);
                 } else {

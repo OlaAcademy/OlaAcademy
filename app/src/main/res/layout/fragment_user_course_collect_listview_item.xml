@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/selector_white_item_bg">
+
+        <ImageView
+            android:id="@+id/icon_collect"
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/system_wu" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/icon_collect"
+            android:text="数学"
+            android:textColor="@color/black_323232"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/icon_time"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_below="@+id/name"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/icon_collect"
+            android:src="@drawable/ic_chosen" />
+
+        <TextView
+            android:id="@+id/course_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/icon_time"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/icon_time"
+            android:text="3课时，60分钟"
+            android:textColor="@color/title_hint_text_color"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/buy_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/course_time"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/course_time"
+            android:text="120人购买"
+            android:textColor="@color/title_hint_text_color"
+            android:textSize="13dp" />
+    </RelativeLayout>
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_height="5dp" />
+</LinearLayout>

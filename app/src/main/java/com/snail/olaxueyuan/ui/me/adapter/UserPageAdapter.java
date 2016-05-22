@@ -2,9 +2,8 @@ package com.snail.olaxueyuan.ui.me.adapter;
 
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
-import android.support.v4.app.Fragment;
 
-import com.snail.olaxueyuan.ui.me.UserBuyCourseFragment;
+import com.snail.olaxueyuan.ui.me.UserDownloadFragment;
 import com.snail.olaxueyuan.ui.me.UserCourseCollectFragment;
 import com.snail.olaxueyuan.ui.me.UserKnowledgeFragment;
 import com.snail.olaxueyuan.ui.me.UserVipFragment;
@@ -14,9 +13,9 @@ import com.snail.olaxueyuan.ui.me.UserVipFragment;
  */
 public class UserPageAdapter extends FragmentStatePagerAdapter {
     private UserKnowledgeFragment userKnowledgeFragment;
-    private UserCourseCollectFragment userCourseCollectFragment;
     private UserVipFragment userVipFragment;
-    private UserBuyCourseFragment userBuyCourseFragment;
+    private UserCourseCollectFragment userCourseCollectFragment;
+    private UserDownloadFragment userdownloadFragment;
 
     public UserPageAdapter(FragmentManager fm) {
         super(fm);
@@ -29,11 +28,11 @@ public class UserPageAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return userKnowledgeFragment;
             case 1:
-                return userCourseCollectFragment;
-            case 2:
                 return userVipFragment;
+            case 2:
+                return userCourseCollectFragment;
             case 3:
-                return userBuyCourseFragment;
+                return userdownloadFragment;
             default:
                 return null;
         }
@@ -48,6 +47,6 @@ public class UserPageAdapter extends FragmentStatePagerAdapter {
         userKnowledgeFragment = new UserKnowledgeFragment();
         userCourseCollectFragment = new UserCourseCollectFragment();
         userVipFragment = new UserVipFragment();
-        userBuyCourseFragment = new UserBuyCourseFragment();
+        userdownloadFragment = new UserDownloadFragment();
     }
 }

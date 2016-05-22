@@ -12,6 +12,8 @@ import com.snail.olaxueyuan.protocol.result.MCUploadResult;
 import com.snail.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.snail.olaxueyuan.protocol.result.SEUserResult;
 import com.snail.olaxueyuan.protocol.result.ServiceError;
+import com.snail.olaxueyuan.protocol.result.UserCourseCollectResult;
+import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
 import com.snail.olaxueyuan.protocol.service.SEUserService;
 
 import java.io.File;
@@ -242,6 +244,25 @@ public class SEUserManager {
                 }
             }
         });
+    }
+
+    /**
+     * 知识型谱列表
+     *
+     * @param type 1 用于考点的课程列表 2 用户视频的课程列表
+     * @param cb
+     */
+    public void getStatisticsList(String type, Callback<UserKnowledgeResult> cb) {
+        _userService.getStatisticsList(type, cb);
+    }
+
+    /**
+     * 需要userid
+     *
+     * @param cb
+     */
+    public void getCollectionByUserId(String userid,Callback<UserCourseCollectResult> cb) {
+        _userService.getCollectionByUserId(userid,cb);
     }
 }
 

@@ -42,13 +42,9 @@ public interface QuestionService {
     /**
      * 欧拉圈，获取视频观看历史记录列表
      *
-     *
      * @param cb
      */
-    @FormUrlEncoded
     @POST("/ola/cour/getHistotyList")
-    public void getHistotyList(
-            @Field("courseId") String courseId,//没有这个参数,写上是因为报错
-            Callback<OLaCircleModule> cb);
+    void getHistotyList(Callback<OLaCircleModule> cb);
 
 }
