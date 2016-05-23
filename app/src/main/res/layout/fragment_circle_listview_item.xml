@@ -1,13 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="94dp">
+    android:layout_height="94dp"
+    android:background="@drawable/selector_white_item_bg">
 
-    <ImageView
+    <com.snail.olaxueyuan.common.RoundRectImageView
         android:id="@+id/avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:src="@drawable/ic_listener" />
+        android:src="@drawable/ic_default_avatar" />
 
     <TextView
         android:id="@+id/title"
@@ -24,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/avatar"
         android:text="时间"
         android:textColor="@color/title_hint_text_color"
@@ -35,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/time"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/avatar"
         android:text="学习了:"
         android:textColor="@color/title_hint_text_color"
@@ -46,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/time"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/study"
         android:text="学习了:"
         android:textColor="@color/black_323232"

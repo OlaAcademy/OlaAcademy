@@ -30,9 +30,9 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
     int width;
     int height;
     RelativeLayout.LayoutParams params;
-    private List<ExamModule.ResultEntity> mDatas;
+    private List<ExamModule.ResultBean> mDatas;
 
-    public HorizontalScrollViewAdapter(Context context, List<ExamModule.ResultEntity> mDatas) {
+    public HorizontalScrollViewAdapter(Context context, List<ExamModule.ResultBean> mDatas) {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mDatas;

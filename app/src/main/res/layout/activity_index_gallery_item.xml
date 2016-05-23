@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_toLeftOf="@+id/master_ratingBar"
-                android:text="重要程度"
+                android:text="掌握程度"
                 android:textColor="@color/black_one"
                 android:textSize="13dp" />
 
