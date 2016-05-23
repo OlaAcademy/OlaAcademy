@@ -38,5 +38,7 @@
     <string name="request_running">数据请求中，请稍候......</string>
     <string name="request_failed">数据加载失败，请稍候再试</string>
     <string name="data_request_fail">数据请求失败</string>
+    <string name="study_record">%s学习记录</string>
+    <string name="ola_circle">欧拉圈</string>
 
 </resources>

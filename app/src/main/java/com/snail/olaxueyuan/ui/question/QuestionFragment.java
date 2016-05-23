@@ -94,7 +94,7 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
 
     private void fetchData() {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
-        QuestionCourseManager.getInstance().fetchHomeCourseList(pid, "1", new Callback<QuestionCourseModule>() {
+        QuestionCourseManager.getInstance().fetchHomeCourseList("316", pid, "1", new Callback<QuestionCourseModule>() {
             @Override
             public void success(QuestionCourseModule questionCourseModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());

@@ -34,8 +34,8 @@ public class QuestionCourseManager {
      *
      * @param callback
      */
-    public void fetchHomeCourseList(String pid, String type, final Callback<QuestionCourseModule> callback) {
-        getQuestionService().fetchHomeCourseList(pid, type, callback);
+    public void fetchHomeCourseList(String userid,String pid, String type, final Callback<QuestionCourseModule> callback) {
+        getQuestionService().fetchHomeCourseList(userid,pid, type, callback);
     }
 
     /**

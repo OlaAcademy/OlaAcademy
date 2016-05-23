@@ -159,7 +159,7 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
     private void setView(View view, int position) {
         view.setBackgroundResource(R.drawable.shape_white_retangle_selected);
         targetScore.setText(module.getResult().get(position).getTarget() + "分");
-        allRank.setText(module.getResult().get(position).getDegree() + "名");
+        allRank.setText(module.getResult().get(position).getRank() + "名");
         coverageExam.setText(module.getResult().get(position).getCoverpoint() + "个");
     }
 

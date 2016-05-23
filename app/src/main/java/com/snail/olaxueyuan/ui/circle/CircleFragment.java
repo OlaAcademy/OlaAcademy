@@ -3,6 +3,7 @@ package com.snail.olaxueyuan.ui.circle;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.common.RoundRectImageView;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
@@ -61,7 +63,7 @@ public class CircleFragment extends SuperFragment {
     }
 
     private void initView() {
-        new TitleManager("欧拉圈", this, rootView, false);
+        new TitleManager(R.string.ola_circle, this, rootView, false);
         adapter = new CircleAdapter();
     }
 
@@ -139,17 +141,20 @@ public class CircleFragment extends SuperFragment {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
+            holder.avatar.setRectAdius(100);
             holder.title.setText(list.get(position).getUserName());
-            Picasso.with(getActivity()).load(list.get(position).getUserAvatar())
-                    .resize(Utils.dip2px(getActivity(), 50), Utils.dip2px(getActivity(), 50)).into(holder.avatar);
-            holder.time.setText(list.get(position).getTime() + "学习记录");
+            if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
+                Picasso.with(getActivity()).load(list.get(position).getUserAvatar()).error(R.drawable.ic_default_avatar)
+                        .resize(Utils.dip2px(getActivity(), 50), Utils.dip2px(getActivity(), 50)).into(holder.avatar);
+            }
+            holder.time.setText(getActivity().getString(R.string.study_record, list.get(position).getTime()));
             holder.studyName.setText(list.get(position).getVideoName());
             return convertView;
         }
 
         class ViewHolder {
             @Bind(R.id.avatar)
-            ImageView avatar;
+            RoundRectImageView avatar;
             @Bind(R.id.title)
             TextView title;
             @Bind(R.id.time)

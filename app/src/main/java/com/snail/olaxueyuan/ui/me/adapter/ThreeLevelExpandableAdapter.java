@@ -114,17 +114,6 @@ public abstract class ThreeLevelExpandableAdapter extends
                 listview = (ListView) convertView.findViewById(R.id.listview);
 
                 listview.setAdapter(new GridAdapter());
-
-                /*// set the height of each row of three level
-                final int rowHeightDp = 40;
-                final float ROW_HEIGHT = mContext.getResources()
-                        .getDisplayMetrics().density * rowHeightDp;
-                int grandChildCount = getThreeLevelCount(mFatherGroupPosition,
-                        mChildGroupPosition);
-                int rowCount = (int) Math.ceil((double) grandChildCount
-                        / mThreeLevelColumns);
-                final int GRID_HEIGHT = (int) (ROW_HEIGHT * rowCount);
-                listview.getLayoutParams().height = GRID_HEIGHT;*/
             }
             return convertView;
         }

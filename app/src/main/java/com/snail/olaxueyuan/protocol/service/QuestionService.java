@@ -21,9 +21,11 @@ public interface QuestionService {
      * @param pid  1 数学 2 英语 3 逻辑 4 协作
      * @param type 1 题库课程 2 视频课程
      */
-    @GET("/ola/cour/getCourList")
-    public void fetchHomeCourseList(@Query("pid") String pid,
-                                    @Query("type") String type,
+    @FormUrlEncoded
+    @POST("/ola/cour/getCourList")
+    public void fetchHomeCourseList(@Field("userid") String userid,
+                                    @Field("pid") String pid,
+                                    @Field("type") String type,
                                     Callback<QuestionCourseModule> cb);
 
     /**
@@ -44,7 +46,7 @@ public interface QuestionService {
      *
      * @param cb
      */
-    @POST("/ola/cour/getHistotyList")
+    @POST("/ola/cour/getHistoryList")
     void getHistotyList(Callback<OLaCircleModule> cb);
 
 }
