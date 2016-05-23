@@ -68,14 +68,6 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
         Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
         drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
         titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
-        Button temp = (Button) rootView.findViewById(R.id.temp);
-        temp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), QuestionWebActivity.class);
-                getActivity().startActivity(intent);
-            }
-        });
         expandableListView.setDivider(null);
         expandableListView.setGroupIndicator(null);
         adapter = new QuestionAdapter(getActivity());
