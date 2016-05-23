@@ -1,6 +1,7 @@
 package com.snail.olaxueyuan.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
+import com.snail.olaxueyuan.ui.question.QuestionWebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +136,7 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        ChildViewHolder holder;
+        final ChildViewHolder holder;
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.fragment_question_child_item, null);
             holder = new ChildViewHolder(convertView);
@@ -162,6 +164,15 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+       final int courseId = list.get(groupPosition).getChild().get(childPosition).getId();
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, QuestionWebActivity.class);
+                intent.putExtra("courseId",courseId);
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 

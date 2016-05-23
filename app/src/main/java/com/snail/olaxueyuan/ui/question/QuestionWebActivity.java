@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 
 import com.snail.olaxueyuan.R;
@@ -13,15 +14,18 @@ import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.model.MCOption;
 import com.snail.olaxueyuan.protocol.model.MCQuestion;
 import com.snail.olaxueyuan.protocol.result.MCQuestionListResult;
+import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.olaxueyuan.ui.course.pay.CoursePayActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class QuestionWebActivity extends Activity implements View.OnClickListener{
+public class QuestionWebActivity extends SEBaseActivity implements View.OnClickListener{
 
     private WebView contentWebView;
     private Button previousBtn;
@@ -47,18 +51,29 @@ public class QuestionWebActivity extends Activity implements View.OnClickListene
 
         nextBtn = (Button) findViewById(R.id.nextBtn);
         nextBtn.setOnClickListener(this);
-        initQuestionData();
+        initQuestionData(getIntent().getExtras().getInt("courseId")+"");
     }
 
-    private void initQuestionData(){
+    private void initQuestionData(String courseId){
         SECourseManager sm = SECourseManager.getInstance();
-        sm.fetchQuestionList("53", new Callback<MCQuestionListResult>() {
+        sm.fetchQuestionList(courseId, new Callback<MCQuestionListResult>() {
             @Override
             public void success(MCQuestionListResult result, Response response) {
                 questionList = result.questionList;
                 // 从assets目录下面的加载html
                 contentWebView.loadUrl("file:///android_asset/question.html");
-                contentWebView.loadUrl("javascript:javacalljswithargs('" + questionList.get(0).question + "')");
+                contentWebView.setWebViewClient(new WebViewClient() {
+
+                    public void onPageFinished(WebView view, String url) {
+                        if (questionList.size() > 0) {
+
+                            MCQuestion question = questionList.get(0);
+
+                            contentWebView.loadUrl("javascript:javacalljswithargs('" + question.question + "," + question.optionList.get(0).content + "')");
+                        }
+                    }
+                });
+
             }
 
             @Override
@@ -70,7 +85,7 @@ public class QuestionWebActivity extends Activity implements View.OnClickListene
     View.OnClickListener btnClickListener = new Button.OnClickListener() {
         public void onClick(View v) {
             // 传递参数调用
-            contentWebView.loadUrl("javascript:javacalljswithargs('" + questionList.get(0).question + "')");
+            contentWebView.loadUrl("javascript:javacalljswithargs('" + questionList.get(0) + "')");
         }
     };
 

@@ -47,7 +47,7 @@ public class UserCourseCollectFragment extends SuperFragment {
 
     private void fetchData() {
         // userId,316测试
-        SEUserManager.getInstance().getCollectionByUserId("316", new Callback<UserCourseCollectResult>() {
+        SEUserManager.getInstance().getCollectionByUserId("126", new Callback<UserCourseCollectResult>() {
             @Override
             public void success(UserCourseCollectResult userCourseCollectResult, Response response) {
                 Logger.json(userCourseCollectResult);
