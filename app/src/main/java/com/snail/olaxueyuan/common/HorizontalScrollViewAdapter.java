@@ -70,7 +70,8 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
                 ToastUtil.showShortToast(mContext, "我是第" + position + "个");
             }
         });
-        viewHolder.importantRatingBar.setNumStars(mDatas.get(position).getDegree());
+        viewHolder.importantRatingBar.setMax(5);
+        viewHolder.importantRatingBar.setRating(mDatas.get(position).getDegree());
         return convertView;
     }
 
