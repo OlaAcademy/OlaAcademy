@@ -2,7 +2,6 @@ package com.snail.olaxueyuan.ui.course;
 
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,9 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
@@ -104,7 +101,7 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
 
     private void performRefresh() {
         SECourseManager courseManager = SECourseManager.getInstance();
-        courseManager.fetchHomeCourseList("1", "2", new Callback<MCCourseListResult>() {
+        courseManager.fetchHomeCourseList(pid, "2", new Callback<MCCourseListResult>() {
             @Override
             public void success(MCCourseListResult result, Response response) {
                 if (!result.apicode.equals("10000")) {
