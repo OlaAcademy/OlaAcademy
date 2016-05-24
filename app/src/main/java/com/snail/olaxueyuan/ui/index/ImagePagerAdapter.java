@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.RecyclingPagerAdapter;
-import com.snail.olaxueyuan.protocol.model.MCVideo;
+import com.snail.olaxueyuan.protocol.model.MCBanner;
 import com.snail.olaxueyuan.ui.course.CourseDetailActivity;
 import com.squareup.picasso.Picasso;
 
@@ -20,19 +20,19 @@ import java.util.ArrayList;
  */
 public class ImagePagerAdapter extends RecyclingPagerAdapter {
     private Context context;
-    private ArrayList<MCVideo> videoList;
+    private ArrayList<MCBanner> bannerList;
 
     private int size;
 
-    public ImagePagerAdapter(Context context, ArrayList<MCVideo> videoList) {
+    public ImagePagerAdapter(Context context, ArrayList<MCBanner> videoList) {
         this.context = context;
-        this.videoList = videoList;
+        this.bannerList = videoList;
         this.size = videoList.size();
     }
 
     @Override
     public int getCount() {
-        return videoList.size();
+        return bannerList.size();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MCVideo videoInfo = videoList.get(position);
+                    MCBanner videoInfo = bannerList.get(position);
                     Intent intent = new Intent(context,CourseDetailActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("videoInfo", videoInfo);
@@ -57,12 +57,11 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
             holder = (ViewHolder) view.getTag();
         }
         int width = context.getResources().getDisplayMetrics().widthPixels;
-        int height = context.getResources().getDisplayMetrics().heightPixels;
         Picasso.with(context)
-                .load(videoList.get(position).pic)
+                .load(bannerList.get(position).address)
                 .placeholder(R.drawable.default_index)
                 .error(R.drawable.default_index)
-                .resize(width, (int) (height * 0.3))
+                .resize(width, width*320/750)
                 .into(holder.imageView);
         return view;
     }

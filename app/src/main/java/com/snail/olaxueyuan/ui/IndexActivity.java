@@ -26,13 +26,7 @@ import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.olaxueyuan.ui.me.activity.UserRegActivity;
 
 
-public class IndexActivity extends Activity implements View.OnClickListener {
-
-    private ImageView logoImage;
-    private RelativeLayout operationRL;
-    private TextView loginTV;
-    private TextView visitTV;
-    private Button regBtn;
+public class IndexActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,62 +34,16 @@ public class IndexActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
 
-        logoImage = (ImageView) findViewById(R.id.logoImage);
-        loginTV = (TextView) findViewById(R.id.loginTV);
-        visitTV = (TextView) findViewById(R.id.visitTV);
-        regBtn = (Button) findViewById(R.id.btn_register);
-
-        operationRL = (RelativeLayout) findViewById(R.id.operationRL);
-
-        loginTV.setOnClickListener(this);
-        visitTV.setOnClickListener(this);
-        regBtn.setOnClickListener(this);
-
-        SEAuthManager am = SEAuthManager.getInstance();
-        if (am.isAuthenticated()) {
-            operationRL.setVisibility(View.GONE);
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    Intent mainIntent = new Intent(IndexActivity.this,
-                            MainActivity.class);
-                    startActivity(mainIntent);
-                    finish();
-                }
-
-            }, 500);
-        } else {
-            operationRL.setVisibility(View.VISIBLE);
-            WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-            Display display = wm.getDefaultDisplay();
-            slideview(0, -(display.getHeight() / 2 - 150));
-        }
-    }
-
-    public void slideview(final float p1, final float p2) {
-        TranslateAnimation animation = new TranslateAnimation(0, 0, p1, p2);
-        animation.setInterpolator(new OvershootInterpolator());
-        animation.setDuration(5000);
-        animation.setStartOffset(1000);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                Intent mainIntent = new Intent(IndexActivity.this,
+                        MainActivity.class);
+                startActivity(mainIntent);
+                finish();
             }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
+        }, 1000);
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                int left = logoImage.getLeft();
-                int top = logoImage.getTop() + (int) (p2 - p1);
-                int width = logoImage.getWidth();
-                int height = logoImage.getHeight();
-                logoImage.clearAnimation();
-                logoImage.layout(left, top, left + width, top + height);
-            }
-        });
-        logoImage.startAnimation(animation);
     }
 
 
@@ -119,27 +67,5 @@ public class IndexActivity extends Activity implements View.OnClickListener {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_register:
-                Intent regIntent = new Intent(IndexActivity.this,
-                        UserRegActivity.class);
-                startActivity(regIntent);
-                break;
-            case R.id.loginTV:
-                Intent loginIntent = new Intent(IndexActivity.this,
-                        UserLoginActivity.class);
-                startActivity(loginIntent);
-                break;
-            case R.id.visitTV:
-                Intent mainIntent = new Intent(IndexActivity.this,
-                        MainActivity.class);
-                startActivity(mainIntent);
-                finish();
-                break;
-        }
     }
 }
