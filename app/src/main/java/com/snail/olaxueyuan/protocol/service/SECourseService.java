@@ -129,7 +129,7 @@ public interface SECourseService {
      *
      * @param cb
      */
-    @GET("/ola/cour/getHomeVideoList")
+    @GET("/ola/cour/getBannerList")
     public void fetchHomeBanner(Callback<MCBannerResult> cb);
 
     /**
