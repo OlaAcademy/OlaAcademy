@@ -1,7 +1,7 @@
 package com.snail.olaxueyuan.protocol.result;
 
 import com.google.gson.annotations.SerializedName;
-import com.snail.olaxueyuan.protocol.model.MCVideo;
+import com.snail.olaxueyuan.protocol.model.MCBanner;
 
 import java.util.ArrayList;
 
@@ -12,5 +12,5 @@ public class MCBannerResult extends ServiceResult {
     public String apicode;
     public String message;
     @SerializedName("result")
-    public ArrayList<MCVideo> videoList;
+    public ArrayList<MCBanner> bannerList;
 }
