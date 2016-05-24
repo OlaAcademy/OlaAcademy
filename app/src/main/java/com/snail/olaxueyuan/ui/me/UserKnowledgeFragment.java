@@ -14,6 +14,8 @@ import com.snail.olaxueyuan.protocol.manager.SEUserManager;
 import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
 import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.adapter.UserKnowledgeAdapter;
+import com.snail.pulltorefresh.PullToRefreshBase;
+import com.snail.pulltorefresh.PullToRefreshExpandableListView;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
@@ -26,9 +28,10 @@ import retrofit.client.Response;
 /**
  * Created by mingge on 2016/5/20.
  */
-public class UserKnowledgeFragment extends SuperFragment {
+public class UserKnowledgeFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener {
     View rootView;
     @Bind(R.id.expandableListView)
+    PullToRefreshExpandableListView expandableListViews;
     ExpandableListView expandableListView;
 
     private UserKnowledgeResult module;
@@ -38,6 +41,7 @@ public class UserKnowledgeFragment extends SuperFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_user_knowledge, container, false);
         ButterKnife.bind(this, rootView);
+        initView();
         fetchData();
         return rootView;
     }
@@ -48,6 +52,7 @@ public class UserKnowledgeFragment extends SuperFragment {
             @Override
             public void success(UserKnowledgeResult userKnowledgeResult, Response response) {
                 SVProgressHUD.dismiss(getActivity());
+                expandableListViews.onRefreshComplete();
 //                Logger.json(userKnowledgeResult);
                 if (userKnowledgeResult.getApicode() != 10000) {
                     ToastUtil.showToastShort(getActivity(), userKnowledgeResult.getMessage());
@@ -60,6 +65,7 @@ public class UserKnowledgeFragment extends SuperFragment {
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null) {
+                    expandableListViews.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
@@ -78,12 +84,18 @@ public class UserKnowledgeFragment extends SuperFragment {
         }
     };
 
-    private void initAdapter() {
+    private void initView() {
+        expandableListViews.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        expandableListViews.setOnRefreshListener(this);
+        expandableListView = expandableListViews.getRefreshableView();
         expandableListView.setDivider(null);
         expandableListView.setGroupIndicator(null);
         adapter = new UserKnowledgeAdapter(getActivity());
-        adapter.updateList(module);
         expandableListView.setAdapter(adapter);
+    }
+
+    private void initAdapter() {
+        adapter.updateList(module);
         for (int i = 0; i < module.getResult().size(); i++) {
             expandableListView.expandGroup(i);
         }
@@ -98,5 +110,10 @@ public class UserKnowledgeFragment extends SuperFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+        fetchData();
     }
 }

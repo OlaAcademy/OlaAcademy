@@ -13,11 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.result.ExamModule;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -30,12 +30,14 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
     int width;
     int height;
     RelativeLayout.LayoutParams params;
-    private List<ExamModule.ResultBean> mDatas;
+    private List<ExamModule.ResultBean> mDatas = new ArrayList<>();
 
     public HorizontalScrollViewAdapter(Context context, List<ExamModule.ResultBean> mDatas) {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
-        this.mDatas = mDatas;
+        if (mDatas != null) {
+            this.mDatas = mDatas;
+        }
         width = Utils.getScreenWidth(mContext);
         height = width * 302 / 750;
         params = new RelativeLayout.LayoutParams((int) (width * 0.8), 200);

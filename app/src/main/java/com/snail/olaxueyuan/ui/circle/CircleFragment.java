@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
@@ -20,6 +19,8 @@ import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.snail.olaxueyuan.protocol.result.OLaCircleModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
+import com.snail.pulltorefresh.PullToRefreshBase;
+import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
@@ -35,7 +36,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CircleFragment extends SuperFragment {
+public class CircleFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener {
     List<OLaCircleModule.ResultEntity> list = new ArrayList<>();
     TitleManager titleManager;
     View rootView;
@@ -44,7 +45,7 @@ public class CircleFragment extends SuperFragment {
     @Bind(R.id.right_response)
     ImageView rightResponse;
     @Bind(R.id.listview)
-    ListView listview;
+    PullToRefreshListView listview;
 
     CircleAdapter adapter;
 
@@ -65,6 +66,8 @@ public class CircleFragment extends SuperFragment {
     private void initView() {
         new TitleManager(R.string.ola_circle, this, rootView, false);
         adapter = new CircleAdapter();
+        listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        listview.setOnRefreshListener(this);
     }
 
     private void fetchData() {
@@ -73,6 +76,7 @@ public class CircleFragment extends SuperFragment {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
+                listview.onRefreshComplete();
 //                Logger.json(oLaCircleModule);
                 if (oLaCircleModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(getActivity(), oLaCircleModule.getMessage(), 2.0f);
@@ -89,6 +93,7 @@ public class CircleFragment extends SuperFragment {
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null) {
+                    listview.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
@@ -112,6 +117,11 @@ public class CircleFragment extends SuperFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+        fetchData();
     }
 
     class CircleAdapter extends BaseAdapter {
