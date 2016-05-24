@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -20,6 +23,7 @@ import butterknife.ButterKnife;
 public class UserKnowledgeAdapter extends BaseExpandableListAdapter {
     Context context;
     UserKnowledgeResult module;
+    private List<UserKnowledgeResult.ResultEntity> list = new ArrayList<>();
 
     public UserKnowledgeAdapter(Context context) {
         this.context = context;
@@ -27,27 +31,31 @@ public class UserKnowledgeAdapter extends BaseExpandableListAdapter {
 
     public void updateList(UserKnowledgeResult module) {
         this.module = module;
+        if (module != null && module.getResult() != null) {
+            this.list.clear();
+            this.list = module.getResult();
+        }
         notifyDataSetChanged();
     }
 
     @Override
     public int getGroupCount() {
-        return module.getResult().size();
+        return list.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return module.getResult().get(groupPosition).getChild().size();
+        return list.get(groupPosition).getChild().size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return module.getResult().get(groupPosition);
+        return list.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return module.getResult().get(groupPosition).getChild();
+        return list.get(groupPosition).getChild();
     }
 
     @Override
@@ -75,7 +83,7 @@ public class UserKnowledgeAdapter extends BaseExpandableListAdapter {
         } else {
             holder = (ParentViewHolder) convertView.getTag();
         }
-        holder.courseName.setText(module.getResult().get(groupPosition).getName());
+        holder.courseName.setText(list.get(groupPosition).getName());
         return convertView;
     }
 
@@ -98,11 +106,11 @@ public class UserKnowledgeAdapter extends BaseExpandableListAdapter {
         } else {
             holder = (ChildViewHolder) convertView.getTag();
         }
-        holder.questionName.setText(module.getResult().get(groupPosition).getChild().get(childPosition).getName());
-        holder.questionKnowledgeCount.setText(module.getResult().get(groupPosition).getChild().get(childPosition).getSubAllNum() + "%");
-        holder.questionKnowledgeAllCount.setText(module.getResult().get(groupPosition).getChild().get(childPosition).getSubAllNum() + "个知识点");
+        holder.questionName.setText(list.get(groupPosition).getChild().get(childPosition).getName());
+        holder.questionKnowledgeCount.setText(list.get(groupPosition).getChild().get(childPosition).getSubAllNum() + "%");
+        holder.questionKnowledgeAllCount.setText(list.get(groupPosition).getChild().get(childPosition).getSubAllNum() + "个知识点");
         try {
-            int subAllNum = module.getResult().get(groupPosition).getChild().get(childPosition).getSubAllNum();
+            int subAllNum = list.get(groupPosition).getChild().get(childPosition).getSubAllNum();
             holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
             holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
             if (subAllNum == 0) {

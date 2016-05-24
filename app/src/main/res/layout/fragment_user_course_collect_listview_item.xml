@@ -14,6 +14,7 @@
             android:id="@+id/icon_collect"
             android:layout_width="110dp"
             android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
             android:src="@drawable/system_wu" />
 
         <TextView

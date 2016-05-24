@@ -33,7 +33,7 @@
             android:textColor="@color/title_hint_text_color"
             android:textSize="14dp" />
 
-        <ExpandableListView
+        <com.snail.pulltorefresh.PullToRefreshExpandableListView
             android:id="@+id/expandableListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

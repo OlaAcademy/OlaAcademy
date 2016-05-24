@@ -12,6 +12,9 @@ import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -21,20 +24,29 @@ import butterknife.ButterKnife;
 public class UserCourseCollectAdapter extends BaseAdapter {
     UserCourseCollectResult module;
     Context context;
+    List<UserCourseCollectResult.ResultEntity> list = new ArrayList<>();
 
-    public UserCourseCollectAdapter(UserCourseCollectResult module, Context context) {
-        this.module = module;
+    public UserCourseCollectAdapter(Context context) {
         this.context = context;
+    }
+
+    public void updateData(UserCourseCollectResult module) {
+        this.module = module;
+        if (module != null && module.getResult() != null) {
+            this.list.clear();
+            this.list = module.getResult();
+        }
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return module.getResult().size();
+        return list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return module.getResult().get(position);
+        return list.get(position);
     }
 
     @Override
@@ -52,11 +64,11 @@ public class UserCourseCollectAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.name.setText(module.getResult().get(position).getVideoName());
-        Picasso.with(context).load(module.getResult().get(position).getCoursePic()).config(Bitmap.Config.RGB_565)
+        holder.name.setText(list.get(position).getVideoName());
+        Picasso.with(context).load(list.get(position).getCoursePic()).config(Bitmap.Config.RGB_565)
                 .placeholder(R.drawable.system_wu).into(holder.iconCollect);
-        holder.courseTime.setText(module.getResult().get(position).getTotalTime());
-        holder.buyCount.setText(module.getResult().get(position).getSubAllNum() + "人购买");
+        holder.courseTime.setText(list.get(position).getTotalTime());
+        holder.buyCount.setText(list.get(position).getSubAllNum() + "人购买");
         return convertView;
     }
 
