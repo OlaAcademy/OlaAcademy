@@ -37,7 +37,6 @@ public class CourseFragment extends SuperFragment {
     private CourseAdapter adapter;
     private ArrayList<MCSubCourse> courseArrayList;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +90,7 @@ public class CourseFragment extends SuperFragment {
 
     private void performRefresh() {
         SECourseManager courseManager = SECourseManager.getInstance();
-        courseManager.fetchHomeCourseList("1","2", new Callback<MCCourseListResult>() {
+        courseManager.fetchHomeCourseList("1", "2", new Callback<MCCourseListResult>() {
             @Override
             public void success(MCCourseListResult result, Response response) {
                 if (!result.apicode.equals("10000")) {
@@ -122,5 +121,6 @@ public class CourseFragment extends SuperFragment {
     public void onClick(View v) {
 
     }
+
 }
 

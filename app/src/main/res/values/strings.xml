@@ -40,5 +40,6 @@
     <string name="data_request_fail">数据请求失败</string>
     <string name="study_record">%s学习记录</string>
     <string name="ola_circle">欧拉圈</string>
-
+    <string name="play_fail_no_found_path">播放失败，找不到播放路径</string>
+    <string name="play_fail_open_other_video">播放失败，请尝试其它视频</string>
 </resources>

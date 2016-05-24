@@ -191,7 +191,8 @@ public class CourseAdapter extends BaseAdapter {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(context, CourseListActivity.class);
+//                Intent intent = new Intent(context, CourseListActivity.class);
+                Intent intent = new Intent(context, CourseVideoActivity.class);
                 intent.putExtra("pid", subCourseList.get(position).id);
                 context.startActivity(intent);
             }

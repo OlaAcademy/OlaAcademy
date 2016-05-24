@@ -96,9 +96,13 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
             holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
             if (subAllNum == 0) {
-                holder.progressBar.setProgress(50);
+                holder.progressBar.setProgress(100);
             } else {
-                holder.progressBar.setProgress(subNum / subAllNum);
+                if (subNum == subAllNum) {
+                    holder.progressBar.setProgress(100);
+                } else {
+                    holder.progressBar.setProgress((subNum * 100) / subAllNum);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,9 +156,13 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
             holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
             if (subAllNum == 0) {
-                holder.progressBar.setProgress(50);
+                holder.progressBar.setProgress(100);
             } else {
-                holder.progressBar.setProgress(subNum / subAllNum);
+                if (subNum == subAllNum) {
+                    holder.progressBar.setProgress(100);
+                } else {
+                    holder.progressBar.setProgress((subNum * 100) / subAllNum);
+                }
             }
             if (childPosition == list.get(groupPosition).getChild().size() - 1) {
                 holder.lineBottom.setVisibility(View.GONE);
@@ -164,12 +172,12 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-       final int courseId = list.get(groupPosition).getChild().get(childPosition).getId();
+        final int courseId = list.get(groupPosition).getChild().get(childPosition).getId();
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, QuestionWebActivity.class);
-                intent.putExtra("courseId",courseId);
+                intent.putExtra("courseId", courseId);
                 context.startActivity(intent);
             }
         });
