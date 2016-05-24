@@ -3,6 +3,7 @@ package com.snail.olaxueyuan.ui.course;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,30 +13,40 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.model.MCSubCourse;
 import com.snail.olaxueyuan.protocol.model.SECourseCate;
 import com.snail.olaxueyuan.protocol.result.MCCourseListResult;
 import com.snail.olaxueyuan.ui.BaseSearchActivity;
 import com.snail.olaxueyuan.ui.SuperFragment;
+import com.snail.olaxueyuan.ui.manager.TitlePopManager;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CourseFragment extends SuperFragment {
-
-
+public class CourseFragment extends SuperFragment implements TitlePopManager.PidClickListener {
+    @Bind(R.id.title_tv)
+    TextView titleTv;
+    @Bind(R.id.pop_line)
+    View popLine;
     private PullToRefreshListView courseListView;
     private CourseAdapter adapter;
     private ArrayList<MCSubCourse> courseArrayList;
+    View mMainView;
+    TitleManager titleManager;
+    private String pid = "1";// 1 数学 2 英语 3 逻辑 4 协作
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,11 +57,14 @@ public class CourseFragment extends SuperFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View mMainView = inflater.inflate(R.layout.fragment_information, container, false);
+        mMainView = inflater.inflate(R.layout.fragment_information, container, false);
+        ButterKnife.bind(this, mMainView);
 
-        setupNavBar(mMainView);
+        setupNavBar();
 
         courseListView = (PullToRefreshListView) mMainView.findViewById(R.id.infoListView);
+        adapter = new CourseAdapter(getActivity());
+        courseListView.setAdapter(adapter);
         performRefresh();
         courseListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
@@ -81,11 +95,11 @@ public class CourseFragment extends SuperFragment {
         menu.findItem(BaseSearchActivity.MENU_SEARCH).setVisible(false);
     }
 
-    private void setupNavBar(View rootView) {
-        RelativeLayout titleRL = (RelativeLayout) rootView.findViewById(R.id.titleRL);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) titleRL.getLayoutParams();
-        lp.height = getNavigationBarHeight();
-        titleRL.setLayoutParams(lp);
+    private void setupNavBar() {
+        titleManager = new TitleManager("数学", this, mMainView, false);
+        Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
+        drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
+        titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
     }
 
     private void performRefresh() {
@@ -97,8 +111,7 @@ public class CourseFragment extends SuperFragment {
                     SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.message, 2.0f);
                 } else {
                     courseArrayList = result.course.courseArrayList;
-                    adapter = new CourseAdapter(getActivity(), courseArrayList);
-                    courseListView.setAdapter(adapter);
+                    adapter.updateData(courseArrayList);
                 }
                 courseListView.onRefreshComplete();
             }
@@ -110,17 +123,27 @@ public class CourseFragment extends SuperFragment {
         });
     }
 
-    private int getNavigationBarHeight() {
-        Resources resources = getActivity().getResources();
-        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-        int height = resources.getDimensionPixelSize(resourceId);
-        return height;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.title_tv:
+                TitlePopManager.getInstance().showPop(getActivity(), titleManager, popLine, this, 3);
+                break;
+        }
     }
 
     @Override
-    public void onClick(View v) {
-
+    public void pidPosition(int type, String pid) {
+        if (type == 3) {
+            this.pid = pid;
+            performRefresh();
+        }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }
 

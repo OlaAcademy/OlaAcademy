@@ -66,16 +66,6 @@ public class CourseVideoListAdapter extends BaseAdapter {
         } else {
             holder.videoName.setSelected(false);
         }
-        /*convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < videoList.size(); i++) {
-                    videoList.get(i).setSelected(false);
-                }
-                videoList.get(position).setSelected(true);
-                notifyDataSetChanged();
-            }
-        });*/
         return convertView;
     }
 

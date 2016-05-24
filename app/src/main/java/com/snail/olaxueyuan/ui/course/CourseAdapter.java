@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.SEAutoSlidingPagerView;
+import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.model.MCSubCourse;
 import com.snail.olaxueyuan.protocol.result.MCBannerResult;
@@ -42,16 +43,20 @@ public class CourseAdapter extends BaseAdapter {
 
 
     private Context context;
-    private ArrayList<MCSubCourse> courseList;
+    private ArrayList<MCSubCourse> courseList=new ArrayList<>();
 
     //定义两个int常量标记不同的Item视图
     public static final int PIC_ITEM = 0;
     public static final int PIC_WORD_ITEM = 1;
 
-    public CourseAdapter(Context context, ArrayList<MCSubCourse> courseList) {
+    public CourseAdapter(Context context) {
         super();
         this.context = context;
+    }
+
+    public void updateData(ArrayList<MCSubCourse> courseList) {
         this.courseList = courseList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -104,7 +109,7 @@ public class CourseAdapter extends BaseAdapter {
                 topViewHolder.commodityRL = (RelativeLayout) convertView.findViewById(R.id.commodityRL);
                 topViewHolder.autoSlidingPagerView = (SEAutoSlidingPagerView) convertView.findViewById(R.id.autoSlideImage);
                 int width = context.getResources().getDisplayMetrics().widthPixels;
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, width*320/750);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, width * 320 / 750);
                 topViewHolder.autoSlidingPagerView.setLayoutParams(layoutParams);
                 convertView.setTag(topViewHolder);
             } else {
@@ -157,6 +162,7 @@ public class CourseAdapter extends BaseAdapter {
                 holder = (ViewHolder) convertView.getTag();
             }
             MCSubCourse course = courseList.get(position - 1);
+//            Logger.e("course=="+course.toString());
             holder.tv_title.setText(course.name);
             setGridView(holder.gv_course, course.subCourseArrayList);
         }
@@ -187,6 +193,7 @@ public class CourseAdapter extends BaseAdapter {
 
         GridViewAdapter adapter = new GridViewAdapter(subCourseList);
         gridView.setAdapter(adapter);
+        adapter.updateData(subCourseList);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -239,7 +246,10 @@ public class CourseAdapter extends BaseAdapter {
         public GridViewAdapter(ArrayList<MCSubCourse> subCourseList) {
             this.subCourseList = subCourseList;
         }
-
+        public void updateData(ArrayList<MCSubCourse> subCourseList){
+            this.subCourseList = subCourseList;
+            notifyDataSetChanged();
+        }
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             GridViewHolder viewHolder = null;
@@ -259,7 +269,7 @@ public class CourseAdapter extends BaseAdapter {
             MCSubCourse course = subCourseList.get(position);
             viewHolder.tv_name.setText(course.name);
             viewHolder.tv_time.setText(course.totalTime);
-            viewHolder.tv_browser.setText(course.playcount+"观看");
+            viewHolder.tv_browser.setText(course.playcount + "观看");
             DisplayImageOptions options = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)
                     .cacheOnDisk(true)
