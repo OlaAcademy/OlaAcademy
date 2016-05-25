@@ -1,5 +1,6 @@
 package com.snail.olaxueyuan.ui.course;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
@@ -28,7 +29,6 @@ import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
-import com.snail.olaxueyuan.ui.activity.SuperActivity;
 import com.snail.olaxueyuan.ui.adapter.CourseVideoListAdapter;
 import com.snail.olaxueyuan.ui.course.video.VideoManager;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -36,6 +36,7 @@ import com.snail.svprogresshud.SVProgressHUD;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.Vitamio;
@@ -45,7 +46,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CourseVideoActivity extends SuperActivity implements VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication {
+public class CourseVideoActivity extends Activity implements View.OnClickListener, VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication {
 
     @Bind(R.id.left_return)
     public TextView leftReturn;
@@ -56,7 +57,7 @@ public class CourseVideoActivity extends SuperActivity implements VideoView.OnVi
     @Bind(R.id.mediacontroller_play_pause)
     public ImageButton mediacontrollerPlayPause;
     @Bind(R.id.set_full_screen)
-    public ImageView setFullScreen;
+    public ImageView set_full_screen;
     @Bind(R.id.mediacontroller_time_total)
     public TextView mediacontrollerTimeTotal;
     @Bind(R.id.mediacontroller_time_current)
@@ -122,19 +123,46 @@ public class CourseVideoActivity extends SuperActivity implements VideoView.OnVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        Vitamio.isInitialized(this);
+        Vitamio.isInitialized(getApplicationContext());
         setContentView(R.layout.activity_course_video);
+        ButterKnife.bind(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setVideoViewHeight();
+        initView();
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        initData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDismissHandler.sendEmptyMessage(1);
+        mDismissHandler.sendEmptyMessageDelayed(1, 500);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        msec = mVideoView.getCurrentPosition();
+        mVideoView.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
+
     public void initView() {
         courseId = getIntent().getExtras().getString("pid");
         new TitleManager(this, "视频详情", this, true);
+        mVideoView.setOnClickListener(this);
     }
 
-    @Override
     public void initData() {
         playFunction();
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -144,10 +172,7 @@ public class CourseVideoActivity extends SuperActivity implements VideoView.OnVi
         mVideoView.setOnInfoListener(infoListener);
         mVideoView.setOnVideoPlayFailListener(this);
         mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
-        adapter = new CourseVideoListAdapter(CourseVideoActivity.this);
-        listview.setAdapter(adapter);
         performRefresh();
-        initListViewItemClick();
     }
 
     private void initListViewItemClick() {
@@ -177,6 +202,10 @@ public class CourseVideoActivity extends SuperActivity implements VideoView.OnVi
                     videoArrayList = result.getResult().getVideoList();
                     if (videoArrayList != null && videoArrayList.size() > 0) {
                         videoArrayList.get(0).setSelected(true);
+
+                        adapter = new CourseVideoListAdapter(CourseVideoActivity.this);
+                        listview.setAdapter(adapter);
+                        initListViewItemClick();
                         adapter.updateData(videoArrayList);
                         mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
 //                        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
@@ -252,7 +281,7 @@ public class CourseVideoActivity extends SuperActivity implements VideoView.OnVi
                     loading_text.setVisibility(View.VISIBLE);
                     break;
                 case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                    long position = mVideoView.getCurrentPosition();
+                   /* long position = mVideoView.getCurrentPosition();
                     int totalSeconds = (int) (position / 1000);
                     int seconds = totalSeconds / 60;
                     Logger.e("position==" + position);
@@ -263,11 +292,11 @@ public class CourseVideoActivity extends SuperActivity implements VideoView.OnVi
 //                        mVideoView.suspend();
                         mVideoView.pause();
                         loading_text.setVisibility(View.GONE);
-                    } else {
+                    } else {*/
                         //缓存完成，继续播放
                         mVideoView.start();
                         loading_text.setVisibility(View.GONE);
-                    }
+//                    }
                     break;
                 case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
                     //显示 下载速度
@@ -351,14 +380,14 @@ public class CourseVideoActivity extends SuperActivity implements VideoView.OnVi
      */
     @Override
     public void isFiveMinute(boolean isAuth, boolean flag) {
-        if (!isAuth) {
+        /*if (!isAuth) {
             if (flag) {
                 mVideoView.pause();
                 loading_text.setVisibility(View.GONE);
                 ToastUtil.showShortToast(CourseVideoActivity.this, "不是会员只能看五分钟");
                 Logger.e("不是会员只能看五分钟==");
             }
-        }
+        }*/
     }
 
     @Override
@@ -370,17 +399,4 @@ public class CourseVideoActivity extends SuperActivity implements VideoView.OnVi
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        msec = mVideoView.getCurrentPosition();
-        mVideoView.pause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mDismissHandler.sendEmptyMessage(1);
-        mDismissHandler.sendEmptyMessageDelayed(1, 500);
-    }
 }

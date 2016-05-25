@@ -4,8 +4,296 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="vip" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                style="@style/line_horizontal_f0"
+                android:layout_height="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="会员套餐"
+                android:textColor="@color/black_323232"
+                android:textSize="15dp" />
+
+            <View style="@style/line_horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/month_vip"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_white_item_bg">
+
+                <TextView
+                    android:id="@+id/month_current_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="15dp"
+                    android:text="月度黄金会员30元"
+                    android:textColor="@color/black_323232"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/month_old_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/month_current_money"
+                    android:padding="2dp"
+                    android:text="360元"
+                    android:textColor="@color/black_323232"
+                    android:textSize="13dp" />
+
+                <ImageView
+                    android:id="@+id/month_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/download_item_bg" />
+            </RelativeLayout>
+
+            <View style="@style/line_horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/year_vip"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_white_item_bg">
+
+                <TextView
+                    android:id="@+id/year_current_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="15dp"
+                    android:text="年度黄金会员260元"
+                    android:textColor="@color/black_323232"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/super_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="2dp"
+                    android:layout_toRightOf="@+id/year_current_money"
+                    android:background="@drawable/shape_year_vip_color_bg"
+                    android:padding="2dp"
+                    android:text="超值"
+                    android:textColor="@color/year_vip_text_color"
+                    android:textSize="13dp" />
+
+                <TextView
+                    android:id="@+id/year_old_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/super_value"
+                    android:padding="2dp"
+                    android:text="360元"
+                    android:textColor="@color/black_323232"
+                    android:textSize="13dp" />
+
+                <ImageView
+                    android:id="@+id/year_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/download_item_bg" />
+            </RelativeLayout>
+
+            <View
+                style="@style/line_horizontal_f0"
+                android:layout_height="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="支付方式"
+                android:textColor="@color/black_323232"
+                android:textSize="15dp" />
+
+            <View style="@style/line_horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/alipay_view"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/selector_white_item_bg"
+                android:paddingLeft="15dp">
+
+                <ImageView
+                    android:id="@+id/alipay_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/zhifubao" />
+
+                <TextView
+                    style="@style/title_text_14dp_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/alipay_icon"
+                    android:layout_toRightOf="@+id/alipay_icon"
+                    android:text="支付宝支付" />
+
+                <ImageButton
+                    android:id="@+id/alipay_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:src="@drawable/download_item_bg"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+            <View style="@style/line_horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/wechat_view"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/selector_white_item_bg"
+                android:paddingLeft="15dp">
+
+                <ImageView
+                    android:id="@+id/wechat_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/weixin_pay" />
+
+                <TextView
+                    style="@style/title_text_14dp_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/wechat_icon"
+                    android:layout_toRightOf="@+id/wechat_icon"
+                    android:text="微信支付" />
+
+                <ImageButton
+                    android:id="@+id/wechat_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:src="@drawable/download_item_bg" />
+            </RelativeLayout>
+
+            <View style="@style/line_horizontal" />
+
+            <View
+                style="@style/line_horizontal_f0"
+                android:layout_height="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="会员特权"
+                android:textColor="@color/black_323232"
+                android:textSize="15dp" />
+
+            <View style="@style/line_horizontal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:drawableTop="@drawable/course_vip_icon"
+                    android:gravity="center"
+                    android:text="3000+课程"
+                    android:textColor="@color/title_hint_text_color"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:drawableTop="@drawable/free_vip_icon"
+                    android:gravity="center"
+                    android:text="全免费"
+                    android:textColor="@color/title_hint_text_color"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:drawableTop="@drawable/cache_vip_icon"
+                    android:gravity="center"
+                    android:text="视频缓存"
+                    android:textColor="@color/title_hint_text_color"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:drawableTop="@drawable/discount_vip_icon"
+                    android:gravity="center"
+                    android:text="报名优惠"
+                    android:textColor="@color/title_hint_text_color"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/title_hint_color">
+
+                <Button
+                    android:id="@+id/buy_vip"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="30dp"
+                    android:background="@drawable/blue_button_bg"
+                    android:text="开通会员"
+                    android:textColor="@color/white"
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
