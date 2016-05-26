@@ -1,9 +1,14 @@
 package com.snail.olaxueyuan.ui.me;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannedString;
 import android.text.TextUtils;
+import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,9 +75,20 @@ public class UserVipFragment extends SuperFragment {
     Button buyVip;
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_CHECK_FLAG = 2;
+    private static final int PAY_BY_ALIPAY = 101;//使用支付宝支付
+    private static final int PAY_BY_WECHAT = 102;//使用微信支付
+    private static Context context;
+    private int payType = PAY_BY_ALIPAY;//最终支付方式,默认支付宝
+    private String price;
+    public static final String MOTH_VIP = "1";//1月度会员
+    public static final String YEAR_VIP = "2";//2 年度会员
+    public static final String SUPER_VIP = "3";//3 整套视频
+    private String type = MOTH_VIP;// 1月度会员 2 年度会员 3 整套视频
+    private String userId = "126";//测试的userId
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        context = getActivity();
         rootView = inflater.inflate(R.layout.fragment_user_vip, container, false);
         ButterKnife.bind(this, rootView);
         initView();
@@ -82,6 +98,12 @@ public class UserVipFragment extends SuperFragment {
     private void initView() {
         monthIcon.setSelected(true);
         alipayView.setSelected(true);
+        SpannableString spannedMonth= new SpannableString(monthOldMoney.getText().toString().trim());
+        spannedMonth.setSpan(new StrikethroughSpan(), 0, monthOldMoney.getText().toString().trim().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        monthOldMoney.setText(spannedMonth);
+        SpannableString spannedYear = new SpannableString(yearOldMoney.getText().toString().trim());
+        spannedYear.setSpan(new StrikethroughSpan(), 0, yearOldMoney.getText().toString().trim().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        yearOldMoney.setText(spannedYear);
     }
 
     @Override
@@ -94,33 +116,47 @@ public class UserVipFragment extends SuperFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.month_vip:
+                type = MOTH_VIP;
+                monthIcon.setSelected(true);
+                yearIcon.setSelected(false);
                 break;
             case R.id.year_vip:
+                type = YEAR_VIP;
+                monthIcon.setSelected(false);
+                yearIcon.setSelected(true);
                 break;
             case R.id.alipay_view:
+                payType = PAY_BY_ALIPAY;
+                alipayRadio.setSelected(true);
+                wechatRadio.setSelected(false);
                 break;
             case R.id.wechat_view:
+                payType = PAY_BY_WECHAT;
+                alipayRadio.setSelected(false);
+                wechatRadio.setSelected(true);
                 break;
             case R.id.buy_vip:
-//                payForAlipay();
-                payForWXRequest();
+                switch (payType) {
+                    case PAY_BY_WECHAT:
+                        payForWXRequest();
+                        break;
+                    case PAY_BY_ALIPAY:
+                    default:
+                        payForAlipay();
+                        break;
+                }
                 break;
         }
     }
 
-    private String price;
-    private String type = "1";// 1月度会员 2 年度会员 3 整套视频
-
     public void payForAlipay() {
         price = "0.01";
-        SEUserManager.getInstance().getAliOrderInfo(price, "126", type, "", "123", new Callback<UserAlipayResult>() {
+        SEUserManager.getInstance().getAliOrderInfo(price, userId, type, "", "123", new Callback<UserAlipayResult>() {
             @Override
             public void success(UserAlipayResult userAlipayResult, Response response) {
-//                Logger.json(userAlipayResult);
                 if (userAlipayResult != null && userAlipayResult.getApicode() == 10000) {
                     final UserAlipayResult.ResultBean orderInfoBean = userAlipayResult.getResult();
                     if (orderInfoBean != null) {
-//                        Logger.e("orderInfoBean != null==");
                         Runnable payRunnable = new Runnable() {
 
                             @Override
@@ -174,7 +210,6 @@ public class UserVipFragment extends SuperFragment {
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             Toast.makeText(getActivity(), "支付失败", Toast.LENGTH_SHORT).show();
-
                         }
                     }
                     break;
@@ -198,16 +233,13 @@ public class UserVipFragment extends SuperFragment {
         price = "0.01";
         double pricess = Double.parseDouble(price) * 100;
         final String prices = new DecimalFormat("###").format(pricess);
-        SEUserManager.getInstance().getWXPayReq(prices, "126", type, "", "123", new Callback<UserWXpayResult>() {
+        SEUserManager.getInstance().getWXPayReq(prices, userId, type, "", "123", new Callback<UserWXpayResult>() {
             @Override
             public void success(UserWXpayResult wxPayModule, Response response) {
                 if (wxPayModule != null && wxPayModule.getApicode() == 10000) {
                     final UserWXpayResult.ResultBean wxpayResult = wxPayModule.getResult();
-                    Log.e("wxpayResult", "..two.." + wxpayResult.getAppid());
                     if (wxpayResult != null) {
-                        Logger.e("..one.." + wxpayResult.getAppid());
                         //调用微信支付
-
                         WxPayUtile.getInstance(getActivity(), prices,
                                 "http://121.40.35.3/test", "测试商品", wxpayResult,
                                 genOutTradNo()).doPay();
@@ -238,18 +270,19 @@ public class UserVipFragment extends SuperFragment {
 
             switch (msg.what) {
                 case 800://商户订单号重复或生成错误
-
+                    ToastUtil.showToastShort(context, "商户订单号重复或生成错误");
                     break;
                 case 0://支付成功
-
+                    ToastUtil.showToastShort(context, "支付成功");
                     break;
                 case -1://支付失败
-
+                    ToastUtil.showToastShort(context, "支付失败");
                     break;
                 case -2://取消支付
-
+                    ToastUtil.showToastShort(context, "取消支付");
                     break;
                 default:
+                    ToastUtil.showToastShort(context, "支付失败");
                     break;
             }
             return false;
