@@ -102,12 +102,6 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        fetchData();
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
         }

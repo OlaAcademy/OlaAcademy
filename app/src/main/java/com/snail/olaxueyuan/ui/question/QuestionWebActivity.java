@@ -18,14 +18,12 @@ import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.olaxueyuan.ui.course.pay.CoursePayActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class QuestionWebActivity extends SEBaseActivity implements View.OnClickListener{
+public class QuestionWebActivity extends SEBaseActivity implements View.OnClickListener {
 
     private WebView contentWebView;
     private Button previousBtn;
@@ -51,10 +49,10 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
 
         nextBtn = (Button) findViewById(R.id.nextBtn);
         nextBtn.setOnClickListener(this);
-        initQuestionData(getIntent().getExtras().getInt("courseId")+"");
+        initQuestionData(getIntent().getExtras().getInt("courseId") + "");
     }
 
-    private void initQuestionData(String courseId){
+    private void initQuestionData(String courseId) {
         SECourseManager sm = SECourseManager.getInstance();
         sm.fetchQuestionList(courseId, new Callback<MCQuestionListResult>() {
             @Override
@@ -91,9 +89,9 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.nextBtn:
-                Intent intent = new Intent(QuestionWebActivity.this,CoursePayActivity.class);
+                Intent intent = new Intent(QuestionWebActivity.this, CoursePayActivity.class);
                 startActivity(intent);
                 break;
         }

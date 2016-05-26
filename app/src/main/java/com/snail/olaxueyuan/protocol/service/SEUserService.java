@@ -5,8 +5,10 @@ import com.snail.olaxueyuan.protocol.result.MCUploadResult;
 import com.snail.olaxueyuan.protocol.result.SEPasswordResult;
 import com.snail.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.snail.olaxueyuan.protocol.result.SEUserResult;
+import com.snail.olaxueyuan.protocol.result.UserAlipayResult;
 import com.snail.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
+import com.snail.olaxueyuan.protocol.result.UserWXpayResult;
 
 import retrofit.Callback;
 import retrofit.client.Response;
@@ -128,4 +130,44 @@ public interface SEUserService {
     void getCollectionByUserId(
             @Field("userId") String userid,
             Callback<UserCourseCollectResult> cb);
+
+    /**
+     * 支付宝支付
+     *
+     * @param price
+     * @param userId
+     * @param type    type : 1月度会员 2 年度会员 3 整套视频
+     * @param goodsId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/pay/getAliOrderInfo")
+    void getAliOrderInfo(
+            @Field("price") String price,
+            @Field("userId") String userId,
+            @Field("type") String type,
+            @Field("goodsId") String goodsId,
+            @Field("body") String body,
+            Callback<UserAlipayResult> cb);
+
+    /**
+     * 微信支付
+     *
+     * @param price
+     * @param userId
+     * @param type type : 1月度会员 2 年度会员 3 整套视频
+     * @param goodsId
+     * @param body
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/pay/getWXPayReq")
+    void getWXPayReq(
+            @Field("price") String price,
+            @Field("userId") String userId,
+            @Field("type") String type,
+            @Field("goodsId") String goodsId,
+            @Field("body") String body,
+            Callback<UserWXpayResult> cb);
+
 }
