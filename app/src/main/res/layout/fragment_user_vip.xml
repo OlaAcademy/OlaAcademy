@@ -51,7 +51,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/month_current_money"
                     android:padding="2dp"
-                    android:text="360元"
+                    android:text="360"
                     android:textColor="@color/black_323232"
                     android:textSize="13dp" />
 
@@ -104,7 +104,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/super_value"
                     android:padding="2dp"
-                    android:text="360元"
+                    android:text="360"
                     android:textColor="@color/black_323232"
                     android:textSize="13dp" />
 
@@ -288,7 +288,7 @@
                     android:id="@+id/buy_vip"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_margin="30dp"
+                    android:layout_margin="20dp"
                     android:background="@drawable/blue_button_bg"
                     android:text="开通会员"
                     android:textColor="@color/white"

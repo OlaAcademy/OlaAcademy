@@ -42,5 +42,8 @@
     <string name="ola_circle">欧拉圈</string>
     <string name="play_fail_no_found_path">播放失败，找不到播放路径</string>
     <string name="play_fail_open_other_video">播放失败，请尝试其它视频</string>
+    <string name="alipay_notuse">暂时不支持支付宝支付</string>
+    <string name="wechat_not_install">您手机未安装微信</string>
+    <string name="alipay_not_install">您手机未安装支付宝</string>
     <string name="pay_num">购买人数%s人</string>
 </resources>
