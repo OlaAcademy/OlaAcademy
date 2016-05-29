@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/price"
-            android:text="¥"
+            android:text="@string/rmb_mark"
             android:textColor="@color/system_course_money_color"
             android:textSize="10dp" />
 

@@ -20,14 +20,12 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.SEAutoSlidingPagerView;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.model.MCSubCourse;
 import com.snail.olaxueyuan.protocol.result.MCBannerResult;
-import com.snail.olaxueyuan.protocol.result.MCCourSectionResult;
 import com.snail.olaxueyuan.ui.course.commodity.CommodityActivity;
-import com.snail.olaxueyuan.ui.index.ImagePagerAdapter;
 import com.snail.olaxueyuan.ui.course.turtor.TurtorActivity;
+import com.snail.olaxueyuan.ui.index.ImagePagerAdapter;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ public class CourseAdapter extends BaseAdapter {
 
 
     private Context context;
-    private ArrayList<MCSubCourse> courseList=new ArrayList<>();
+    private ArrayList<MCSubCourse> courseList = new ArrayList<>();
 
     //定义两个int常量标记不同的Item视图
     public static final int PIC_ITEM = 0;
@@ -246,10 +244,12 @@ public class CourseAdapter extends BaseAdapter {
         public GridViewAdapter(ArrayList<MCSubCourse> subCourseList) {
             this.subCourseList = subCourseList;
         }
-        public void updateData(ArrayList<MCSubCourse> subCourseList){
+
+        public void updateData(ArrayList<MCSubCourse> subCourseList) {
             this.subCourseList = subCourseList;
             notifyDataSetChanged();
         }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             GridViewHolder viewHolder = null;
@@ -269,7 +269,7 @@ public class CourseAdapter extends BaseAdapter {
             MCSubCourse course = subCourseList.get(position);
             viewHolder.tv_name.setText(course.name);
             viewHolder.tv_time.setText(course.totalTime);
-            viewHolder.tv_browser.setText(course.playcount + "观看");
+            viewHolder.tv_browser.setText(context.getString(R.string.num_watch, course.playcount));
             DisplayImageOptions options = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)
                     .cacheOnDisk(true)
