@@ -10,7 +10,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.snail.olaxueyuan.ui.question.QuestionWebActivity;
 
@@ -87,7 +86,7 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder = (ParentViewHolder) convertView.getTag();
         }
         holder.questionName.setText(list.get(groupPosition).getName());
-        holder.questionKnowledgeAllCount.setText(list.get(groupPosition).getSubAllNum() + "个知识点");
+        holder.questionKnowledgeAllCount.setText(context.getString(R.string.num_knowledge, list.get(groupPosition).getSubAllNum()));
         holder.questionKnowledgeCount.setText(list.get(groupPosition).getSubNum() + "/" + list.get(groupPosition).getSubAllNum());
         try {
             int subAllNum = list.get(groupPosition).getSubAllNum();

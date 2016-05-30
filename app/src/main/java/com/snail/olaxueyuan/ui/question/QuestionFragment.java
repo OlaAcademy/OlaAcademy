@@ -65,7 +65,7 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     }
 
     private void initView() {
-        titleManager = new TitleManager("数学", this, rootView, false);
+        titleManager = new TitleManager(R.string.math, this, rootView, false);
         Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
         drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
         titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);

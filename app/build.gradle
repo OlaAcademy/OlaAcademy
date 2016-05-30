@@ -93,5 +93,4 @@ dependencies {
     compile project(':AnimtabsView')
     compile files('libs/locSDK_6.13.jar')
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile files('libs/alipaySdk-20160111.jar')
 }

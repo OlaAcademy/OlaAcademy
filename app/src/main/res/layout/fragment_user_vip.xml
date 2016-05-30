@@ -22,7 +22,7 @@
                 android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
-                android:text="会员套餐"
+                android:text="@string/vip_package"
                 android:textColor="@color/black_323232"
                 android:textSize="15dp" />
 
@@ -93,7 +93,7 @@
                     android:layout_toRightOf="@+id/year_current_money"
                     android:background="@drawable/shape_year_vip_color_bg"
                     android:padding="2dp"
-                    android:text="超值"
+                    android:text="@string/super_value"
                     android:textColor="@color/year_vip_text_color"
                     android:textSize="13dp" />
 
@@ -128,7 +128,7 @@
                 android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
-                android:text="支付方式"
+                android:text="@string/pay_style"
                 android:textColor="@color/black_323232"
                 android:textSize="15dp" />
 
@@ -155,7 +155,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toEndOf="@+id/alipay_icon"
                     android:layout_toRightOf="@+id/alipay_icon"
-                    android:text="支付宝支付" />
+                    android:text="@string/alipay_pay" />
 
                 <ImageButton
                     android:id="@+id/alipay_radio"
@@ -193,7 +193,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toEndOf="@+id/wechat_icon"
                     android:layout_toRightOf="@+id/wechat_icon"
-                    android:text="微信支付" />
+                    android:text="@string/wechat_pay" />
 
                 <ImageButton
                     android:id="@+id/wechat_radio"
@@ -217,7 +217,7 @@
                 android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
-                android:text="会员特权"
+                android:text="@string/vip_privilege"
                 android:textColor="@color/black_323232"
                 android:textSize="15dp" />
 
@@ -238,7 +238,7 @@
                     android:drawablePadding="8dp"
                     android:drawableTop="@drawable/course_vip_icon"
                     android:gravity="center"
-                    android:text="3000+课程"
+                    android:text="@string/numbers_course"
                     android:textColor="@color/title_hint_text_color"
                     android:textSize="12dp" />
 
@@ -250,7 +250,7 @@
                     android:drawablePadding="8dp"
                     android:drawableTop="@drawable/free_vip_icon"
                     android:gravity="center"
-                    android:text="全免费"
+                    android:text="@string/all_free"
                     android:textColor="@color/title_hint_text_color"
                     android:textSize="12dp" />
 
@@ -262,7 +262,7 @@
                     android:drawablePadding="8dp"
                     android:drawableTop="@drawable/cache_vip_icon"
                     android:gravity="center"
-                    android:text="视频缓存"
+                    android:text="@string/video_cache"
                     android:textColor="@color/title_hint_text_color"
                     android:textSize="12dp" />
 
@@ -274,7 +274,7 @@
                     android:drawablePadding="8dp"
                     android:drawableTop="@drawable/discount_vip_icon"
                     android:gravity="center"
-                    android:text="报名优惠"
+                    android:text="@string/sign_up_preferential"
                     android:textColor="@color/title_hint_text_color"
                     android:textSize="12dp" />
             </LinearLayout>
@@ -290,7 +290,7 @@
                     android:layout_height="40dp"
                     android:layout_margin="20dp"
                     android:background="@drawable/blue_button_bg"
-                    android:text="开通会员"
+                    android:text="@string/open_vip"
                     android:textColor="@color/white"
                     android:textSize="15dp" />
             </LinearLayout>

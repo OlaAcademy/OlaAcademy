@@ -54,6 +54,20 @@ public class TitlePopManager {
         }
     }
 
+    private void setSystemTitleData() {
+        list.clear();
+        String[] arrays = SEAPP.getAppContext().getResources().getStringArray(R.array.system_course);
+        for (int i = 0; i < arrays.length; i++) {
+            CourseNameModule courseName;
+            if (i == 0) {
+                courseName = new CourseNameModule(arrays[i], true);
+            } else {
+                courseName = new CourseNameModule(arrays[i], false);
+            }
+            list.add(courseName);
+        }
+    }
+
     PopupWindow popupWindow;
     GridAdapter gridAdapter = new GridAdapter();
 
@@ -62,9 +76,12 @@ public class TitlePopManager {
      * @param titleManager
      * @param popLine
      * @param pidClickListener
-     * @param type             type:1、考点2、题库3、课堂4、
+     * @param type             type:1、考点2、题库3、课堂4、体系课程
      */
     public void showPop(Context context, final TitleManager titleManager, View popLine, final PidClickListener pidClickListener, final int type) {
+        if (type == 4) {
+            setSystemTitleData();
+        }
         this.context = context;
         this.pidClickListener = pidClickListener;
         View contentView = LayoutInflater.from(context).inflate(
