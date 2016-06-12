@@ -40,5 +40,6 @@
     <string name="data_request_fail">数据请求失败</string>
     <string name="study_record">%s学习记录</string>
     <string name="ola_circle">欧拉圈</string>
+    <string name="title_activity_question_result">QuestionResultActivity</string>
 
 </resources>

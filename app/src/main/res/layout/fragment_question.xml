@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:scaleType="fitXY"
-            android:src="@drawable/background_course" />
+            android:src="@drawable/ic_head_question" />
 
         <TextView
             android:id="@+id/question_name"

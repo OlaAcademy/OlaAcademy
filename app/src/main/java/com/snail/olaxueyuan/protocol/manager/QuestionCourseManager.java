@@ -1,11 +1,14 @@
 package com.snail.olaxueyuan.protocol.manager;
 
 import com.snail.olaxueyuan.protocol.result.ExamModule;
+import com.snail.olaxueyuan.protocol.result.MCQuestionListResult;
 import com.snail.olaxueyuan.protocol.result.OLaCircleModule;
 import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.snail.olaxueyuan.protocol.service.QuestionService;
 
 import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by mingge on 16/4/28.
@@ -47,6 +50,15 @@ public class QuestionCourseManager {
      */
     public void getExamList(String courseId, String type, final Callback<ExamModule> callback) {
         getQuestionService().getExamList(courseId, type, callback);
+    }
+
+    /**
+     * 获取题目列表
+     *
+     * @param callback
+     */
+    public void fetchExamQuestionList(String examId, final Callback<MCQuestionListResult> callback) {
+        getQuestionService().getExamQuestionList(examId,callback);
     }
 
     /**
