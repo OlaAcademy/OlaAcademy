@@ -7,4 +7,5 @@ import java.io.Serializable;
  */
 public class MCOption implements Serializable {
     public String content;
+    public String isanswer;
 }

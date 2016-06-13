@@ -1,6 +1,7 @@
 package com.snail.olaxueyuan.protocol.service;
 
 import com.snail.olaxueyuan.protocol.result.ExamModule;
+import com.snail.olaxueyuan.protocol.result.MCQuestionListResult;
 import com.snail.olaxueyuan.protocol.result.OLaCircleModule;
 import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
 
@@ -40,6 +41,17 @@ public interface QuestionService {
     public void getExamList(@Field("courseId") String courseId,
                             @Field("type") String type,
                             Callback<ExamModule> cb);
+
+    /**
+     * 模考／真题 题目列表
+     *
+     * @param examId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/exam/getExamSubList")
+    public void getExamQuestionList(@Field("examId") String examId,
+                            Callback<MCQuestionListResult> cb);
 
     /**
      * 欧拉圈，获取视频观看历史记录列表

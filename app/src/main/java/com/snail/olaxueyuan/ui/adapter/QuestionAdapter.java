@@ -176,7 +176,8 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, QuestionWebActivity.class);
-                intent.putExtra("courseId", courseId);
+                intent.putExtra("objectId",courseId);
+                intent.putExtra("type",1);
                 context.startActivity(intent);
             }
         });

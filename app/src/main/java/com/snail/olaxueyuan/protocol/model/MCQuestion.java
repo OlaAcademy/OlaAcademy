@@ -14,5 +14,7 @@ public class MCQuestion implements Serializable {
     public String rightcount;
     public String avgtime;
     public ArrayList<MCOption> optionList;
-
+    public String hint;
+    public String pic;
+    public String hintpic;
 }
