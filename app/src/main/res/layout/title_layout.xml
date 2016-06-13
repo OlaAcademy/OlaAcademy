@@ -94,5 +94,5 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <View style="@style/line_horizontal" />
+    <!--<View style="@style/line_horizontal_blue" />-->
 </LinearLayout>

@@ -3,7 +3,7 @@ package com.snail.olaxueyuan.ui.me.adapter;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
-import com.snail.olaxueyuan.ui.me.UserDownloadFragment;
+import com.snail.olaxueyuan.ui.me.UserBuyGoodsFragment;
 import com.snail.olaxueyuan.ui.me.UserCourseCollectFragment;
 import com.snail.olaxueyuan.ui.me.UserKnowledgeFragment;
 import com.snail.olaxueyuan.ui.me.UserVipFragment;
@@ -15,7 +15,7 @@ public class UserPageAdapter extends FragmentStatePagerAdapter {
     private UserKnowledgeFragment userKnowledgeFragment;
     private UserVipFragment userVipFragment;
     private UserCourseCollectFragment userCourseCollectFragment;
-    private UserDownloadFragment userdownloadFragment;
+    private UserBuyGoodsFragment userBuyGoodsFragment;
 
     public UserPageAdapter(FragmentManager fm) {
         super(fm);
@@ -32,7 +32,7 @@ public class UserPageAdapter extends FragmentStatePagerAdapter {
             case 2:
                 return userCourseCollectFragment;
             case 3:
-                return userdownloadFragment;
+                return userBuyGoodsFragment;
             default:
                 return null;
         }
@@ -47,6 +47,6 @@ public class UserPageAdapter extends FragmentStatePagerAdapter {
         userKnowledgeFragment = new UserKnowledgeFragment();
         userCourseCollectFragment = new UserCourseCollectFragment();
         userVipFragment = new UserVipFragment();
-        userdownloadFragment = new UserDownloadFragment();
+        userBuyGoodsFragment = new UserBuyGoodsFragment();
     }
 }

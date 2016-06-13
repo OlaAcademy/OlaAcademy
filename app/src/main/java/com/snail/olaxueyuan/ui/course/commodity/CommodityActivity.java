@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.MCOrgManager;
@@ -32,8 +32,6 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
     TextView leftReturn;
     @Bind(R.id.title_tv)
     TextView titleTv;
-    @Bind(R.id.right_response)
-    ImageView rightResponse;
     @Bind(R.id.pop_line)
     View popLine;
     TitleManager titleManager;
@@ -56,7 +54,6 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
         Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
         drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
         titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
-        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.ic_sub_subject);
 
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.setOnRefreshListener(this);
@@ -74,6 +71,7 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
             @Override
             public void success(SystemCourseResult systemCourseResult, Response response) {
                 listview.onRefreshComplete();
+                Logger.json(systemCourseResult);
                 if (systemCourseResult.getApicode() != 10000) {
                     ToastUtil.showToastShort(CommodityActivity.this, systemCourseResult.getMessage());
                 } else {
@@ -107,7 +105,7 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
         adapter.updateData(module);
     }
 
-    @OnClick({R.id.left_return, R.id.title_tv, R.id.right_response})
+    @OnClick({R.id.left_return, R.id.title_tv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_return:
@@ -115,9 +113,6 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
                 break;
             case R.id.title_tv:
                 TitlePopManager.getInstance().showPop(this, titleManager, popLine, this, 4);
-                break;
-            case R.id.right_response:
-                ToastUtil.showShortToast(this, "我是右上角提醒");
                 break;
         }
     }

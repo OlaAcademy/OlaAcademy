@@ -74,7 +74,8 @@ public class SystemCourseAdapter extends BaseAdapter {
         }
         holder.name.setText(list.get(position).getName());
         holder.paynum.setText(context.getString(R.string.pay_num, list.get(position).getPaynum()));
-        holder.detail.setText(list.get(position).getDetail());
+//        holder.detail.setText(list.get(position).getDetail());
+        holder.detail.setText(list.get(position).getOrg());
         holder.price.setText(String.valueOf(list.get(position).getPrice()));
 //        holder.authorCourseNum.setText(String.valueOf(list.get(position).getAttentionnum()));
         convertView.setOnClickListener(new View.OnClickListener() {

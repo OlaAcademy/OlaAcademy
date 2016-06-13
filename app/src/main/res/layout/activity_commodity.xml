@@ -12,14 +12,13 @@
 
     <View
         android:id="@+id/pop_line"
-        style="@style/line_horizontal"
-        android:layout_height="0.1px" />
+        style="@style/line_horizontal_blue" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:scaleType="fitXY"
-        android:src="@drawable/background_course" />
+        android:src="@drawable/ic_head_question" />
 
     <com.snail.pulltorefresh.PullToRefreshListView
         android:id="@+id/listview"

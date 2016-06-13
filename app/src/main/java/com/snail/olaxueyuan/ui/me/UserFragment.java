@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.RoundRectImageView;
-import com.snail.olaxueyuan.common.manager.Utils;
+import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.me.adapter.UserPageAdapter;
 
@@ -67,7 +67,7 @@ public class UserFragment extends SuperFragment {
     }
 
     private void initView() {
-        avatar.setRectAdius(Utils.dip2px(getActivity(), 40));
+        avatar.setRectAdius(100);
         titleTv.setText(R.string.me);
         leftIcon.setVisibility(View.VISIBLE);
         rightResponse.setVisibility(View.VISIBLE);
@@ -83,8 +83,10 @@ public class UserFragment extends SuperFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_icon:
+                ToastUtil.showShortToast(getActivity(), "我是左上角icon");
                 break;
             case R.id.right_response:
+                ToastUtil.showShortToast(getActivity(), "我是右上角icon");
                 break;
             case R.id.knowledge_layout:
                 viewPager.setCurrentItem(0);

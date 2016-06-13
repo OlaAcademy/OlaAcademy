@@ -173,7 +173,7 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="@string/download"
+                    android:text="@string/buy_course"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 

@@ -6,6 +6,7 @@ import com.snail.olaxueyuan.protocol.result.SEPasswordResult;
 import com.snail.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.snail.olaxueyuan.protocol.result.SEUserResult;
 import com.snail.olaxueyuan.protocol.result.UserAlipayResult;
+import com.snail.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.snail.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
 import com.snail.olaxueyuan.protocol.result.UserWXpayResult;
@@ -155,7 +156,7 @@ public interface SEUserService {
      *
      * @param price
      * @param userId
-     * @param type type : 1月度会员 2 年度会员 3 整套视频
+     * @param type    type : 1月度会员 2 年度会员 3 整套视频
      * @param goodsId
      * @param body
      * @param cb
@@ -169,5 +170,17 @@ public interface SEUserService {
             @Field("goodsId") String goodsId,
             @Field("body") String body,
             Callback<UserWXpayResult> cb);
+
+    /**
+     * 获取已购买视频列表
+     * 需要userid
+     *
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/goods/getBuyGoodsList")
+    void getBuyGoodsList(
+            @Field("userId") String userId,
+            Callback<UserBuyGoodsResult> cb);
 
 }
