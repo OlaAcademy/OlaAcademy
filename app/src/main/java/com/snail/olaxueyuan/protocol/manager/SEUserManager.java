@@ -12,8 +12,10 @@ import com.snail.olaxueyuan.protocol.result.MCUploadResult;
 import com.snail.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.snail.olaxueyuan.protocol.result.SEUserResult;
 import com.snail.olaxueyuan.protocol.result.ServiceError;
+import com.snail.olaxueyuan.protocol.result.UserAlipayResult;
 import com.snail.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
+import com.snail.olaxueyuan.protocol.result.UserWXpayResult;
 import com.snail.olaxueyuan.protocol.service.SEUserService;
 
 import java.io.File;
@@ -261,8 +263,34 @@ public class SEUserManager {
      *
      * @param cb
      */
-    public void getCollectionByUserId(String userid,Callback<UserCourseCollectResult> cb) {
-        _userService.getCollectionByUserId(userid,cb);
+    public void getCollectionByUserId(String userid, Callback<UserCourseCollectResult> cb) {
+        _userService.getCollectionByUserId(userid, cb);
+    }
+
+    /**
+     * 支付宝支付
+     *
+     * @param price
+     * @param userId
+     * @param type    type : 1月度会员 2 年度会员 3 整套视频
+     * @param goodsId
+     * @param cb
+     */
+    public void getAliOrderInfo(String price, String userId, String type, String goodsId, String body, Callback<UserAlipayResult> cb) {
+        _userService.getAliOrderInfo(price, userId, type, goodsId, body, cb);
+    }
+
+    /**
+     * 微信支付
+     *
+     * @param price
+     * @param userId
+     * @param type    type : 1月度会员 2 年度会员 3 整套视频
+     * @param goodsId
+     * @param cb
+     */
+    public void getWXPayReq(String price, String userId, String type, String goodsId, String body, Callback<UserWXpayResult> cb) {
+        _userService.getWXPayReq(price, userId, type, goodsId, body, cb);
     }
 }
 

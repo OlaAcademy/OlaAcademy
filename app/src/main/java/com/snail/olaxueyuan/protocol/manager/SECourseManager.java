@@ -5,6 +5,7 @@ import com.snail.olaxueyuan.protocol.model.SECart;
 import com.snail.olaxueyuan.protocol.model.SECourse;
 import com.snail.olaxueyuan.protocol.model.SECourseCate;
 import com.snail.olaxueyuan.protocol.model.SECourseDetail;
+import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.protocol.result.MCBannerResult;
 import com.snail.olaxueyuan.protocol.result.MCCollectionResult;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
@@ -237,10 +238,10 @@ public class SECourseManager {
      *
      * @param callback
      */
-    public void fetchCourseSection(String courseId, final Callback<MCCourSectionResult> callback) {
-        getCourseService().fetchCourseSection(courseId, new Callback<MCCourSectionResult>() {
+    public void fetchCourseSection(String courseId, String userId, final Callback<CourseVideoResult> callback) {
+        getCourseService().fetchCourseSection(courseId, userId, new Callback<CourseVideoResult>() {
             @Override
-            public void success(MCCourSectionResult result, Response response) {
+            public void success(CourseVideoResult result, Response response) {
                 if (callback != null) {
                     callback.success(result, response);
                 }
@@ -284,8 +285,8 @@ public class SECourseManager {
      *
      * @param callback
      */
-    public void fetchHomeCourseList(String pid,String type, final Callback<MCCourseListResult> callback) {
-        getCourseService().fetchHomeCourseList(pid,type, new Callback<MCCourseListResult>() {
+    public void fetchHomeCourseList(String pid, String type, final Callback<MCCourseListResult> callback) {
+        getCourseService().fetchHomeCourseList(pid, type, new Callback<MCCourseListResult>() {
             @Override
             public void success(MCCourseListResult result, Response response) {
                 if (callback != null) {

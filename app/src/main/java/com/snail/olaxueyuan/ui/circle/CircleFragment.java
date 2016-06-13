@@ -102,12 +102,6 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        fetchData();
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
         }
@@ -154,8 +148,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
             holder.avatar.setRectAdius(100);
             holder.title.setText(list.get(position).getUserName());
             if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
-                Picasso.with(getActivity()).load(list.get(position).getUserAvatar()).error(R.drawable.ic_default_avatar)
-                        .resize(Utils.dip2px(getActivity(), 50), Utils.dip2px(getActivity(), 50)).into(holder.avatar);
+                Picasso.with(getActivity()).load(list.get(position).getUserAvatar()).placeholder(R.drawable.ic_default_avatar)
+                        .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(getActivity(), 50), Utils.dip2px(getActivity(), 50)).into(holder.avatar);
             }
             holder.time.setText(getActivity().getString(R.string.study_record, list.get(position).getTime()));
             holder.studyName.setText(list.get(position).getVideoName());

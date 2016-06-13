@@ -19,12 +19,14 @@ import com.snail.olaxueyuan.protocol.model.MCCourSection;
 import com.snail.olaxueyuan.protocol.model.MCCourse;
 import com.snail.olaxueyuan.protocol.model.MCVideo;
 import com.snail.olaxueyuan.protocol.model.VideoCollection;
+import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
 import com.snail.olaxueyuan.protocol.result.MCCourSectionResult;
 import com.snail.olaxueyuan.protocol.result.VideoCollectionResult;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -47,7 +49,7 @@ public class CourseListActivity extends Activity {
     private MCCourse course;
 
     private String courseId;
-    private ArrayList<MCVideo> videoArrayList;
+    private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +89,13 @@ public class CourseListActivity extends Activity {
 
     public void performRefresh() {
         SECourseManager courseManager = SECourseManager.getInstance();
-        courseManager.fetchCourseSection(courseId, new Callback<MCCourSectionResult>() {
+        courseManager.fetchCourseSection(courseId, "126", new Callback<CourseVideoResult>() {
             @Override
-            public void success(MCCourSectionResult result, Response response) {
-                if (!result.apicode.equals("10000")) {
-                    SVProgressHUD.showInViewWithoutIndicator(CourseListActivity.this, result.message, 2.0f);
+            public void success(CourseVideoResult result, Response response) {
+                if (result.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(CourseListActivity.this, result.getMessage(), 2.0f);
                 } else {
-                    videoArrayList = result.videoArrayList;
+                    videoArrayList = result.getResult().getVideoList();
                     adapter = new CourseCateAdapter(CourseListActivity.this, videoArrayList);
                     courseListView.setAdapter(adapter);
                     //updateCourseInfo();

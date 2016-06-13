@@ -1,5 +1,6 @@
 package com.snail.olaxueyuan.protocol.service;
 
+import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.protocol.result.MCBannerResult;
 import com.snail.olaxueyuan.protocol.result.MCCollectionResult;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
@@ -162,8 +163,10 @@ public interface SECourseService {
      */
     @FormUrlEncoded
     @POST("/ola/cour/getVideoByPoi")
-    public void fetchCourseSection(@Field("pointId") String courseId,
-                                   Callback<MCCourSectionResult> cb);
+    public void fetchCourseSection(
+            @Field("pointId") String courseId,
+            @Field("userId") String userId,
+            Callback<CourseVideoResult> cb);
 
 
     /**

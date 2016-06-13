@@ -6,4 +6,8 @@
         <item>逻辑</item>
         <item>协作</item>
     </string-array>
+    <string-array name="system_course">
+        <item>课程</item>
+        <item>教材</item>
+    </string-array>
 </resources>

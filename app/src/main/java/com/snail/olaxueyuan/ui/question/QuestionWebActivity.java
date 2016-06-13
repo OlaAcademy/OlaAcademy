@@ -20,7 +20,7 @@ import com.snail.svprogresshud.SVProgressHUD;
 import java.util.ArrayList;
 
 
-public class QuestionWebActivity extends SEBaseActivity implements View.OnClickListener{
+public class QuestionWebActivity extends SEBaseActivity implements View.OnClickListener {
 
     private WebView contentWebView;
     private Button previousBtn;

@@ -1,71 +1,12 @@
 package com.snail.olaxueyuan.ui.course.pay;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alipay.sdk.app.PayTask;
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.app.SEConfig;
-import com.snail.olaxueyuan.protocol.SECallBack;
-import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
-import com.snail.olaxueyuan.protocol.manager.SECourseManager;
-import com.snail.olaxueyuan.protocol.manager.SERestManager;
-import com.snail.olaxueyuan.protocol.model.SECart;
-import com.snail.olaxueyuan.protocol.model.SEOrder;
-import com.snail.olaxueyuan.protocol.model.SEUser;
-import com.snail.olaxueyuan.protocol.result.SEAddCartResult;
-import com.snail.olaxueyuan.protocol.result.SEOrderResult;
-import com.snail.olaxueyuan.protocol.result.SEWXPayInfoResult;
-import com.snail.olaxueyuan.protocol.result.ServiceError;
-import com.snail.olaxueyuan.protocol.service.SECourseService;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
-import com.snail.olaxueyuan.ui.course.pay.weixin.Constants;
-import com.snail.olaxueyuan.ui.course.pay.weixin.MD5;
-import com.snail.olaxueyuan.ui.course.pay.weixin.Util;
-import com.snail.olaxueyuan.ui.course.pay.zhifubao.CartCourseAdapter;
-import com.snail.olaxueyuan.ui.course.pay.zhifubao.PayResult;
-import com.snail.olaxueyuan.ui.course.pay.zhifubao.SignUtils;
-import com.snail.svprogresshud.SVProgressHUD;
-import com.tencent.mm.sdk.constants.Build;
-import com.tencent.mm.sdk.modelpay.PayReq;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class CoursePayActivity extends SEBaseActivity {
+/*
 
     //商户PID
     public static final String PARTNER = "2088611418161463";
@@ -96,12 +37,13 @@ public class CoursePayActivity extends SEBaseActivity {
     private String wxPayCallback = SEConfig.getInstance().getAPIBaseURL() + "api/wxPayCallback";  //微信支付回调地址
 
     private SECourseService courseService;
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_pay);
-        setTitleText("购物车");
+       /* setTitleText("购物车");
         cartLV = (ListView) findViewById(R.id.cartLV);
         totalPrice = (TextView) findViewById(R.id.totalPrice);
 
@@ -132,10 +74,10 @@ public class CoursePayActivity extends SEBaseActivity {
                 wxPay.setSelected(true);
                 pay_type = 1;
             }
-        });
+        });*/
     }
 
-    private void buyCourse(String id, String uid) {
+   /* private void buyCourse(String id, String uid) {
         courseService.buyCourse(id, uid, new Callback<SEAddCartResult>() {
             @Override
             public void success(SEAddCartResult result, Response response) {
@@ -150,9 +92,9 @@ public class CoursePayActivity extends SEBaseActivity {
 
     }
 
-    /**
+    *//**
      * 具体课程信息
-     */
+     *//*
     private void initCartList() {
 
         final SECourseManager courseManager = SECourseManager.getInstance();
@@ -190,11 +132,11 @@ public class CoursePayActivity extends SEBaseActivity {
         });
     }
 
-    /**
+    *//**
      * 根据listview内容设置其高度
      *
      * @param listView
-     */
+     *//*
     public void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -222,9 +164,9 @@ public class CoursePayActivity extends SEBaseActivity {
         listView.requestLayout();
     }
 
-    /*
+    *//*
     创建订单并跳转到支付页面
-     */
+     *//*
     public void createOrder(View v) {
         if (currentuser == null) {
             return;
@@ -304,9 +246,9 @@ public class CoursePayActivity extends SEBaseActivity {
     };
 
 
-    /**
+    *//**
      * call alipay sdk pay. 调用SDK支付
-     */
+     *//*
     public void pay(SEOrder order) {
         // 订单
         String orderInfo = getOrderInfo(order.getSn(), order.getBody(), "蜗牛课程", order.getMoney());
@@ -331,7 +273,7 @@ public class CoursePayActivity extends SEBaseActivity {
                 // 构造PayTask 对象
                 PayTask alipay = new PayTask(CoursePayActivity.this);
                 // 调用支付接口，获取支付结果
-                String result = alipay.pay(payInfo);
+                String result = alipay.pay(payInfo,true);
 
                 Message msg = new Message();
                 msg.what = SDK_PAY_FLAG;
@@ -345,10 +287,10 @@ public class CoursePayActivity extends SEBaseActivity {
         payThread.start();
     }
 
-    /**
+    *//**
      * check whether the device has authentication alipay account.
      * 查询终端设备是否存在支付宝认证账户
-     */
+     *//*
     public void check(View v) {
         Runnable checkRunnable = new Runnable() {
 
@@ -371,18 +313,18 @@ public class CoursePayActivity extends SEBaseActivity {
 
     }
 
-    /**
+    *//**
      * get the sdk version. 获取SDK版本号
-     */
+     *//*
     public void getSDKVersion() {
         PayTask payTask = new PayTask(this);
         String version = payTask.getVersion();
         Toast.makeText(this, version, Toast.LENGTH_SHORT).show();
     }
 
-    /**
+    *//**
      * create the order info. 创建订单信息
-     */
+     *//*
     public String getOrderInfo(String trade_no, String subject, String body, String price) {
         // 签约合作者身份ID
         String orderInfo = "partner=" + "\"" + PARTNER + "\"";
@@ -436,9 +378,9 @@ public class CoursePayActivity extends SEBaseActivity {
         return orderInfo;
     }
 
-    /**
+    *//**
      * get the out_trade_no for an order. 生成商户订单号，该值在商户端应保持唯一（可自定义格式规范）
-     */
+     *//*
     public String getOutTradeNo() {
         SimpleDateFormat format = new SimpleDateFormat("MMddHHmmss",
                 Locale.getDefault());
@@ -451,18 +393,18 @@ public class CoursePayActivity extends SEBaseActivity {
         return key;
     }
 
-    /**
+    *//**
      * sign the order info. 对订单信息进行签名
      *
      * @param content 待签名订单信息
-     */
+     *//*
     public String sign(String content) {
         return SignUtils.sign(content, RSA_PRIVATE);
     }
 
-    /**
+    *//**
      * get the sign type we use. 获取签名方式
-     */
+     *//*
     public String getSignType() {
         return "sign_type=\"RSA\"";
     }
@@ -520,7 +462,7 @@ public class CoursePayActivity extends SEBaseActivity {
 
             String url = String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",
                     Constants.APP_ID, APP_SECRET);
-            Log.d(TAG, "get access token, url = " + url);
+//            Log.d(TAG, "get access token, url = " + url);
 
             byte[] buf = Util.httpGet(url);
             if (buf == null || buf.length == 0) {
@@ -591,11 +533,11 @@ public class CoursePayActivity extends SEBaseActivity {
         }
     }
 
-    /**
+    *//**
      * 微信公众平台商户模块和商户约定的密钥
      * <p/>
      * 注意：不能hardcode在客户端，建议genPackage这个过程由服务器端完成
-     */
+     *//*
     private static final String PARTNER_KEY = "456587cce316b8c37271c641a650002a";
 
     private String genPackage(List<NameValuePair> params) {
@@ -616,18 +558,18 @@ public class CoursePayActivity extends SEBaseActivity {
         return URLEncodedUtils.format(params, "utf-8") + "&sign=" + packageSign;
     }
 
-    /**
+    *//**
      * 微信开放平台和商户约定的密钥
      * <p/>
      * 注意：不能hardcode在客户端，建议genSign这个过程由服务器端完成
-     */
+     *//*
     private static final String APP_SECRET = "7b557825fe2a1bedffdde3a34bc5c20e";
 
-    /**
+    *//**
      * 微信开放平台和商户约定的支付密钥
      * <p/>
      * 注意：不能hardcode在客户端，建议genSign这个过程由服务器端完成
-     */
+     *//*
     private static final String APP_KEY = "9yjurpcYhrBn7gZEpDxhcbbgCgDW7vfOfcf6TcMfe4MnBd2ED4sRo8JpluLNRcMrrwrkvNMj72R7cL8Aw1A43rySVRBtMGrZwOWhYZ9iiayjDjKG7TddseO2vAvUkx8z"; // wxd930ea5d5a258f4f 对应的支付密钥
 
 
@@ -717,16 +659,16 @@ public class CoursePayActivity extends SEBaseActivity {
         return timeStamp;
     }
 
-    /**
+    *//**
      * 建议 traceid 字段包含用户信息及订单信息，方便后续对订单状态的查询和跟踪
-     */
+     *//*
     private String getTraceId() {
         return "crestxu_" + genTimeStamp();
     }
 
-    /**
+    *//**
      * 注意：商户系统内部的订单号,32个字符内、可包含字母,确保在商户系统唯一
-     */
+     *//*
     private String genOutTradNo() {
         Random random = new Random();
         return MD5.getMessageDigest(String.valueOf(random.nextInt(10000)).getBytes());
@@ -820,7 +762,7 @@ public class CoursePayActivity extends SEBaseActivity {
 
         // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
         api.sendReq(req);
-    }
+    }*/
 
 
 }
