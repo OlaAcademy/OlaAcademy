@@ -1,45 +1,56 @@
 package com.snail.olaxueyuan.ui.me.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.result.SEUserResult;
 import com.snail.olaxueyuan.ui.MainActivity;
+import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class UserLoginActivity extends Activity {
+public class UserLoginActivity extends SEBaseActivity {
 
-    private ImageView backIV;
     private EditText phoneET;
     private EditText passET;
     private Button loginBtn;
     private TextView forgetTV;
 
     public static int PASS_FOREGT = 0x0101;
+    public static int USER_REG = 0x0202;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_user_login);
 
-        backIV = (ImageView) findViewById(R.id.iv_back);
-        backIV.setOnClickListener(new View.OnClickListener() {
+        setTitleText("登录");
+        setLeftImageInvisibility();
+        setRightImageInvisibility();
+
+        setLeftText("取消");
+        setLeftTextListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 finish();
+            }
+        });
+
+        setRightText("注册");
+        setRightTextListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserLoginActivity.this,UserRegActivity.class);
+                startActivityForResult(intent,USER_REG);
             }
         });
 
@@ -77,7 +88,7 @@ public class UserLoginActivity extends Activity {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("userInfo", result.data);
                     intent.putExtras(bundle);
-                    setResult(1, intent);
+                    setResult(RESULT_OK, intent);
                     finish();
                 } else {
                     Intent intent = new Intent(UserLoginActivity.this, MainActivity.class);
