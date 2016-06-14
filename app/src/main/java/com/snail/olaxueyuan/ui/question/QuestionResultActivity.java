@@ -1,17 +1,20 @@
 package com.snail.olaxueyuan.ui.question;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.common.NoScrollGridView;
+import com.snail.olaxueyuan.common.SubListView;
 import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.olaxueyuan.ui.adapter.QuestionResultAdapter;
-import com.snail.photo.util.NoScrollGridView;
+import com.snail.olaxueyuan.ui.adapter.QuestionResultListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,10 +35,10 @@ public class QuestionResultActivity extends SEBaseActivity {
     @Bind(R.id.win_student_tv)
     TextView winStudentTv;
     @Bind(R.id.grid_answer)
-    GridView gridAnswer;
+    NoScrollGridView gridAnswer;
     //    NoScrollGridView gridAnswer;
-    @Bind(R.id.grid_knowledge)
-    NoScrollGridView gridKnowledge;
+    @Bind(R.id.list_knowledge)
+    SubListView listKnowledge;
     @Bind(R.id.start_exam)
     Button startExam;
     @Bind(R.id.finish_answer)
@@ -46,6 +49,7 @@ public class QuestionResultActivity extends SEBaseActivity {
     private int objectId;//试题的ID
     private JSONArray array;
     private QuestionResultAdapter resultAdapter;
+    private QuestionResultListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +81,13 @@ public class QuestionResultActivity extends SEBaseActivity {
             hasAnswerNumTv.setText(String.valueOf(hasAnswer));
             correctPercent.setText(correct * 100 / array.length() + "%");
             winStudentTv.setText(String.valueOf(winPercent) + "%");
+
             resultAdapter = new QuestionResultAdapter(array, QuestionResultActivity.this);
+            gridAnswer.setSelector(new ColorDrawable(Color.TRANSPARENT));
             gridAnswer.setAdapter(resultAdapter);
+
+            listAdapter = new QuestionResultListAdapter(array, QuestionResultActivity.this);
+            listKnowledge.setAdapter(listAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
