@@ -19,4 +19,4 @@
         android:textColor="@drawable/tab_item_text_color_selector"
         android:textSize="15.0sp" />
 
-</RelativeLayout><!-- From: file:/Users/tianxiaopeng/Documents/Android/studioworkspace/幂辰/欧拉学院/Education/AnimtabsView/res/layout/anim_tab_item.xml -->
+</RelativeLayout><!-- From: file:/Users/tianxiaopeng/Documents/Android/studioworkspace/幂辰/欧拉学院/OlaAcademy/AnimtabsView/res/layout/anim_tab_item.xml -->
