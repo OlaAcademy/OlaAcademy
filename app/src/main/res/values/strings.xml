@@ -74,4 +74,5 @@
     <string name="has_answer_subject">已答题目</string>
     <string name="correct_percent">正确率</string>
     <string name="win_student">打败考生</string>
+    <string name="all_number_subject">/%s道</string>
 </resources>
