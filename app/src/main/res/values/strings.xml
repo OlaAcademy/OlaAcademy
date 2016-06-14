@@ -71,4 +71,7 @@
     <string name="download">下载</string>
     <string name="num_buy">%s人购买</string>
     <string name="buy_course">购买课程</string>
+    <string name="has_answer_subject">已答题目</string>
+    <string name="correct_percent">正确率</string>
+    <string name="win_student">打败考生</string>
 </resources>
