@@ -7,6 +7,7 @@
     <include layout="@layout/title_layout" />
 
     <LinearLayout
+        android:id="@+id/headLL"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:background="@color/me_content_bg"
@@ -34,7 +35,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_toRightOf="@+id/avatar"
                 android:singleLine="true"
-                android:text="名字"
+                android:text="登录／注册"
                 android:textColor="@color/white"
                 android:textSize="15dp" />
 
@@ -48,7 +49,7 @@
                 android:background="@drawable/month_vip_bg"
                 android:padding="3dp"
                 android:singleLine="true"
-                android:text="月度VIP"
+                android:text="VIP会员"
                 android:textColor="@color/white"
                 android:textSize="13dp" />
 
@@ -61,7 +62,7 @@
                 android:layout_toRightOf="@+id/is_vip"
                 android:padding="3dp"
                 android:singleLine="true"
-                android:text="还剩15天"
+                android:text="还剩0天"
                 android:textColor="@color/white"
                 android:textSize="15dp" />
         </RelativeLayout>
