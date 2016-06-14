@@ -84,7 +84,7 @@ public class UserFragment extends SuperFragment {
     }
 
     private void initView() {
-        avatar.setRectAdius(100);
+        avatar.setRectAdius(300);
         titleTv.setText(R.string.me);
         leftIcon.setVisibility(View.VISIBLE);
         rightResponse.setVisibility(View.VISIBLE);
