@@ -1,34 +1,270 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.snail.olaxueyuan.ui.question.QuestionResultActivity">
+    android:background="@color/white">
 
-    <RelativeLayout
-        android:id="@+id/headRL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_light">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/bg_report"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/ic_correct"
-            android:layout_centerHorizontal="true"/>
-
-    </RelativeLayout>
-
-    <GridView
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/headRL"></GridView>
+        android:layout_marginBottom="50dp">
+-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <FrameLayout
+            android:id="@+id/headRL"
+            android:layout_width="match_parent"
+            android:layout_height="195dp"
+            android:background="@color/blue_light"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_report"
+                android:orientation="vertical"
+                android:paddingTop="65dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/correct_num_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|bottom"
+                        android:text="17"
+                        android:textColor="@color/blue_light"
+                        android:textSize="35sp" />
+
+                    <TextView
+                        android:id="@+id/answer_all_number_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|bottom"
+                        android:text="/47道"
+                        android:textColor="@color/title_hint_text_color"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/horizontal_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/has_answer_num_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:layout_marginBottom="5dp"
+                            android:text="17"
+                            android:textColor="@color/answer_num_color"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:text="@string/has_answer_subject"
+                            android:textColor="@color/title_hint_text_color"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <View
+                        style="@style/line_vertical_hint"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginTop="15dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/correct_precent_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:layout_marginBottom="5dp"
+                            android:text="40%"
+                            android:textColor="@color/answer_num_color"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:text="@string/correct_percent"
+                            android:textColor="@color/title_hint_text_color"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <View
+                        style="@style/line_vertical_hint"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginTop="15dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/win_student_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:layout_marginBottom="5dp"
+                            android:text="60%"
+                            android:textColor="@color/answer_num_color"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:text="@string/win_student"
+                            android:textColor="@color/title_hint_text_color"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <View
+                        style="@style/line_vertical_hint"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginTop="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/ic_correct" />
+        </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp">
+
+            <ImageView
+                android:id="@+id/select_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/answer_select_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/select_icon"
+                android:text="选择题"
+                android:textColor="@color/black_323232"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <View style="@style/line_horizontal_margin_10dp" />
+
+        <!--<com.snail.photo.util.NoScrollGridView-->
+        <GridView
+            android:id="@+id/grid_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:numColumns="5" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp">
+
+            <ImageView
+                android:id="@+id/knowledge_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/answer_select_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/knowledge_icon"
+                android:text="知识点课程"
+                android:textColor="@color/black_323232"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <View style="@style/line_horizontal_margin_10dp" />
+
+        <com.snail.photo.util.NoScrollGridView
+            android:id="@+id/grid_knowledge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:numColumns="4" />
+    </LinearLayout>
+    <!--</ScrollView>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/start_exam"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/red_button_bg"
+            android:text="开始解析"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/finish_answer"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="2"
+            android:background="@drawable/blue_button_bg"
+            android:text="答题完成"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</FrameLayout>
