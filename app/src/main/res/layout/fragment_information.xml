@@ -8,22 +8,15 @@
     app:item_margin="8dp"
     app:ptrMode="both">
 
-    <RelativeLayout
-        android:id="@+id/titleRL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+    <include layout="@layout/title_layout" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="数学"
-            android:textColor="@color/white"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
+    <View
+        android:id="@+id/pop_line"
+        style="@style/line_horizontal_blue" />
 
     <com.snail.pulltorefresh.PullToRefreshListView
         android:id="@+id/infoListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="#FAFAFA" />
 </LinearLayout>

@@ -38,7 +38,7 @@
         android:layout_below="@+id/time"
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/avatar"
-        android:text="学习了:"
+        android:text="@string/has_study"
         android:textColor="@color/title_hint_text_color"
         android:textSize="14dp" />
 

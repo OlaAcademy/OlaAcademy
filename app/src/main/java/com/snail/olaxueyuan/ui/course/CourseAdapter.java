@@ -22,10 +22,10 @@ import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.SEAutoSlidingPagerView;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.model.MCSubCourse;
-import com.snail.olaxueyuan.protocol.result.MCCourSectionResult;
+import com.snail.olaxueyuan.protocol.result.MCBannerResult;
 import com.snail.olaxueyuan.ui.course.commodity.CommodityActivity;
-import com.snail.olaxueyuan.ui.index.ImagePagerAdapter;
 import com.snail.olaxueyuan.ui.course.turtor.TurtorActivity;
+import com.snail.olaxueyuan.ui.index.ImagePagerAdapter;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
@@ -41,16 +41,20 @@ public class CourseAdapter extends BaseAdapter {
 
 
     private Context context;
-    private ArrayList<MCSubCourse> courseList;
+    private ArrayList<MCSubCourse> courseList = new ArrayList<>();
 
     //定义两个int常量标记不同的Item视图
     public static final int PIC_ITEM = 0;
     public static final int PIC_WORD_ITEM = 1;
 
-    public CourseAdapter(Context context, ArrayList<MCSubCourse> courseList) {
+    public CourseAdapter(Context context) {
         super();
         this.context = context;
+    }
+
+    public void updateData(ArrayList<MCSubCourse> courseList) {
         this.courseList = courseList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -102,8 +106,8 @@ public class CourseAdapter extends BaseAdapter {
                 topViewHolder.turtorRL = (RelativeLayout) convertView.findViewById(R.id.turtorRL);
                 topViewHolder.commodityRL = (RelativeLayout) convertView.findViewById(R.id.commodityRL);
                 topViewHolder.autoSlidingPagerView = (SEAutoSlidingPagerView) convertView.findViewById(R.id.autoSlideImage);
-                int height = context.getResources().getDisplayMetrics().heightPixels;
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (height * 0.3));
+                int width = context.getResources().getDisplayMetrics().widthPixels;
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, width * 320 / 750);
                 topViewHolder.autoSlidingPagerView.setLayoutParams(layoutParams);
                 convertView.setTag(topViewHolder);
             } else {
@@ -111,13 +115,13 @@ public class CourseAdapter extends BaseAdapter {
             }
             final SEAutoSlidingPagerView slidingPagerView = topViewHolder.autoSlidingPagerView;
             final SECourseManager courseManager = SECourseManager.getInstance();
-            courseManager.fetchCourseSection("1", new Callback<MCCourSectionResult>() {
+            courseManager.fetchHomeBanner(new Callback<MCBannerResult>() {
                 @Override
-                public void success(MCCourSectionResult result, Response response) {
+                public void success(MCBannerResult result, Response response) {
                     if (!result.apicode.equals("10000")) {
                         SVProgressHUD.showInViewWithoutIndicator(context, result.message, 2.0f);
                     } else {
-                        slidingPagerView.setAdapter(new ImagePagerAdapter(context, result.videoArrayList));
+                        slidingPagerView.setAdapter(new ImagePagerAdapter(context, result.bannerList));
                         slidingPagerView.setOnPageChangeListener(new MyOnPageChangeListener());
                         slidingPagerView.setInterval(4000);
                         slidingPagerView.setScrollDurationFactor(2.0);
@@ -156,6 +160,7 @@ public class CourseAdapter extends BaseAdapter {
                 holder = (ViewHolder) convertView.getTag();
             }
             MCSubCourse course = courseList.get(position - 1);
+//            Logger.e("course=="+course.toString());
             holder.tv_title.setText(course.name);
             setGridView(holder.gv_course, course.subCourseArrayList);
         }
@@ -186,11 +191,13 @@ public class CourseAdapter extends BaseAdapter {
 
         GridViewAdapter adapter = new GridViewAdapter(subCourseList);
         gridView.setAdapter(adapter);
+        adapter.updateData(subCourseList);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(context, CourseListActivity.class);
+//                Intent intent = new Intent(context, CourseListActivity.class);
+                Intent intent = new Intent(context, CourseVideoActivity.class);
                 intent.putExtra("pid", subCourseList.get(position).id);
                 context.startActivity(intent);
             }
@@ -212,6 +219,8 @@ public class CourseAdapter extends BaseAdapter {
     class GridViewHolder {
         private TextView tv_name;
         private ImageView iv_course;
+        private TextView tv_time;
+        private TextView tv_browser;
     }
 
     private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
@@ -236,6 +245,11 @@ public class CourseAdapter extends BaseAdapter {
             this.subCourseList = subCourseList;
         }
 
+        public void updateData(ArrayList<MCSubCourse> subCourseList) {
+            this.subCourseList = subCourseList;
+            notifyDataSetChanged();
+        }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             GridViewHolder viewHolder = null;
@@ -243,15 +257,19 @@ public class CourseAdapter extends BaseAdapter {
                 convertView = View.inflate(context, R.layout.item_gridview_course, null);
                 viewHolder = new GridViewHolder();
                 viewHolder.iv_course = (ImageView) convertView.findViewById(R.id.iv_course);
-                viewHolder.iv_course.setScaleType(ImageView.ScaleType.CENTER_INSIDE); // 设置缩放方式
-                viewHolder.iv_course.setPadding(5, 0, 5, 0); // 设置ImageView的内边距
+                viewHolder.iv_course.setScaleType(ImageView.ScaleType.FIT_XY); // 设置缩放方式
+                viewHolder.iv_course.setPadding(10, 0, 20, 0); // 设置ImageView的内边距
                 viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+                viewHolder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
+                viewHolder.tv_browser = (TextView) convertView.findViewById(R.id.tv_browser);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (GridViewHolder) convertView.getTag();
             }
             MCSubCourse course = subCourseList.get(position);
             viewHolder.tv_name.setText(course.name);
+            viewHolder.tv_time.setText(course.totalTime);
+            viewHolder.tv_browser.setText(context.getString(R.string.num_watch, course.playcount));
             DisplayImageOptions options = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)
                     .cacheOnDisk(true)

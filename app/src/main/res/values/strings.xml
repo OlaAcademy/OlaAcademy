@@ -40,5 +40,35 @@
     <string name="data_request_fail">数据请求失败</string>
     <string name="study_record">%s学习记录</string>
     <string name="ola_circle">欧拉圈</string>
-
+    <string name="title_activity_question_result">答题报告</string>
+    <string name="play_fail_no_found_path">播放失败，找不到播放路径</string>
+    <string name="play_fail_open_other_video">播放失败，请尝试其它视频</string>
+    <string name="alipay_notuse">暂时不支持支付宝支付</string>
+    <string name="wechat_not_install">您手机未安装微信</string>
+    <string name="alipay_not_install">您手机未安装支付宝</string>
+    <string name="pay_num">购买人数%s人</string>
+    <string name="course">课程</string>
+    <string name="num_watch">%s观看</string>
+    <string name="num_knowledge">%s个知识点</string>
+    <string name="rmb_mark">¥</string>
+    <string name="math">数学</string>
+    <string name="has_study">学习了:</string>
+    <string name="me">我</string>
+    <string name="vip_package">会员套餐</string>
+    <string name="super_value">超值</string>
+    <string name="pay_style">支付方式</string>
+    <string name="alipay_pay">支付宝支付</string>
+    <string name="wechat_pay">微信支付</string>
+    <string name="vip_privilege">会员特权</string>
+    <string name="numbers_course">3000+课程</string>
+    <string name="all_free">全免费</string>
+    <string name="video_cache">视频缓存</string>
+    <string name="sign_up_preferential">报名优惠</string>
+    <string name="open_vip">开通会员</string>
+    <string name="knowledges">知识型谱</string>
+    <string name="vip">VIP会员</string>
+    <string name="course_collect">课程收藏</string>
+    <string name="download">下载</string>
+    <string name="num_buy">%s人购买</string>
+    <string name="buy_course">购买课程</string>
 </resources>

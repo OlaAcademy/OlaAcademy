@@ -2,13 +2,11 @@ package com.snail.olaxueyuan.ui.question;
 
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +19,8 @@ import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.adapter.QuestionAdapter;
 import com.snail.olaxueyuan.ui.manager.TitlePopManager;
+import com.snail.pulltorefresh.PullToRefreshBase;
+import com.snail.pulltorefresh.PullToRefreshExpandableListView;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
@@ -32,7 +32,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class QuestionFragment extends SuperFragment implements TitlePopManager.PidClickListener {
+public class QuestionFragment extends SuperFragment implements TitlePopManager.PidClickListener, PullToRefreshBase.OnRefreshListener {
     @Bind(R.id.title_tv)
     TextView titleTv;
     @Bind(R.id.right_response)
@@ -40,9 +40,10 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     @Bind(R.id.question_name)
     TextView questionName;
     @Bind(R.id.expandableListView)
-    ExpandableListView expandableListView;
+    PullToRefreshExpandableListView expandableListViews;
     @Bind(R.id.pop_line)
     View popLine;
+    private ExpandableListView expandableListView;
     QuestionAdapter adapter;
     QuestionCourseModule module;
     TitleManager titleManager;
@@ -64,18 +65,13 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     }
 
     private void initView() {
-        titleManager = new TitleManager("数学", this, rootView, false);
+        titleManager = new TitleManager(R.string.math, this, rootView, false);
         Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
         drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
         titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
-        Button temp = (Button) rootView.findViewById(R.id.temp);
-        temp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), QuestionWebActivity.class);
-                getActivity().startActivity(intent);
-            }
-        });
+        expandableListViews.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        expandableListViews.setOnRefreshListener(this);
+        expandableListView = expandableListViews.getRefreshableView();
         expandableListView.setDivider(null);
         expandableListView.setGroupIndicator(null);
         adapter = new QuestionAdapter(getActivity());
@@ -102,10 +98,11 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
 
     private void fetchData() {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
-        QuestionCourseManager.getInstance().fetchHomeCourseList("316", pid, "1", new Callback<QuestionCourseModule>() {
+        QuestionCourseManager.getInstance().fetchHomeCourseList("126", pid, "1", new Callback<QuestionCourseModule>() {
             @Override
             public void success(QuestionCourseModule questionCourseModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
+                expandableListViews.onRefreshComplete();
 //                Logger.json(questionCourseModule);
                 if (questionCourseModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(getActivity(), questionCourseModule.getMessage(), 2.0f);
@@ -122,6 +119,7 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null) {
+                    expandableListViews.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
@@ -150,5 +148,10 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+        fetchData();
     }
 }

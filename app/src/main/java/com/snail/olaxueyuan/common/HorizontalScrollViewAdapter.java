@@ -1,6 +1,7 @@
 package com.snail.olaxueyuan.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.result.ExamModule;
+import com.snail.olaxueyuan.ui.question.QuestionWebActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -30,12 +32,14 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
     int width;
     int height;
     RelativeLayout.LayoutParams params;
-    private List<ExamModule.ResultBean> mDatas;
+    private List<ExamModule.ResultBean> mDatas = new ArrayList<>();
 
     public HorizontalScrollViewAdapter(Context context, List<ExamModule.ResultBean> mDatas) {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
-        this.mDatas = mDatas;
+        if (mDatas != null) {
+            this.mDatas = mDatas;
+        }
         width = Utils.getScreenWidth(mContext);
         height = width * 302 / 750;
         params = new RelativeLayout.LayoutParams((int) (width * 0.8), 200);
@@ -67,9 +71,14 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
         viewHolder.startExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showShortToast(mContext, "我是第" + position + "个");
+                Intent intent = new Intent(mContext, QuestionWebActivity.class);
+                intent.putExtra("objectId",mDatas.get(position).getId());
+                intent.putExtra("type",2);
+                mContext.startActivity(intent);
             }
         });
+        viewHolder.importantRatingBar.setMax(5);
+        viewHolder.importantRatingBar.setRating(mDatas.get(position).getDegree());
         return convertView;
     }
 

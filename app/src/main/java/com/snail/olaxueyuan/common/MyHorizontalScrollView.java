@@ -1,21 +1,17 @@
 package com.snail.olaxueyuan.common;
 
-import android.app.Application;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.app.SEAPP;
 import com.snail.olaxueyuan.common.manager.Utils;
 
 import java.util.HashMap;
@@ -112,26 +108,30 @@ public class MyHorizontalScrollView extends HorizontalScrollView implements
      * 加载下一张图片
      */
     protected void loadNextImg() {
-        // 数组边界值计算
-        if (mCurrentIndex == mAdapter.getCount() - 1) {
-            return;
-        }
-        //移除第一张图片，且将水平滚动位置置0
-        scrollTo(0, 0);
-        mViewPos.remove(mContainer.getChildAt(0));
-        mContainer.removeViewAt(0);
-        destroyedCount++;
-        //获取下一张图片，并且设置onclick事件，且加入容器中
-        View view = mAdapter.getView(++mCurrentIndex, null, mContainer);
-        view.setOnClickListener(this);
-        mContainer.addView(view);
-        mViewPos.put(view, mCurrentIndex);
+        try {
+            // 数组边界值计算
+            if (mCurrentIndex == mAdapter.getCount() - 1) {
+                return;
+            }
+            //移除第一张图片，且将水平滚动位置置0
+            scrollTo(0, 0);
+            mViewPos.remove(mContainer.getChildAt(0));
+            mContainer.removeViewAt(0);
+            destroyedCount++;
+            //获取下一张图片，并且设置onclick事件，且加入容器中
+            View view = mAdapter.getView(++mCurrentIndex, null, mContainer);
+            view.setOnClickListener(this);
+            mContainer.addView(view);
+            mViewPos.put(view, mCurrentIndex);
 
-        //当前第一张图片小标
-        mFristIndex++;
-        //如果设置了滚动监听则触发
-        if (mListener != null) {
-            notifyCurrentImgChanged();
+            //当前第一张图片小标
+            mFristIndex++;
+            //如果设置了滚动监听则触发
+            if (mListener != null) {
+                notifyCurrentImgChanged();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -142,33 +142,37 @@ public class MyHorizontalScrollView extends HorizontalScrollView implements
      * 加载前一张图片
      */
     protected void loadPreImg() {
-        //如果当前已经是第一张，则返回
-        if (mFristIndex == 0)
-            return;
-        //获得当前应该显示为第一张图片的下标
-        int index = mCurrentIndex - mCountOneScreen;
-        if (index >= 0) {
-//			mContainer = (LinearLayout) getChildAt(0);
-            //移除最后一张
-            int oldViewPos = mContainer.getChildCount() - 1;
-            mViewPos.remove(mContainer.getChildAt(oldViewPos));
-            mContainer.removeViewAt(oldViewPos);
-            destroyedCount--;
-            //将此View放入第一个位置
-            View view = mAdapter.getView(index, null, mContainer);
-            mViewPos.put(view, index);
-            mContainer.addView(view, 0);
-            view.setOnClickListener(this);
-            //水平滚动位置向左移动view的宽度个像素
-            scrollTo(mChildWidth, 0);
-            //当前位置--，当前第一个显示的下标--
-            mCurrentIndex--;
-            mFristIndex--;
-            //回调
-            if (mListener != null) {
-                notifyCurrentImgChanged();
+        try {
+            //如果当前已经是第一张，则返回
+            if (mFristIndex == 0)
+                return;
+            //获得当前应该显示为第一张图片的下标
+            int index = mCurrentIndex - mCountOneScreen;
+            if (index >= 0) {
+    //			mContainer = (LinearLayout) getChildAt(0);
+                //移除最后一张
+                int oldViewPos = mContainer.getChildCount() - 1;
+                mViewPos.remove(mContainer.getChildAt(oldViewPos));
+                mContainer.removeViewAt(oldViewPos);
+                destroyedCount--;
+                //将此View放入第一个位置
+                View view = mAdapter.getView(index, null, mContainer);
+                mViewPos.put(view, index);
+                mContainer.addView(view, 0);
+                view.setOnClickListener(this);
+                //水平滚动位置向左移动view的宽度个像素
+                scrollTo(mChildWidth, 0);
+                //当前位置--，当前第一个显示的下标--
+                mCurrentIndex--;
+                mFristIndex--;
+                //回调
+                if (mListener != null) {
+                    notifyCurrentImgChanged();
 
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

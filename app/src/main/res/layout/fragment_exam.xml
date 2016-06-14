@@ -8,7 +8,7 @@
 
     <View
         android:id="@+id/pop_line"
-        style="@style/line_horizontal" />
+        style="@style/line_horizontal_blue" />
 
     <LinearLayout
         android:layout_width="match_parent"

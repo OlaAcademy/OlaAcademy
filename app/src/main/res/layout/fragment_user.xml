@@ -88,7 +88,7 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="知识型谱"
+                    android:text="@string/knowledges"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
@@ -116,7 +116,7 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="VIP会员"
+                    android:text="@string/vip"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
@@ -144,7 +144,7 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="课程收藏"
+                    android:text="@string/course_collect"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
@@ -173,7 +173,7 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="下载"
+                    android:text="@string/buy_course"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 

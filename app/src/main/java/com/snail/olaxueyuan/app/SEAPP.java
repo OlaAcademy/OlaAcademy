@@ -39,8 +39,10 @@ public class SEAPP extends Application {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration//
                 .Builder(getApplicationContext())//
                 .defaultDisplayImageOptions(defaultOptions)//
-                .discCacheSize(50 * 1024 * 1024)//
-                .discCacheFileCount(100)// 缓存一百张图片
+                .diskCacheSize(50 * 1024 * 1024)
+                .diskCacheFileCount(100)
+//                .discCacheSize(50 * 1024 * 1024)//
+//                .discCacheFileCount(100)// 缓存一百张图片
                 .writeDebugLogs()//
                 .build();//
         ImageLoader.getInstance().init(config);

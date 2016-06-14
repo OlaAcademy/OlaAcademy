@@ -16,4 +16,5 @@ public class MCVideo implements Serializable {
     public String tname;
     public String isBanner;
     public String pic;
+    public int isfree;
 }

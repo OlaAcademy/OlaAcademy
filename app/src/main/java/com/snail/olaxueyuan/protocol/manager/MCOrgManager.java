@@ -5,6 +5,7 @@ import com.snail.olaxueyuan.protocol.result.MCCommonResult;
 import com.snail.olaxueyuan.protocol.result.MCEnrollListResult;
 import com.snail.olaxueyuan.protocol.result.MCOrgListResult;
 import com.snail.olaxueyuan.protocol.result.MCTeacherResult;
+import com.snail.olaxueyuan.protocol.result.SystemCourseResult;
 import com.snail.olaxueyuan.protocol.service.MCOrgService;
 
 import retrofit.Callback;
@@ -216,5 +217,15 @@ public class MCOrgManager {
             }
         });
 
+    }
+
+    /**
+     * 获取整套视频或题库列表
+     *
+     * @param type 1 视频 2 题库
+     * @param cb
+     */
+    public void getGoodsList(String type, Callback<SystemCourseResult> cb) {
+        orgService.getGoodsList(type, cb);
     }
 }

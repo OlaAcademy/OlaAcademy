@@ -156,6 +156,7 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>
     </style>
+
     <style name="tag_style" parent="android:Theme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -183,6 +184,18 @@
 
     <style name="line_horizontal">
         <item name="android:background">@color/line_color</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="line_horizontal_blue">
+        <item name="android:background">@color/title_blue</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="line_horizontal_f0">
+        <item name="android:background">@color/title_hint_color</item>
         <item name="android:layout_height">1px</item>
         <item name="android:layout_width">match_parent</item>
     </style>

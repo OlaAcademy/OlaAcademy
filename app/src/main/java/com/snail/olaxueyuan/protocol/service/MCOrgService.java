@@ -5,8 +5,11 @@ import com.snail.olaxueyuan.protocol.result.MCCommonResult;
 import com.snail.olaxueyuan.protocol.result.MCEnrollListResult;
 import com.snail.olaxueyuan.protocol.result.MCOrgListResult;
 import com.snail.olaxueyuan.protocol.result.MCTeacherResult;
+import com.snail.olaxueyuan.protocol.result.SystemCourseResult;
 
 import retrofit.Callback;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
@@ -53,7 +56,7 @@ public interface MCOrgService {
     @Multipart
     @POST("/ola/organization/getListByPhone")
     public void fetchEnrollList(@Part("userPhone") String userPhone,
-                              Callback<MCEnrollListResult> cb);
+                                Callback<MCEnrollListResult> cb);
 
     /**
      * 删除报名信息
@@ -63,7 +66,7 @@ public interface MCOrgService {
     @Multipart
     @POST("/ola/organization/cancelCheckIn")
     public void removeEnroll(@Part("checkId") String checkId,
-                                Callback<MCCommonResult> cb);
+                             Callback<MCCommonResult> cb);
 
     /**
      * 更新机构报名数量
@@ -99,4 +102,14 @@ public interface MCOrgService {
                        @Part("type") String type,
                        @Part("checkinTime") String checkinTime,
                        Callback<MCCommonResult> cb);
+
+    /**
+     * 获取整套视频或题库列表
+     * @param type  1 视频 2 题库
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/goods/getGoodsList")
+    void getGoodsList(@Field("type") String type,
+                      Callback<SystemCourseResult> cb);
 }

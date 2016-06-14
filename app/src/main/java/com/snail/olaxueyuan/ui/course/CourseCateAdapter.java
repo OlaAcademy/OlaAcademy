@@ -10,8 +10,10 @@ import android.widget.TextView;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.model.MCCourPoint;
 import com.snail.olaxueyuan.protocol.model.MCVideo;
+import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tianxiaopeng on 15-1-10.
@@ -20,9 +22,9 @@ public class CourseCateAdapter extends BaseAdapter {
 
 
     private Context context;
-    private ArrayList<MCVideo> videoList;
+    private List<CourseVideoResult.ResultBean.VideoListBean> videoList;
 
-    public CourseCateAdapter(Context context, ArrayList<MCVideo> videoList) {
+    public CourseCateAdapter(Context context, List<CourseVideoResult.ResultBean.VideoListBean> videoList) {
         super();
         this.context = context;
         this.videoList = videoList;
@@ -67,8 +69,7 @@ public class CourseCateAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        MCVideo point = videoList.get(position);
-        holder.tv_title.setText(point.name);
+        holder.tv_title.setText(videoList.get(position).getName());
         return convertView;
     }
 

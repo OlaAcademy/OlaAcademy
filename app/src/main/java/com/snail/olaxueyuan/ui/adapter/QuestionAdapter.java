@@ -1,6 +1,7 @@
 package com.snail.olaxueyuan.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -9,8 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
+import com.snail.olaxueyuan.ui.question.QuestionWebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,7 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder = (ParentViewHolder) convertView.getTag();
         }
         holder.questionName.setText(list.get(groupPosition).getName());
-        holder.questionKnowledgeAllCount.setText(list.get(groupPosition).getSubAllNum() + "个知识点");
+        holder.questionKnowledgeAllCount.setText(context.getString(R.string.num_knowledge, list.get(groupPosition).getSubAllNum()));
         holder.questionKnowledgeCount.setText(list.get(groupPosition).getSubNum() + "/" + list.get(groupPosition).getSubAllNum());
         try {
             int subAllNum = list.get(groupPosition).getSubAllNum();
@@ -94,9 +95,13 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
             holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
             if (subAllNum == 0) {
-                holder.progressBar.setProgress(50);
+                holder.progressBar.setProgress(100);
             } else {
-                holder.progressBar.setProgress(subNum / subAllNum);
+                if (subNum == subAllNum) {
+                    holder.progressBar.setProgress(100);
+                } else {
+                    holder.progressBar.setProgress((subNum * 100) / subAllNum);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,7 +139,7 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        ChildViewHolder holder;
+        final ChildViewHolder holder;
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.fragment_question_child_item, null);
             holder = new ChildViewHolder(convertView);
@@ -150,9 +155,13 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
             holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
             if (subAllNum == 0) {
-                holder.progressBar.setProgress(50);
+                holder.progressBar.setProgress(100);
             } else {
-                holder.progressBar.setProgress(subNum / subAllNum);
+                if (subNum == subAllNum) {
+                    holder.progressBar.setProgress(100);
+                } else {
+                    holder.progressBar.setProgress((subNum * 100) / subAllNum);
+                }
             }
             if (childPosition == list.get(groupPosition).getChild().size() - 1) {
                 holder.lineBottom.setVisibility(View.GONE);
@@ -162,6 +171,16 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        final int courseId = list.get(groupPosition).getChild().get(childPosition).getId();
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, QuestionWebActivity.class);
+                intent.putExtra("objectId",courseId);
+                intent.putExtra("type",1);
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 
