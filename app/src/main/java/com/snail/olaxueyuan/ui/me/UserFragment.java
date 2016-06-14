@@ -21,9 +21,12 @@ import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.model.SEUser;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.ui.SuperFragment;
+import com.snail.olaxueyuan.ui.me.activity.DownloadActivity;
 import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.olaxueyuan.ui.me.activity.UserUpdateActivity;
 import com.snail.olaxueyuan.ui.me.adapter.UserPageAdapter;
+import com.snail.olaxueyuan.ui.setting.SettingActivity;
+import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,6 +72,7 @@ public class UserFragment extends SuperFragment {
     private UserPageAdapter userPageAdapter;
 
     private final static int USER_LOGIN = 0x1212;
+    private final static int USER_LOGOUT = 0x1111;
     private final static int EDIT_USER_INFO = 0x1010;
 
     @Override
@@ -96,10 +100,12 @@ public class UserFragment extends SuperFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_icon:
-                ToastUtil.showShortToast(getActivity(), "我是左上角icon");
+                Intent downloadIntent = new Intent(getActivity(), DownloadActivity.class);
+                startActivity(downloadIntent);
                 break;
             case R.id.right_response:
-                ToastUtil.showShortToast(getActivity(), "我是右上角icon");
+                Intent settingIntent = new Intent(getActivity(), SettingActivity.class);
+                startActivityForResult(settingIntent,USER_LOGOUT);
                 break;
             case R.id.headLL:
                 headViewClick();
@@ -145,21 +151,21 @@ public class UserFragment extends SuperFragment {
                     SEUser userInfo = (SEUser)bundle.getSerializable("userInfo");
                     updateHeadView(userInfo);
                     break;
+                case USER_LOGOUT:
+                    updateHeadView(null);
+                    break;
             }
         }
     }
 
     private void updateHeadView(SEUser userInfo){
-        name.setText(userInfo.getName());
-        if (userInfo != null && !userInfo.getAvator().equals("") && userInfo.getAvator().indexOf("res/images/def.jpg") == -1) {
-            String avatarUrl = SEConfig.getInstance().getAPIBaseURL() + userInfo.getAvator();
-            DisplayImageOptions options = new DisplayImageOptions.Builder()//
-                    .cacheInMemory(true)//
-                    .cacheOnDisk(true)//
-                    .bitmapConfig(Bitmap.Config.RGB_565)//
-                    .build();
-            ImageLoader.getInstance().displayImage(avatarUrl, avatar, options);
+        if (userInfo==null){
+            name.setText("登录／注册");
+            remainDays.setText("还剩0天");
+        }else{
+            name.setText(userInfo.getName());
         }
+        SVProgressHUD.showInViewWithoutIndicator(getActivity(),"刷新知识型谱／收藏／购买",2.0f);
     }
 
     class ViewPagerListener implements ViewPager.OnPageChangeListener {

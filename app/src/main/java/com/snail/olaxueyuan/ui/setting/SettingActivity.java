@@ -1,5 +1,7 @@
 package com.snail.olaxueyuan.ui.setting;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,6 +11,7 @@ import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.protocol.manager.SEUserManager;
 import com.snail.olaxueyuan.sharesdk.ShareModel;
 import com.snail.olaxueyuan.sharesdk.SharePopupWindow;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
@@ -37,6 +41,7 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
     private TextView downloadTV;
     private RelativeLayout aboutRL;
     private SharedPreferences sp;
+    private Button btn_logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +107,33 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
 
             }
         });
+
+        btn_logout = (Button)findViewById(R.id.btn_logout);
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+    }
+
+    private void logout() {
+        new AlertDialog.Builder(SettingActivity.this)
+                .setTitle("请确认")
+                .setMessage("确认退出当前用户吗？")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SEUserManager.getInstance().logout();
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .show();
     }
 
 

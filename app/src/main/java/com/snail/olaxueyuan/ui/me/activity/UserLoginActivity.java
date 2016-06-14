@@ -13,6 +13,7 @@ import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.result.SEUserResult;
 import com.snail.olaxueyuan.ui.MainActivity;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
+import com.snail.svprogresshud.SVProgressHUD;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -76,30 +77,27 @@ public class UserLoginActivity extends SEBaseActivity {
     }
 
     private void login() {
-        loginBtn.setEnabled(false);
+        SVProgressHUD.showInView(UserLoginActivity.this, "登录中,请稍后...", true);
         SEAuthManager am = SEAuthManager.getInstance();
         am.authWithUsernamePassword(phoneET.getText().toString(), passET.getText().toString(), new Callback<SEUserResult>() {
             @Override
             public void success(SEUserResult result, Response response) {
-                loginBtn.setEnabled(true);
-                int isVisitor = getIntent().getIntExtra("isVisitor", 0);
-                if (isVisitor == 1) {
-                    Intent intent = getIntent();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("userInfo", result.data);
-                    intent.putExtras(bundle);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    Intent intent = new Intent(UserLoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                if (!result.apicode.equals("10000")) {
+                    SVProgressHUD.showInViewWithoutIndicator(UserLoginActivity.this, result.message, 2.0f);
+                    return;
                 }
+                SVProgressHUD.dismiss(UserLoginActivity.this);
+                Intent intent = getIntent();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("userInfo", result.data);
+                intent.putExtras(bundle);
+                setResult(RESULT_OK, intent);
+                finish();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                loginBtn.setEnabled(true);
+                SVProgressHUD.dismiss(UserLoginActivity.this);
             }
         });
     }
@@ -110,6 +108,10 @@ public class UserLoginActivity extends SEBaseActivity {
         if (requestCode == PASS_FOREGT && resultCode == RESULT_OK) {
             phoneET.setText(data.getStringExtra("phone"));
             passET.setText(data.getStringExtra("password"));
+        }else if(requestCode == USER_REG && resultCode == RESULT_OK){
+            phoneET.setText(data.getStringExtra("phone"));
+            passET.setText(data.getStringExtra("password"));
+            login();
         }
     }
 }
