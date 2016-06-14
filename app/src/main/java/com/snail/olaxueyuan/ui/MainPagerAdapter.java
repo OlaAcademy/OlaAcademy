@@ -5,24 +5,19 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import com.snail.olaxueyuan.ui.circle.CircleFragment;
-import com.snail.olaxueyuan.ui.examination.ExamFragment;
-import com.snail.olaxueyuan.ui.information.InformationFragment;
 import com.snail.olaxueyuan.ui.course.CourseFragment;
-import com.snail.olaxueyuan.ui.index.IndexFragment;
-import com.snail.olaxueyuan.ui.me.UserBaseFragment;
+import com.snail.olaxueyuan.ui.examination.ExamFragment;
 import com.snail.olaxueyuan.ui.me.UserFragment;
 import com.snail.olaxueyuan.ui.question.QuestionFragment;
-import com.snail.olaxueyuan.ui.search.SearchFragment;
-import com.snail.olaxueyuan.ui.story.StoryFragment;
 
 /**
  * Created by tianxiaopeng on 15-1-2.
  */
 public class MainPagerAdapter extends FragmentPagerAdapter {
-    private IndexFragment indexFragment;
-    private InformationFragment consultFragment;
-    private StoryFragment storyFragment;
-    private SearchFragment searchFragment;
+//    private IndexFragment indexFragment;
+//    private InformationFragment consultFragment;
+//    private StoryFragment storyFragment;
+//    private SearchFragment searchFragment;
 
     private QuestionFragment questionFragment;
     private ExamFragment examFragment;

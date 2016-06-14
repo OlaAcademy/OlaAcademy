@@ -70,4 +70,5 @@
     <string name="course_collect">课程收藏</string>
     <string name="download">下载</string>
     <string name="num_buy">%s人购买</string>
+    <string name="buy_course">购买课程</string>
 </resources>

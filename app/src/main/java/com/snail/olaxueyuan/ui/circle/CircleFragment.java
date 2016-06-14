@@ -2,6 +2,7 @@ package com.snail.olaxueyuan.ui.circle;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.snail.olaxueyuan.protocol.result.OLaCircleModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
+import com.snail.olaxueyuan.ui.course.CourseVideoActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -29,6 +31,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -64,7 +67,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     }
 
     private void initView() {
-        new TitleManager(R.string.ola_circle, this, rootView, false);
+        titleManager = new TitleManager(R.string.ola_circle, this, rootView, false);
+        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.ic_sub_subject);
         adapter = new CircleAdapter();
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.setOnRefreshListener(this);
@@ -101,9 +105,12 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         });
     }
 
-    @Override
+    @OnClick({R.id.right_response})
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.right_response:
+                ToastUtil.showShortToast(getActivity(), "我是右上角提醒");
+                break;
         }
     }
 
@@ -136,7 +143,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
                 convertView = View.inflate(getActivity(), R.layout.fragment_circle_listview_item, null);
@@ -153,6 +160,14 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
             }
             holder.time.setText(getActivity().getString(R.string.study_record, list.get(position).getTime()));
             holder.studyName.setText(list.get(position).getVideoName());
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), CourseVideoActivity.class);
+                    intent.putExtra("pid", list.get(position).getCourseId());
+                    getActivity().startActivity(intent);
+                }
+            });
             return convertView;
         }
 

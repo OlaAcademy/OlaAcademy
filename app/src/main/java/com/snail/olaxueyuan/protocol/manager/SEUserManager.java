@@ -13,6 +13,7 @@ import com.snail.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.snail.olaxueyuan.protocol.result.SEUserResult;
 import com.snail.olaxueyuan.protocol.result.ServiceError;
 import com.snail.olaxueyuan.protocol.result.UserAlipayResult;
+import com.snail.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.snail.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
 import com.snail.olaxueyuan.protocol.result.UserWXpayResult;
@@ -291,6 +292,16 @@ public class SEUserManager {
      */
     public void getWXPayReq(String price, String userId, String type, String goodsId, String body, Callback<UserWXpayResult> cb) {
         _userService.getWXPayReq(price, userId, type, goodsId, body, cb);
+    }
+
+    /**
+     * 获取已购买视频列表
+     * 需要userId
+     *
+     * @param cb
+     */
+    public void getBuyGoodsList(String userId, Callback<UserBuyGoodsResult> cb) {
+        _userService.getBuyGoodsList(userId, cb);
     }
 }
 
