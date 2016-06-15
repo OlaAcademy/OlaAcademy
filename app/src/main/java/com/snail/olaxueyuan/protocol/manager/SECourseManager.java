@@ -5,11 +5,11 @@ import com.snail.olaxueyuan.protocol.model.SECart;
 import com.snail.olaxueyuan.protocol.model.SECourse;
 import com.snail.olaxueyuan.protocol.model.SECourseCate;
 import com.snail.olaxueyuan.protocol.model.SECourseDetail;
+import com.snail.olaxueyuan.protocol.result.CourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.protocol.result.MCBannerResult;
 import com.snail.olaxueyuan.protocol.result.MCCollectionResult;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
-import com.snail.olaxueyuan.protocol.result.MCCourSectionResult;
 import com.snail.olaxueyuan.protocol.result.MCCourseListResult;
 import com.snail.olaxueyuan.protocol.result.MCKeywordResult;
 import com.snail.olaxueyuan.protocol.result.MCQuestionListResult;
@@ -285,8 +285,8 @@ public class SECourseManager {
      *
      * @param callback
      */
-    public void fetchHomeCourseList(String pid, String type, final Callback<MCCourseListResult> callback) {
-        getCourseService().fetchHomeCourseList(pid, type, new Callback<MCCourseListResult>() {
+    public void fetchHomeCourseList(String userId, String pid, String type, final Callback<MCCourseListResult> callback) {
+        getCourseService().fetchHomeCourseList(userId, pid, type, new Callback<MCCourseListResult>() {
             @Override
             public void success(MCCourseListResult result, Response response) {
                 if (callback != null) {
@@ -498,6 +498,32 @@ public class SECourseManager {
 
     }
 
+    /**
+     * 收藏／取消收藏视频
+     *
+     * @param userId   用户id
+     * @param videoId  视频Id
+     * @param courseId 课程id
+     * @param state    1 收藏 0 取消
+     * @param callback
+     */
+    public void collectionVideo(String userId, String videoId, String courseId, String state, final Callback<CourseCollectResult> callback) {
+        getCourseService().collectionVideo(userId, videoId, courseId, state, new Callback<CourseCollectResult>() {
+            @Override
+            public void success(CourseCollectResult result, Response response) {
+                if (callback != null) {
+                    callback.success(result, response);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (callback != null) {
+                    callback.failure(error);
+                }
+            }
+        });
+    }
 }
 
 

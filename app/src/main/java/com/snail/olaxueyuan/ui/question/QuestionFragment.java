@@ -15,6 +15,7 @@ import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.adapter.QuestionAdapter;
@@ -98,7 +99,11 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
 
     private void fetchData() {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
-        QuestionCourseManager.getInstance().fetchHomeCourseList("126", pid, "1", new Callback<QuestionCourseModule>() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        QuestionCourseManager.getInstance().fetchHomeCourseList(userId, pid, "1", new Callback<QuestionCourseModule>() {
             @Override
             public void success(QuestionCourseModule questionCourseModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());

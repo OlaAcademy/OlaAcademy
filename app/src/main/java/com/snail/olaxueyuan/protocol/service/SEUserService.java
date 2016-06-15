@@ -119,6 +119,7 @@ public interface SEUserService {
     @FormUrlEncoded
     @POST("/ola/cour/getStatisticsList")
     void getStatisticsList(@Field("type") String type,
+                           @Field("userId") String userid,
                            Callback<UserKnowledgeResult> cb);
 
     /**

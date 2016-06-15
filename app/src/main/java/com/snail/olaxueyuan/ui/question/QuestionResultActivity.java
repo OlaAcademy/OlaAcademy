@@ -13,6 +13,7 @@ import com.snail.olaxueyuan.common.NoScrollGridView;
 import com.snail.olaxueyuan.common.SubListView;
 import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
@@ -150,7 +151,11 @@ public class QuestionResultActivity extends SEBaseActivity {
 
     public void performRefresh() {
         SECourseManager courseManager = SECourseManager.getInstance();
-        courseManager.fetchCourseSection(String.valueOf(objectId), "126", new Callback<CourseVideoResult>() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        courseManager.fetchCourseSection(String.valueOf(objectId), userId, new Callback<CourseVideoResult>() {
             @Override
             public void success(CourseVideoResult result, Response response) {
                 if (result.getApicode() != 10000) {

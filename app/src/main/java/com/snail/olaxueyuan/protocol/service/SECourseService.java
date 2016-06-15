@@ -1,10 +1,10 @@
 package com.snail.olaxueyuan.protocol.service;
 
+import com.snail.olaxueyuan.protocol.result.CourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.protocol.result.MCBannerResult;
 import com.snail.olaxueyuan.protocol.result.MCCollectionResult;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
-import com.snail.olaxueyuan.protocol.result.MCCourSectionResult;
 import com.snail.olaxueyuan.protocol.result.MCCourseListResult;
 import com.snail.olaxueyuan.protocol.result.MCKeywordResult;
 import com.snail.olaxueyuan.protocol.result.MCQuestionListResult;
@@ -152,9 +152,11 @@ public interface SECourseService {
      */
     @FormUrlEncoded
     @POST("/ola/cour/getCourList")
-    public void fetchHomeCourseList(@Field("pid") String pid,
-                                    @Field("type") String type,
-                                    Callback<MCCourseListResult> cb);
+    public void fetchHomeCourseList(
+            @Field("userId") String userId,
+            @Field("pid") String pid,
+            @Field("type") String type,
+            Callback<MCCourseListResult> cb);
 
     /**
      * 课程子分类
@@ -255,4 +257,22 @@ public interface SECourseService {
     @POST("/ola/cour/getPoiSubList")
     public void fetchQuestionList(@Part("pointId") String pointId,
                                   Callback<MCQuestionListResult> cb);
+
+    /**
+     * 收藏／取消收藏视频
+     *
+     * @param userId   用户id
+     * @param videoId  视频Id
+     * @param courseId 课程id
+     * @param state    1 收藏 0 取消
+     * @param cb
+     */
+    @Multipart
+    @POST("/ola/collection/collectionVideo")
+    void collectionVideo(
+            @Part("userId") String userId,
+            @Part("videoId") String videoId,
+            @Part("courseId") String courseId,
+            @Part("state") String state,
+            Callback<CourseCollectResult> cb);
 }

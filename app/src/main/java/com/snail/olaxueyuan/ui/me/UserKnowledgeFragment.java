@@ -60,7 +60,7 @@ public class UserKnowledgeFragment extends SuperFragment implements PullToRefres
 
     private void fetchData() {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
-        SEUserManager.getInstance().getStatisticsList("1", new Callback<UserKnowledgeResult>() {
+        SEUserManager.getInstance().getStatisticsList("1", SEAuthManager.getInstance().getAccessUser().getId(),new Callback<UserKnowledgeResult>() {
             @Override
             public void success(UserKnowledgeResult userKnowledgeResult, Response response) {
                 SVProgressHUD.dismiss(getActivity());
@@ -147,10 +147,4 @@ public class UserKnowledgeFragment extends SuperFragment implements PullToRefres
     public void onRefresh(PullToRefreshBase refreshView) {
         fetchData();
     }
-
-    @OnClick(R.id.btn_login)
-    public void onClick() {
-    }
-
-
 }

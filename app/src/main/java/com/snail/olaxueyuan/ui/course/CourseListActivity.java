@@ -14,18 +14,13 @@ import android.widget.TextView;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
-import com.snail.olaxueyuan.protocol.model.MCCourPoint;
-import com.snail.olaxueyuan.protocol.model.MCCourSection;
 import com.snail.olaxueyuan.protocol.model.MCCourse;
-import com.snail.olaxueyuan.protocol.model.MCVideo;
 import com.snail.olaxueyuan.protocol.model.VideoCollection;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
-import com.snail.olaxueyuan.protocol.result.MCCourSectionResult;
 import com.snail.olaxueyuan.protocol.result.VideoCollectionResult;
 import com.snail.svprogresshud.SVProgressHUD;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -89,7 +84,11 @@ public class CourseListActivity extends Activity {
 
     public void performRefresh() {
         SECourseManager courseManager = SECourseManager.getInstance();
-        courseManager.fetchCourseSection(courseId, "126", new Callback<CourseVideoResult>() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        courseManager.fetchCourseSection(courseId, userId, new Callback<CourseVideoResult>() {
             @Override
             public void success(CourseVideoResult result, Response response) {
                 if (result.getApicode() != 10000) {

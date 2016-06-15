@@ -27,6 +27,7 @@ import com.snail.olaxueyuan.app.SEAPP;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.ui.adapter.CourseVideoListAdapter;
@@ -103,7 +104,13 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     @Bind(R.id.title_layout)
     public LinearLayout titleLayout;
     @Bind(R.id.root)
-    public LinearLayout root;
+    public FrameLayout root;
+    @Bind(R.id.video_download_btn)
+    ImageView videoDownloadBtn;
+    @Bind(R.id.video_collect_btn)
+    ImageView videoCollectBtn;
+    @Bind(R.id.video_share_btn)
+    ImageView videoShareBtn;
 
     private String courseId;
     private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;
@@ -212,7 +219,11 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
 
     public void performRefresh() {
         SECourseManager courseManager = SECourseManager.getInstance();
-        courseManager.fetchCourseSection(courseId, "126", new Callback<CourseVideoResult>() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        courseManager.fetchCourseSection(courseId, userId, new Callback<CourseVideoResult>() {
             @Override
             public void success(CourseVideoResult result, Response response) {
                 if (result.getApicode() != 10000) {
@@ -269,7 +280,8 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         mVideoView.setLayoutParams(layoutParams);
     }
 
-    @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return})
+    @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return
+            , R.id.video_download_btn, R.id.video_collect_btn, R.id.video_share_btn})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_return:
@@ -285,6 +297,15 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
                 } else if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                     VideoManager.getInstance().setLandScape();
                 }
+                break;
+            case R.id.video_download_btn:
+                ToastUtil.showToastShort(CourseVideoActivity.this, "我是下载");
+                break;
+            case R.id.video_collect_btn:
+                ToastUtil.showToastShort(CourseVideoActivity.this, "我是收藏");
+                break;
+            case R.id.video_share_btn:
+                ToastUtil.showToastShort(CourseVideoActivity.this, "我是分享");
                 break;
             default:
                 break;

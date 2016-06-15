@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.manager.TitleManager;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.model.MCSubCourse;
 import com.snail.olaxueyuan.protocol.model.SECourseCate;
@@ -101,7 +102,11 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
 
     private void performRefresh() {
         SECourseManager courseManager = SECourseManager.getInstance();
-        courseManager.fetchHomeCourseList(pid, "2", new Callback<MCCourseListResult>() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        courseManager.fetchHomeCourseList(userId, pid, "2", new Callback<MCCourseListResult>() {
             @Override
             public void success(MCCourseListResult result, Response response) {
                 if (!result.apicode.equals("10000")) {
