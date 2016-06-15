@@ -76,4 +76,6 @@
     <string name="win_student">打败考生</string>
     <string name="all_number_subject">/%s道</string>
     <string name="get_knowledge_fail">获取知识点对应的课程失败</string>
+    <string name="click_login">点击登录</string>
+    <string name="login_before_view_study_record">亲爱的用户请先登录后再查看学习记录</string>
 </resources>
