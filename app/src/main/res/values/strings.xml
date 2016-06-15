@@ -75,4 +75,5 @@
     <string name="correct_percent">正确率</string>
     <string name="win_student">打败考生</string>
     <string name="all_number_subject">/%s道</string>
+    <string name="get_knowledge_fail">获取知识点对应的课程失败</string>
 </resources>
