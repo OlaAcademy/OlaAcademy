@@ -7,9 +7,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,27 +19,29 @@ import butterknife.ButterKnife;
  * Created by mingge on 2016/6/14.
  */
 public class QuestionResultListAdapter extends BaseAdapter {
-    private JSONArray array;
     private Context context;
+    private List<CourseVideoResult.ResultBean.VideoListBean> videoList = new ArrayList<>();
 
-    public QuestionResultListAdapter(JSONArray array, Context context) {
-        this.array = array;
+    public QuestionResultListAdapter(Context context) {
+        super();
         this.context = context;
+    }
+
+    public void updateData(List<CourseVideoResult.ResultBean.VideoListBean> videoList) {
+        if (videoList != null) {
+            this.videoList = videoList;
+        }
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return array.length();
+        return videoList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        try {
-            return array.get(position);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return 0;
-        }
+        return videoList.get(position);
     }
 
     @Override
@@ -47,7 +50,7 @@ public class QuestionResultListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.activity_question_result_list_item, null);
@@ -56,9 +59,19 @@ public class QuestionResultListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-//        holder.videoName.setText("");
-//        holder.videoLength.setText("");
+        holder.videoName.setText(videoList.get(position).getName());
+        holder.videoLength.setText(videoList.get(position).getTimeSpan());
+        if (videoList.get(position).isSelected()) {
+            holder.videoName.setSelected(true);
+        } else {
+            holder.videoName.setSelected(false);
+        }
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         return convertView;
     }
 
@@ -72,4 +85,5 @@ public class QuestionResultListAdapter extends BaseAdapter {
             ButterKnife.bind(this, view);
         }
     }
+
 }
