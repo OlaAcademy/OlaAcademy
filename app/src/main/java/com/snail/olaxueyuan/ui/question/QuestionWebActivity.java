@@ -16,9 +16,12 @@ import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.app.SEConfig;
 import com.snail.olaxueyuan.protocol.model.MCQuestion;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
+import com.snail.olaxueyuan.ui.question.module.QuestionResultNoticeClose;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
+
+import de.greenrobot.event.EventBus;
 
 
 public class QuestionWebActivity extends SEBaseActivity implements View.OnClickListener {
@@ -40,6 +43,7 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_web);
+        EventBus.getDefault().register(this);
 
         contentWebView = (WebView) findViewById(R.id.questionWebView);
         // 启用javascript
@@ -111,7 +115,7 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
                 case 3:
                     Intent intent = new Intent(QuestionWebActivity.this, QuestionResultActivity.class);
                     intent.putExtra("answerArray", msg.obj.toString());
-                    intent.putExtra("objectId",objectId);
+                    intent.putExtra("objectId", objectId);
                     startActivity(intent);
                     break;
             }
@@ -151,5 +155,17 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
             msg.what = 3;
             handler.sendMessage(msg);
         }
+    }
+
+    public void onEventMainThread(QuestionResultNoticeClose module) {//答题完成界面点击答题完成，finish本页面
+        if (module.type == 0 && module.isClose) {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -30,6 +30,13 @@ public class QuestionResultAdapter extends BaseAdapter {
         height = (Utils.getScreenMetrics(context).x - Utils.dip2px(context, 100)) / 5;
     }
 
+    public void upDateData(JSONArray array) {
+        if (array != null) {
+            this.array = array;
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return array.length();

@@ -118,6 +118,7 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     public Context context;
     public MediaControllerView controller;
     public long msec = 0;//是否播放过
+    private boolean isFromNet = true;//false：不从网络请求数据，true：从网络请求接口
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,8 +172,26 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         mGestureDetector = new GestureDetector(this, new MyGestureListener());
         mVideoView.setOnInfoListener(infoListener);
         mVideoView.setOnVideoPlayFailListener(this);
-        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
-        performRefresh();
+//        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
+        isFromNet = getIntent().getBooleanExtra("isFromNet", true);
+        CourseVideoResult result = (CourseVideoResult) getIntent().getSerializableExtra("result");
+        if (isFromNet) {
+            performRefresh();
+        } else {
+            fromIntentData(result);
+        }
+    }
+
+    public void fromIntentData(CourseVideoResult result) {
+        videoArrayList = result.getResult().getVideoList();
+        if (videoArrayList != null && videoArrayList.size() > 0) {
+            videoArrayList.get(0).setSelected(true);
+            adapter = new CourseVideoListAdapter(CourseVideoActivity.this);
+            listview.setAdapter(adapter);
+            initListViewItemClick();
+            adapter.updateData(videoArrayList);
+            mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
+        }
     }
 
     private void initListViewItemClick() {
@@ -215,7 +234,7 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
 
             @Override
             public void failure(RetrofitError error) {
-
+                ToastUtil.showToastShort(CourseVideoActivity.this, R.string.data_request_fail);
             }
         });
     }
@@ -293,9 +312,9 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
                         mVideoView.pause();
                         loading_text.setVisibility(View.GONE);
                     } else {*/
-                        //缓存完成，继续播放
-                        mVideoView.start();
-                        loading_text.setVisibility(View.GONE);
+                    //缓存完成，继续播放
+                    mVideoView.start();
+                    loading_text.setVisibility(View.GONE);
 //                    }
                     break;
                 case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
