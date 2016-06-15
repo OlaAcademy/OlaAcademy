@@ -162,7 +162,11 @@ public class VideoView extends SurfaceView implements MediaControllerView.MediaP
                 mMediaPlayer.setDisplay(mSurfaceHolder);
                 resume();
             } else {
-                openVideo();
+                try {
+                    openVideo();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -433,7 +437,11 @@ public class VideoView extends SurfaceView implements MediaControllerView.MediaP
         try {
             mDuration = -1;
             mCurrentBufferPercentage = 0;
-            mMediaPlayer = new MediaPlayer(mContext, mHardwareDecoder);
+            try {
+                mMediaPlayer = new MediaPlayer(mContext, mHardwareDecoder);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mMediaPlayer.setOnPreparedListener(mPreparedListener);
             mMediaPlayer.setOnVideoSizeChangedListener(mSizeChangedListener);
             mMediaPlayer.setOnCompletionListener(mCompletionListener);

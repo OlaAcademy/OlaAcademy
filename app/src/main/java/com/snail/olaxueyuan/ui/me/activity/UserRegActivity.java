@@ -234,7 +234,12 @@ public class UserRegActivity extends Activity implements View.OnClickListener {
                     SVProgressHUD.showInViewWithoutIndicator(UserRegActivity.this, result.message, 2.0f);
                     return;
                 }
-                login();
+                Intent intent = getIntent();
+                intent.putExtra("phone", phoneET.getText().toString());
+                intent.putExtra("password", passET.getText().toString());
+                setResult(RESULT_OK,intent);
+                finish();
+                //login();
             }
 
             @Override
