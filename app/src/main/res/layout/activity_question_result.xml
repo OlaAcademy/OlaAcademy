@@ -211,6 +211,15 @@
                 android:verticalSpacing="5dp"
                 android:visibility="visible" />
 
+            <ImageView
+                android:id="@+id/up_down_icon"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/up_arrow_icon"
+                android:visibility="gone" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
@@ -244,7 +253,8 @@
                 android:id="@+id/list_knowledge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white" />
+                android:background="@color/white"
+                android:divider="@null" />
         </LinearLayout>
     </ScrollView>
 
