@@ -250,6 +250,7 @@
             android:name=".ui.me.activity.UserLoginActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:screenOrientation="portrait"
+            android:theme="@style/popup_dialog_anim"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <service

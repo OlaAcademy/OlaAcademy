@@ -1,5 +1,8 @@
 package com.snail.olaxueyuan.ui.me;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -9,11 +12,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.app.SEConfig;
 import com.snail.olaxueyuan.common.RoundRectImageView;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
+import com.snail.olaxueyuan.protocol.model.SEUser;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.ui.SuperFragment;
+import com.snail.olaxueyuan.ui.me.activity.DownloadActivity;
+import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
+import com.snail.olaxueyuan.ui.me.activity.UserUpdateActivity;
 import com.snail.olaxueyuan.ui.me.adapter.UserPageAdapter;
+import com.snail.olaxueyuan.ui.setting.SettingActivity;
+import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,6 +71,10 @@ public class UserFragment extends SuperFragment {
     ViewPager viewPager;
     private UserPageAdapter userPageAdapter;
 
+    private final static int USER_LOGIN = 0x1212;
+    private final static int USER_LOGOUT = 0x1111;
+    private final static int EDIT_USER_INFO = 0x1010;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_user, container, false);
@@ -79,14 +96,19 @@ public class UserFragment extends SuperFragment {
         viewPager.setCurrentItem(0);
     }
 
-    @OnClick({R.id.left_icon, R.id.right_response, R.id.knowledge_layout, R.id.course_collect_layout, R.id.vip_layout, R.id.download_layout})
+    @OnClick({R.id.left_icon, R.id.right_response, R.id.headLL, R.id.knowledge_layout, R.id.course_collect_layout, R.id.vip_layout, R.id.download_layout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_icon:
-                ToastUtil.showShortToast(getActivity(), "我是左上角icon");
+                Intent downloadIntent = new Intent(getActivity(), DownloadActivity.class);
+                startActivity(downloadIntent);
                 break;
             case R.id.right_response:
-                ToastUtil.showShortToast(getActivity(), "我是右上角icon");
+                Intent settingIntent = new Intent(getActivity(), SettingActivity.class);
+                startActivityForResult(settingIntent,USER_LOGOUT);
+                break;
+            case R.id.headLL:
+                headViewClick();
                 break;
             case R.id.knowledge_layout:
                 viewPager.setCurrentItem(0);
@@ -105,6 +127,45 @@ public class UserFragment extends SuperFragment {
                 changeTitleTab(3);
                 break;
         }
+    }
+
+    private void headViewClick(){
+        SEUser user = SEAuthManager.getInstance().getAccessUser();
+        if (user == null) {
+            Intent intent = new Intent(getActivity(), UserLoginActivity.class);
+            intent.putExtra("isVisitor", 1);
+            startActivityForResult(intent, USER_LOGIN);
+        }else {
+            Intent intent = new Intent(getActivity(), UserUpdateActivity.class);
+            startActivityForResult(intent, EDIT_USER_INFO);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode== Activity.RESULT_OK){
+            switch (requestCode) {
+                case USER_LOGIN:
+                    Bundle bundle = data.getExtras();
+                    SEUser userInfo = (SEUser)bundle.getSerializable("userInfo");
+                    updateHeadView(userInfo);
+                    break;
+                case USER_LOGOUT:
+                    updateHeadView(null);
+                    break;
+            }
+        }
+    }
+
+    private void updateHeadView(SEUser userInfo){
+        if (userInfo==null){
+            name.setText("登录／注册");
+            remainDays.setText("还剩0天");
+        }else{
+            name.setText(userInfo.getName());
+        }
+        SVProgressHUD.showInViewWithoutIndicator(getActivity(),"刷新知识型谱／收藏／购买",2.0f);
     }
 
     class ViewPagerListener implements ViewPager.OnPageChangeListener {

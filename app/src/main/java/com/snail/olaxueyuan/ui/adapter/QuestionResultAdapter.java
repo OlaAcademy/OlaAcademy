@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.common.manager.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,10 +22,12 @@ import butterknife.ButterKnife;
 public class QuestionResultAdapter extends BaseAdapter {
     private JSONArray array;
     private Context context;
+    private int height;
 
     public QuestionResultAdapter(JSONArray array, Context context) {
         this.array = array;
         this.context = context;
+        height = (Utils.getScreenMetrics(context).x - Utils.dip2px(context, 100)) / 5;
     }
 
     @Override
@@ -57,6 +60,11 @@ public class QuestionResultAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        ViewGroup.LayoutParams layoutParams = holder.selectNum.getLayoutParams();
+        layoutParams.width = height;
+        layoutParams.height = height;
+        holder.selectNum.setLayoutParams(layoutParams);
+
         holder.selectNum.setText(position + "");
         try {
             JSONObject object = (JSONObject) array.get(position);
