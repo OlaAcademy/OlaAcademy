@@ -246,29 +246,65 @@ public class MediaPlayer {
     else
       mEventHandler = null;
 
-    native_init();
+    try {
+      native_init();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   static {
 	String LIB_ROOT = Vitamio.getLibraryPath();
     try {
-    
-  
-      System.load(  LIB_ROOT +  "libstlport_shared.so");
-      System.load(  LIB_ROOT +  "libvplayer.so");
-      loadFFmpeg_native( LIB_ROOT + "libffmpeg.so");
+
+
+      try {
+        System.load(  LIB_ROOT +  "libstlport_shared.so");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      try {
+        System.load(  LIB_ROOT +  "libvplayer.so");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      try {
+        loadFFmpeg_native( LIB_ROOT + "libffmpeg.so");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
       boolean vvo_loaded = false;
       if (Build.VERSION.SDK_INT > 8)
-        vvo_loaded = loadVVO_native( LIB_ROOT +  "libvvo.9.so");
+        try {
+          vvo_loaded = loadVVO_native( LIB_ROOT +  "libvvo.9.so");
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       else if (Build.VERSION.SDK_INT > 7)
-        vvo_loaded = loadVVO_native(  LIB_ROOT + "libvvo.8.so");
+        try {
+          vvo_loaded = loadVVO_native(  LIB_ROOT + "libvvo.8.so");
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       else
-        vvo_loaded = loadVVO_native(  LIB_ROOT + "libvvo.7.so");
+        try {
+          vvo_loaded = loadVVO_native(  LIB_ROOT + "libvvo.7.so");
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       if (!vvo_loaded) {
-        vvo_loaded = loadVVO_native(  LIB_ROOT +  "libvvo.j.so");
-        Log.d("FALLBACK TO VVO JNI " + vvo_loaded);
+        try {
+          vvo_loaded = loadVVO_native(  LIB_ROOT +  "libvvo.j.so");
+          Log.d("FALLBACK TO VVO JNI " + vvo_loaded);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
-      loadVAO_native( LIB_ROOT +  "libvao.0.so");
+      try {
+        loadVAO_native( LIB_ROOT +  "libvao.0.so");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     } catch (UnsatisfiedLinkError e) {
       Log.e("Error loading libs", e);
     }
