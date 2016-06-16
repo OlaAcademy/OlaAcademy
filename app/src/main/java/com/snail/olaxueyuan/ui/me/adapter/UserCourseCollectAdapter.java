@@ -1,6 +1,7 @@
 package com.snail.olaxueyuan.ui.me.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.result.UserCourseCollectResult;
+import com.snail.olaxueyuan.ui.course.CourseVideoActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ public class UserCourseCollectAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.fragment_user_course_collect_listview_item, null);
@@ -69,6 +71,14 @@ public class UserCourseCollectAdapter extends BaseAdapter {
                 .placeholder(R.drawable.system_wu).into(holder.iconCollect);
         holder.courseTime.setText(list.get(position).getTotalTime());
         holder.buyCount.setText(context.getString(R.string.num_buy, list.get(position).getSubAllNum()));
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CourseVideoActivity.class);
+                intent.putExtra("pid", String.valueOf(list.get(position).getCourseId()));
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 

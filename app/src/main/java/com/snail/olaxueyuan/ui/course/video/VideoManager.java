@@ -43,6 +43,7 @@ public class VideoManager {
     }
 
     public void setPortrait() {
+        activity.bottomView.setVisibility(View.VISIBLE);
         activity.titleLayout.setVisibility(View.VISIBLE);
         activity.listLayout.setVisibility(View.GONE);
         activity.fullScreenTitleLayout.setVisibility(View.GONE);
@@ -57,6 +58,7 @@ public class VideoManager {
     }
 
     public void setLandScape() {
+        activity.bottomView.setVisibility(View.GONE);
         activity.titleLayout.setVisibility(View.GONE);
         activity.listLayout.setVisibility(View.GONE);
         activity.fullScreenTitleLayout.setVisibility(View.VISIBLE);

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SEUserManager;
@@ -43,6 +44,7 @@ public class UserCourseCollectFragment extends SuperFragment implements PullToRe
     @Bind(R.id.login_view)
     LinearLayout loginView;
     private UserCourseCollectAdapter adapter;
+    public static boolean isRefreshCourseCollectList;//是否刷新用户收藏列表
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +53,23 @@ public class UserCourseCollectFragment extends SuperFragment implements PullToRe
         EventBus.getDefault().register(this);
         initView();
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Logger.e("isRefreshCourseCollectList()==" + isRefreshCourseCollectList);
+        if (isRefreshCourseCollectList) {
+            isRefreshCourseCollectList = false;
+            fetchData();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     private void initView() {
@@ -116,13 +135,6 @@ public class UserCourseCollectFragment extends SuperFragment implements PullToRe
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     public void onRefresh(PullToRefreshBase refreshView) {
         fetchData();
     }
@@ -135,4 +147,5 @@ public class UserCourseCollectFragment extends SuperFragment implements PullToRe
                 break;
         }
     }
+
 }

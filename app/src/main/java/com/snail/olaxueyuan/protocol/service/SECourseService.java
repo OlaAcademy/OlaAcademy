@@ -267,12 +267,12 @@ public interface SECourseService {
      * @param state    1 收藏 0 取消
      * @param cb
      */
-    @Multipart
+    @FormUrlEncoded
     @POST("/ola/collection/collectionVideo")
     void collectionVideo(
-            @Part("userId") String userId,
-            @Part("videoId") String videoId,
-            @Part("courseId") String courseId,
-            @Part("state") String state,
+            @Field("userId") String userId,
+            @Field("videoId") String videoId,
+            @Field("courseId") String courseId,
+            @Field("state") String state,
             Callback<CourseCollectResult> cb);
 }
