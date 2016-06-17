@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -32,11 +33,10 @@ import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
-import com.snail.olaxueyuan.protocol.result.CourseCollectResult;
-import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
-import com.snail.olaxueyuan.ui.adapter.CourseVideoListAdapter;
+import com.snail.olaxueyuan.protocol.result.SystemVideoResult;
+import com.snail.olaxueyuan.ui.adapter.SystemVideoListAdapter;
 import com.snail.olaxueyuan.ui.course.video.VideoManager;
-import com.snail.olaxueyuan.ui.me.UserCourseCollectFragment;
+import com.snail.olaxueyuan.ui.course.video.VideoSystemManager;
 import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 
@@ -53,7 +53,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CourseVideoActivity extends Activity implements View.OnClickListener, VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication {
+public class SystemVideoActivity extends Activity implements View.OnClickListener, VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication {
 
     @Bind(R.id.left_return)
     public TextView leftReturn;
@@ -111,16 +111,15 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     public LinearLayout titleLayout;
     @Bind(R.id.root)
     public LinearLayout root;
-    @Bind(R.id.video_download_btn)
-    ImageView videoDownloadBtn;
-    @Bind(R.id.video_collect_btn)
-    ImageView videoCollectBtn;
     @Bind(R.id.bottom_view)
     public RelativeLayout bottomView;
+    @Bind(R.id.btn_buy)
+    Button btnBuy;
 
     private String courseId;
-    private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;
-    private CourseVideoListAdapter adapter;
+    private List<SystemVideoResult.ResultBean> videoArrayList;
+    //    private CourseVideoListAdapter adapter;
+    private SystemVideoListAdapter adapter;
 
     public AudioManager mAudioManager;
     public int mMaxVolume;   // 最大声音
@@ -131,18 +130,17 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     public Context context;
     public MediaControllerView controller;
     public long msec = 0;//是否播放过
-    private boolean isFromNet = true;//false：不从网络请求数据，true：从网络请求接口
-    private CourseVideoResult courseVideoResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        setContentView(R.layout.activity_course_video);
+        setContentView(R.layout.activity_system_video);
         ButterKnife.bind(this);
         Vitamio.isInitialized(SEAPP.getAppContext());
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setVideoViewHeight();
+        courseId = getIntent().getExtras().getString("pid");
         initView();
     }
 
@@ -173,7 +171,6 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     }
 
     public void initView() {
-        courseId = getIntent().getExtras().getString("pid");
         new TitleManager(this, getString(R.string.video_detail), this, true);
         mVideoView.setOnClickListener(this);
     }
@@ -182,31 +179,12 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         playFunction();
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        VideoManager.getInstance().initView(CourseVideoActivity.this);
+        VideoSystemManager.getInstance().initView(SystemVideoActivity.this);
         mGestureDetector = new GestureDetector(this, new MyGestureListener());
         mVideoView.setOnInfoListener(infoListener);
         mVideoView.setOnVideoPlayFailListener(this);
 //        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
-        isFromNet = getIntent().getBooleanExtra("isFromNet", true);
-        CourseVideoResult result = (CourseVideoResult) getIntent().getSerializableExtra("result");
-        if (isFromNet) {
-            performRefresh();
-        } else {
-            fromIntentData(result);
-        }
-    }
-
-    public void fromIntentData(CourseVideoResult result) {
-        courseVideoResult = result;
-        videoArrayList = result.getResult().getVideoList();
-        if (videoArrayList != null && videoArrayList.size() > 0) {
-            videoArrayList.get(0).setSelected(true);
-            adapter = new CourseVideoListAdapter(CourseVideoActivity.this);
-            listview.setAdapter(adapter);
-            initListViewItemClick();
-            adapter.updateData(videoArrayList);
-            mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
-        }
+        performRefresh();
     }
 
     private void initListViewItemClick() {
@@ -232,40 +210,34 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
-        courseManager.fetchCourseSection(courseId, userId, new Callback<CourseVideoResult>() {
+        Logger.e("courseId==" + courseId);
+        courseManager.getVideoList(courseId, userId, new Callback<SystemVideoResult>() {
             @Override
-            public void success(CourseVideoResult result, Response response) {
+            public void success(SystemVideoResult result, Response response) {
                 if (result.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(CourseVideoActivity.this, result.getMessage(), 2.0f);
+                    SVProgressHUD.showInViewWithoutIndicator(SystemVideoActivity.this, result.getMessage(), 2.0f);
                 } else {
-                    courseVideoResult = result;
-                    videoArrayList = result.getResult().getVideoList();
+                    videoArrayList = result.getResult();
                     if (videoArrayList != null && videoArrayList.size() > 0) {
                         videoArrayList.get(0).setSelected(true);
-                        adapter = new CourseVideoListAdapter(CourseVideoActivity.this);
+                        adapter = new SystemVideoListAdapter(SystemVideoActivity.this);
                         listview.setAdapter(adapter);
                         initListViewItemClick();
                         adapter.updateData(videoArrayList);
                         mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
-//                        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
-                        if (result.getResult().getIsCollect().equals("1")) {
-                            videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
-                        } else {
-                            videoCollectBtn.setImageResource(R.drawable.video_collect_icon);
-                        }
                     }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                ToastUtil.showToastShort(CourseVideoActivity.this, R.string.data_request_fail);
+                ToastUtil.showToastShort(SystemVideoActivity.this, R.string.data_request_fail);
             }
         });
     }
 
     void playFunction() {
-        controller = new MediaControllerView(CourseVideoActivity.this, CourseVideoActivity.this, rootView, root, false, this);
+        controller = new MediaControllerView(SystemVideoActivity.this, SystemVideoActivity.this, rootView, root, false, this);
         mVideoView.setMediaController(controller);
         mVideoView.requestFocus();
         mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_HIGH);
@@ -294,8 +266,7 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         mVideoView.setLayoutParams(layoutParams);
     }
 
-    @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return
-            , R.id.video_download_btn, R.id.video_collect_btn})
+    @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return, R.id.btn_buy})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_return:
@@ -312,32 +283,7 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
                     VideoManager.getInstance().setLandScape();
                 }
                 break;
-            case R.id.video_download_btn:
-                ToastUtil.showToastShort(CourseVideoActivity.this, "我是下载");
-                break;
-            case R.id.video_collect_btn:
-                if (SEAuthManager.getInstance().getAccessUser() == null) {
-                    loginDialog();
-                } else {
-                    if (courseVideoResult != null && courseVideoResult.getResult().getVideoList().size() > 0) {
-                        final String videoId = String.valueOf(courseVideoResult.getResult().getVideoList().get(0).getId());
-                        if (courseVideoResult.getResult().getIsCollect().equals("1")) {
-                            DialogUtils.showDialog(CourseVideoActivity.this, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            switch (v.getId()) {
-                                                case R.id.yes:
-                                                    collectVideo(videoId, "0");
-                                                    break;
-                                            }
-                                        }
-                                    }, getString(R.string.sure_uncollect), getString(R.string.confirm_message)
-                                    , getString(R.string.cancel_message));
-                        } else {
-                            collectVideo(videoId, "1");
-                        }
-                    }
-                }
+            case R.id.btn_buy:
                 break;
             default:
                 break;
@@ -345,12 +291,12 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     }
 
     private void loginDialog() {
-        DialogUtils.showDialog(CourseVideoActivity.this, new View.OnClickListener() {
+        DialogUtils.showDialog(SystemVideoActivity.this, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.yes:
-                        startActivity(new Intent(CourseVideoActivity.this, UserLoginActivity.class));
+                        startActivity(new Intent(SystemVideoActivity.this, UserLoginActivity.class));
                         break;
                 }
             }
@@ -482,42 +428,5 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         } else {
             finish();
         }
-    }
-
-    /**
-     * 收藏视频
-     *
-     * @param videoId 课程id
-     * @param state   1 收藏 0 取消
-     */
-    public void collectVideo(String videoId, final String state) {
-        String userId = "";
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            userId = SEAuthManager.getInstance().getAccessUser().getId();
-        }
-        courseManager.collectionVideo(userId, videoId, courseVideoResult.getResult().getPointId(), state, new Callback<CourseCollectResult>() {
-            @Override
-            public void success(CourseCollectResult result, Response response) {
-                if (result.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(CourseVideoActivity.this, result.getMessage(), 2.0f);
-                } else {
-                    UserCourseCollectFragment.isRefreshCourseCollectList = true;//通知我的收藏列表刷新
-                    Logger.e("UserCourseCollectFragment.isRefreshCourseCollectList==" + UserCourseCollectFragment.isRefreshCourseCollectList);
-                    ToastUtil.showToastShort(CourseVideoActivity.this, result.getMessage());
-                    if (state.equals("1")) {
-                        courseVideoResult.getResult().setIsCollect("1");
-                        videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
-                    } else {
-                        courseVideoResult.getResult().setIsCollect("0");
-                        videoCollectBtn.setImageResource(R.drawable.video_collect_icon);
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                ToastUtil.showToastShort(CourseVideoActivity.this, R.string.data_request_fail);
-            }
-        });
     }
 }

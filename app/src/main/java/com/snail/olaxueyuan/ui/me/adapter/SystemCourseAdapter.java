@@ -1,6 +1,7 @@
 package com.snail.olaxueyuan.ui.me.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,9 +11,10 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.RoundRectImageView;
-import com.snail.olaxueyuan.common.manager.ToastUtil;
+import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.result.SystemCourseResult;
+import com.snail.olaxueyuan.ui.course.SystemVideoActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -81,7 +83,11 @@ public class SystemCourseAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showShortToast(context, "我是第" + position + "个");
+                Intent intent = new Intent(context, SystemVideoActivity.class);
+                intent.putExtra("pid", list.get(position).getId());
+                Logger.e("courseId==" + list.get(position).getId());
+                context.startActivity(intent);
+//                ToastUtil.showShortToast(context, "我是第" + position + "个");
             }
         });
         return convertView;

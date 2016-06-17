@@ -20,6 +20,7 @@ import com.snail.olaxueyuan.protocol.result.SECourseCateResult;
 import com.snail.olaxueyuan.protocol.result.SECourseDetailResult;
 import com.snail.olaxueyuan.protocol.result.SECourseResult;
 import com.snail.olaxueyuan.protocol.result.ServiceError;
+import com.snail.olaxueyuan.protocol.result.SystemVideoResult;
 import com.snail.olaxueyuan.protocol.result.VideoCollectionResult;
 import com.snail.olaxueyuan.protocol.service.SECourseService;
 
@@ -511,6 +512,31 @@ public class SECourseManager {
         getCourseService().collectionVideo(userId, videoId, courseId, state, new Callback<CourseCollectResult>() {
             @Override
             public void success(CourseCollectResult result, Response response) {
+                if (callback != null) {
+                    callback.success(result, response);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (callback != null) {
+                    callback.failure(error);
+                }
+            }
+        });
+    }
+
+    /**
+     * 体系课程下面的视频列表
+     *
+     * @param gid    goodsId
+     * @param userId
+     * @param cb
+     */
+    public void getVideoList(String gid, String userId, final Callback<SystemVideoResult> callback) {
+        getCourseService().getVideoList(gid, userId, new Callback<SystemVideoResult>() {
+            @Override
+            public void success(SystemVideoResult result, Response response) {
                 if (callback != null) {
                     callback.success(result, response);
                 }
