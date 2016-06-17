@@ -1,5 +1,6 @@
 package com.snail.olaxueyuan.ui.course.turtor;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ListView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.manager.MCOrgManager;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.model.MCOrgInfo;
 import com.snail.olaxueyuan.protocol.result.MCOrgListResult;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
@@ -38,6 +40,7 @@ public class TurtorActivity extends SEBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_turtor);
 
+        setTitleText("名师辅导");
 
         orgListView = (PullToRefreshListView) findViewById(R.id.orgListView);
         initData();
@@ -73,7 +76,12 @@ public class TurtorActivity extends SEBaseActivity {
 
     private void initData() {
         MCOrgManager orgManager = MCOrgManager.getInstance();
-        orgManager.fetchOrganizationList(new Callback<MCOrgListResult>() {
+        String userId = "";
+        SEAuthManager am = SEAuthManager.getInstance();
+        if (am.isAuthenticated()){
+            userId = am.getAccessUser().getId();
+        }
+        orgManager.fetchOrganizationList(userId, new Callback<MCOrgListResult>() {
             @Override
             public void success(MCOrgListResult result, Response response) {
                 if (!result.apicode.equals("10000")) {
@@ -93,4 +101,11 @@ public class TurtorActivity extends SEBaseActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode== Activity.RESULT_OK){
+            initData();
+        }
+    }
 }

@@ -36,8 +36,8 @@ public class MCOrgManager {
      *
      * @param callback
      */
-    public void fetchOrganizationList(final Callback<MCOrgListResult> callback) {
-        orgService.fetchOrganizationList(new Callback<MCOrgListResult>() {
+    public void fetchOrganizationList(String userId, final Callback<MCOrgListResult> callback) {
+        orgService.fetchOrganizationList(userId, new Callback<MCOrgListResult>() {
             @Override
             public void success(MCOrgListResult result, Response response) {
                 if (callback != null) {

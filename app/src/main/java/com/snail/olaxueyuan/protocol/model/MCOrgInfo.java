@@ -13,5 +13,6 @@ public class MCOrgInfo implements Serializable {
     public String profile;
     public String address;
     public String checkinCount;
-    public String attendCount;
+    public String org;
+    public int checkedIn;
 }
