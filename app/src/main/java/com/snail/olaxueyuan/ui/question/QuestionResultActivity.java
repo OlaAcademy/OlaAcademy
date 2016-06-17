@@ -13,11 +13,13 @@ import com.snail.olaxueyuan.common.NoScrollGridView;
 import com.snail.olaxueyuan.common.SubListView;
 import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.olaxueyuan.ui.adapter.QuestionResultAdapter;
 import com.snail.olaxueyuan.ui.adapter.QuestionResultListAdapter;
+import com.snail.olaxueyuan.ui.question.module.QuestionResultNoticeClose;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import org.json.JSONArray;
@@ -28,6 +30,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -81,7 +84,6 @@ public class QuestionResultActivity extends SEBaseActivity {
         try {
             array = new JSONArray(jsonString);
             for (int i = 0; i < array.length(); i++) {
-                //Todo 解析
                 JSONObject object = (JSONObject) array.get(i);
                 if (!object.optString("isCorrect").equals("2")) {//没答题
                     hasAnswer++;
@@ -94,15 +96,23 @@ public class QuestionResultActivity extends SEBaseActivity {
             answerAllNumberTv.setText(getString(R.string.all_number_subject, array.length()));
             hasAnswerNumTv.setText(String.valueOf(hasAnswer));
             correctPercent.setText(correct * 100 / array.length() + "%");
+            //全都答对100%，全错0%，其他65%--95%
+            if (correct == array.length()) {
+                winPercent = 100;
+            } else if (correct == 0) {
+                winPercent = 0;
+            } else {
+                winPercent = 65 + (int) (Math.random() * 30);
+            }
             winStudentTv.setText(String.valueOf(winPercent) + "%");
-
+            //最多显示10个，其它的默认隐藏掉
             if (array.length() > 10) {
                 for (int i = 0; i < 10; i++) {
                     limitArray.put(i, array.get(i));
                 }
                 resultAdapter = new QuestionResultAdapter(limitArray, QuestionResultActivity.this);
                 upDownIcon.setVisibility(View.VISIBLE);
-                upDownIcon.setImageResource(R.drawable.up_arrow_icon);
+                upDownIcon.setImageResource(R.drawable.down_arrow_icon);
             } else {
                 resultAdapter = new QuestionResultAdapter(array, QuestionResultActivity.this);
             }
@@ -122,7 +132,8 @@ public class QuestionResultActivity extends SEBaseActivity {
                 ToastUtil.showToastShort(QuestionResultActivity.this, "我是开始解析");
                 break;
             case R.id.finish_answer:
-                ToastUtil.showToastShort(QuestionResultActivity.this, "我是答题完成");
+                EventBus.getDefault().post(new QuestionResultNoticeClose(0, true));
+                finish();
                 break;
             case R.id.up_down_icon:
                 if (upOrDown) {
@@ -140,7 +151,11 @@ public class QuestionResultActivity extends SEBaseActivity {
 
     public void performRefresh() {
         SECourseManager courseManager = SECourseManager.getInstance();
-        courseManager.fetchCourseSection(String.valueOf(objectId), "126", new Callback<CourseVideoResult>() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        courseManager.fetchCourseSection(String.valueOf(objectId), userId, new Callback<CourseVideoResult>() {
             @Override
             public void success(CourseVideoResult result, Response response) {
                 if (result.getApicode() != 10000) {
@@ -150,7 +165,7 @@ public class QuestionResultActivity extends SEBaseActivity {
                     if (videoArrayList != null && videoArrayList.size() > 0) {
                         listAdapter = new QuestionResultListAdapter(QuestionResultActivity.this);
                         listKnowledge.setAdapter(listAdapter);
-                        listAdapter.updateData(videoArrayList);
+                        listAdapter.updateData(videoArrayList,result);
                     }
                 }
             }

@@ -1,10 +1,10 @@
 package com.snail.olaxueyuan.protocol.service;
 
+import com.snail.olaxueyuan.protocol.result.CourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.protocol.result.MCBannerResult;
 import com.snail.olaxueyuan.protocol.result.MCCollectionResult;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
-import com.snail.olaxueyuan.protocol.result.MCCourSectionResult;
 import com.snail.olaxueyuan.protocol.result.MCCourseListResult;
 import com.snail.olaxueyuan.protocol.result.MCKeywordResult;
 import com.snail.olaxueyuan.protocol.result.MCQuestionListResult;
@@ -17,6 +17,7 @@ import com.snail.olaxueyuan.protocol.result.SECourseDetailResult;
 import com.snail.olaxueyuan.protocol.result.SECourseResult;
 import com.snail.olaxueyuan.protocol.result.SEOrderResult;
 import com.snail.olaxueyuan.protocol.result.SEWXPayInfoResult;
+import com.snail.olaxueyuan.protocol.result.SystemVideoResult;
 import com.snail.olaxueyuan.protocol.result.VideoCollectionResult;
 
 import retrofit.Callback;
@@ -152,9 +153,11 @@ public interface SECourseService {
      */
     @FormUrlEncoded
     @POST("/ola/cour/getCourList")
-    public void fetchHomeCourseList(@Field("pid") String pid,
-                                    @Field("type") String type,
-                                    Callback<MCCourseListResult> cb);
+    public void fetchHomeCourseList(
+            @Field("userId") String userId,
+            @Field("pid") String pid,
+            @Field("type") String type,
+            Callback<MCCourseListResult> cb);
 
     /**
      * 课程子分类
@@ -167,6 +170,20 @@ public interface SECourseService {
             @Field("pointId") String courseId,
             @Field("userId") String userId,
             Callback<CourseVideoResult> cb);
+
+    /**
+     * 体系课程下面的视频列表
+     *
+     * @param gid    goodsId
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/goods/getVideoList")
+    void getVideoList(
+            @Field("gid") String gid,
+            @Field("userId") String userId,
+            Callback<SystemVideoResult> cb);
 
 
     /**
@@ -255,4 +272,22 @@ public interface SECourseService {
     @POST("/ola/cour/getPoiSubList")
     public void fetchQuestionList(@Part("pointId") String pointId,
                                   Callback<MCQuestionListResult> cb);
+
+    /**
+     * 收藏／取消收藏视频
+     *
+     * @param userId   用户id
+     * @param videoId  视频Id
+     * @param courseId 课程id
+     * @param state    1 收藏 0 取消
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/collection/collectionVideo")
+    void collectionVideo(
+            @Field("userId") String userId,
+            @Field("videoId") String videoId,
+            @Field("courseId") String courseId,
+            @Field("state") String state,
+            Callback<CourseCollectResult> cb);
 }

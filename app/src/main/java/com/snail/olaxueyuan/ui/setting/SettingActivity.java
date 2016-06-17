@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.manager.SEUserManager;
+import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.sharesdk.ShareModel;
 import com.snail.olaxueyuan.sharesdk.SharePopupWindow;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.utils.UIHandler;
+import de.greenrobot.event.EventBus;
 
 public class SettingActivity extends SEBaseActivity implements PlatformActionListener, Handler.Callback {
 
@@ -75,9 +77,9 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
 
         downloadRL = (RelativeLayout) findViewById(R.id.downloadRL);
         downloadTV = (TextView) findViewById(R.id.downloadTV);
-        if (sp.getInt("DOWNLOAD_TYPE",0)==0){
+        if (sp.getInt("DOWNLOAD_TYPE", 0) == 0) {
             downloadTV.setText("仅WIFI");
-        }else {
+        } else {
             downloadTV.setText("移动数据和WIFI");
         }
         downloadRL.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +110,7 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
             }
         });
 
-        btn_logout = (Button)findViewById(R.id.btn_logout);
+        btn_logout = (Button) findViewById(R.id.btn_logout);
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,6 +126,7 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         SEUserManager.getInstance().logout();
+                        EventBus.getDefault().post(new UserLoginNoticeModule(false));//发送通知登录
                         setResult(RESULT_OK);
                         finish();
                     }

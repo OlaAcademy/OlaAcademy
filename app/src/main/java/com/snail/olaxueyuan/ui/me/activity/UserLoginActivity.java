@@ -3,7 +3,6 @@ package com.snail.olaxueyuan.ui.me.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,10 +10,11 @@ import android.widget.TextView;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.result.SEUserResult;
-import com.snail.olaxueyuan.ui.MainActivity;
+import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -50,8 +50,8 @@ public class UserLoginActivity extends SEBaseActivity {
         setRightTextListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserLoginActivity.this,UserRegActivity.class);
-                startActivityForResult(intent,USER_REG);
+                Intent intent = new Intent(UserLoginActivity.this, UserRegActivity.class);
+                startActivityForResult(intent, USER_REG);
             }
         });
 
@@ -86,6 +86,7 @@ public class UserLoginActivity extends SEBaseActivity {
                     SVProgressHUD.showInViewWithoutIndicator(UserLoginActivity.this, result.message, 2.0f);
                     return;
                 }
+                EventBus.getDefault().post(new UserLoginNoticeModule(true));//发送通知登录
                 SVProgressHUD.dismiss(UserLoginActivity.this);
                 Intent intent = getIntent();
                 Bundle bundle = new Bundle();
@@ -108,7 +109,7 @@ public class UserLoginActivity extends SEBaseActivity {
         if (requestCode == PASS_FOREGT && resultCode == RESULT_OK) {
             phoneET.setText(data.getStringExtra("phone"));
             passET.setText(data.getStringExtra("password"));
-        }else if(requestCode == USER_REG && resultCode == RESULT_OK){
+        } else if (requestCode == USER_REG && resultCode == RESULT_OK) {
             phoneET.setText(data.getStringExtra("phone"));
             passET.setText(data.getStringExtra("password"));
             login();

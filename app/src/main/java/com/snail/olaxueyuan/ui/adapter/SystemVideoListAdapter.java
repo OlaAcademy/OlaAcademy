@@ -1,15 +1,13 @@
 package com.snail.olaxueyuan.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
-import com.snail.olaxueyuan.ui.course.CourseVideoActivity;
+import com.snail.olaxueyuan.protocol.result.SystemVideoResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,24 +16,20 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by mingge on 2016/6/14.
+ * Created by mingge on 2016/5/24.
  */
-public class QuestionResultListAdapter extends BaseAdapter {
+public class SystemVideoListAdapter extends BaseAdapter {
     private Context context;
-    private List<CourseVideoResult.ResultBean.VideoListBean> videoList = new ArrayList<>();
-    private CourseVideoResult result;
+    private List<SystemVideoResult.ResultBean> videoList = new ArrayList<>();
 
-    public QuestionResultListAdapter(Context context) {
+    public SystemVideoListAdapter(Context context) {
         super();
         this.context = context;
     }
 
-    public void updateData(List<CourseVideoResult.ResultBean.VideoListBean> videoList, CourseVideoResult result) {
+    public void updateData(List<SystemVideoResult.ResultBean> videoList) {
         if (videoList != null) {
             this.videoList = videoList;
-        }
-        if (result != null) {
-            this.result = result;
         }
         notifyDataSetChanged();
     }
@@ -59,7 +53,7 @@ public class QuestionResultListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(context, R.layout.activity_question_result_list_item, null);
+            convertView = View.inflate(context, R.layout.activity_course_video_listview_item, null);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -72,16 +66,6 @@ public class QuestionResultListAdapter extends BaseAdapter {
         } else {
             holder.videoName.setSelected(false);
         }
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CourseVideoActivity.class);
-                intent.putExtra("isFromNet", false);
-                intent.putExtra("result",result);
-                context.startActivity(intent);
-//                EventBus.getDefault().post(result);
-            }
-        });
         return convertView;
     }
 
@@ -95,5 +79,4 @@ public class QuestionResultListAdapter extends BaseAdapter {
             ButterKnife.bind(this, view);
         }
     }
-
 }

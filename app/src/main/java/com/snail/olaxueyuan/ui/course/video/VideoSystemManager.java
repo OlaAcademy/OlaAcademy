@@ -12,12 +12,12 @@ import android.widget.FrameLayout;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.manager.Utils;
-import com.snail.olaxueyuan.ui.course.CourseVideoActivity;
+import com.snail.olaxueyuan.ui.course.SystemVideoActivity;
 
 /**
  * Created by mingge on 16/3/16.
  */
-public class VideoManager {
+public class VideoSystemManager {
     private static final int GESTURE_MODIFY_PROGRESS = 1;
     private static final int GESTURE_MODIFY_VOLUME = 2;
     private static final float STEP_PROGRESS = 0.1f;// 设定进度滑动时的步长，避免每次滑动都改变，导致改变过快
@@ -27,18 +27,18 @@ public class VideoManager {
     private int[] location = new int[2];
     private int windowWidth;
     private int windowHeight;
-    private static VideoManager videoManager;
+    private static VideoSystemManager videoManager;
 
-    public static VideoManager getInstance() {
+    public static VideoSystemManager getInstance() {
         if (videoManager == null) {
-            videoManager = new VideoManager();
+            videoManager = new VideoSystemManager();
         }
         return videoManager;
     }
 
-    CourseVideoActivity activity;
+    SystemVideoActivity activity;
 
-    public void initView(CourseVideoActivity activity) {
+    public void initView(SystemVideoActivity activity) {
         this.activity = activity;
     }
 

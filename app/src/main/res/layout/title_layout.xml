@@ -67,7 +67,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/special_response_icon"
+            android:src="@drawable/ic_setting"
             android:visibility="gone" />
 
         <ImageView

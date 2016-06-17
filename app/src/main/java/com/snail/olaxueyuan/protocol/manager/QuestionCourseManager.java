@@ -7,8 +7,6 @@ import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.snail.olaxueyuan.protocol.service.QuestionService;
 
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by mingge on 16/4/28.
@@ -48,8 +46,8 @@ public class QuestionCourseManager {
      * @param type
      * @param callback
      */
-    public void getExamList(String courseId, String type, final Callback<ExamModule> callback) {
-        getQuestionService().getExamList(courseId, type, callback);
+    public void getExamList(String userId,String courseId, String type, final Callback<ExamModule> callback) {
+        getQuestionService().getExamList(userId,courseId, type, callback);
     }
 
     /**

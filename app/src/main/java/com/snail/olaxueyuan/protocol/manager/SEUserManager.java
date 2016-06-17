@@ -255,8 +255,8 @@ public class SEUserManager {
      * @param type 1 用于考点的课程列表 2 用户视频的课程列表
      * @param cb
      */
-    public void getStatisticsList(String type, Callback<UserKnowledgeResult> cb) {
-        _userService.getStatisticsList(type, cb);
+    public void getStatisticsList(String type,String userid, Callback<UserKnowledgeResult> cb) {
+        _userService.getStatisticsList(type,userid, cb);
     }
 
     /**

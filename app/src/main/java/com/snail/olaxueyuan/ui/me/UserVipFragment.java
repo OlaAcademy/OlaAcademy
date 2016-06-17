@@ -6,10 +6,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannedString;
 import android.text.TextUtils;
 import android.text.style.StrikethroughSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +20,8 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SEUserManager;
 import com.snail.olaxueyuan.protocol.result.UserAlipayResult;
 import com.snail.olaxueyuan.protocol.result.UserWXpayResult;
@@ -98,7 +96,7 @@ public class UserVipFragment extends SuperFragment {
     private void initView() {
         monthIcon.setSelected(true);
         alipayView.setSelected(true);
-        SpannableString spannedMonth= new SpannableString(monthOldMoney.getText().toString().trim());
+        SpannableString spannedMonth = new SpannableString(monthOldMoney.getText().toString().trim());
         spannedMonth.setSpan(new StrikethroughSpan(), 0, monthOldMoney.getText().toString().trim().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         monthOldMoney.setText(spannedMonth);
         SpannableString spannedYear = new SpannableString(yearOldMoney.getText().toString().trim());
@@ -151,6 +149,7 @@ public class UserVipFragment extends SuperFragment {
 
     public void payForAlipay() {
         price = "0.01";
+        userId = SEAuthManager.getInstance().getAccessUser().getId();
         SEUserManager.getInstance().getAliOrderInfo(price, userId, type, "", "123", new Callback<UserAlipayResult>() {
             @Override
             public void success(UserAlipayResult userAlipayResult, Response response) {
@@ -231,6 +230,7 @@ public class UserVipFragment extends SuperFragment {
 
     public void payForWXRequest() {
         price = "0.01";
+        userId = SEAuthManager.getInstance().getAccessUser().getId();
         double pricess = Double.parseDouble(price) * 100;
         final String prices = new DecimalFormat("###").format(pricess);
         SEUserManager.getInstance().getWXPayReq(prices, userId, type, "", "123", new Callback<UserWXpayResult>() {

@@ -55,7 +55,7 @@ public class UserBuyGoodsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.fragment_user_buy_goods_listview_item, null);
@@ -68,6 +68,12 @@ public class UserBuyGoodsAdapter extends BaseAdapter {
         Picasso.with(context).load(list.get(position).getUrl()).config(Bitmap.Config.RGB_565)
                 .placeholder(R.drawable.system_wu).error(R.drawable.system_wu).into(holder.iconCollect);
         holder.courseTime.setText(list.get(position).getTotaltime() + "");
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Todo 跳转到播放视频界面
+            }
+        });
         return convertView;
     }
 
