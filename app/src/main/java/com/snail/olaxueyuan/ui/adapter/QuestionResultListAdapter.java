@@ -1,6 +1,7 @@
 package com.snail.olaxueyuan.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
+import com.snail.olaxueyuan.ui.course.CourseVideoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +23,19 @@ import butterknife.ButterKnife;
 public class QuestionResultListAdapter extends BaseAdapter {
     private Context context;
     private List<CourseVideoResult.ResultBean.VideoListBean> videoList = new ArrayList<>();
+    private CourseVideoResult result;
 
     public QuestionResultListAdapter(Context context) {
         super();
         this.context = context;
     }
 
-    public void updateData(List<CourseVideoResult.ResultBean.VideoListBean> videoList) {
+    public void updateData(List<CourseVideoResult.ResultBean.VideoListBean> videoList, CourseVideoResult result) {
         if (videoList != null) {
             this.videoList = videoList;
+        }
+        if (result != null) {
+            this.result = result;
         }
         notifyDataSetChanged();
     }
@@ -69,7 +75,11 @@ public class QuestionResultListAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(context, CourseVideoActivity.class);
+                intent.putExtra("isFromNet", false);
+                intent.putExtra("result",result);
+                context.startActivity(intent);
+//                EventBus.getDefault().post(result);
             }
         });
         return convertView;

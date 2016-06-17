@@ -19,6 +19,7 @@ import com.snail.olaxueyuan.common.MyHorizontalScrollView;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.result.ExamModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.manager.TitlePopManager;
@@ -89,7 +90,11 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
 
     private void fetchData() {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
-        QuestionCourseManager.getInstance().getExamList(courseId, "1", new Callback<ExamModule>() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        QuestionCourseManager.getInstance().getExamList(userId, courseId, "1", new Callback<ExamModule>() {
             @Override
             public void success(ExamModule examModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());

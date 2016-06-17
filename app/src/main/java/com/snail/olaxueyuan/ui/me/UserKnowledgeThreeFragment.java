@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SEUserManager;
 import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
 import com.snail.olaxueyuan.ui.SuperFragment;
@@ -84,7 +85,7 @@ public class UserKnowledgeThreeFragment extends SuperFragment {
 
     private void fetchData() {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
-        SEUserManager.getInstance().getStatisticsList("1", new Callback<UserKnowledgeResult>() {
+        SEUserManager.getInstance().getStatisticsList("1", SEAuthManager.getInstance().getAccessUser().getId(), new Callback<UserKnowledgeResult>() {
             @Override
             public void success(UserKnowledgeResult userKnowledgeResult, Response response) {
                 SVProgressHUD.dismiss(getActivity());

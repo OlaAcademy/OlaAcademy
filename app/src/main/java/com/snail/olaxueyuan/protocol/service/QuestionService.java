@@ -8,9 +8,7 @@ import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
 import retrofit.Callback;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
 import retrofit.http.POST;
-import retrofit.http.Query;
 
 /**
  * Created by mingge on 16/4/28.
@@ -24,10 +22,11 @@ public interface QuestionService {
      */
     @FormUrlEncoded
     @POST("/ola/cour/getCourList")
-    public void fetchHomeCourseList(@Field("userid") String userid,
-                                    @Field("pid") String pid,
-                                    @Field("type") String type,
-                                    Callback<QuestionCourseModule> cb);
+    public void fetchHomeCourseList(
+            @Field("userid") String userid,
+            @Field("pid") String pid,
+            @Field("type") String type,
+            Callback<QuestionCourseModule> cb);
 
     /**
      * 模考／真题列表
@@ -38,9 +37,11 @@ public interface QuestionService {
      */
     @FormUrlEncoded
     @POST("/ola/exam/getExamList")
-    public void getExamList(@Field("courseId") String courseId,
-                            @Field("type") String type,
-                            Callback<ExamModule> cb);
+    public void getExamList(
+            @Field("userId") String userid,
+            @Field("courseId") String courseId,
+            @Field("type") String type,
+            Callback<ExamModule> cb);
 
     /**
      * 模考／真题 题目列表
@@ -51,7 +52,7 @@ public interface QuestionService {
     @FormUrlEncoded
     @POST("/ola/exam/getExamSubList")
     public void getExamQuestionList(@Field("examId") String examId,
-                            Callback<MCQuestionListResult> cb);
+                                    Callback<MCQuestionListResult> cb);
 
     /**
      * 欧拉圈，获取视频观看历史记录列表
