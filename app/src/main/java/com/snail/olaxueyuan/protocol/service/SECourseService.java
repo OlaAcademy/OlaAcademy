@@ -17,6 +17,7 @@ import com.snail.olaxueyuan.protocol.result.SECourseDetailResult;
 import com.snail.olaxueyuan.protocol.result.SECourseResult;
 import com.snail.olaxueyuan.protocol.result.SEOrderResult;
 import com.snail.olaxueyuan.protocol.result.SEWXPayInfoResult;
+import com.snail.olaxueyuan.protocol.result.SystemVideoResult;
 import com.snail.olaxueyuan.protocol.result.VideoCollectionResult;
 
 import retrofit.Callback;
@@ -169,6 +170,20 @@ public interface SECourseService {
             @Field("pointId") String courseId,
             @Field("userId") String userId,
             Callback<CourseVideoResult> cb);
+
+    /**
+     * 体系课程下面的视频列表
+     *
+     * @param gid    goodsId
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/goods/getVideoList")
+    void getVideoList(
+            @Field("gid") String gid,
+            @Field("userId") String userId,
+            Callback<SystemVideoResult> cb);
 
 
     /**
