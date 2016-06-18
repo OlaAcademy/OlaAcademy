@@ -9,24 +9,13 @@
 
 *.so
 
-*.class
-
-*.iml
-
 *.aar
-
-*.iml
 
 *.txt
 
-*.iml
-
-*.class
-
 *.class
 
 *.iml
 
-*.iml
+*.store
 
-*.iml
