@@ -17,21 +17,35 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f0f0f0"/>
+
         <Button
             android:id="@+id/previousBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/blue_light"
+            android:background="@null"
             android:text="上一题" />
+
+        <TextView
+            android:id="@+id/tv_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#999999"
+            android:layout_centerInParent="true" />
 
         <Button
             android:id="@+id/nextBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp"
+            android:layout_margin="10dp"
+            android:background="@null"
+            android:textColor="@color/blue_light"
             android:text="下一题" />
     </RelativeLayout>
 

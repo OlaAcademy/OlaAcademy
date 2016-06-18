@@ -17,6 +17,8 @@
             android:id="@+id/exam_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/white"
             android:textSize="16dp" />
 
@@ -24,8 +26,10 @@
             android:id="@+id/exam_num"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/white"
-            android:textSize="16dp" />
+            android:textSize="14dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -139,10 +143,10 @@
 
         <Button
             android:id="@+id/start_exam"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_margin="20dp"
             android:background="@drawable/blue_button_bg"
             android:text="开始模考"
             android:textColor="@color/white" />

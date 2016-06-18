@@ -1,16 +1,19 @@
 package com.snail.olaxueyuan.ui.question;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.app.SEConfig;
@@ -22,6 +25,7 @@ import com.snail.svprogresshud.SVProgressHUD;
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
+import io.vov.vitamio.utils.StringUtils;
 
 
 public class QuestionWebActivity extends SEBaseActivity implements View.OnClickListener {
@@ -29,6 +33,7 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
     private WebView contentWebView;
     private Button previousBtn;
     private Button nextBtn;
+    private TextView indexTV;
 
     private ArrayList<MCQuestion> questionList;
     private int currentIndex;
@@ -49,6 +54,7 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         // 启用javascript
         contentWebView.getSettings().setJavaScriptEnabled(true);
 
+        indexTV = (TextView) findViewById(R.id.tv_index);
 
         previousBtn = (Button) findViewById(R.id.previousBtn);
         previousBtn.setVisibility(View.GONE);
@@ -70,11 +76,11 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         //设置本地调用对象及其接口
         contentWebView.addJavascriptInterface(new JsInterface(QuestionWebActivity.this), "AndroidWebView");
 
-        contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/ola/jsp/question.jsp?&type=" + type);
+        contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/ola/jsp/question.jsp?objectId="+objectId+"&type=" + type);
         contentWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                contentWebView.loadUrl("javascript:loadQuestion('" + objectId + "')");
+                contentWebView.loadUrl("javascript:loadQuestion('0')");
             }
 
             @Override
@@ -85,6 +91,15 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode== Activity.RESULT_OK){
+            nextBtn.setText("下一题");
+            contentWebView.loadUrl("javascript:loadQuestion('1')"); //全部解析
+        }
     }
 
     @Override
@@ -104,19 +119,37 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    previousBtn.setVisibility(View.VISIBLE);
+                    indexTV.setText(msg.obj.toString());
                     break;
                 case 1:
-                    previousBtn.setVisibility(View.GONE);
+                    previousBtn.setVisibility(View.VISIBLE);
                     break;
                 case 2:
-                    nextBtn.setText(msg.obj.toString());
+                    previousBtn.setVisibility(View.GONE);
                     break;
                 case 3:
+                    nextBtn.setText(msg.obj.toString());
+                    break;
+                case 4:
+                    if(TextUtils.isEmpty(msg.obj.toString())){
+                        setRightImageInvisibility();
+                    }else {
+                        setRightImage(R.drawable.ic_video);
+                        final String videoUrl = msg.obj.toString();
+                        setRightTextListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                            }
+                        });
+                    }
+                    break;
+                case 5:
                     Intent intent = new Intent(QuestionWebActivity.this, QuestionResultActivity.class);
                     intent.putExtra("answerArray", msg.obj.toString());
                     intent.putExtra("objectId", objectId);
-                    startActivity(intent);
+                    intent.putExtra("type",type);
+                    startActivityForResult(intent, 1);
                     break;
             }
         }
@@ -131,20 +164,35 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
 
         //在js中调用window.AndroidWebView.showPreviousButton()，便会触发此方法。
         @JavascriptInterface
+        public void updateQuestionIndex(String questionIndex) {
+            Message msg = Message.obtain();
+            msg.obj = questionIndex;
+            msg.what = 0;
+            handler.sendMessage(msg);
+        }
+        @JavascriptInterface
         public void showPreviousButton() {
-            handler.sendEmptyMessage(0);
+            handler.sendEmptyMessage(1);
         }
 
         @JavascriptInterface
         public void hidePreviousButton() {
-            handler.sendEmptyMessage(1);
+            handler.sendEmptyMessage(2);
         }
 
         @JavascriptInterface
         public void updateNextButton(String text) {
             Message msg = Message.obtain();
-            msg.what = 2;
+            msg.what = 3;
             msg.obj = text;
+            handler.sendMessage(msg);
+        }
+
+        @JavascriptInterface
+        public void showVideo(String videoUrl) {
+            Message msg = Message.obtain();
+            msg.what = 4;
+            msg.obj = videoUrl;
             handler.sendMessage(msg);
         }
 
@@ -152,7 +200,7 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         public void submitAnswer(String answerArray) {
             Message msg = Message.obtain();
             msg.obj = answerArray;
-            msg.what = 3;
+            msg.what = 5;
             handler.sendMessage(msg);
         }
     }
