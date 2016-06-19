@@ -284,6 +284,9 @@ public class SystemVideoActivity extends Activity implements View.OnClickListene
                 }
                 break;
             case R.id.btn_buy:
+                Intent intent = new Intent(SystemVideoActivity.this, PaySystemVideoActivity.class);
+                intent.putExtra("courseId", courseId);
+                startActivity(intent);
                 break;
             default:
                 break;

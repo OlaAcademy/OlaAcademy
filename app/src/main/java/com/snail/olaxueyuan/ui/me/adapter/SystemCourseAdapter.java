@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.RoundRectImageView;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.result.SystemCourseResult;
 import com.snail.olaxueyuan.ui.course.SystemVideoActivity;
@@ -84,8 +83,8 @@ public class SystemCourseAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, SystemVideoActivity.class);
-                intent.putExtra("pid", list.get(position).getId());
-                Logger.e("courseId==" + list.get(position).getId());
+                intent.putExtra("pid", String.valueOf(list.get(position).getId()));
+//                Logger.e("courseId==" + list.get(position).getId());
                 context.startActivity(intent);
 //                ToastUtil.showShortToast(context, "我是第" + position + "个");
             }
