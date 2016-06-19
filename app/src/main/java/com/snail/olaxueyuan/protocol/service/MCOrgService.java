@@ -24,8 +24,10 @@ public interface MCOrgService {
      *
      * @param cb
      */
-    @GET("/ola/organization/getAllOrganization")
-    public void fetchOrganizationList(Callback<MCOrgListResult> cb);
+    @Multipart
+    @POST("/ola/organization/getAllOrganization")
+    public void fetchOrganizationList(@Part("userId") String userId,
+                                      Callback<MCOrgListResult> cb);
 
     /**
      * 更新机构关注数量

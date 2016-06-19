@@ -8,6 +8,13 @@
     app:item_margin="8dp"
     app:ptrMode="both">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_banner_goods" />
+
     <com.snail.pulltorefresh.PullToRefreshListView
         android:id="@+id/orgListView"
         android:layout_width="match_parent"
