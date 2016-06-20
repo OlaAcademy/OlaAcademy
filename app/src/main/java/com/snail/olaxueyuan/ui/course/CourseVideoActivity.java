@@ -24,7 +24,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.app.SEAPP;
 import com.snail.olaxueyuan.common.manager.DialogUtils;
 import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.TitleManager;
@@ -137,10 +136,10 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Vitamio.isInitialized(getApplicationContext());
         context = this;
         setContentView(R.layout.activity_course_video);
         ButterKnife.bind(this);
-        Vitamio.isInitialized(SEAPP.getAppContext());
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setVideoViewHeight();
         initView();

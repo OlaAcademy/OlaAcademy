@@ -152,6 +152,12 @@ public class MediaControllerView extends FrameLayout implements View.OnClickList
                 mInfoView.setText(time);
             if (mCurrentTime != null)
                 mCurrentTime.setText(time + "/");
+            //Todo authentication
+            int totalSeconds = (int) (newposition / 1000);
+            int seconds = totalSeconds / 60;
+            if (seconds >= 5) {
+                authentication.isFiveMinute(isAuthen,true);
+            }
         }
 
         public void onStopTrackingTouch(SeekBar bar) {
@@ -435,7 +441,7 @@ public class MediaControllerView extends FrameLayout implements View.OnClickList
         mHiddenListener = l;
     }
 
-    private long setProgress() {
+    public long setProgress() {
         if (mPlayer == null || mDragging)
             return 0;
 
