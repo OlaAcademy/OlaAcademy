@@ -9,4 +9,13 @@
 
 *.so
 
+*.aar
+
+*.txt
+
+*.class
+
+*.iml
+
 *.store
+

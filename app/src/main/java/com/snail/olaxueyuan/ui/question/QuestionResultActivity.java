@@ -20,6 +20,7 @@ import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.olaxueyuan.ui.adapter.QuestionResultAdapter;
 import com.snail.olaxueyuan.ui.adapter.QuestionResultListAdapter;
 import com.snail.olaxueyuan.ui.question.module.QuestionResultNoticeClose;
+import com.snail.photo.util.Res;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import org.json.JSONArray;
@@ -57,6 +58,7 @@ public class QuestionResultActivity extends SEBaseActivity {
     Button finishAnswer;
     @Bind(R.id.up_down_icon)
     ImageView upDownIcon;
+    private int type; // 1课程 2 题库
     private int hasAnswer = 0;//已答题目
     private int correct = 0;//正确率
     private int winPercent = 30;//打败多少考生
@@ -79,6 +81,10 @@ public class QuestionResultActivity extends SEBaseActivity {
 
     public void initView() {
         String jsonString = getIntent().getStringExtra("answerArray");
+        type = getIntent().getExtras().getInt("type");
+        if (type==1){
+            startExam.setText("购买教材");
+        }
         objectId = getIntent().getExtras().getInt("objectId");
         Logger.json(jsonString);
         try {
@@ -129,7 +135,12 @@ public class QuestionResultActivity extends SEBaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_exam:
-                ToastUtil.showToastShort(QuestionResultActivity.this, "我是开始解析");
+                if(type==1){
+
+                }else if(type==2){
+                    setResult(RESULT_OK);
+                    finish();
+                }
                 break;
             case R.id.finish_answer:
                 EventBus.getDefault().post(new QuestionResultNoticeClose(0, true));

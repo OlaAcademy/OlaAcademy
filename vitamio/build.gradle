@@ -10,6 +10,9 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 19
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
     }
     sourceSets {
         main {

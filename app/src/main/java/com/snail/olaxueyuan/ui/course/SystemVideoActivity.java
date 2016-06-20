@@ -1,6 +1,5 @@
 package com.snail.olaxueyuan.ui.course;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -8,6 +7,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,7 +25,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.app.SEAPP;
 import com.snail.olaxueyuan.common.manager.DialogUtils;
 import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.TitleManager;
@@ -53,7 +52,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class SystemVideoActivity extends Activity implements View.OnClickListener, VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication {
+public class SystemVideoActivity extends FragmentActivity implements View.OnClickListener
+        , VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication {
 
     @Bind(R.id.left_return)
     public TextView leftReturn;
@@ -134,10 +134,10 @@ public class SystemVideoActivity extends Activity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Vitamio.isInitialized(getApplicationContext());
         context = this;
         setContentView(R.layout.activity_system_video);
         ButterKnife.bind(this);
-        Vitamio.isInitialized(SEAPP.getAppContext());
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setVideoViewHeight();
         courseId = getIntent().getExtras().getString("pid");
@@ -284,6 +284,9 @@ public class SystemVideoActivity extends Activity implements View.OnClickListene
                 }
                 break;
             case R.id.btn_buy:
+                Intent intent = new Intent(SystemVideoActivity.this, PaySystemVideoActivity.class);
+                intent.putExtra("courseId", courseId);
+                startActivity(intent);
                 break;
             default:
                 break;

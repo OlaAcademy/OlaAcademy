@@ -23,8 +23,10 @@
         android:name=".app.SEAPP"
         android:allowBackup="true"
         android:configChanges="keyboardHidden|orientation"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/icon_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.IndexActivity"
@@ -318,7 +320,11 @@
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind" />
+        <activity
+            android:name=".ui.course.PaySystemVideoActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

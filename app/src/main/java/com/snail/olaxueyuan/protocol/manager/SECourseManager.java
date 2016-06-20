@@ -7,6 +7,7 @@ import com.snail.olaxueyuan.protocol.model.SECourseCate;
 import com.snail.olaxueyuan.protocol.model.SECourseDetail;
 import com.snail.olaxueyuan.protocol.result.CourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
+import com.snail.olaxueyuan.protocol.result.GoodsOrderStatusResult;
 import com.snail.olaxueyuan.protocol.result.MCBannerResult;
 import com.snail.olaxueyuan.protocol.result.MCCollectionResult;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
@@ -531,12 +532,37 @@ public class SECourseManager {
      *
      * @param gid    goodsId
      * @param userId
-     * @param cb
+     * @param callback
      */
     public void getVideoList(String gid, String userId, final Callback<SystemVideoResult> callback) {
         getCourseService().getVideoList(gid, userId, new Callback<SystemVideoResult>() {
             @Override
             public void success(SystemVideoResult result, Response response) {
+                if (callback != null) {
+                    callback.success(result, response);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (callback != null) {
+                    callback.failure(error);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取整套视频的购买状态
+     *
+     * @param userId   userId
+     * @param gid      goodsId
+     * @param callback
+     */
+    public void getOrderStatus(String userId, String gid, final Callback<GoodsOrderStatusResult> callback) {
+        getCourseService().getOrderStatus(userId, gid, new Callback<GoodsOrderStatusResult>() {
+            @Override
+            public void success(GoodsOrderStatusResult result, Response response) {
                 if (callback != null) {
                     callback.success(result, response);
                 }
