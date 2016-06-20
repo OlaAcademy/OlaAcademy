@@ -59,7 +59,7 @@ import io.vov.vitamio.utils.ScreenResolution;
  * sources (such as resources or content providers), takes care of computing its
  * measurement from the video so that it can be used in any layout manager, and
  * provides various display options such as scaling and tinting.
- * <p>
+ * <p/>
  * VideoView also provide many wrapper methods for
  * {@link MediaPlayer}, such as {@link #getVideoWidth()},
  * {@link #setTimedTextShown(boolean)}
@@ -162,11 +162,7 @@ public class VideoView extends SurfaceView implements MediaControllerView.MediaP
                 mMediaPlayer.setDisplay(mSurfaceHolder);
                 resume();
             } else {
-                try {
-                    openVideo();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                openVideo();
             }
         }
 
@@ -295,15 +291,17 @@ public class VideoView extends SurfaceView implements MediaControllerView.MediaP
         @Override
         public void onTimedTextUpdate(byte[] pixels, int width, int height) {
             Log.i("onSubtitleUpdate: bitmap subtitle, %dx%d", width, height);
-            if (mOnTimedTextListener != null)
+            if (mOnTimedTextListener != null) {
                 mOnTimedTextListener.onTimedTextUpdate(pixels, width, height);
+            }
         }
 
         @Override
         public void onTimedText(String text) {
             Log.i("onSubtitleUpdate: %s", text);
-            if (mOnTimedTextListener != null)
+            if (mOnTimedTextListener != null) {
                 mOnTimedTextListener.onTimedText(text);
+            }
         }
     };
 
@@ -437,11 +435,7 @@ public class VideoView extends SurfaceView implements MediaControllerView.MediaP
         try {
             mDuration = -1;
             mCurrentBufferPercentage = 0;
-            try {
-                mMediaPlayer = new MediaPlayer(mContext, mHardwareDecoder);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            mMediaPlayer = new MediaPlayer(mContext, mHardwareDecoder);
             mMediaPlayer.setOnPreparedListener(mPreparedListener);
             mMediaPlayer.setOnVideoSizeChangedListener(mSizeChangedListener);
             mMediaPlayer.setOnCompletionListener(mCompletionListener);

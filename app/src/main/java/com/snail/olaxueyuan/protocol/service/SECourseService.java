@@ -2,6 +2,7 @@ package com.snail.olaxueyuan.protocol.service;
 
 import com.snail.olaxueyuan.protocol.result.CourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
+import com.snail.olaxueyuan.protocol.result.GoodsOrderStatusResult;
 import com.snail.olaxueyuan.protocol.result.MCBannerResult;
 import com.snail.olaxueyuan.protocol.result.MCCollectionResult;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
@@ -290,4 +291,18 @@ public interface SECourseService {
             @Field("courseId") String courseId,
             @Field("state") String state,
             Callback<CourseCollectResult> cb);
+
+    /**
+     * 获取整套视频的购买状态
+     *
+     * @param userId userId
+     * @param gid    goodsId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/goods/getOrderStatus")
+    void getOrderStatus(
+            @Field("userId") String userId,
+            @Field("gid") String gid,
+            Callback<GoodsOrderStatusResult> cb);
 }
