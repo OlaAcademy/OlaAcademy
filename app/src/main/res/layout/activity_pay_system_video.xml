@@ -1,17 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <LinearLayout
+    <include layout="@layout/title_layout" />
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="45dp"
-        android:orientation="vertical">
+        android:layout_marginTop="50dp">
 
-        <include layout="@layout/title_layout" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="bottom"
+                    android:text="2016数学真题培训班"
+                    android:textColor="@color/black_323232"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/leanstage"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center_vertical"
+                    android:text="5月1号－11月11号"
+                    android:textColor="@color/title_hint_text_color"
+                    android:textSize="12dp" />
+
+                <View style="@style/line_horizontal_margin_15dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp">
+
+                    <com.snail.olaxueyuan.common.RoundRectImageView
+                        android:id="@+id/avatar_course"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_default_avatar" />
+
+                    <TextView
+                        android:id="@+id/org"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/avatar_course"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="由幂学教育出版社出版"
+                        android:textColor="@color/black_323232"
+                        android:textSize="13dp" />
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/line_horizontal"
+                    android:layout_height="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="适合人群"
+                    android:textColor="@color/black_323232"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/suitto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="全国"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="14dp" />
+
+                <View style="@style/line_horizontal" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="课程时长"
+                    android:textColor="@color/black_323232"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/totaltime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="共100分钟"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="14dp" />
+
+                <View
+                    style="@style/line_horizontal"
+                    android:layout_height="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="课程描述"
+                    android:textColor="@color/black_323232"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="共100分钟"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/bottom_view"
@@ -21,6 +154,37 @@
         android:orientation="vertical">
 
         <View style="@style/line_horizontal" />
+
+        <TextView
+            android:id="@+id/rmb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="@string/rmb_mark"
+            android:textColor="@color/system_course_money_color"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@+id/rmb"
+            android:text="99"
+            android:textColor="@color/system_course_money_color"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/paynum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/price"
+            android:text="2300人购买"
+            android:textColor="@color/title_hint_text_color"
+            android:textSize="12dp" />
 
         <Button
             android:id="@+id/btn_buy"

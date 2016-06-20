@@ -1,11 +1,12 @@
 package com.snail.olaxueyuan.protocol.result;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by mingge on 16/5/27.
  */
-public class SystemCourseResult extends ServiceResult {
+public class SystemCourseResult extends ServiceResult implements Serializable{
     @Override
     public String toString() {
         return "SystemCourseResult{" +
@@ -66,7 +67,7 @@ public class SystemCourseResult extends ServiceResult {
         return result;
     }
 
-    public static class ResultEntity {
+    public static class ResultEntity implements Serializable{
         private int attentionnum;
         private String detail;
         private int id;
