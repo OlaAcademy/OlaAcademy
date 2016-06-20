@@ -23,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.lidroid.xutils.DbUtils;
+import com.lidroid.xutils.exception.DbException;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.app.SEAPP;
 import com.snail.olaxueyuan.common.manager.DialogUtils;
@@ -30,6 +32,7 @@ import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
+import com.snail.olaxueyuan.database.CourseDB;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.result.CourseCollectResult;
@@ -313,7 +316,10 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
                 }
                 break;
             case R.id.video_download_btn:
-                ToastUtil.showToastShort(CourseVideoActivity.this, "我是下载");
+                if (courseVideoResult != null && courseVideoResult.getResult().getVideoList().size() > 0) {
+                    CourseVideoResult.ResultBean.VideoListBean videoInfo =  courseVideoResult.getResult().getVideoList().get(0);
+                    downloadCourse(videoInfo);
+                }
                 break;
             case R.id.video_collect_btn:
                 if (SEAuthManager.getInstance().getAccessUser() == null) {
@@ -519,5 +525,24 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
                 ToastUtil.showToastShort(CourseVideoActivity.this, R.string.data_request_fail);
             }
         });
+    }
+
+    private void downloadCourse(CourseVideoResult.ResultBean.VideoListBean videoInfo) {
+        DbUtils db = DbUtils.create(CourseVideoActivity.this);
+        CourseDB course = new CourseDB();
+        course.setId(videoInfo.getId());
+        course.setName(videoInfo.getName());
+        course.setThumb(videoInfo.getPic());
+        course.setVideo(videoInfo.getAddress());
+        try {
+            if (db.findById(CourseDB.class, videoInfo.getId()) != null) {
+                SVProgressHUD.showInViewWithoutIndicator(this, "缓存列表已存在", 2.0f);
+                return;
+            }
+            db.save(course);
+            SVProgressHUD.showInViewWithoutIndicator(this, "成功添加至缓存列表", 2.0f);
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
     }
 }

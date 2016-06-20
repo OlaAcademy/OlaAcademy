@@ -65,7 +65,7 @@ public class DownloadActivity extends SEBaseActivity implements ViewPager.OnPage
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-        setTitleText("我的缓存");
+        setTitleText("我的下载");
 
         initViews();
 
@@ -348,9 +348,9 @@ public class DownloadActivity extends SEBaseActivity implements ViewPager.OnPage
      * 在这里提供要显示的选项卡数据
      */
     private int supplyTabs(List<TabInfo> tabs) {
-        tabs.add(new TabInfo(0, "已缓存",
+        tabs.add(new TabInfo(0, "已下载",
                 DownloadedFragment.class));
-        tabs.add(new TabInfo(1, "正在缓存",
+        tabs.add(new TabInfo(1, "正在下载",
                 DownloadingFragment.class));
         return 1;
     }
