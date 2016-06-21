@@ -84,6 +84,7 @@ public class SystemCourseAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context, SystemVideoActivity.class);
                 intent.putExtra("pid", String.valueOf(list.get(position).getId()));
+                intent.putExtra("ResultEntity",list.get(position));
 //                Logger.e("courseId==" + list.get(position).getId());
                 context.startActivity(intent);
 //                ToastUtil.showShortToast(context, "我是第" + position + "个");

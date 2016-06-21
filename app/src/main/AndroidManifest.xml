@@ -323,12 +323,14 @@
             android:exported="false"
             android:screenOrientation="behind" />
         <activity
-            android:name=".ui.course.PaySystemVideoActivity"
+            android:name=".ui.course.PayOrderSystemVideoActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.course.WebViewActivity"
             android:label="@string/title_activity_web_view" >
+        </activity>
+        <activity android:name=".ui.course.PaySystemVideoActivity" >
         </activity>
     </application>
 
