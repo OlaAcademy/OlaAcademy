@@ -32,6 +32,7 @@ import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
+import com.snail.olaxueyuan.protocol.result.SystemCourseResult;
 import com.snail.olaxueyuan.protocol.result.SystemVideoResult;
 import com.snail.olaxueyuan.ui.adapter.SystemVideoListAdapter;
 import com.snail.olaxueyuan.ui.course.video.VideoManager;
@@ -131,6 +132,8 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     public MediaControllerView controller;
     public long msec = 0;//是否播放过
 
+    SystemCourseResult.ResultEntity resultEntity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +144,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setVideoViewHeight();
         courseId = getIntent().getExtras().getString("pid");
+        resultEntity = (SystemCourseResult.ResultEntity) getIntent().getSerializableExtra("ResultEntity");
         initView();
     }
 
@@ -284,8 +288,9 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
                 }
                 break;
             case R.id.btn_buy:
-                Intent intent = new Intent(SystemVideoActivity.this, PaySystemVideoActivity.class);
+                Intent intent = new Intent(SystemVideoActivity.this, PayOrderSystemVideoActivity.class);
                 intent.putExtra("courseId", courseId);
+                intent.putExtra("ResultEntity", resultEntity);
                 startActivity(intent);
                 break;
             default:

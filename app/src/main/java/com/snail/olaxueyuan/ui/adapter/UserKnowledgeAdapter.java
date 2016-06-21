@@ -111,8 +111,8 @@ public class UserKnowledgeAdapter extends BaseExpandableListAdapter {
         holder.questionKnowledgeAllCount.setText(context.getString(R.string.num_knowledge, list.get(groupPosition).getChild().get(childPosition).getSubAllNum()));
         try {
             int subAllNum = list.get(groupPosition).getChild().get(childPosition).getSubAllNum();
-            holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
-            holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
+//            holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
+//            holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
             if (subAllNum == 0) {
                 holder.progressBar.setProgress(100);
             } else {

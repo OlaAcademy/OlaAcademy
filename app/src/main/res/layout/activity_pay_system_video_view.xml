@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/title_hint_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:background="@color/title_hint_color"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="订单详情"
+                        android:textColor="@color/title_hint_text_color"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="bottom"
+                        android:text="2016数学真题培训班"
+                        android:textColor="@color/black_323232"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/leanstage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:text="有效期:5月1号－11月11号"
+                        android:textColor="@color/title_hint_text_color"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/org"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:text="由幂学教育和欧拉学院版权所有"
+                        android:textColor="@color/title_hint_text_color"
+                        android:textSize="12dp" />
+
+                    <View style="@style/line_horizontal" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/white"
+                        android:gravity="right|center_vertical"
+                        android:paddingRight="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="总价:"
+                            android:textColor="@color/title_hint_text_color"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dp"
+                            android:text="@string/rmb_mark"
+                            android:textColor="@color/system_course_money_color"
+                            android:textSize="10dp" />
+
+                        <TextView
+                            android:id="@+id/price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:layout_toRightOf="@+id/rmb"
+                            android:text=""
+                            android:textColor="@color/system_course_money_color"
+                            android:textSize="18dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:background="@color/title_hint_color"
+                        android:gravity="top|right"
+                        android:paddingRight="15dp"
+                        android:paddingTop="3dp"
+                        android:text="付款成功后，可在［我的－已购买课程］中学习"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="10dp" />
+
+                    <View style="@style/line_horizontal" />
+
+                    <RelativeLayout
+                        android:id="@+id/alipay_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:background="@drawable/selector_white_item_bg"
+                        android:paddingLeft="15dp">
+
+                        <ImageView
+                            android:id="@+id/alipay_icon"
+                            android:layout_width="25dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/zhifubao" />
+
+                        <TextView
+                            style="@style/title_text_13dp_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toEndOf="@+id/alipay_icon"
+                            android:layout_toRightOf="@+id/alipay_icon"
+                            android:text="@string/alipay_pay" />
+
+                        <ImageButton
+                            android:id="@+id/alipay_radio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/white"
+                            android:src="@drawable/download_item_bg"
+                            android:visibility="visible" />
+
+                    </RelativeLayout>
+
+                    <View style="@style/line_horizontal" />
+
+                    <RelativeLayout
+                        android:id="@+id/wechat_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:background="@drawable/selector_white_item_bg"
+                        android:paddingLeft="15dp">
+
+                        <ImageView
+                            android:id="@+id/wechat_icon"
+                            android:layout_width="25dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/weixin_pay" />
+
+                        <TextView
+                            style="@style/title_text_13dp_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toEndOf="@+id/wechat_icon"
+                            android:layout_toRightOf="@+id/wechat_icon"
+                            android:text="@string/wechat_pay" />
+
+                        <ImageButton
+                            android:id="@+id/wechat_radio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/white"
+                            android:src="@drawable/download_item_bg" />
+                    </RelativeLayout>
+
+                    <View style="@style/line_horizontal" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/title_hint_color">
+
+                        <Button
+                            android:id="@+id/buy_vip"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_margin="20dp"
+                            android:background="@drawable/blue_button_bg"
+                            android:text="@string/pay_now"
+                            android:textColor="@color/white"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
