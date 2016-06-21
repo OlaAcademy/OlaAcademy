@@ -260,6 +260,7 @@ public class QuestionCourseModule {
                 private int subAllNum;
                 private String type;
                 private int subNum;
+                private String playcount;
 
                 public void setAddress(String address) {
                     this.address = address;
@@ -323,6 +324,14 @@ public class QuestionCourseModule {
 
                 public int getSubNum() {
                     return subNum;
+                }
+
+                public String getPlaycount() {
+                    return playcount;
+                }
+
+                public void setPlaycount(String playcount) {
+                    this.playcount = playcount;
                 }
             }
         }

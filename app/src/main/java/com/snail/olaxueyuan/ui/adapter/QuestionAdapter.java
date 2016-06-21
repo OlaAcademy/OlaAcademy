@@ -86,7 +86,7 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder = (ParentViewHolder) convertView.getTag();
         }
         holder.questionName.setText(list.get(groupPosition).getName());
-        holder.questionKnowledgeAllCount.setText(context.getString(R.string.num_knowledge, list.get(groupPosition).getSubAllNum()));
+        holder.questionKnowledgeAllCount.setText(context.getString(R.string.num_knowledge, list.get(groupPosition).getChild().size()));
         holder.questionKnowledgeCount.setText(list.get(groupPosition).getSubNum() + "/" + list.get(groupPosition).getSubAllNum());
         try {
             int subAllNum = list.get(groupPosition).getSubAllNum();
@@ -148,6 +148,7 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder = (ChildViewHolder) convertView.getTag();
         }
         holder.questionName.setText(list.get(groupPosition).getChild().get(childPosition).getName());
+        holder.questionKnowledgeAllCount.setText("预测"+list.get(groupPosition).getChild().get(childPosition).getPlaycount()+"分");
         holder.questionKnowledgeCount.setText(list.get(groupPosition).getChild().get(childPosition).getSubNum() + "/" + list.get(groupPosition).getChild().get(childPosition).getSubAllNum());
         try {
             int subAllNum = list.get(groupPosition).getChild().get(childPosition).getSubAllNum();
@@ -172,11 +173,13 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             e.printStackTrace();
         }
         final int courseId = list.get(groupPosition).getChild().get(childPosition).getId();
+        final String outerURL = list.get(groupPosition).getChild().get(childPosition).getAddress();//外部购买链接
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, QuestionWebActivity.class);
                 intent.putExtra("objectId",courseId);
+                intent.putExtra("outerURL",outerURL);
                 intent.putExtra("type",1);
                 context.startActivity(intent);
             }

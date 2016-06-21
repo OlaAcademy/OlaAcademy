@@ -42,6 +42,16 @@ public interface SEUserService {
                         Callback<SEUserResult> cb);
 
     /**
+     * 查询用户信息
+     *
+     * @param id
+     */
+    @FormUrlEncoded
+    @POST("/ola/user/queryUser")
+    public void queryUserInfo(@Field("id") String id,
+                        Callback<SEUserResult> cb);
+
+    /**
      * 找回密码--获取验证码
      *
      * @param user

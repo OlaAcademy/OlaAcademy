@@ -1,8 +1,7 @@
 package com.snail.olaxueyuan.ui.me;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -12,25 +11,33 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.app.SEConfig;
 import com.snail.olaxueyuan.common.RoundRectImageView;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
+import com.snail.olaxueyuan.protocol.manager.SEUserManager;
 import com.snail.olaxueyuan.protocol.model.SEUser;
-import com.snail.olaxueyuan.common.manager.ToastUtil;
+import com.snail.olaxueyuan.protocol.result.SEUserResult;
+import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.me.activity.DownloadActivity;
 import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.olaxueyuan.ui.me.activity.UserUpdateActivity;
 import com.snail.olaxueyuan.ui.me.adapter.UserPageAdapter;
 import com.snail.olaxueyuan.ui.setting.SettingActivity;
-import com.snail.svprogresshud.SVProgressHUD;
+import com.squareup.picasso.Picasso;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by mingge on 2016/5/20.
@@ -71,14 +78,13 @@ public class UserFragment extends SuperFragment {
     ViewPager viewPager;
     private UserPageAdapter userPageAdapter;
 
-    private final static int USER_LOGIN = 0x1212;
-    private final static int USER_LOGOUT = 0x1111;
     private final static int EDIT_USER_INFO = 0x1010;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, rootView);
+        EventBus.getDefault().register(this);
         initView();
         return rootView;
     }
@@ -87,6 +93,7 @@ public class UserFragment extends SuperFragment {
         avatar.setRectAdius(300);
         titleTv.setText(R.string.me);
         leftIcon.setVisibility(View.VISIBLE);
+        leftIcon.setImageDrawable(getResources().getDrawable(R.drawable.icon_download));
         rightResponse.setVisibility(View.VISIBLE);
 
         userPageAdapter = new UserPageAdapter(getActivity().getFragmentManager());
@@ -105,7 +112,7 @@ public class UserFragment extends SuperFragment {
                 break;
             case R.id.right_response:
                 Intent settingIntent = new Intent(getActivity(), SettingActivity.class);
-                startActivityForResult(settingIntent,USER_LOGOUT);
+                startActivity(settingIntent);
                 break;
             case R.id.headLL:
                 headViewClick();
@@ -134,7 +141,7 @@ public class UserFragment extends SuperFragment {
         if (user == null) {
             Intent intent = new Intent(getActivity(), UserLoginActivity.class);
             intent.putExtra("isVisitor", 1);
-            startActivityForResult(intent, USER_LOGIN);
+            startActivity(intent);
         }else {
             Intent intent = new Intent(getActivity(), UserUpdateActivity.class);
             startActivityForResult(intent, EDIT_USER_INFO);
@@ -142,19 +149,36 @@ public class UserFragment extends SuperFragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode== Activity.RESULT_OK){
-            switch (requestCode) {
-                case USER_LOGIN:
-                    Bundle bundle = data.getExtras();
-                    SEUser userInfo = (SEUser)bundle.getSerializable("userInfo");
-                    updateHeadView(userInfo);
-                    break;
-                case USER_LOGOUT:
-                    updateHeadView(null);
-                    break;
-            }
+    public void onResume() {
+        super.onResume();
+        fetchUserInfo();
+    }
+
+    // EventBus 回调
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        if (!module.isLogin){
+            updateHeadView(null);
+        }else{
+            fetchUserInfo();
+        }
+    }
+
+    private void fetchUserInfo(){
+        SEUser user = SEAuthManager.getInstance().getAccessUser();
+        if (user!=null){
+            SEUserManager um = SEUserManager.getInstance();
+            um.queryUserInfo(user.getId(), new Callback<SEUserResult>() {
+                @Override
+                public void success(SEUserResult result, Response response) {
+                    updateHeadView(result.data);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+
+                }
+
+            });
         }
     }
 
@@ -162,10 +186,24 @@ public class UserFragment extends SuperFragment {
         if (userInfo==null){
             name.setText("登录／注册");
             remainDays.setText("还剩0天");
+            avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
         }else{
             name.setText(userInfo.getName());
+            remainDays.setText("还剩"+ userInfo.getVipTime() + "天");
+            Picasso.with(getActivity())
+                    .load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator())
+                    .placeholder(R.drawable.ic_default_avatar)
+                    .error(R.drawable.ic_default_avatar)
+                    .into(avatar);
+            try {
+                FileOutputStream fos = SEConfig.getInstance().getContext().openFileOutput(SEAuthManager.AUTH_CONFIG_FILENAME, Context.MODE_PRIVATE);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(userInfo);
+                oos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        SVProgressHUD.showInViewWithoutIndicator(getActivity(),"刷新知识型谱／收藏／购买",2.0f);
     }
 
     class ViewPagerListener implements ViewPager.OnPageChangeListener {
@@ -216,6 +254,7 @@ public class UserFragment extends SuperFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
 }

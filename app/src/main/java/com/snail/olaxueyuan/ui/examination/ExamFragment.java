@@ -21,12 +21,14 @@ import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.result.ExamModule;
+import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.manager.TitlePopManager;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -66,6 +68,7 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_exam, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         initView();
         return view;
     }
@@ -88,11 +91,17 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
         }
     }
 
+    // EventBus 回调
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        fetchData();
+    }
+
     private void fetchData() {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
         String userId = "";
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        SEAuthManager am = SEAuthManager.getInstance();
+        if (am.isAuthenticated()) {
+            userId = am.getAccessUser().getId();
         }
         QuestionCourseManager.getInstance().getExamList(userId, courseId, "1", new Callback<ExamModule>() {
             @Override
@@ -176,5 +185,6 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 }

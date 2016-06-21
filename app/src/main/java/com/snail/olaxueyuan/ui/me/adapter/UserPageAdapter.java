@@ -3,10 +3,10 @@ package com.snail.olaxueyuan.ui.me.adapter;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
-import com.snail.olaxueyuan.ui.me.UserBuyGoodsFragment;
-import com.snail.olaxueyuan.ui.me.UserCourseCollectFragment;
-import com.snail.olaxueyuan.ui.me.UserKnowledgeFragment;
-import com.snail.olaxueyuan.ui.me.UserVipFragment;
+import com.snail.olaxueyuan.ui.me.subfragment.UserBuyGoodsFragment;
+import com.snail.olaxueyuan.ui.me.subfragment.UserCourseCollectFragment;
+import com.snail.olaxueyuan.ui.me.subfragment.UserKnowledgeFragment;
+import com.snail.olaxueyuan.ui.me.subfragment.UserVipFragment;
 
 /**
  * Created by mingge on 2016/5/20.

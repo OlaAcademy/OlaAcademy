@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.app.SEConfig;
 import com.snail.olaxueyuan.common.RoundRectImageView;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
@@ -68,7 +69,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
     private void initView() {
         titleManager = new TitleManager(R.string.ola_circle, this, rootView, false);
-        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.ic_sub_subject);
+        //titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.ic_sub_subject);
         adapter = new CircleAdapter();
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.setOnRefreshListener(this);
@@ -109,7 +110,6 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.right_response:
-                ToastUtil.showShortToast(getActivity(), "我是右上角提醒");
                 break;
         }
     }
@@ -155,7 +155,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
             holder.avatar.setRectAdius(100);
             holder.title.setText(list.get(position).getUserName());
             if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
-                Picasso.with(getActivity()).load(list.get(position).getUserAvatar()).placeholder(R.drawable.ic_default_avatar)
+                Picasso.with(getActivity()).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar()).placeholder(R.drawable.ic_default_avatar)
                         .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(getActivity(), 50), Utils.dip2px(getActivity(), 50)).into(holder.avatar);
             }
             holder.time.setText(getActivity().getString(R.string.study_record, list.get(position).getTime()));

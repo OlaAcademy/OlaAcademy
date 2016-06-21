@@ -66,13 +66,16 @@ public class ExamModule implements Serializable{
     public static class ResultBean {
         private int cid;
         private int coverpoint;
-        private int degree;
         private int id;
         private String name;
         private int target;
         private String type;
         private int isfree;
         private int rank;
+        private int degree;
+        private String source;
+        private int learnNum;
+        private int progerss;
 
         @Override
         public String toString() {
@@ -159,6 +162,30 @@ public class ExamModule implements Serializable{
 
         public void setRank(int rank) {
             this.rank = rank;
+        }
+
+        public int getLearnNum() {
+            return learnNum;
+        }
+
+        public void setLearnNum(int learnNum) {
+            this.learnNum = learnNum;
+        }
+
+        public String getSource() {
+            return source;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
+        }
+
+        public int getProgerss() {
+            return progerss;
+        }
+
+        public void setProgerss(int progerss) {
+            this.progerss = progerss;
         }
     }
 }

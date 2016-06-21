@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
-import com.snail.olaxueyuan.ui.me.NoScrollViewPager;
+import com.snail.olaxueyuan.ui.me.subfragment.NoScrollViewPager;
 import com.snail.olaxueyuan.ui.me.adapter.DownloadedAdapter;
 import com.snail.olaxueyuan.ui.me.adapter.DownloadingAdapter;
 

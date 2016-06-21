@@ -12,7 +12,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="15dp"
         android:padding="5dp"
-        android:text="登录Swift Academy"
+        android:text="登录欧拉学院"
         android:textSize="20sp" />
 
     <EditText

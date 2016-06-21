@@ -52,16 +52,17 @@
                 android:layout_height="20dp"
                 android:text="重要程度"
                 android:textColor="@color/black_one"
-                android:textSize="13dp" />
+                android:textSize="14dp" />
 
             <RatingBar
                 android:id="@+id/important_ratingBar"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/important_degree"
-                android:numStars="5"
+                android:numStars="3"
                 android:rating="2" />
 
             <TextView
@@ -71,7 +72,7 @@
                 android:layout_toLeftOf="@+id/master_ratingBar"
                 android:text="掌握程度"
                 android:textColor="@color/black_one"
-                android:textSize="13dp" />
+                android:textSize="14dp" />
 
             <RatingBar
                 android:id="@+id/master_ratingBar"
@@ -79,7 +80,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="5dp"
                 android:numStars="3"
                 android:rating="2" />
 
@@ -88,50 +90,50 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:text="内容来源:"
+                android:text="内容来源"
                 android:textColor="@color/black_one"
-                android:textSize="13dp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/source_from"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
+                android:layout_marginLeft="5dp"
                 android:text="名师讲解"
-                android:textColor="@color/exam_title_normal_color"
-                android:textSize="12dp" />
+                android:textColor="#999"
+                android:textSize="14dp" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/study_degree"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:text="名师讲解"
-                android:textColor="@color/exam_title_normal_color"
-                android:textSize="12dp" />
+                android:text="学习进度"
+                android:textSize="14dp" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="80dp"
                 android:layout_height="5dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/study_degree"
                 android:indeterminate="false" />
 
             <TextView
-                android:id="@+id/question_knowledge_count"
+                android:id="@+id/progressTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -141,14 +143,19 @@
                 android:textSize="12dp" />
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/start_exam"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="20dp"
-            android:background="@drawable/blue_button_bg"
-            android:text="开始模考"
-            android:textColor="@color/white" />
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/start_exam"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/blue_button_bg"
+                android:text="开始模考"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
     </LinearLayout>
 </FrameLayout>

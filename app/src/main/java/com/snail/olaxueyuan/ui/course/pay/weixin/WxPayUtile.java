@@ -11,7 +11,7 @@ import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.result.UserWXpayResult;
-import com.snail.olaxueyuan.ui.me.UserVipFragment;
+import com.snail.olaxueyuan.ui.me.subfragment.UserVipFragment;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;

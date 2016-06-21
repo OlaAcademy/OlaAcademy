@@ -17,6 +17,7 @@ import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.result.QuestionCourseModule;
+import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.adapter.QuestionAdapter;
 import com.snail.olaxueyuan.ui.manager.TitlePopManager;
@@ -26,6 +27,7 @@ import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -60,6 +62,7 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_question, container, false);
         ButterKnife.bind(this, rootView);
+        EventBus.getDefault().register(this);
         initView();
         fetchData();
         return rootView;
@@ -97,6 +100,11 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
         });
     }
 
+    // EventBus 回调
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        fetchData();
+    }
+
     private void fetchData() {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
         String userId = "";
@@ -107,6 +115,7 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
             @Override
             public void success(QuestionCourseModule questionCourseModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
+                questionName.setText(questionCourseModule.getResult().getProfile());
                 expandableListViews.onRefreshComplete();
 //                Logger.json(questionCourseModule);
                 if (questionCourseModule.getApicode() != 10000) {
@@ -153,6 +162,7 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

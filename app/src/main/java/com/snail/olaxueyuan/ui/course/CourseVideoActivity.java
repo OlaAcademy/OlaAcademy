@@ -38,7 +38,7 @@ import com.snail.olaxueyuan.protocol.result.CourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
 import com.snail.olaxueyuan.ui.adapter.CourseVideoListAdapter;
 import com.snail.olaxueyuan.ui.course.video.VideoManager;
-import com.snail.olaxueyuan.ui.me.UserCourseCollectFragment;
+import com.snail.olaxueyuan.ui.me.subfragment.UserCourseCollectFragment;
 import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 

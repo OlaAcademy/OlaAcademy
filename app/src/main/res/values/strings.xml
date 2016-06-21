@@ -82,4 +82,5 @@
     <string name="to_login">登录后才能查看，是否去登录？</string>
     <string name="sure_uncollect">是否取消收藏</string>
     <string name="buy_now">立即购买</string>
+    <string name="title_activity_web_view">WebViewActivity</string>
 </resources>
