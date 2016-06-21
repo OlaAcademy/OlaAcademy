@@ -75,7 +75,7 @@ public class ExamModule implements Serializable{
         private int degree;
         private String source;
         private int learnNum;
-        private int progerss;
+        private int progress;
 
         @Override
         public String toString() {
@@ -180,12 +180,12 @@ public class ExamModule implements Serializable{
             this.source = source;
         }
 
-        public int getProgerss() {
-            return progerss;
+        public int getProgress() {
+            return progress;
         }
 
-        public void setProgerss(int progerss) {
-            this.progerss = progerss;
+        public void setProgress(int progress) {
+            this.progress = progress;
         }
     }
 }

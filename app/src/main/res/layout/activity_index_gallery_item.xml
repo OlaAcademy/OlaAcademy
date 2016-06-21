@@ -130,7 +130,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/study_degree"
-                android:indeterminate="false" />
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/progressbg"/>
 
             <TextView
                 android:id="@+id/progressTV"

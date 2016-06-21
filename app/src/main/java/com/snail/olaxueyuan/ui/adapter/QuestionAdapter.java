@@ -91,9 +91,6 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
         try {
             int subAllNum = list.get(groupPosition).getSubAllNum();
             int subNum = list.get(groupPosition).getSubNum();
-//            holder.progressBar.setBackgroundResource(R.color.light_title_blue);
-            holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
-            holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
             if (subAllNum == 0) {
                 holder.progressBar.setProgress(100);
             } else {
@@ -153,8 +150,6 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
         try {
             int subAllNum = list.get(groupPosition).getChild().get(childPosition).getSubAllNum();
             int subNum = list.get(groupPosition).getChild().get(childPosition).getSubNum();
-            holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
-            holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
             if (subAllNum == 0) {
                 holder.progressBar.setProgress(100);
             } else {

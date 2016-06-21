@@ -80,8 +80,9 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
         viewHolder.sourceFrom.setText(mDatas.get(position).getSource());
         viewHolder.importantRatingBar.setMax(5);
         viewHolder.importantRatingBar.setRating(mDatas.get(position).getDegree());
-        viewHolder.masterRatingBar.setRating(1);
-        viewHolder.progressTV.setText(mDatas.get(position).getProgerss()+"%");
+        viewHolder.masterRatingBar.setRating((float)(mDatas.get(position).getProgress()*3.0/100));
+        viewHolder.progressBar.setProgress(mDatas.get(position).getProgress());
+        viewHolder.progressTV.setText(mDatas.get(position).getProgress()+"%");
         return convertView;
     }
 
