@@ -1,6 +1,8 @@
 package com.snail.olaxueyuan.common;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,11 @@ import android.widget.TextView;
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
+import com.snail.olaxueyuan.protocol.manager.SEUserManager;
 import com.snail.olaxueyuan.protocol.result.ExamModule;
+import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
+import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.olaxueyuan.ui.question.QuestionWebActivity;
 
 import java.util.ArrayList;
@@ -24,6 +30,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class HorizontalScrollViewAdapter extends BaseAdapter {
 
@@ -66,6 +73,18 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        final int isfree = mDatas.get(position).getIsfree();
+        if (isfree==0){
+            viewHolder.lockRL.setVisibility(View.VISIBLE);
+            viewHolder.lockRL.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    buyVip();
+                }
+            });
+        }else {
+            viewHolder.lockRL.setVisibility(View.GONE);
+        }
         viewHolder.examName.setText(mDatas.get(position).getName());
         viewHolder.examNum.setText("已有" + mDatas.get(position).getLearnNum() + "学习");
         viewHolder.startExam.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +103,27 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
         viewHolder.progressBar.setProgress(mDatas.get(position).getProgress());
         viewHolder.progressTV.setText(mDatas.get(position).getProgress()+"%");
         return convertView;
+    }
+
+    private void buyVip(){
+        if (SEAuthManager.getInstance().isAuthenticated()){
+            new AlertDialog.Builder(mContext)
+                    .setTitle("友情提示")
+                    .setMessage("购买会员后即可拥有")
+                    .setPositiveButton("去购买", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .show();
+        }else{
+            mContext.startActivity(new Intent(mContext, UserLoginActivity.class));
+        }
     }
 
     class ViewHolder {
@@ -111,6 +151,8 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
         TextView progressTV;
         @Bind(R.id.start_exam)
         Button startExam;
+        @Bind(R.id.lockRL)
+        RelativeLayout lockRL;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
