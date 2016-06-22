@@ -67,18 +67,22 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.examName.setText(mDatas.get(position).getName());
-        viewHolder.examNum.setText("已有" + mDatas.get(position).getCid() + "学习");
+        viewHolder.examNum.setText("已有" + mDatas.get(position).getLearnNum() + "学习");
         viewHolder.startExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, QuestionWebActivity.class);
-                intent.putExtra("objectId",mDatas.get(position).getId());
-                intent.putExtra("type",2);
+                intent.putExtra("objectId", mDatas.get(position).getId());
+                intent.putExtra("type", 2);
                 mContext.startActivity(intent);
             }
         });
+        viewHolder.sourceFrom.setText(mDatas.get(position).getSource());
         viewHolder.importantRatingBar.setMax(5);
         viewHolder.importantRatingBar.setRating(mDatas.get(position).getDegree());
+        viewHolder.masterRatingBar.setRating((float)(mDatas.get(position).getProgress()*3.0/100));
+        viewHolder.progressBar.setProgress(mDatas.get(position).getProgress());
+        viewHolder.progressTV.setText(mDatas.get(position).getProgress()+"%");
         return convertView;
     }
 
@@ -103,8 +107,8 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
         TextView studyDegree;
         @Bind(R.id.progressBar)
         ProgressBar progressBar;
-        @Bind(R.id.question_knowledge_count)
-        TextView questionKnowledgeCount;
+        @Bind(R.id.progressTV)
+        TextView progressTV;
         @Bind(R.id.start_exam)
         Button startExam;
 

@@ -90,6 +90,7 @@
         android:layout_gravity="bottom"
         android:background="#E0E0E0"
         android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:scrollbars="none">
 
         <LinearLayout

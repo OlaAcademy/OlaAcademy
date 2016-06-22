@@ -20,6 +20,7 @@ import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.model.MCOrgInfo;
 import com.snail.olaxueyuan.protocol.result.MCCommonResult;
 import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
+import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -107,28 +108,39 @@ public class OrgInfoAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void enroll(String orgId, String userPhone) {
+    private void enroll(final String orgId, String userPhone) {
         MCOrgManager orgManager = MCOrgManager.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat    ("yyyy-MM-dd");
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        SVProgressHUD.showInView(context,"请稍后...",true);
         orgManager.enroll(orgId, userPhone, "", "1", formatter.format(curDate), new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
+                SVProgressHUD.dismiss(context);
                 if (result.apicode.equals("10000")) {
                     new AlertDialog.Builder(context)
                             .setTitle("报名成功")
-                            .setMessage("稍后客服与您取得联系")
+                            .setMessage("报名信息已发往幂学")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                 }
                             })
                             .show();
+                    for (int i=0;i<orgList.size();i++){
+                        MCOrgInfo org = orgList.get(i);
+                        if (org.id.equals(orgId)){
+                            org.checkedIn = 1;
+                            orgList.set(i, org);
+                            notifyDataSetChanged();
+                            break;
+                        }
+                    }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                SVProgressHUD.dismiss(context);
             }
         });
 

@@ -1,7 +1,9 @@
 package com.snail.olaxueyuan.ui.question;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +22,6 @@ import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.olaxueyuan.ui.adapter.QuestionResultAdapter;
 import com.snail.olaxueyuan.ui.adapter.QuestionResultListAdapter;
 import com.snail.olaxueyuan.ui.question.module.QuestionResultNoticeClose;
-import com.snail.photo.util.Res;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import org.json.JSONArray;
@@ -63,6 +64,7 @@ public class QuestionResultActivity extends SEBaseActivity {
     private int correct = 0;//正确率
     private int winPercent = 30;//打败多少考生
     private int objectId;//试题的ID
+    private String outerURL; //亚马逊购买链接
     private JSONArray array;
     private QuestionResultAdapter resultAdapter;
     private QuestionResultListAdapter listAdapter;
@@ -84,6 +86,7 @@ public class QuestionResultActivity extends SEBaseActivity {
         type = getIntent().getExtras().getInt("type");
         if (type==1){
             startExam.setText("购买教材");
+            outerURL = getIntent().getStringExtra("outerURL");
         }
         objectId = getIntent().getExtras().getInt("objectId");
         Logger.json(jsonString);
@@ -136,7 +139,9 @@ public class QuestionResultActivity extends SEBaseActivity {
         switch (view.getId()) {
             case R.id.start_exam:
                 if(type==1){
-
+                    Uri uri = Uri.parse(outerURL);
+                    Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                    startActivity(intent);
                 }else if(type==2){
                     setResult(RESULT_OK);
                     finish();

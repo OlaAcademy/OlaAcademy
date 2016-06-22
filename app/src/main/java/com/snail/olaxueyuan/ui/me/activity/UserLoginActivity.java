@@ -88,11 +88,6 @@ public class UserLoginActivity extends SEBaseActivity {
                 }
                 EventBus.getDefault().post(new UserLoginNoticeModule(true));//发送通知登录
                 SVProgressHUD.dismiss(UserLoginActivity.this);
-                Intent intent = getIntent();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("userInfo", result.data);
-                intent.putExtras(bundle);
-                setResult(RESULT_OK, intent);
                 finish();
             }
 

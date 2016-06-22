@@ -12,6 +12,7 @@ import com.snail.olaxueyuan.protocol.manager.MCOrgManager;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.model.MCOrgInfo;
 import com.snail.olaxueyuan.protocol.result.MCOrgListResult;
+import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
@@ -19,6 +20,7 @@ import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -66,12 +68,24 @@ public class TurtorActivity extends SEBaseActivity {
                 startActivity(intent);
             }
         });
+
+        EventBus.getDefault().register(this);
     }
 
+    // EventBus 回调
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        initData();
+    }
 
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initData() {

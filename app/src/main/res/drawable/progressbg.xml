@@ -5,10 +5,10 @@
             <corners android:radius="5dip" />
             <gradient
                 android:angle="0"
-                android:centerColor="@color/month_vip_bg"
+                android:centerColor="#E1E1E1"
                 android:centerY="0.75"
-                android:endColor="@color/month_vip_bg"
-                android:startColor="@color/month_vip_bg" />
+                android:endColor="#E1E1E1"
+                android:startColor="#E1E1E1" />
         </shape>
     </item>
     <item android:id="@android:id/secondaryProgress">

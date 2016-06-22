@@ -127,7 +127,6 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
                     public void onClick(DialogInterface dialog, int which) {
                         SEUserManager.getInstance().logout();
                         EventBus.getDefault().post(new UserLoginNoticeModule(false));//发送通知登录
-                        setResult(RESULT_OK);
                         finish();
                     }
                 })

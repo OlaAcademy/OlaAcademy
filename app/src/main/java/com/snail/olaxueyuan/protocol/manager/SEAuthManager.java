@@ -143,11 +143,10 @@ public class SEAuthManager {
             public void success(SEUserResult result, Response response) {
 
                 SEUser user = result.data;
-                if (user == null) {
-                    return;
+                if (user != null) {
+                    // 登录成功后返回用户信息，更新本地，通用只保存token即可，这里将用户对象保存至本地
+                    updateUserInfo(user);
                 }
-                // 登录成功后返回用户信息，更新本地，通用只保存token即可，这里将用户对象保存至本地
-                updateUserInfo(user);
 
                 if (callback != null) {
                     callback.success(result, response);
