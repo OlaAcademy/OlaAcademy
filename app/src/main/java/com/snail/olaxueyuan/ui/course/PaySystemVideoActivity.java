@@ -139,7 +139,7 @@ public class PaySystemVideoActivity extends SuperActivity {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
         double pricess = Double.parseDouble(price) * 100;
         final String prices = new DecimalFormat("###").format(pricess);
-        SEUserManager.getInstance().getWXPayReq(prices, userId, type, courseId, "123", new Callback<UserWXpayResult>() {
+        SEUserManager.getInstance().getWXPayReq(userId, type, courseId, new Callback<UserWXpayResult>() {
             @Override
             public void success(UserWXpayResult wxPayModule, Response response) {
                 if (wxPayModule != null && wxPayModule.getApicode() == 10000) {
@@ -150,6 +150,8 @@ public class PaySystemVideoActivity extends SuperActivity {
                                 "http://121.40.35.3/test", "测试商品", wxpayResult,
                                 genOutTradNo()).doPay();
                     }
+                } else {
+                    ToastUtil.showToastShort(PaySystemVideoActivity.this, wxPayModule.getMessage());
                 }
             }
 
@@ -164,10 +166,10 @@ public class PaySystemVideoActivity extends SuperActivity {
         Random random = new Random();
         return MD5.getMessageDigest(String.valueOf(random.nextInt(10000)).getBytes());
     }
+
     public void payForAlipay() {
-        price = "0.01";
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        SEUserManager.getInstance().getAliOrderInfo(price, userId, type, "", "123", new Callback<UserAlipayResult>() {
+        SEUserManager.getInstance().getAliOrderInfo(userId, type, courseId, new Callback<UserAlipayResult>() {
             @Override
             public void success(UserAlipayResult userAlipayResult, Response response) {
                 if (userAlipayResult != null && userAlipayResult.getApicode() == 10000) {
@@ -191,6 +193,8 @@ public class PaySystemVideoActivity extends SuperActivity {
                         Thread payThread = new Thread(payRunnable);
                         payThread.start();
                     }
+                } else {
+                    ToastUtil.showToastShort(PaySystemVideoActivity.this, userAlipayResult.getMessage());
                 }
             }
 

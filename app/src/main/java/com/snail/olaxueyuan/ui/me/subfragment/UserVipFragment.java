@@ -150,7 +150,7 @@ public class UserVipFragment extends SuperFragment {
     public void payForAlipay() {
         price = "0.01";
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        SEUserManager.getInstance().getAliOrderInfo(price, userId, type, "", "123", new Callback<UserAlipayResult>() {
+        SEUserManager.getInstance().getAliOrderInfo(userId, type, "", new Callback<UserAlipayResult>() {
             @Override
             public void success(UserAlipayResult userAlipayResult, Response response) {
                 if (userAlipayResult != null && userAlipayResult.getApicode() == 10000) {
@@ -174,6 +174,8 @@ public class UserVipFragment extends SuperFragment {
                         Thread payThread = new Thread(payRunnable);
                         payThread.start();
                     }
+                } else {
+                    ToastUtil.showToastShort(getActivity(), userAlipayResult.getMessage());
                 }
             }
 
@@ -233,7 +235,7 @@ public class UserVipFragment extends SuperFragment {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
         double pricess = Double.parseDouble(price) * 100;
         final String prices = new DecimalFormat("###").format(pricess);
-        SEUserManager.getInstance().getWXPayReq(prices, userId, type, "", "123", new Callback<UserWXpayResult>() {
+        SEUserManager.getInstance().getWXPayReq(userId, type, "", new Callback<UserWXpayResult>() {
             @Override
             public void success(UserWXpayResult wxPayModule, Response response) {
                 if (wxPayModule != null && wxPayModule.getApicode() == 10000) {
@@ -244,6 +246,8 @@ public class UserVipFragment extends SuperFragment {
                                 "http://121.40.35.3/test", "测试商品", wxpayResult,
                                 genOutTradNo()).doPay();
                     }
+                } else {
+                    ToastUtil.showToastShort(getActivity(), wxPayModule.getMessage());
                 }
             }
 
