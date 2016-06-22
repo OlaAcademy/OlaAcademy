@@ -4,7 +4,7 @@
         <item>数学</item>
         <item>英语</item>
         <item>逻辑</item>
-        <item>协作</item>
+        <item>写作</item>
     </string-array>
     <string-array name="system_course">
         <item>课程</item>

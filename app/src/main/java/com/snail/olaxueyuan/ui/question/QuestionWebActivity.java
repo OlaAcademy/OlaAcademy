@@ -19,6 +19,7 @@ import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.app.SEConfig;
 import com.snail.olaxueyuan.protocol.model.MCQuestion;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
+import com.snail.olaxueyuan.ui.me.activity.VideoPlayActivity;
 import com.snail.olaxueyuan.ui.question.module.QuestionResultNoticeClose;
 import com.snail.svprogresshud.SVProgressHUD;
 
@@ -139,7 +140,9 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
                         setRightTextListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
+                                Intent intent = new Intent(QuestionWebActivity.this, VideoPlayActivity.class);
+                                intent.putExtra("videoPath", videoUrl);
+                                startActivity(intent);
                             }
                         });
                     }
@@ -149,6 +152,9 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
                     intent.putExtra("answerArray", msg.obj.toString());
                     intent.putExtra("objectId", objectId);
                     intent.putExtra("type",type);
+                    if (type==1){
+                        intent.putExtra("outerURL",getIntent().getStringExtra("outerURL"));
+                    }
                     startActivityForResult(intent, 1);
                     break;
             }

@@ -18,6 +18,7 @@ public class SEUser implements Serializable {
     private String age;
     private String sex;
     private String local;
+    private String vipTime;
 
     private boolean _isDataDirty = false;
 
@@ -99,6 +100,10 @@ public class SEUser implements Serializable {
 
     public void setLocal(String local) {
         this.local = local;
+    }
+
+    public String getVipTime() {
+        return vipTime;
     }
 
     public boolean is_isDataDirty() {

@@ -21,12 +21,14 @@ import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.result.ExamModule;
+import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
-import com.snail.olaxueyuan.ui.manager.TitlePopManager;
+import com.snail.olaxueyuan.ui.manager.TitleExamPopManager;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -34,7 +36,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ExamFragment extends SuperFragment implements TitlePopManager.PidClickListener {
+public class ExamFragment extends SuperFragment implements TitleExamPopManager.ExamPidClickListener {
     @Bind(R.id.title_tv)
     TextView titleTv;
     @Bind(R.id.right_response)
@@ -54,6 +56,8 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
     @Bind(R.id.id_horizontalScrollView)
     MyHorizontalScrollView mHorizontalScrollView;
     private String courseId = "1";// 1 数学 2 英语 3 逻辑 4 协作
+    private String courseType = "1";//1 模考 2 真题
+
     ExamModule module;
     private HorizontalScrollViewAdapter mAdapter;
 
@@ -66,6 +70,7 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_exam, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         initView();
         return view;
     }
@@ -78,23 +83,28 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
         fetchData();
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.title_tv:
-                TitlePopManager.getInstance().showPop(getActivity(), titleManager, popLine, this, 2);
+                TitleExamPopManager.getInstance().showPop(getActivity(), titleManager, popLine, this, 2);
                 break;
         }
+    }
+
+    // EventBus 回调
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        fetchData();
     }
 
     private void fetchData() {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
         String userId = "";
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        SEAuthManager am = SEAuthManager.getInstance();
+        if (am.isAuthenticated()) {
+            userId = am.getAccessUser().getId();
         }
-        QuestionCourseManager.getInstance().getExamList(userId, courseId, "1", new Callback<ExamModule>() {
+        QuestionCourseManager.getInstance().getExamList(userId, courseId, courseType, new Callback<ExamModule>() {
             @Override
             public void success(ExamModule examModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
@@ -115,14 +125,6 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
                 }
             }
         });
-    }
-
-    @Override
-    public void pidPosition(int type, String pid) {
-        if (type == 2) {
-            this.courseId = pid;
-            fetchData();
-        }
     }
 
     Handler handler = new Handler() {
@@ -176,5 +178,15 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void examPidPosition(int type, String courseType, String courseId) {
+        if (type == 2) {
+            this.courseId = courseId;
+            this.courseType = courseType;
+            fetchData();
+        }
     }
 }

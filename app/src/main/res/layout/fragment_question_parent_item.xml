@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/selector_white_item_bg"
     android:orientation="vertical">
 
     <View style="@style/line_horizontal" />
@@ -60,14 +61,15 @@
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="100dp"
-            android:layout_height="5dp"
+            android:layout_width="60dp"
+            android:layout_height="6dp"
             android:layout_alignTop="@+id/question_knowledge_all_count"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/question_knowledge_all_count"
-            android:indeterminate="false" />
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/progressbg" />
 
         <TextView
             android:id="@+id/question_knowledge_count"

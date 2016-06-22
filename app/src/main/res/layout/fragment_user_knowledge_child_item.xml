@@ -71,8 +71,8 @@
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="100dp"
-            android:layout_height="5dp"
+            android:layout_width="60dp"
+            android:layout_height="6dp"
             android:layout_alignTop="@+id/question_knowledge_all_count"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"

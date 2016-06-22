@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.TitleManager;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.MCOrgManager;
@@ -71,7 +70,7 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
             @Override
             public void success(SystemCourseResult systemCourseResult, Response response) {
                 listview.onRefreshComplete();
-                Logger.json(systemCourseResult);
+//                Logger.json(systemCourseResult);
                 if (systemCourseResult.getApicode() != 10000) {
                     ToastUtil.showToastShort(CommodityActivity.this, systemCourseResult.getMessage());
                 } else {

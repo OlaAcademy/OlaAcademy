@@ -250,6 +250,16 @@ public class SEUserManager {
     }
 
     /**
+     * 查询用户信息
+     *
+     * @param  userId
+     * @param cb
+     */
+    public void queryUserInfo(String userId, Callback<SEUserResult> cb) {
+        _userService.queryUserInfo(userId,cb);
+    }
+
+    /**
      * 知识型谱列表
      *
      * @param type 1 用于考点的课程列表 2 用户视频的课程列表

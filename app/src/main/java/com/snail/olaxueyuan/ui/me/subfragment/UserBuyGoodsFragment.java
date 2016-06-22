@@ -1,4 +1,4 @@
-package com.snail.olaxueyuan.ui.me;
+package com.snail.olaxueyuan.ui.me.subfragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,15 +11,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.snail.olaxueyuan.R;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SEUserManager;
-import com.snail.olaxueyuan.protocol.result.UserCourseCollectResult;
+import com.snail.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
 import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
-import com.snail.olaxueyuan.ui.me.adapter.UserCourseCollectAdapter;
+import com.snail.olaxueyuan.ui.me.adapter.UserBuyGoodsAdapter;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 
@@ -34,48 +33,54 @@ import retrofit.client.Response;
 /**
  * Created by mingge on 2016/5/20.
  */
-public class UserCourseCollectFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener {
+public class UserBuyGoodsFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener {
     View rootView;
-    UserCourseCollectResult module;
     @Bind(R.id.listview)
     PullToRefreshListView listview;
+    UserBuyGoodsAdapter adapter;
+    UserBuyGoodsResult module;
     @Bind(R.id.btn_login)
     Button btnLogin;
     @Bind(R.id.login_view)
     LinearLayout loginView;
-    private UserCourseCollectAdapter adapter;
-    public static boolean isRefreshCourseCollectList;//是否刷新用户收藏列表
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_user_course_collect, container, false);
+        rootView = inflater.inflate(R.layout.fragment_user_buy_course, container, false);
         ButterKnife.bind(this, rootView);
         EventBus.getDefault().register(this);
         initView();
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Logger.e("isRefreshCourseCollectList()==" + isRefreshCourseCollectList);
-        if (isRefreshCourseCollectList) {
-            isRefreshCourseCollectList = false;
-            fetchData();
-        }
-    }
+    private void fetchData() {
+        SEUserManager.getInstance().getBuyGoodsList(SEAuthManager.getInstance().getAccessUser().getId(), new Callback<UserBuyGoodsResult>() {
+            @Override
+            public void success(UserBuyGoodsResult userBuyGoodsResult, Response response) {
+                if (listview!=null)
+                    listview.onRefreshComplete();
+                if (userBuyGoodsResult.getApicode() != 10000) {
+                    ToastUtil.showToastShort(getActivity(), userBuyGoodsResult.getMessage());
+                } else {
+                    module = userBuyGoodsResult;
+                    handler.sendEmptyMessage(0);
+                }
+            }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
+            @Override
+            public void failure(RetrofitError error) {
+                if (getActivity() != null) {
+                    listview.onRefreshComplete();
+                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+                }
+            }
+        });
     }
 
     private void initView() {
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.setOnRefreshListener(this);
-        adapter = new UserCourseCollectAdapter(getActivity());
+        adapter = new UserBuyGoodsAdapter(getActivity());
         listview.setAdapter(adapter);
         isLoginView();
     }
@@ -89,30 +94,8 @@ public class UserCourseCollectFragment extends SuperFragment implements PullToRe
         }
     }
 
-    private void fetchData() {
-        // userId,316测试
-//        SEUserManager.getInstance().getCollectionByUserId("126", new Callback<UserCourseCollectResult>() {
-        SEUserManager.getInstance().getCollectionByUserId(SEAuthManager.getInstance().getAccessUser().getId(), new Callback<UserCourseCollectResult>() {
-            @Override
-            public void success(UserCourseCollectResult userCourseCollectResult, Response response) {
-//                Logger.json(userCourseCollectResult);
-                listview.onRefreshComplete();
-                if (userCourseCollectResult.getApicode() != 10000) {
-                    ToastUtil.showToastShort(getActivity(), userCourseCollectResult.getMessage());
-                } else {
-                    module = userCourseCollectResult;
-                    handler.sendEmptyMessage(0);
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                if (getActivity() != null) {
-                    listview.onRefreshComplete();
-                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
-                }
-            }
-        });
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        isLoginView();
     }
 
     Handler handler = new Handler() {
@@ -130,13 +113,15 @@ public class UserCourseCollectFragment extends SuperFragment implements PullToRe
         adapter.updateData(module);
     }
 
-    public void onEventMainThread(UserLoginNoticeModule module) {
-        isLoginView();
-    }
-
     @Override
     public void onRefresh(PullToRefreshBase refreshView) {
         fetchData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     @OnClick({R.id.btn_login})
@@ -147,5 +132,4 @@ public class UserCourseCollectFragment extends SuperFragment implements PullToRe
                 break;
         }
     }
-
 }

@@ -11,6 +11,8 @@ import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.RecyclingPagerAdapter;
 import com.snail.olaxueyuan.protocol.model.MCBanner;
 import com.snail.olaxueyuan.ui.course.CourseDetailActivity;
+import com.snail.olaxueyuan.ui.course.CourseVideoActivity;
+import com.snail.olaxueyuan.ui.course.WebViewActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,12 +47,17 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MCBanner videoInfo = bannerList.get(position);
-                    Intent intent = new Intent(context,CourseDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("videoInfo", videoInfo);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
+                    MCBanner banner = bannerList.get(position);
+                    if (banner.type.equals("2")){
+                        Intent intent = new Intent(context,CourseVideoActivity.class);
+                        intent.putExtra("pid", banner.id);
+                        context.startActivity(intent);
+                    }else if(banner.type.equals("3")){
+                        Intent intent = new Intent(context,WebViewActivity.class);
+                        intent.putExtra("textUrl", banner.profile);
+                        context.startActivity(intent);
+                    }
+
                 }
             });
         } else {
