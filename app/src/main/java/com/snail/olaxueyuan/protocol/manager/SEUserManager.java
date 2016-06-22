@@ -255,8 +255,8 @@ public class SEUserManager {
      * @param type 1 用于考点的课程列表 2 用户视频的课程列表
      * @param cb
      */
-    public void getStatisticsList(String type,String userid, Callback<UserKnowledgeResult> cb) {
-        _userService.getStatisticsList(type,userid, cb);
+    public void getStatisticsList(String type, String userid, Callback<UserKnowledgeResult> cb) {
+        _userService.getStatisticsList(type, userid, cb);
     }
 
     /**
@@ -277,8 +277,8 @@ public class SEUserManager {
      * @param goodsId
      * @param cb
      */
-    public void getAliOrderInfo(String price, String userId, String type, String goodsId, String body, Callback<UserAlipayResult> cb) {
-        _userService.getAliOrderInfo(price, userId, type, goodsId, body, cb);
+    public void getAliOrderInfo(String userId, String type, String goodsId, Callback<UserAlipayResult> cb) {
+        _userService.getAliOrderInfo(userId, type, goodsId, cb);
     }
 
     /**
@@ -290,8 +290,8 @@ public class SEUserManager {
      * @param goodsId
      * @param cb
      */
-    public void getWXPayReq(String price, String userId, String type, String goodsId, String body, Callback<UserWXpayResult> cb) {
-        _userService.getWXPayReq(price, userId, type, goodsId, body, cb);
+    public void getWXPayReq(String userId, String type, String goodsId, Callback<UserWXpayResult> cb) {
+        _userService.getWXPayReq(userId, type, goodsId, cb);
     }
 
     /**

@@ -145,11 +145,11 @@ public interface SEUserService {
     @FormUrlEncoded
     @POST("/ola/pay/getAliOrderInfo")
     void getAliOrderInfo(
-            @Field("price") String price,
+//            @Field("price") String price,
             @Field("userId") String userId,
             @Field("type") String type,
             @Field("goodsId") String goodsId,
-            @Field("body") String body,
+//            @Field("body") String body,
             Callback<UserAlipayResult> cb);
 
     /**
@@ -165,11 +165,11 @@ public interface SEUserService {
     @FormUrlEncoded
     @POST("/ola/pay/getWXPayReq")
     void getWXPayReq(
-            @Field("price") String price,
+//            @Field("price") String price,
             @Field("userId") String userId,
             @Field("type") String type,
             @Field("goodsId") String goodsId,
-            @Field("body") String body,
+//            @Field("body") String body,
             Callback<UserWXpayResult> cb);
 
     /**
