@@ -30,7 +30,6 @@ import com.snail.olaxueyuan.ui.course.pay.weixin.MD5;
 import com.snail.olaxueyuan.ui.course.pay.weixin.WxPayUtile;
 import com.snail.olaxueyuan.ui.course.pay.zhifubao.PayResult;
 
-import java.text.DecimalFormat;
 import java.util.Random;
 
 import butterknife.Bind;
@@ -77,7 +76,6 @@ public class UserVipFragment extends SuperFragment {
     private static final int PAY_BY_WECHAT = 102;//使用微信支付
     private static Context context;
     private int payType = PAY_BY_ALIPAY;//最终支付方式,默认支付宝
-    private String price;
     public static final String MOTH_VIP = "1";//1月度会员
     public static final String YEAR_VIP = "2";//2 年度会员
     public static final String SUPER_VIP = "3";//3 整套视频
@@ -148,7 +146,6 @@ public class UserVipFragment extends SuperFragment {
     }
 
     public void payForAlipay() {
-        price = "0.01";
         userId = SEAuthManager.getInstance().getAccessUser().getId();
         SEUserManager.getInstance().getAliOrderInfo(userId, type, "", new Callback<UserAlipayResult>() {
             @Override
@@ -226,15 +223,10 @@ public class UserVipFragment extends SuperFragment {
                     break;
             }
         }
-
-        ;
     };
 
     public void payForWXRequest() {
-        price = "0.01";
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        double pricess = Double.parseDouble(price) * 100;
-        final String prices = new DecimalFormat("###").format(pricess);
         SEUserManager.getInstance().getWXPayReq(userId, type, "", new Callback<UserWXpayResult>() {
             @Override
             public void success(UserWXpayResult wxPayModule, Response response) {
@@ -242,7 +234,7 @@ public class UserVipFragment extends SuperFragment {
                     final UserWXpayResult.ResultBean wxpayResult = wxPayModule.getResult();
                     if (wxpayResult != null) {
                         //调用微信支付
-                        WxPayUtile.getInstance(getActivity(), prices,
+                        WxPayUtile.getInstance(getActivity(), "100",
                                 "http://121.40.35.3/test", "测试商品", wxpayResult,
                                 genOutTradNo()).doPay();
                     }
