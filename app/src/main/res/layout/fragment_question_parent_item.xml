@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/selector_white_item_bg"
     android:orientation="vertical">
 
     <View style="@style/line_horizontal" />
@@ -68,7 +69,7 @@
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/question_knowledge_all_count"
             android:indeterminate="false"
-            android:progressDrawable="@drawable/progressbg"/>
+            android:progressDrawable="@drawable/progressbg" />
 
         <TextView
             android:id="@+id/question_knowledge_count"

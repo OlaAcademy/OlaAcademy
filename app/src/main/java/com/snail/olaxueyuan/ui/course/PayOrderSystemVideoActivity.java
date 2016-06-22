@@ -10,23 +10,14 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.common.RoundRectImageView;
-import com.snail.olaxueyuan.common.manager.Logger;
 import com.snail.olaxueyuan.common.manager.TitleManager;
-import com.snail.olaxueyuan.common.manager.ToastUtil;
-import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
-import com.snail.olaxueyuan.protocol.manager.SECourseManager;
-import com.snail.olaxueyuan.protocol.result.GoodsOrderStatusResult;
 import com.snail.olaxueyuan.protocol.result.SystemCourseResult;
 import com.snail.olaxueyuan.ui.activity.SuperActivity;
-import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class PayOrderSystemVideoActivity extends SuperActivity {
     TitleManager titleManager;
@@ -63,7 +54,6 @@ public class PayOrderSystemVideoActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_system_video);
-        performRefresh();
     }
 
     @Override
@@ -90,32 +80,6 @@ public class PayOrderSystemVideoActivity extends SuperActivity {
         price.setText(String.valueOf(resultEntity.getPrice()));
         paynum.setText(getString(R.string.num_buys, resultEntity.getPaynum()));
 
-    }
-
-    SECourseManager courseManager = SECourseManager.getInstance();
-
-    public void performRefresh() {
-        String userId = "";
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            userId = SEAuthManager.getInstance().getAccessUser().getId();
-        }
-        Logger.e("courseId==" + courseId);
-        courseManager.getOrderStatus(courseId, userId, new Callback<GoodsOrderStatusResult>() {
-            @Override
-            public void success(GoodsOrderStatusResult result, Response response) {
-                Logger.json(result);
-                if (result.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(PayOrderSystemVideoActivity.this, result.getMessage(), 2.0f);
-                } else {
-
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                ToastUtil.showToastShort(PayOrderSystemVideoActivity.this, R.string.data_request_fail);
-            }
-        });
     }
 
     @OnClick({R.id.left_return, R.id.right_response, R.id.btn_buy})

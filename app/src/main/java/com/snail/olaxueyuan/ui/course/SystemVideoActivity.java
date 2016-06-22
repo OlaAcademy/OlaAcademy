@@ -32,6 +32,7 @@ import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.common.manager.Utils;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
+import com.snail.olaxueyuan.protocol.result.GoodsOrderStatusResult;
 import com.snail.olaxueyuan.protocol.result.SystemCourseResult;
 import com.snail.olaxueyuan.protocol.result.SystemVideoResult;
 import com.snail.olaxueyuan.ui.adapter.SystemVideoListAdapter;
@@ -131,8 +132,9 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     public Context context;
     public MediaControllerView controller;
     public long msec = 0;//是否播放过
-
+    private String userId = "";
     SystemCourseResult.ResultEntity resultEntity;
+    private boolean hasBuyGoods = false;//true购买过改套视频，false没有购买过该套视频
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +159,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
+        getOrderStatus();
         mDismissHandler.sendEmptyMessage(1);
         mDismissHandler.sendEmptyMessageDelayed(1, 500);
     }
@@ -200,8 +203,17 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
                         videoArrayList.get(i).setSelected(false);
                     }
                     videoArrayList.get(position).setSelected(true);
-                    mVideoView.setVideoPath(videoArrayList.get(position).getAddress());
-                    adapter.updateData(videoArrayList);
+
+                    if (hasBuyGoods) {
+                        if (!SEAuthManager.getInstance().isAuthenticated()) {
+                            loginDialog();
+                        } else {
+                            mVideoView.setVideoPath(videoArrayList.get(position).getAddress());
+                            adapter.updateData(videoArrayList);
+                        }
+                    } else {
+                        jumpToPayOrder();
+                    }
                 }
             }
         });
@@ -210,7 +222,6 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     SECourseManager courseManager = SECourseManager.getInstance();
 
     public void performRefresh() {
-        String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
@@ -288,13 +299,21 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
                 }
                 break;
             case R.id.btn_buy:
-                Intent intent = new Intent(SystemVideoActivity.this, PayOrderSystemVideoActivity.class);
-                intent.putExtra("courseId", courseId);
-                intent.putExtra("ResultEntity", resultEntity);
-                startActivity(intent);
+                jumpToPayOrder();
                 break;
             default:
                 break;
+        }
+    }
+
+    private void jumpToPayOrder() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            loginDialog();
+        } else {
+            Intent intent = new Intent(SystemVideoActivity.this, PayOrderSystemVideoActivity.class);
+            intent.putExtra("courseId", courseId);
+            intent.putExtra("ResultEntity", resultEntity);
+            startActivity(intent);
         }
     }
 
@@ -436,5 +455,28 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         } else {
             finish();
         }
+    }
+
+    public void getOrderStatus() {
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        Logger.e("courseId==" + courseId);
+        courseManager.getOrderStatus(courseId, userId, new Callback<GoodsOrderStatusResult>() {
+            @Override
+            public void success(GoodsOrderStatusResult result, Response response) {
+                Logger.json(result);
+                if (result.getApicode() != 10000) {
+//                    SVProgressHUD.showInViewWithoutIndicator(SystemVideoActivity.this, result.getMessage(), 2.0f);
+                } else {
+                    hasBuyGoods = true;
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                ToastUtil.showToastShort(SystemVideoActivity.this, R.string.data_request_fail);
+            }
+        });
     }
 }
