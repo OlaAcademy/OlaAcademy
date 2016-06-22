@@ -23,7 +23,7 @@ import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.result.ExamModule;
 import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.ui.SuperFragment;
-import com.snail.olaxueyuan.ui.manager.TitlePopManager;
+import com.snail.olaxueyuan.ui.manager.TitleExamPopManager;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
@@ -36,7 +36,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ExamFragment extends SuperFragment implements TitlePopManager.PidClickListener {
+public class ExamFragment extends SuperFragment implements TitleExamPopManager.ExamPidClickListener {
     @Bind(R.id.title_tv)
     TextView titleTv;
     @Bind(R.id.right_response)
@@ -56,6 +56,8 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
     @Bind(R.id.id_horizontalScrollView)
     MyHorizontalScrollView mHorizontalScrollView;
     private String courseId = "1";// 1 数学 2 英语 3 逻辑 4 协作
+    private String courseType = "1";//1 模考 2 真题
+
     ExamModule module;
     private HorizontalScrollViewAdapter mAdapter;
 
@@ -81,12 +83,11 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
         fetchData();
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.title_tv:
-                TitlePopManager.getInstance().showPop(getActivity(), titleManager, popLine, this, 2);
+                TitleExamPopManager.getInstance().showPop(getActivity(), titleManager, popLine, this, 2);
                 break;
         }
     }
@@ -103,7 +104,7 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
         if (am.isAuthenticated()) {
             userId = am.getAccessUser().getId();
         }
-        QuestionCourseManager.getInstance().getExamList(userId, courseId, "1", new Callback<ExamModule>() {
+        QuestionCourseManager.getInstance().getExamList(userId, courseId, courseType, new Callback<ExamModule>() {
             @Override
             public void success(ExamModule examModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
@@ -124,14 +125,6 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
                 }
             }
         });
-    }
-
-    @Override
-    public void pidPosition(int type, String pid) {
-        if (type == 2) {
-            this.courseId = pid;
-            fetchData();
-        }
     }
 
     Handler handler = new Handler() {
@@ -186,5 +179,14 @@ public class ExamFragment extends SuperFragment implements TitlePopManager.PidCl
         super.onDestroyView();
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void examPidPosition(int type, String courseType, String courseId) {
+        if (type == 2) {
+            this.courseId = courseId;
+            this.courseType = courseType;
+            fetchData();
+        }
     }
 }

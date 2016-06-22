@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:numColumns="2" />
+
+    <View style="@style/line_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/mock"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/pop_title_bg_blue_rectangle"
+            android:gravity="center"
+            android:text="模考"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/real_question"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/pop_title_bg_rectangle"
+            android:gravity="center"
+            android:text="真题"
+            android:textColor="@color/black_one" />
+
+    </LinearLayout>
+
+    <View style="@style/line_horizontal" />
+</LinearLayout>
