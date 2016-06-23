@@ -203,16 +203,15 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
                         videoArrayList.get(i).setSelected(false);
                     }
                     videoArrayList.get(position).setSelected(true);
-
-                    if (hasBuyGoods) {
-                        if (!SEAuthManager.getInstance().isAuthenticated()) {
-                            loginDialog();
-                        } else {
+                    if (!SEAuthManager.getInstance().isAuthenticated()) {
+                        loginDialog();
+                    } else {
+                        if (hasBuyGoods) {
                             mVideoView.setVideoPath(videoArrayList.get(position).getAddress());
                             adapter.updateData(videoArrayList);
+                        } else {
+                            jumpToPayOrder();
                         }
-                    } else {
-                        jumpToPayOrder();
                     }
                 }
             }
@@ -310,10 +309,12 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         if (!SEAuthManager.getInstance().isAuthenticated()) {
             loginDialog();
         } else {
-            Intent intent = new Intent(SystemVideoActivity.this, PayOrderSystemVideoActivity.class);
-            intent.putExtra("courseId", courseId);
-            intent.putExtra("ResultEntity", resultEntity);
-            startActivity(intent);
+            if (resultEntity != null) {
+                Intent intent = new Intent(SystemVideoActivity.this, PayOrderSystemVideoActivity.class);
+                intent.putExtra("courseId", courseId);
+                intent.putExtra("ResultEntity", resultEntity);
+                startActivity(intent);
+            }
         }
     }
 
@@ -462,7 +463,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
         Logger.e("courseId==" + courseId);
-        courseManager.getOrderStatus(courseId, userId, new Callback<GoodsOrderStatusResult>() {
+        courseManager.getOrderStatus(userId, courseId, new Callback<GoodsOrderStatusResult>() {
             @Override
             public void success(GoodsOrderStatusResult result, Response response) {
                 Logger.json(result);
@@ -470,6 +471,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
 //                    SVProgressHUD.showInViewWithoutIndicator(SystemVideoActivity.this, result.getMessage(), 2.0f);
                 } else {
                     hasBuyGoods = true;
+                    bottomView.setVisibility(View.GONE);
                 }
             }
 
