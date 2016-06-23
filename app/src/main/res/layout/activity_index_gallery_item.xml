@@ -1,162 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="220dp"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
-    android:background="@drawable/shape_white_retangle_selected"
-    android:orientation="vertical">
+    android:layout_margin="5dp">
 
-    <LinearLayout
-        android:id="@+id/top_bg"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginBottom="40dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/exam_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/exam_num"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/white"
-            android:textSize="14dp" />
-    </LinearLayout>
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="30dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/important_degree"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="重要程度"
-                android:textColor="@color/black_one"
-                android:textSize="14dp" />
-
-            <RatingBar
-                android:id="@+id/important_ratingBar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/important_degree"
-                android:numStars="3"
-                android:rating="2" />
-
-            <TextView
-                android:id="@+id/master_degree"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_toLeftOf="@+id/master_ratingBar"
-                android:text="掌握程度"
-                android:textColor="@color/black_one"
-                android:textSize="14dp" />
-
-            <RatingBar
-                android:id="@+id/master_ratingBar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="3dp"
-                android:layout_marginLeft="5dp"
-                android:numStars="3"
-                android:rating="2" />
-
-        </RelativeLayout>
+        android:background="@drawable/shape_white_retangle_selected"
+        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/top_bg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_height="80dp"
+            android:layout_marginBottom="40dp"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="内容来源"
-                android:textColor="@color/black_one"
-                android:textSize="14dp" />
+                android:id="@+id/exam_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/source_from"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:text="名师讲解"
-                android:textColor="#999"
+                android:id="@+id/exam_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
                 android:textSize="14dp" />
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_height="match_parent"
+            android:layout_marginTop="80dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="30dp">
 
-            <TextView
-                android:id="@+id/study_degree"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="学习进度"
-                android:textSize="14dp" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="80dp"
-                android:layout_height="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_toRightOf="@+id/study_degree"
-                android:indeterminate="false"
-                android:progressDrawable="@drawable/progressbg"/>
-
-            <TextView
-                android:id="@+id/progressTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/progressBar"
-                android:text="20%"
-                android:textColor="@color/title_hint_text_color"
-                android:textSize="12dp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Button
-                android:id="@+id/start_exam"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/blue_button_bg"
-                android:text="开始模考"
-                android:textColor="@color/white" />
-        </RelativeLayout>
+                android:layout_height="wrap_content">
 
-    </LinearLayout>
-</FrameLayout>
+                <TextView
+                    android:id="@+id/important_degree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="重要程度"
+                    android:textColor="@color/black_one"
+                    android:textSize="14dp" />
+
+                <RatingBar
+                    android:id="@+id/important_ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/important_degree"
+                    android:numStars="3"
+                    android:rating="2" />
+
+                <TextView
+                    android:id="@+id/master_degree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_toLeftOf="@+id/master_ratingBar"
+                    android:text="掌握程度"
+                    android:textColor="@color/black_one"
+                    android:textSize="14dp" />
+
+                <RatingBar
+                    android:id="@+id/master_ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:numStars="3"
+                    android:rating="2" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="内容来源"
+                    android:textColor="@color/black_one"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/source_from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="名师讲解"
+                    android:textColor="#999"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/study_degree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="学习进度"
+                    android:textSize="14dp" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="80dp"
+                    android:layout_height="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toRightOf="@+id/study_degree"
+                    android:indeterminate="false"
+                    android:progressDrawable="@drawable/progressbg"/>
+
+                <TextView
+                    android:id="@+id/progressTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/progressBar"
+                    android:text="20%"
+                    android:textColor="@color/title_hint_text_color"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/start_exam"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/blue_button_bg"
+                    android:text="开始模考"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/lockRL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#7f000000">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/icon_lock"/>
+
+    </RelativeLayout>
+</RelativeLayout>
