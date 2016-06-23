@@ -1,6 +1,7 @@
 package com.snail.olaxueyuan.ui.me.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.result.UserBuyGoodsResult;
+import com.snail.olaxueyuan.ui.course.SystemVideoActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -72,6 +74,9 @@ public class UserBuyGoodsAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //Todo 跳转到播放视频界面
+                Intent intent = new Intent(context, SystemVideoActivity.class);
+                intent.putExtra("pid", String.valueOf(list.get(position).getId()));
+                context.startActivity(intent);
             }
         });
         return convertView;
