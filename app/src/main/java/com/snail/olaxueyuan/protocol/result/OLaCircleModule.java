@@ -61,12 +61,21 @@ public class OLaCircleModule implements Serializable{
     }
 
     public static class ResultEntity implements Serializable{
+        private String logId;
         private String userName;
         private String userAvatar;
         private int videoId;
         private String videoName;
         private String courseId;
         private String time;
+
+        public String getLogId() {
+            return logId;
+        }
+
+        public void setLogId(String logId) {
+            this.logId = logId;
+        }
 
         public void setUserName(String userName) {
             this.userName = userName;

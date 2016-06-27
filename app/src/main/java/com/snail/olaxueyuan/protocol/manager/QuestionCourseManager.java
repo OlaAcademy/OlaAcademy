@@ -64,8 +64,8 @@ public class QuestionCourseManager {
      *
      * @param callback
      */
-    public void getHistotyList(final Callback<OLaCircleModule> callback) {
-        getQuestionService().getHistotyList(callback);
+    public void getHistotyList(String videoId,String pageSize, final Callback<OLaCircleModule> callback) {
+        getQuestionService().getHistotyList(videoId,pageSize,callback);
     }
 
 }

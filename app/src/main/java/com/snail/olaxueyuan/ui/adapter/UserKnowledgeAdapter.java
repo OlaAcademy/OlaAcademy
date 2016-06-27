@@ -1,6 +1,7 @@
 package com.snail.olaxueyuan.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.protocol.result.UserKnowledgeResult;
+import com.snail.olaxueyuan.ui.question.QuestionWebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,21 +108,31 @@ public class UserKnowledgeAdapter extends BaseExpandableListAdapter {
         } else {
             holder = (ChildViewHolder) convertView.getTag();
         }
-        holder.questionName.setText(list.get(groupPosition).getChild().get(childPosition).getName());
-        holder.questionKnowledgeCount.setText(list.get(groupPosition).getChild().get(childPosition).getSubAllNum() + "%");
-        holder.questionKnowledgeAllCount.setText(context.getString(R.string.num_knowledge, list.get(groupPosition).getChild().get(childPosition).getSubAllNum()));
+        final UserKnowledgeResult.ResultEntity.ChildEntity childEntity = list.get(groupPosition).getChild().get(childPosition);
+        holder.questionName.setText(childEntity.getName());
+        holder.questionKnowledgeCount.setText(childEntity.getSubNum()+"/"+ childEntity.getSubAllNum());
+        holder.questionKnowledgeAllCount.setText(context.getString(R.string.num_knowledge, childEntity.getSubAllNum()));
         try {
-            int subAllNum = list.get(groupPosition).getChild().get(childPosition).getSubAllNum();
+            int subAllNum = childEntity.getSubAllNum();
 //            holder.progressBar.setBackgroundColor(context.getResources().getColor(R.color.light_title_blue));
 //            holder.progressBar.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.light_title_blue));
             if (subAllNum == 0) {
                 holder.progressBar.setProgress(100);
             } else {
-                holder.progressBar.setProgress(50);
+                holder.progressBar.setProgress(childEntity.getSubNum()*100/childEntity .getSubAllNum());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, QuestionWebActivity.class);
+                intent.putExtra("type",3);
+                intent.putExtra("objectId",childEntity.getId());
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 

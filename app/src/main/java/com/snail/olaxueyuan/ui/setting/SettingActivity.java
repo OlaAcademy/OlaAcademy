@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.snail.olaxueyuan.R;
+import com.snail.olaxueyuan.app.SEConfig;
 import com.snail.olaxueyuan.protocol.manager.SEUserManager;
 import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.sharesdk.ShareModel;
@@ -97,10 +98,10 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
                 share = new SharePopupWindow(SettingActivity.this);
                 share.setPlatformActionListener(SettingActivity.this);
                 ShareModel model = new ShareModel();
-                model.setImageUrl("http://upload.swiftacademy.cn:8080/swift/logo.png");
-                model.setText("我正在学习极速学院的MBA课程");
-                model.setTitle("极速学院");
-                model.setUrl("http://www.pgyer.com/swiftacademy");
+                model.setImageUrl(SEConfig.getInstance().getAPIBaseURL()+"/ola/images/icon.png");
+                model.setText("我正在学习欧拉学院的MBA课程");
+                model.setTitle("欧拉学院");
+                model.setUrl("http://app.olaxueyuan.com");
                 share.initShareParams(model);
                 share.showShareWindow();
                 // 显示窗口 (设置layout在PopupWindow中显示的位置)

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.app.SEConfig;
+import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.model.MCQuestion;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.olaxueyuan.ui.me.activity.VideoPlayActivity;
@@ -67,8 +68,10 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         type = getIntent().getExtras().getInt("type");
         if (type == 1) {
             setTitleText("专项练习");
-        } else {
+        } else if(type == 2){
             setTitleText("模拟考试");
+        }else if(type == 3){
+            setTitleText("错题集");
         }
         objectId = getIntent().getExtras().getInt("objectId");
 
@@ -77,11 +80,21 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         //设置本地调用对象及其接口
         contentWebView.addJavascriptInterface(new JsInterface(QuestionWebActivity.this), "AndroidWebView");
 
-        contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/ola/jsp/question.jsp?objectId="+objectId+"&type=" + type);
+        String userId="";
+        SEAuthManager am = SEAuthManager.getInstance();
+        if (am.isAuthenticated()){
+            userId = am.getAccessUser().getId();
+        }
+
+        contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/ola/jsp/question.jsp?objectId="+objectId+"&type=" + type + "&userId="+userId);
         contentWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                contentWebView.loadUrl("javascript:loadQuestion('0')");
+                if (type==3){ //错题集直接显示答案
+                    contentWebView.loadUrl("javascript:loadQuestion('1')");
+                }else {
+                    contentWebView.loadUrl("javascript:loadQuestion('0')");
+                }
             }
 
             @Override

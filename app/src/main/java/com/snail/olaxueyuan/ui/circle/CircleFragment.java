@@ -40,7 +40,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CircleFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener {
+public class CircleFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener2 {
     List<OLaCircleModule.ResultEntity> list = new ArrayList<>();
     TitleManager titleManager;
     View rootView;
@@ -63,7 +63,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         rootView = inflater.inflate(R.layout.fragment_circle, container, false);
         ButterKnife.bind(this, rootView);
         initView();
-        fetchData();
+        fetchData("","10");
         return rootView;
     }
 
@@ -71,13 +71,13 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         titleManager = new TitleManager(R.string.ola_circle, this, rootView, false);
         //titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.ic_sub_subject);
         adapter = new CircleAdapter();
-        listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
     }
 
-    private void fetchData() {
+    private void fetchData(final String videoId, String pageSize) {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
-        QuestionCourseManager.getInstance().getHistotyList(new Callback<OLaCircleModule>() {
+        QuestionCourseManager.getInstance().getHistotyList(videoId,pageSize,new Callback<OLaCircleModule>() {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
@@ -86,10 +86,12 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
                 if (oLaCircleModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(getActivity(), oLaCircleModule.getMessage(), 2.0f);
                 } else {
-                    list.clear();
 //                    Logger.json(oLaCircleModule);
+                    if(videoId.equals("")){
+                        list.clear();
+                        listview.setAdapter(adapter);
+                    }
                     list.addAll(oLaCircleModule.getResult());
-                    listview.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
 //                    adapter.updateList(module);
                 }
@@ -121,8 +123,16 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     }
 
     @Override
-    public void onRefresh(PullToRefreshBase refreshView) {
-        fetchData();
+    public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+        fetchData("","10");
+    }
+
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+        String videoId = "";
+        if (list.size()>0){}
+            videoId = list.get(list.size()-1).getLogId()+"";
+        fetchData(videoId,"10");
     }
 
     class CircleAdapter extends BaseAdapter {
@@ -157,6 +167,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
             if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
                 Picasso.with(getActivity()).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar()).placeholder(R.drawable.ic_default_avatar)
                         .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(getActivity(), 50), Utils.dip2px(getActivity(), 50)).into(holder.avatar);
+            }else{
+                holder.avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
             }
             holder.time.setText(getActivity().getString(R.string.study_record, list.get(position).getTime()));
             holder.studyName.setText(list.get(position).getVideoName());

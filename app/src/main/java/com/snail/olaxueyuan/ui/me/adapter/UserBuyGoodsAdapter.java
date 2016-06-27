@@ -69,7 +69,7 @@ public class UserBuyGoodsAdapter extends BaseAdapter {
         holder.name.setText(list.get(position).getName());
         Picasso.with(context).load(list.get(position).getUrl()).config(Bitmap.Config.RGB_565)
                 .placeholder(R.drawable.system_wu).error(R.drawable.system_wu).into(holder.iconCollect);
-        holder.courseTime.setText(list.get(position).getTotaltime() + "");
+        holder.courseTime.setText(list.get(position).getTotaltime() + "分钟");
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -93,6 +93,7 @@ public class UserKnowledgeResult extends ServiceResult {
             private String pid;
             private String profile;
             private int subAllNum;
+            private int subNum;
             private String type;
 
             public void setAddress(String address) {
@@ -141,6 +142,14 @@ public class UserKnowledgeResult extends ServiceResult {
 
             public String getProfile() {
                 return profile;
+            }
+
+            public int getSubNum() {
+                return subNum;
+            }
+
+            public void setSubNum(int subNum) {
+                this.subNum = subNum;
             }
 
             public int getSubAllNum() {

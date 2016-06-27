@@ -129,7 +129,7 @@ public interface SEUserService {
     @FormUrlEncoded
     @POST("/ola/cour/getStatisticsList")
     void getStatisticsList(@Field("type") String type,
-                           @Field("userId") String userid,
+                           @Field("userid") String userid,
                            Callback<UserKnowledgeResult> cb);
 
     /**
@@ -146,7 +146,6 @@ public interface SEUserService {
     /**
      * 支付宝支付
      *
-     * @param price
      * @param userId
      * @param type    type : 1月度会员 2 年度会员 3 整套视频
      * @param goodsId
@@ -165,11 +164,9 @@ public interface SEUserService {
     /**
      * 微信支付
      *
-     * @param price
      * @param userId
      * @param type    type : 1月度会员 2 年度会员 3 整套视频
      * @param goodsId
-     * @param body
      * @param cb
      */
     @FormUrlEncoded

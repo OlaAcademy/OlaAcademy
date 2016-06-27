@@ -470,8 +470,10 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
                 if (result.getApicode() != 10000) {
 //                    SVProgressHUD.showInViewWithoutIndicator(SystemVideoActivity.this, result.getMessage(), 2.0f);
                 } else {
-                    hasBuyGoods = true;
-                    bottomView.setVisibility(View.GONE);
+                    if (result.getResult()==1){
+                        hasBuyGoods = true;
+                        bottomView.setVisibility(View.GONE);
+                    }
                 }
             }
 

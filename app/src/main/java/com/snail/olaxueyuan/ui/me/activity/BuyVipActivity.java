@@ -22,6 +22,7 @@ import com.snail.olaxueyuan.common.manager.ToastUtil;
 import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SEUserManager;
 import com.snail.olaxueyuan.protocol.result.UserAlipayResult;
+import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.protocol.result.UserWXpayResult;
 import com.snail.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.olaxueyuan.ui.course.pay.weixin.MD5;
@@ -33,6 +34,7 @@ import java.util.Random;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -80,6 +82,7 @@ public class BuyVipActivity extends SEBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        setTitleText("欧拉会员");
         setContentView(R.layout.activity_buy_vip);
         ButterKnife.bind(this);
         initView();
@@ -229,7 +232,7 @@ public class BuyVipActivity extends SEBaseActivity {
                     if (wxpayResult != null) {
                         //调用微信支付
                         WxPayUtile.getInstance(BuyVipActivity.this, "100",
-                                "http://121.40.35.3/test", "测试商品", wxpayResult,
+                                "http://121.40.35.3/test", "欧拉会员", wxpayResult,
                                 genOutTradNo()).doPay();
                     }
                 } else {
@@ -250,7 +253,7 @@ public class BuyVipActivity extends SEBaseActivity {
     }
 
     //微信支付回掉
-    public static Handler handler = new Handler(new Handler.Callback() {
+    public Handler handler = new Handler(new Handler.Callback() {
         //	msg.what== 0 ：表示支付成功
         //		msg.what== -1 ：表示支付失败
         //		msg.what== -2 ：表示取消支付
@@ -264,6 +267,8 @@ public class BuyVipActivity extends SEBaseActivity {
                     break;
                 case 0://支付成功
                     ToastUtil.showToastShort(context, "支付成功");
+                    EventBus.getDefault().post(new UserLoginNoticeModule(true)); //刷新
+                    finish();
                     break;
                 case -1://支付失败
                     ToastUtil.showToastShort(context, "支付失败");

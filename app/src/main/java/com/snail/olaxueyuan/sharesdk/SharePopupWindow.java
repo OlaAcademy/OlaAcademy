@@ -132,7 +132,7 @@ public class SharePopupWindow extends PopupWindow {
             sp.setShareType(Platform.SHARE_TEXT);
             sp.setShareType(Platform.SHARE_WEBPAGE);
 
-            sp.setTitle(shareModel.getText());
+            sp.setTitle(shareModel.getTitle());
             sp.setText(shareModel.getText());
             sp.setUrl(shareModel.getUrl());
             sp.setImageUrl(shareModel.getImageUrl());

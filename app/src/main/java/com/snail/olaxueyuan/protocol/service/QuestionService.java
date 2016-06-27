@@ -59,7 +59,10 @@ public interface QuestionService {
      *
      * @param cb
      */
+    @FormUrlEncoded
     @POST("/ola/cour/getHistoryList")
-    void getHistotyList(Callback<OLaCircleModule> cb);
+    void getHistotyList(@Field("videoId") String videoId,
+                        @Field("pageSize") String pageSize,
+                        Callback<OLaCircleModule> cb);
 
 }

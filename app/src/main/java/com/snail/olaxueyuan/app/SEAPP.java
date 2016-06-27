@@ -23,10 +23,9 @@ public class SEAPP extends Application {
         SEThemer.getInstance().setActionBarBackgroundColor(getResources().getColor(R.color.ActionBarBackgroundColor));
         SEThemer.getInstance().setActionBarForegroundColor(getResources().getColor(R.color.ActionBarForegroundColor));
 
-        //final String API_BASE_URL = "http://api.nowthinkgo.com/";
-//        final String API_BASE_URL = "http://123.59.136.206";
-        final String API_BASE_URL = "http://123.59.129.137:8080";
-        SEConfig.getInstance().init(API_BASE_URL, "欧拉学院 v1.0", this);
+        final String API_BASE_URL = "http://api.olaxueyuan.com";
+//        final String API_BASE_URL = "http://123.59.129.137:8080";
+        SEConfig.getInstance().init(API_BASE_URL, "欧拉联考 v1.0", this);
 
         /**
          * 开源框架 Image-Loader

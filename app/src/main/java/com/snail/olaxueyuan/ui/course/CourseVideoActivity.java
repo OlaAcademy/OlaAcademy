@@ -1,7 +1,9 @@
 package com.snail.olaxueyuan.ui.course;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
@@ -36,8 +38,10 @@ import com.snail.olaxueyuan.protocol.manager.SEAuthManager;
 import com.snail.olaxueyuan.protocol.manager.SECourseManager;
 import com.snail.olaxueyuan.protocol.result.CourseCollectResult;
 import com.snail.olaxueyuan.protocol.result.CourseVideoResult;
+import com.snail.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.snail.olaxueyuan.ui.adapter.CourseVideoListAdapter;
 import com.snail.olaxueyuan.ui.course.video.VideoManager;
+import com.snail.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.snail.olaxueyuan.ui.me.subfragment.UserCourseCollectFragment;
 import com.snail.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -47,6 +51,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.Vitamio;
 import io.vov.vitamio.widget.MediaControllerView;
@@ -143,6 +148,7 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         context = this;
         setContentView(R.layout.activity_course_video);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setVideoViewHeight();
         initView();
@@ -161,6 +167,11 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         mDismissHandler.sendEmptyMessageDelayed(1, 500);
     }
 
+    // EventBus 回调
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        initData();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -172,6 +183,7 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     public void initView() {
@@ -216,6 +228,27 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (videoArrayList != null && videoArrayList.size() > 0) {
+                    if(videoArrayList.get(position).getIsfree()==0){
+                        if (!SEAuthManager.getInstance().isAuthenticated()){
+                            startActivity(new Intent(CourseVideoActivity.this,UserLoginActivity.class));
+                        }else{
+                            new AlertDialog.Builder(CourseVideoActivity.this)
+                                    .setTitle("友情提示")
+                                    .setMessage("购买会员后即可拥有")
+                                    .setPositiveButton("去购买", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            startActivity(new Intent(CourseVideoActivity.this, BuyVipActivity.class));
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // do nothing
+                                        }
+                                    })
+                                    .show();
+                        }
+                        return;
+                    }
                     for (int i = 0; i < videoArrayList.size(); i++) {
                         videoArrayList.get(i).setSelected(false);
                     }
