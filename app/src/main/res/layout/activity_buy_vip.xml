@@ -52,9 +52,10 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/month_current_money"
                     android:padding="2dp"
-                    android:text="360"
+                    android:text="60"
                     android:textColor="@color/black_323232"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/month_icon"
@@ -81,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="15dp"
-                    android:text="年度黄金会员260元"
+                    android:text="年度黄金会员158元"
                     android:textColor="@color/black_323232"
                     android:textSize="15dp" />
 
@@ -105,7 +106,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/super_value"
                     android:padding="2dp"
-                    android:text="360"
+                    android:text="180"
                     android:textColor="@color/black_323232"
                     android:textSize="13dp" />
 

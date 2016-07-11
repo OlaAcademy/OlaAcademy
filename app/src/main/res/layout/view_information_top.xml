@@ -5,10 +5,11 @@
     android:background="#F0F0F0"
     android:orientation="vertical">
 
-    <com.snail.olaxueyuan.common.SEAutoSlidingPagerView
+    <com.michen.olaxueyuan.common.SEAutoSlidingPagerView
         android:id="@+id/autoSlideImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:visibility="visible" />
 
     <LinearLayout

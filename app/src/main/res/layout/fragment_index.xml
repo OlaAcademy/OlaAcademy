@@ -1,4 +1,4 @@
-<com.snail.olaxueyuan.common.SEOverScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.michen.olaxueyuan.common.SEOverScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -27,7 +27,7 @@
                 android:textSize="18sp"
                 android:text="签到" />
 
-            <com.snail.olaxueyuan.common.SESearchBox
+            <com.michen.olaxueyuan.common.SESearchBox
                 android:id="@+id/search_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,10 +46,10 @@
 
         </RelativeLayout>
 
-        <com.snail.olaxueyuan.common.SEAutoSlidingPagerView
+        <com.michen.olaxueyuan.common.SEAutoSlidingPagerView
             android:id="@+id/autoSlidePagerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.snail.olaxueyuan.common.SEAutoSlidingPagerView>
+            android:layout_height="wrap_content"></com.michen.olaxueyuan.common.SEAutoSlidingPagerView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -278,4 +278,4 @@
             android:layout_height="match_parent"></ListView>
 
     </LinearLayout>
-</com.snail.olaxueyuan.common.SEOverScrollView>
+</com.michen.olaxueyuan.common.SEOverScrollView>
