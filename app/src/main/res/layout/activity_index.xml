@@ -3,6 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_index"
-    tools:context="com.snail.olaxueyuan.ui.IndexActivity">
+    tools:context="com.michen.olaxueyuan.ui.IndexActivity">
 
 </RelativeLayout>

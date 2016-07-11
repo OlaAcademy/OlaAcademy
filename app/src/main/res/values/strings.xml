@@ -13,6 +13,10 @@
     <string name="viewpager_indicator">%1$d/%2$d</string>
     <string name="logining">使用%s帐号登录中…</string>
     <string name="app_tip">提示</string>
+    <string name="stop">暂停</string>
+    <string name="resume">继续</string>
+    <string name="retry">重试</string>
+    <string name="remove">删除</string>
 
     <!-- PayActivity -->
     <string name="pay_by_wx">通过微信支付</string>
@@ -85,4 +89,13 @@
     <string name="title_activity_web_view">WebViewActivity</string>
     <string name="num_buys">%s人购买</string>
     <string name="pay_now">立即支付</string>
+    <string name="title_activity_doadload_list">DoadloadListActivity</string>
+
+    <string name="title_activity_deploy_post">欧拉分享</string>
+    <string name="publish">发布</string>
+    <string name="hint_deploy_title">标题 2-15个字</string>
+    <string name="hint_deploy_content">内容 10-700个字</string>
+    <string name="hint_deploy_comment">内容 2-140个字</string>
+    <string name="location">所在位置</string>
+    <string name="positioning">定位中...</string>
 </resources>

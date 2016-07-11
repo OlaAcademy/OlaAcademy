@@ -13,11 +13,11 @@
         android:focusableInTouchMode="true"
         android:background="@color/white">
 
-        <com.snail.olaxueyuan.common.IconCenterEditText
+        <com.michen.olaxueyuan.common.IconCenterEditText
             android:id="@+id/icet_search"
             style="@style/StyleEditText"
             android:layout_centerVertical="true"
-            android:layout_margin="5dp"></com.snail.olaxueyuan.common.IconCenterEditText>
+            android:layout_margin="5dp"></com.michen.olaxueyuan.common.IconCenterEditText>
 
         <ImageView
             android:layout_width="match_parent"

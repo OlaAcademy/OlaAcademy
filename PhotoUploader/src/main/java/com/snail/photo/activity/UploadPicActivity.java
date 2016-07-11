@@ -231,7 +231,7 @@ public class UploadPicActivity extends Activity {
             @Override
             public void success(UploadResult result, Response response) {
                 SVProgressHUD.dismiss(UploadPicActivity.this);
-                if (result.state) {
+                if (result.code==1) {
                     Constants.upload_result = true;
                     Bimp.tempSelectBitmap.clear();
                     for (int i = 0; i < PublicWay.activityList.size(); i++) {
@@ -240,7 +240,7 @@ public class UploadPicActivity extends Activity {
                         }
                     }
                 } else {
-                    SVProgressHUD.showInViewWithoutIndicator(UploadPicActivity.this, result.msg, 2.0f);
+                    SVProgressHUD.showInViewWithoutIndicator(UploadPicActivity.this, result.message, 2.0f);
                 }
 
             }

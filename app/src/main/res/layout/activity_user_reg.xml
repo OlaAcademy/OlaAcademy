@@ -5,26 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.snail.olaxueyuan.ui.me.com.snailedu.photo.com.snailedu.photo.activity.UserUpdateActivity">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_back" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/ic_logo" />
-    </RelativeLayout>
+    tools:context="com.michen.olaxueyuan.ui.me.com.snailedu.photo.com.snailedu.photo.activity.UserUpdateActivity">
 
     <TextView
         android:layout_width="wrap_content"
