@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="94dp"
     android:background="@drawable/selector_white_item_bg">
 
     <com.michen.olaxueyuan.common.RoundRectImageView
@@ -12,52 +12,45 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/avatar"
-        android:maxLength="10"
         android:text="名字"
         android:textColor="@color/blue_light"
         android:textSize="15dp" />
 
     <TextView
-        android:id="@+id/address"
-        android:layout_width="wrap_content"
+        android:id="@+id/time"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/title"
-        android:layout_marginRight="15dp"
+        android:layout_below="@+id/title"
         android:layout_marginTop="8dp"
-        android:layout_toRightOf="@+id/title"
-        android:text="地址"
+        android:layout_toRightOf="@+id/avatar"
+        android:text="时间"
         android:textColor="@color/title_hint_text_color"
         android:textSize="13dp" />
 
     <TextView
-        android:id="@+id/time"
+        android:id="@+id/study"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
+        android:layout_below="@+id/time"
         android:layout_marginTop="8dp"
-        android:text="时间"
+        android:layout_toRightOf="@+id/avatar"
+        android:text="@string/has_study"
         android:textColor="@color/title_hint_text_color"
-        android:textSize="13dp" />
+        android:textSize="14dp" />
 
     <TextView
         android:id="@+id/study_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/time"
-        android:layout_marginTop="12dp"
-        android:layout_toRightOf="@+id/avatar"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/study"
         android:text="学习了:"
         android:textColor="@color/black_323232"
         android:textSize="14dp" />
 
-    <com.snail.photo.util.NoScrollGridView
-        android:id="@+id/gridview"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </RelativeLayout>
