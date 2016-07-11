@@ -3,13 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.snail.olaxueyuan.ui.question.QuestionWebActivity">
+    tools:context="com.michen.olaxueyuan.ui.question.QuestionWebActivity">
+
+    <EditText
+        android:id="@+id/tv_article"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@null"
+        android:editable="false"
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <WebView
         android:id="@+id/questionWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/operationRL"></WebView>
+        android:layout_above="@+id/operationRL"
+        android:layout_below="@+id/tv_article"></WebView>
 
     <RelativeLayout
         android:id="@+id/operationRL"
@@ -20,23 +30,23 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#f0f0f0"/>
+            android:background="#f0f0f0" />
 
         <Button
             android:id="@+id/previousBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textColor="@color/blue_light"
             android:background="@null"
-            android:text="上一题" />
+            android:text="上一题"
+            android:textColor="@color/blue_light" />
 
         <TextView
             android:id="@+id/tv_index"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#999999"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:textColor="#999999" />
 
         <Button
             android:id="@+id/nextBtn"
@@ -45,8 +55,8 @@
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
             android:background="@null"
-            android:textColor="@color/blue_light"
-            android:text="下一题" />
+            android:text="下一题"
+            android:textColor="@color/blue_light" />
     </RelativeLayout>
 
 </RelativeLayout>

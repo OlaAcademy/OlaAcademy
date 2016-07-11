@@ -35,7 +35,7 @@
             android:layout_below="@+id/name"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/icon_collect"
-            android:src="@drawable/ic_chosen" />
+            android:src="@drawable/ic_clock" />
 
         <TextView
             android:id="@+id/course_time"
@@ -47,7 +47,7 @@
             android:layout_toRightOf="@+id/icon_time"
             android:text="3课时，60分钟"
             android:textColor="@color/title_hint_text_color"
-            android:textSize="13dp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/buy_count"

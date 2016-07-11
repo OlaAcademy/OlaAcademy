@@ -25,4 +25,13 @@ public interface UploadService {
                                      @Part("photo7") TypedFile photo7,
                                      @Part("photo8") TypedFile photo8,
                                      Callback<UploadResult> cb);
+
+    @Multipart
+    @POST("/SDpic/common/picUpload")
+    public void uploadImage(@Part("imgData") TypedFile imgData,
+                            @Part("imgAngle") int imgAngle,
+                            @Part("width") int width,
+                            @Part("height") int height,
+                            @Part("picType") String picType,
+                            Callback<UploadResult> cb);
 }

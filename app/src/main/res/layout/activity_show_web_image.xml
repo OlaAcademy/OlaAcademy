@@ -7,7 +7,7 @@
 
     <!-- TODO 默认占位图 -->
 
-    <com.snail.olaxueyuan.ui.common.ZoomableImageView
+    <com.michen.olaxueyuan.ui.common.ZoomableImageView
         android:id="@+id/show_webimage_imageview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.snail.olaxueyuan.ui.setting.SettingActivity">
+    tools:context="com.michen.olaxueyuan.ui.setting.SettingActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -163,7 +163,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:paddingLeft="5dp"
-            android:text="关于极速学院"
+            android:text="关于欧拉学院"
             android:textSize="16sp" />
 
         <ImageView

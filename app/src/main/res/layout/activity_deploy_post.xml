@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="5dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/BackGround"
+        />
+
+    <EditText
+        android:id="@+id/et_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="left|top"
+        android:hint="@string/hint_deploy_title"
+        android:maxLength="15"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textSize="@dimen/fontSize_articleTitle"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/BackGround"
+        />
+
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:background="@null"
+        android:gravity="left|top"
+        android:hint="@string/hint_deploy_content"
+        android:maxLength="700"
+        android:padding="10dp"
+        android:textSize="@dimen/fontSize_articleContent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/BackGround"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/location"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="16sp"
+            android:text="@string/positioning"
+            />
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/BackGround"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_orignal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_switch_open_orignal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/open_icon"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/iv_switch_close_orignal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/close_icon"
+            android:visibility="visible"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="上传原图"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/markRL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="添加标签"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/markLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/markImage"/>
+
+        <ImageView
+            android:id="@+id/markImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_next"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+
+        <ImageView
+            android:id="@+id/iv_video"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:scaleType="fitXY"
+            android:visibility="visible"
+            />
+
+        <GridView
+            android:id="@+id/noScrollgridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="4"
+            android:scrollbars="none"
+            android:verticalSpacing="5dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -3,7 +3,7 @@
     android:layout_height="94dp"
     android:background="@drawable/selector_white_item_bg">
 
-    <com.snail.olaxueyuan.common.RoundRectImageView
+    <com.michen.olaxueyuan.common.RoundRectImageView
         android:id="@+id/avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
