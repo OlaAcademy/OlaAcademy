@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.snail.olaxueyuan.R;
 import com.snail.olaxueyuan.ui.course.pay.weixin.Constants;
