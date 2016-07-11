@@ -3,7 +3,7 @@
     android:id="@+id/main_course_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.snail.olaxueyuan.ui.course.CourseDetailActivity">
+    tools:context="com.michen.olaxueyuan.ui.course.CourseDetailActivity">
 
 
     <SurfaceView

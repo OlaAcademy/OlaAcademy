@@ -4,4 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="page_margin_width">1dp</dimen>
+
+    <dimen name="fontSize_articleTitle">16sp</dimen>
+    <dimen name="fontSize_articleContent">14sp</dimen>
 </resources>

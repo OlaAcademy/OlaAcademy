@@ -198,7 +198,7 @@
                 android:layout_marginBottom="7dp" />
 
             <!--<com.snail.photo.util.NoScrollGridView-->
-            <com.snail.olaxueyuan.common.NoScrollGridView
+            <com.michen.olaxueyuan.common.NoScrollGridView
                 android:id="@+id/grid_answer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -249,7 +249,7 @@
 
             <View style="@style/line_horizontal_margin_10dp" />
 
-            <com.snail.olaxueyuan.common.SubListView
+            <com.michen.olaxueyuan.common.SubListView
                 android:id="@+id/list_knowledge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

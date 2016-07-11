@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="65dp">
 
-        <com.snail.olaxueyuan.common.RoundRectImageView
+        <com.michen.olaxueyuan.common.RoundRectImageView
             android:id="@+id/avatar_course"
             android:layout_width="35dp"
             android:layout_height="35dp"

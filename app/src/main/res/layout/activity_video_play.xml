@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.snail.olaxueyuan.ui.me.activity.FullScreenVideoView
+    <com.michen.olaxueyuan.ui.me.activity.FullScreenVideoView
         android:id="@+id/videoView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -11,6 +11,6 @@
         android:layout_gravity="center_vertical"
         android:layout_centerInParent="true"
         android:paddingRight="20px">
-    </com.snail.olaxueyuan.ui.me.activity.FullScreenVideoView>
+    </com.michen.olaxueyuan.ui.me.activity.FullScreenVideoView>
 
 </RelativeLayout>

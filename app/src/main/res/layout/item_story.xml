@@ -60,7 +60,7 @@
         android:textColor="#b3b3b3"
         android:textSize="14sp" />
 
-    <com.snail.olaxueyuan.common.NoScrollGridView
+    <com.michen.olaxueyuan.common.NoScrollGridView
         android:id="@+id/imageGridView"
         android:layout_below="@+id/tv_msg"
         android:layout_width="wrap_content"

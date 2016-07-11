@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.snail.olaxueyuan.ui.story.activity.HackyViewPager
+    <com.michen.olaxueyuan.ui.story.activity.HackyViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
