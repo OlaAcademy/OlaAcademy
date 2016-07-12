@@ -58,7 +58,7 @@ public class NoScrollGridAdapter extends BaseAdapter {
         // 下面根据比例计算item的高度，此处只是h使用itemWidth
         RelativeLayout.LayoutParams param;
         if (imageUrls.size() == 1) {
-            itemWidth = itemWidth * 3;
+            itemWidth = itemWidth * 3 + Utils.dip2px(ctx, 5);
         }
         param = new RelativeLayout.LayoutParams(itemWidth, itemHeight);
         imageView.setLayoutParams(param);
