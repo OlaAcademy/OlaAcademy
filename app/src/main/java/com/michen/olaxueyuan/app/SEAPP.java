@@ -14,6 +14,7 @@ import com.michen.olaxueyuan.common.SEThemer;
  */
 public class SEAPP extends Application {
     private static Context mAppContext;
+    public static final String PIC_BASE_URL = "http://upload.olaxueyuan.com/SDpic/common/picSelect?gid=";
 
     @Override
     public void onCreate() {

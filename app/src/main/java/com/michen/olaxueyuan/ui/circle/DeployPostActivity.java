@@ -35,6 +35,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
@@ -251,6 +252,7 @@ public class DeployPostActivity extends SEBaseActivity {
                     tempPath = FileUtils.saveBitmap(bitmap, "snail_temp" + i);
                     imageFile = new File(tempPath);
                 }
+                Logger.e("imageFile==" + imageFile);
                 uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree);
             }
         }
@@ -269,10 +271,10 @@ public class DeployPostActivity extends SEBaseActivity {
                     public void success(UploadResult result, Response response) {
                         uploadNum++;
                         if (result.code != 1) {
-                            SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this,result.message,2.0f);
+                            SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.message, 2.0f);
                             return;
                         }
-                        imageGids = imageGids + result.imageGid + ",";
+                        imageGids = imageGids + result.imgGid + ",";
                         if (uploadNum == Bimp.tempSelectBitmap.size()) {
                             Bimp.tempSelectBitmap.clear();
                             saveInfo(imageGids);
@@ -307,7 +309,7 @@ public class DeployPostActivity extends SEBaseActivity {
             @Override
             public void success(MCCommonResult result, Response response) {
                 if (!result.apicode.equals("10000")) {
-                    SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this,result.message,2.0f);
+                    SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.message, 2.0f);
                     return;
                 }
                 EventBus.getDefault().post(true);
