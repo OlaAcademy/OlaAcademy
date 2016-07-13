@@ -7,14 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
-import com.michen.olaxueyuan.ui.circle.DeployPostActivity;
+import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 import com.michen.olaxueyuan.ui.story.activity.ImagePagerActivity;
 import com.snail.photo.util.NoScrollGridView;
@@ -87,10 +90,12 @@ public class CircleAdapter extends BaseAdapter {
             case 1:
             default:
                 holder.gridview.setVisibility(View.GONE);
+                holder.commentLayout.setVisibility(View.GONE);
                 break;
             case 2:
                 if (!TextUtils.isEmpty(list.get(position).getImageGids())) {
                     holder.gridview.setVisibility(View.VISIBLE);
+                    holder.commentLayout.setVisibility(View.VISIBLE);
                     ArrayList<String> imageUrls = getListFromString(list.get(position).getImageGids());
                     final ArrayList<String> imageList = imageUrls;
                     if (imageUrls.size() == 1) {
@@ -123,33 +128,27 @@ public class CircleAdapter extends BaseAdapter {
                         break;
                     case 2:
                         //Todo 跳转到帖子详情，现在跳转的是发帖先
-                        intent.setClass(mContext, DeployPostActivity.class);//
-                        intent.putExtra("pid", list.get(position).getCourseId());
+                        intent.setClass(mContext, PostDetailActivity.class);//
+                        intent.putExtra("OLaCircleModule.ResultBean", list.get(position));
                         break;
                 }
                 mContext.startActivity(intent);
             }
         });
+        holder.commentPraise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.showToastShort(mContext, "点赞");
+            }
+        });
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.showToastShort(mContext, "分享");
+            }
+        });
+
         return convertView;
-    }
-
-    static class ViewHolder {
-        @Bind(R.id.avatar)
-        RoundRectImageView avatar;
-        @Bind(R.id.title)
-        TextView title;
-        @Bind(R.id.address)
-        TextView address;
-        @Bind(R.id.time)
-        TextView time;
-        @Bind(R.id.study_name)
-        TextView studyName;
-        @Bind(R.id.gridview)
-        NoScrollGridView gridview;
-
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
     }
 
     private ArrayList<String> getListFromString(String images) {
@@ -173,5 +172,32 @@ public class CircleAdapter extends BaseAdapter {
         intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, urls2);
         intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
         mContext.startActivity(intent);
+    }
+
+    class ViewHolder {
+        @Bind(R.id.avatar)
+        RoundRectImageView avatar;
+        @Bind(R.id.title)
+        TextView title;
+        @Bind(R.id.address)
+        TextView address;
+        @Bind(R.id.time)
+        TextView time;
+        @Bind(R.id.study_name)
+        TextView studyName;
+        @Bind(R.id.gridview)
+        NoScrollGridView gridview;
+        @Bind(R.id.comment_praise)
+        TextView commentPraise;
+        @Bind(R.id.comment)
+        ImageView comment;
+        @Bind(R.id.share)
+        ImageView share;
+        @Bind(R.id.comment_layout)
+        RelativeLayout commentLayout;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

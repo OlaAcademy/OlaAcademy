@@ -62,7 +62,7 @@ public class OLaCircleModule implements Serializable {
                 '}';
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Serializable{
         private int circleId;
         private String userName;
         private int type;
