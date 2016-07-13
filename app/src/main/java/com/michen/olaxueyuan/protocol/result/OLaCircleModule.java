@@ -72,6 +72,15 @@ public class OLaCircleModule implements Serializable {
         private String title;
         private String content;
         private String imageGids;
+        private String location;
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
 
         public int getCircleId() {
             return circleId;
@@ -157,6 +166,7 @@ public class OLaCircleModule implements Serializable {
                     ", title='" + title + '\'' +
                     ", content='" + content + '\'' +
                     ", imageGids='" + imageGids + '\'' +
+                    ", location='" + location + '\'' +
                     '}';
         }
     }
