@@ -1,10 +1,11 @@
 package com.michen.olaxueyuan.protocol.service;
 
+import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
+import com.michen.olaxueyuan.protocol.result.MCQuestionListResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
-import com.michen.olaxueyuan.protocol.result.MCQuestionListResult;
 
 import retrofit.Callback;
 import retrofit.http.Field;
@@ -80,5 +81,18 @@ public interface QuestionService {
     void getCircleList(@Field("circleId") String circleId,
                        @Field("pageSize") String pageSize,
                        Callback<OLaCircleModule> cb);
+
+    /**
+     * 评论列表
+     *
+     * @param postId couserId或circle中的帖子Id
+     * @param type   1 postId为课程 2 postId 为帖子
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/comment/getCommentList")
+    void getCommentList(@Field("postId") String postId,
+                        @Field("type") String type,
+                        Callback<CommentModule> cb);
 
 }

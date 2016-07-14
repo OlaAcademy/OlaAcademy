@@ -16,6 +16,7 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.protocol.eventbusmodule.CirclePraiseEvent;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by mingge on 2016/7/11.
@@ -94,6 +96,7 @@ public class CircleAdapter extends BaseAdapter {
                 break;
             case 2:
                 if (!TextUtils.isEmpty(list.get(position).getImageGids())) {
+                    holder.commentPraise.setText(list.get(position).getPraiseNumber());
                     holder.gridview.setVisibility(View.VISIBLE);
                     holder.commentLayout.setVisibility(View.VISIBLE);
                     ArrayList<String> imageUrls = getListFromString(list.get(position).getImageGids());
@@ -127,7 +130,6 @@ public class CircleAdapter extends BaseAdapter {
                     default:
                         break;
                     case 2:
-                        //Todo 跳转到帖子详情，现在跳转的是发帖先
                         intent.setClass(mContext, PostDetailActivity.class);//
                         intent.putExtra("OLaCircleModule.ResultBean", list.get(position));
                         break;
@@ -139,6 +141,7 @@ public class CircleAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 ToastUtil.showToastShort(mContext, "点赞");
+                EventBus.getDefault().post(new CirclePraiseEvent(1, true));
             }
         });
         holder.share.setOnClickListener(new View.OnClickListener() {

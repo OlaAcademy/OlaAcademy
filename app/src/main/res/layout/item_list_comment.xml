@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="true"
+    android:padding="5dp">
+
+    <com.michen.olaxueyuan.common.RoundRectImageView
+        android:id="@+id/item_comment_avatar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/ic_default_avatar"
+        app:siBorderAlpha="0"
+        app:siBorderWidth="0dp"
+        app:siRadius="5dp" />
+
+    <TextView
+        android:id="@+id/item_comment_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/item_comment_avatar"
+        android:ellipsize="end"
+        android:paddingLeft="5dp"
+        android:singleLine="true"
+        android:textColor="@color/black_323232"
+        android:textSize="15dp"
+        tools:text="骨今中外" />
+
+    <TextView
+        android:id="@+id/item_comment_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/item_comment_name"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@+id/item_comment_name"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/LightTextColor"
+        android:textSize="12dp"
+        tools:text="海淀区" />
+
+    <TextView
+        android:id="@+id/item_comment_originalContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_comment_name"
+        android:layout_below="@id/item_comment_name"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="1.2dp"
+        android:maxLines="3"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/LightTextColor"
+        android:textSize="14sp"
+        tools:text="这是原文内容。。。。。。。。。。。。。。。。。。。。。。。。。" />
+
+    <TextView
+        android:id="@+id/item_comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_comment_name"
+        android:layout_below="@id/item_comment_originalContent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="10dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/LightTextColor"
+        android:textSize="12dp"
+        tools:text="昨天" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/item_comment_time"
+        android:background="@color/BackGround" />
+
+</RelativeLayout>

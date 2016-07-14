@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.protocol.manager;
 
+import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
 import com.michen.olaxueyuan.protocol.result.MCQuestionListResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
@@ -81,6 +82,17 @@ public class QuestionCourseManager {
      */
     public void getCircleList(String circleId, String pageSize, final Callback<OLaCircleModule> callback) {
         getQuestionService().getCircleList(circleId, pageSize, callback);
+    }
+
+    /**
+     * 评论列表
+     *
+     * @param postId couserId或circle中的帖子Id
+     * @param type   1 postId为课程 2 postId 为帖子
+     * @param cb
+     */
+    public void getCommentList(String postId, String type, final Callback<CommentModule> callback) {
+        getQuestionService().getCommentList(postId, type, callback);
     }
 
 }
