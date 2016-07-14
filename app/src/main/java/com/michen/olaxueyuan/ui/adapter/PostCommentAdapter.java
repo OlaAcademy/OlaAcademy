@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,11 @@ public class PostCommentAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.itemCommentName.setText(list.get(position).getUserName());
-        holder.itemCommentLocation.setText("@" + list.get(position).getLocation());
+        if (TextUtils.isEmpty(list.get(position).getLocation())) {
+            holder.itemCommentLocation.setText("");
+        } else {
+            holder.itemCommentLocation.setText("@" + list.get(position).getLocation());
+        }
         holder.itemCommentOriginalContent.setText(list.get(position).getContent());
         holder.itemCommentTime.setText(list.get(position).getTime());
         Picasso.with(mContext).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar()).placeholder(R.drawable.ic_default_avatar)

@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.protocol.manager;
 
 import com.michen.olaxueyuan.protocol.result.CommentModule;
+import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
 import com.michen.olaxueyuan.protocol.result.MCQuestionListResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
@@ -63,7 +64,7 @@ public class QuestionCourseManager {
 
     /**
      * 欧拉圈，获取视频观看历史记录列表(old)
-     * <p/>
+     * <p>
      * {@link #getCircleList(String, String, Callback)} ())}
      *
      * @param callback
@@ -87,12 +88,27 @@ public class QuestionCourseManager {
     /**
      * 评论列表
      *
-     * @param postId couserId或circle中的帖子Id
-     * @param type   1 postId为课程 2 postId 为帖子
-     * @param cb
+     * @param postId   couserId或circle中的帖子Id
+     * @param type     1 postId为课程 2 postId 为帖子
+     * @param callback
      */
     public void getCommentList(String postId, String type, final Callback<CommentModule> callback) {
         getQuestionService().getCommentList(postId, type, callback);
+    }
+
+    /**
+     * 发表评论
+     *
+     * @param userId
+     * @param postId   课程Id 或 帖子Id
+     * @param toUserId
+     * @param content
+     * @param location
+     * @param type     1 课程评论 2 帖子评论
+     * @param callback
+     */
+    public void addComment(String userId, String postId, String toUserId, String content, String location, String type, final Callback<CommentSucessResult> callback) {
+        getQuestionService().addComment(userId, postId, toUserId, content, location, type, callback);
     }
 
 }

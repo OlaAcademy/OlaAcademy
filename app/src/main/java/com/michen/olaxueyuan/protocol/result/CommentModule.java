@@ -68,10 +68,28 @@ public class CommentModule implements Serializable {
         private int userId;
         private String userName;
         private String userAvatar;
+        private String toUserId;
+        private String toUserName;
         private String location;
         private String content;
         private int praiseNumber;
         private String time;
+
+        public String getToUserId() {
+            return toUserId;
+        }
+
+        public void setToUserId(String toUserId) {
+            this.toUserId = toUserId;
+        }
+
+        public String getToUserName() {
+            return toUserName;
+        }
+
+        public void setToUserName(String toUserName) {
+            this.toUserName = toUserName;
+        }
 
         public int getCommentId() {
             return commentId;
@@ -144,6 +162,8 @@ public class CommentModule implements Serializable {
                     ", userId=" + userId +
                     ", userName='" + userName + '\'' +
                     ", userAvatar='" + userAvatar + '\'' +
+                    ", toUserId='" + toUserId + '\'' +
+                    ", toUserName='" + toUserName + '\'' +
                     ", location='" + location + '\'' +
                     ", content='" + content + '\'' +
                     ", praiseNumber=" + praiseNumber +

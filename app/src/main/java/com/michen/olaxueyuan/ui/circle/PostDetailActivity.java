@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -11,6 +12,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.NoScrollGridAdapter;
@@ -19,10 +24,14 @@ import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
+import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.story.activity.ImagePagerActivity;
 import com.snail.photo.util.NoScrollGridView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -56,8 +65,6 @@ public class PostDetailActivity extends SEBaseActivity {
     @Bind(R.id.comment_list)
     SubListView listView;
 
-    OLaCircleModule.ResultBean resultBean;
-    PostCommentAdapter commentAdapter;
     @Bind(R.id.comment_praise)
     TextView commentPraise;
     @Bind(R.id.comment)
@@ -69,7 +76,11 @@ public class PostDetailActivity extends SEBaseActivity {
     @Bind(R.id.bt_send)
     Button btSend;
 
+    OLaCircleModule.ResultBean resultBean;
+    PostCommentAdapter commentAdapter;
     private Context mContext;
+    private LocationClient mLocationClient;
+    private String location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +90,7 @@ public class PostDetailActivity extends SEBaseActivity {
         mContext = this;
         setTitleText("欧拉分享详情");
         initView();
+        locations();
         getCommentListData();
     }
 
@@ -183,10 +195,89 @@ public class PostDetailActivity extends SEBaseActivity {
                 ToastUtil.showToastShort(mContext, "分享");
                 break;
             case R.id.bt_send:
-                ToastUtil.showToastShort(mContext, "发送");
+                addComment(null);
                 break;
             default:
                 break;
         }
+    }
+
+    private void addComment(CommentModule.ResultBean comment) {
+        SEUser user = SEAuthManager.getInstance().getAccessUser();
+        if (user != null) {
+            String postId;
+            String toUserId;
+            String content = etContent.getText().toString().trim();
+            if (TextUtils.isEmpty(content)) {
+                ToastUtil.showToastShort(mContext, "请填写评论内容");
+                return;
+            }
+            if (comment != null) {
+                postId = String.valueOf(comment.getCommentId());
+                toUserId = comment.getToUserId();
+            } else {
+                postId = String.valueOf(resultBean.getCircleId());
+                toUserId = "";
+            }
+            SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+            Logger.e("location==" + location);
+            QuestionCourseManager.getInstance().addComment(user.getId(), postId, toUserId
+                    , content, location, "2", new Callback<CommentSucessResult>() {
+                @Override
+                public void success(CommentSucessResult commentSuccess, Response response) {
+                    SVProgressHUD.dismiss(mContext);
+                    etContent.setText("");
+                    etContent.clearComposingText();
+                    getCommentListData();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    SVProgressHUD.dismiss(mContext);
+                }
+            });
+        } else {
+            startActivity(new Intent(mContext, UserLoginActivity.class));
+        }
+    }
+
+    private void locations() {
+        mLocationClient = new LocationClient(mContext);
+        initLocation();
+        //开始定位 精确到市
+        mLocationClient.registerLocationListener(new BDLocationListener() {
+            @Override
+            public void onReceiveLocation(BDLocation bdLocation) {
+                mLocationClient.stop();
+                if (bdLocation == null) {
+                    return;
+                }
+                Log.e("Test", bdLocation.getAddrStr());
+                location = bdLocation.getCity() + bdLocation.getDistrict();
+            }
+
+        });
+        mLocationClient.start();
+    }
+
+    /**
+     * 设置相关参数
+     */
+    private void initLocation() {
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
+        );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+        option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
+        int span = 1000;
+        option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
+        option.setOpenGps(true);//可选，默认false,设置是否使用gps
+        option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
+        option.setIsNeedLocationDescribe(false);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
+        option.setIsNeedLocationPoiList(false);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
+        option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+        option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
+        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
+        mLocationClient.setLocOption(option);
     }
 }

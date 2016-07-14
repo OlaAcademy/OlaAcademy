@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.protocol.service;
 
 import com.michen.olaxueyuan.protocol.result.CommentModule;
+import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
 import com.michen.olaxueyuan.protocol.result.MCQuestionListResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
@@ -94,5 +95,26 @@ public interface QuestionService {
     void getCommentList(@Field("postId") String postId,
                         @Field("type") String type,
                         Callback<CommentModule> cb);
+
+    /**
+     * 发表评论
+     *
+     * @param userId
+     * @param postId   课程Id 或 帖子Id
+     * @param toUserId
+     * @param content
+     * @param location
+     * @param type     1 课程评论 2 帖子评论
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/comment/addComment")
+    void addComment(@Field("userId") String userId,
+                    @Field("postId") String postId,
+                    @Field("toUserId") String toUserId,
+                    @Field("content") String content,
+                    @Field("location") String location,
+                    @Field("type") String type,
+                    Callback<CommentSucessResult> cb);
 
 }
