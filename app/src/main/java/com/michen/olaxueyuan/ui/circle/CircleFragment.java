@@ -14,6 +14,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.protocol.eventbusmodule.CirclePraiseEvent;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
@@ -125,6 +126,20 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     public void onEventMainThread(Boolean addSuccess) {
         if (addSuccess) {
             fetchData("", "10");
+        }
+    }
+
+    /**
+     * 点赞
+     *
+     * @param circlePraiseEvent
+     */
+    public void onEventMainThread(CirclePraiseEvent circlePraiseEvent) {
+        switch (circlePraiseEvent.type) {
+            case 1:
+                break;
+            default:
+                break;
         }
     }
 
