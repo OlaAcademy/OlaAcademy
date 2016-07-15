@@ -62,7 +62,7 @@ public class OLaCircleModule implements Serializable {
                 '}';
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Serializable{
         private int circleId;
         private String userName;
         private int type;
@@ -73,6 +73,15 @@ public class OLaCircleModule implements Serializable {
         private String content;
         private String imageGids;
         private String location;
+        private String praiseNumber;
+
+        public String getPraiseNumber() {
+            return praiseNumber;
+        }
+
+        public void setPraiseNumber(String praiseNumber) {
+            this.praiseNumber = praiseNumber;
+        }
 
         public String getLocation() {
             return location;
@@ -167,6 +176,7 @@ public class OLaCircleModule implements Serializable {
                     ", content='" + content + '\'' +
                     ", imageGids='" + imageGids + '\'' +
                     ", location='" + location + '\'' +
+                    ", praiseNumber='" + praiseNumber + '\'' +
                     '}';
         }
     }
