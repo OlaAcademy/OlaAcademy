@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.snail.olaxueyuan.ui.index.com.snailedu.photo.com.snailedu.photo.activity.AuditionActivity">
+    tools:context="com.michen.olaxueyuan.ui.index.com.snailedu.photo.com.snailedu.photo.activity.AuditionActivity">
 
     <com.snail.pulltorefresh.PullToRefreshListView
         android:id="@+id/subitemListView"

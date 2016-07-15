@@ -1,8 +1,8 @@
-<com.snail.olaxueyuan.common.SEOverScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.michen.olaxueyuan.common.SEOverScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.snail.olaxueyuan.ui.me.UserMeFragment"
+    tools:context="com.michen.olaxueyuan.ui.me.UserMeFragment"
     android:background="@color/white">
 
     <LinearLayout
@@ -272,4 +272,4 @@
 
     </LinearLayout>
 
-</com.snail.olaxueyuan.common.SEOverScrollView>
+</com.michen.olaxueyuan.common.SEOverScrollView>

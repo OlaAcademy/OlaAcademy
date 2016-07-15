@@ -63,7 +63,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/ic_download_start"></ImageView>
 
-        <com.snail.olaxueyuan.common.RoundProgressBar
+        <com.michen.olaxueyuan.common.RoundProgressBar
             android:id="@+id/circle_progress"
             android:layout_width="30dp"
             android:layout_height="30dp"
