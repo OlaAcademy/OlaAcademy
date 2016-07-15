@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.protocol.service;
 
 import com.michen.olaxueyuan.protocol.result.ExamModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
+import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.MCQuestionListResult;
 
@@ -55,14 +56,29 @@ public interface QuestionService {
                                     Callback<MCQuestionListResult> cb);
 
     /**
-     * 欧拉圈，获取视频观看历史记录列表
+     * 欧拉圈，获取视频观看历史记录列表(老接口)
+     * {@link #getCircleList(String, String, Callback)}
      *
      * @param cb
      */
+    @Deprecated
     @FormUrlEncoded
     @POST("/ola/cour/getHistoryList")
     void getHistotyList(@Field("videoId") String videoId,
                         @Field("pageSize") String pageSize,
-                        Callback<OLaCircleModule> cb);
+                        Callback<OLaCircleOldModule> cb);
+
+    /**
+     * 欧拉圈，获取视频观看历史记录列表
+     *
+     * @param circleId
+     * @param pageSize
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/circle/getCircleList")
+    void getCircleList(@Field("circleId") String circleId,
+                       @Field("pageSize") String pageSize,
+                       Callback<OLaCircleModule> cb);
 
 }

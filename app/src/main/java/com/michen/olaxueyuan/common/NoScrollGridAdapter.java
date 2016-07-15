@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.common;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,101 +33,41 @@ public class NoScrollGridAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return imageUrls == null ? 0 : imageUrls.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return imageUrls.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        convertView = LayoutInflater.from(ctx).inflate(R.layout.item_gridview, null);
-//        ImageView imageView = (ImageView) convertView.findViewById(R.id.iv_image);
-//        Picasso.with(ctx)
-//                .load(imageUrls.get(position))
-//                .placeholder(R.drawable.ic_launcher_imageview)
-//                .error(R.drawable.ic_launcher_imageview)
-//                .into(imageView);
-//        int column;
-//        if (imageUrls.size() < 3) {
-//            column = imageUrls.size();
-//        } else {
-//            column = 3;
-//        }
-//        if (column > 1) {
-//            // 根据列数计算项目宽度，以使总宽度尽量填充屏幕
-//            int itemWidth = (int) (ctx.getResources().getDisplayMetrics().widthPixels - column * 10) / column;
-//            // 下面根据比例计算item的高度，此处只是使用itemWidth
-//            int itemHeight = itemWidth;
-//            AbsListView.LayoutParams param = new AbsListView.LayoutParams(
-//                    itemWidth,
-//                    itemHeight);
-//            convertView.setLayoutParams(param);
-//        }
-//        return convertView;
-//    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         convertView = LayoutInflater.from(ctx).inflate(R.layout.item_gridview, null);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.iv_image);
-        int column;
+        // 根据屏幕宽度，以3列为标准计算每列宽度
+        int screenWidth = ctx.getResources().getDisplayMetrics().widthPixels;
+        int itemWidth = (int) (screenWidth - (Utils.dip2px(ctx, 60 + 15))) / 3;
+        int itemHeight = (int) (screenWidth - (Utils.dip2px(ctx, 60 + 15))) / 3;
+//        int itemWidth = (int) (screenWidth - (paddingLeft + horizontalSpacing) * 2 )) / 3;
+        // 下面根据比例计算item的高度，此处只是h使用itemWidth
+        RelativeLayout.LayoutParams param;
         if (imageUrls.size() == 1) {
-            column = imageUrls.size();
-        } else {
-            column = 3;
+            itemWidth = itemWidth * 3 + Utils.dip2px(ctx, 5);
         }
-        if (column == 3) {
-            // 根据列数计算项目宽度，以使总宽度尽量填充屏幕
-            int itemWidth = (int) (ctx.getResources().getDisplayMetrics().widthPixels - column * 70) / column;
-            // 下面根据比例计算item的高度，此处只是h使用itemWidth
-            int itemHeight = itemWidth;
-            RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(
-                    itemWidth,
-                    itemHeight);
-            imageView.setLayoutParams(param);
-            if (imageUrls.get(position) != null && imageUrls.get(position) != null && !imageUrls.get(position).equals(""))
-                Picasso.with(ctx)
-                        .load(imageUrls.get(position))
-                        .placeholder(R.drawable.ic_launcher)
-                        .error(R.drawable.ic_launcher)
-                        .into(imageView);
-        } else {
-            RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            //param.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            imageView.setLayoutParams(param);
-            if (imageUrls.get(position) != null && imageUrls.get(position) != null && !imageUrls.get(position).equals("")) {
-                //float ratio = (float) (imageUrls.get(position).getImageInfo().height) / (float) (imageUrls.get(position).getImageInfo().width);
-//                Picasso.with(ctx)
-//                        .load(imageUrls.get(position).getImageInfo().smallURL)
-//                        .resize(ctx.getResources().getDisplayMetrics().widthPixels-200, (int) ((ctx.getResources().getDisplayMetrics().widthPixels-200) * ratio))
-//                        .into(imageView);
-                Picasso.with(ctx)
-                        .load(imageUrls.get(position))
-                        .placeholder(R.drawable.ic_launcher)
-                        .error(R.drawable.ic_launcher)
-                        .into(imageView);
-            }
+        param = new RelativeLayout.LayoutParams(itemWidth, itemHeight);
+        imageView.setLayoutParams(param);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
+        if (imageUrls.get(position) != null && imageUrls.get(position) != null && !imageUrls.get(position).equals("")) {
+            Picasso.with(ctx).load(imageUrls.get(position)).placeholder(R.drawable.system_wu).config(Bitmap.Config.RGB_565)
+                    .error(R.drawable.system_wu).into(imageView);
         }
-//        if (imageUrls.get(position) != null && imageUrls.get(position).getImageInfo() != null && !imageUrls.get(position).getImageInfo().url.equals(""))
-//            Picasso.with(ctx)
-//                    .load(imageUrls.get(position).getImageInfo().smallURL)
-//                    .into(imageView);
         return convertView;
     }
-
 }
