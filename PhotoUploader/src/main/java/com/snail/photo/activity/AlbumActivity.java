@@ -1,8 +1,5 @@
 package com.snail.photo.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,6 +27,9 @@ import com.snail.photo.util.ImageBucket;
 import com.snail.photo.util.ImageItem;
 import com.snail.photo.util.PublicWay;
 import com.snail.photo.util.Res;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 这个是进入相册显示所有图片的界面
@@ -102,8 +102,8 @@ public class AlbumActivity extends Activity {
     private class AlbumSendListener implements OnClickListener {
         public void onClick(View v) {
             overridePendingTransition(R.anim.activity_translate_in, R.anim.activity_translate_out);
-            intent.setClass(mContext, UploadPicActivity.class);
-            startActivity(intent);
+//            intent.setClass(mContext, UploadPicActivity.class);
+//            startActivity(intent);
             finish();
         }
 
@@ -121,8 +121,8 @@ public class AlbumActivity extends Activity {
     private class CancelListener implements OnClickListener {
         public void onClick(View v) {
             Bimp.tempSelectBitmap.clear();
-            intent.setClass(mContext, UploadPicActivity.class);
-            startActivity(intent);
+//            intent.setClass(mContext, UploadPicActivity.class);
+//            startActivity(intent);
         }
     }
 
