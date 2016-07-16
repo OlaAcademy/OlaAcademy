@@ -14,9 +14,11 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.eventbusmodule.CirclePraiseEvent;
+import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
+import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.CircleAdapter;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
@@ -130,16 +132,40 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
     /**
      * 点赞
+     * {@link com.michen.olaxueyuan.ui.adapter.CircleAdapter.ViewHolder#commentPraise}
      *
      * @param circlePraiseEvent
      */
     public void onEventMainThread(CirclePraiseEvent circlePraiseEvent) {
         switch (circlePraiseEvent.type) {
             case 1:
+                praise(circlePraiseEvent.position);
                 break;
             default:
                 break;
         }
+    }
+
+    private void praise(final int position) {
+        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        MCCircleManager.getInstance().praiseCirclePost(String.valueOf(list.get(position).getCircleId()), new Callback<PraiseCirclePostResult>() {
+            @Override
+            public void success(PraiseCirclePostResult mcCommonResult, Response response) {
+                SVProgressHUD.dismiss(getActivity());
+                if (mcCommonResult.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), mcCommonResult.getMessage(), 2.0f);
+                } else {
+                    list.get(position).setPraiseNumber(list.get(position).getPraiseNumber() + 1);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                SVProgressHUD.dismiss(getActivity());
+                ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+            }
+        });
     }
 
     @Override
@@ -151,7 +177,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
     @Override
     public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-        fetchData("", "10");
+        fetchData("", "20");
     }
 
     @Override
@@ -160,7 +186,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         if (list.size() > 0) {
         }
         circleId = list.get(list.size() - 1).getCircleId() + "";
-        fetchData(circleId, "10");
+        fetchData(circleId, "20");
     }
 
 }

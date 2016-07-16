@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.protocol.service;
 
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
+import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 
 import retrofit.Callback;
 import retrofit.http.Field;
@@ -25,4 +26,16 @@ public interface MCCircleService {
                       @Field("location") String location,
                       @Field("type") String type,
                       Callback<MCCommonResult> cb);
+
+    /**
+     * 帖子点赞
+     *
+     * @param circleId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/circle/praiseCirclePost")
+    void praiseCirclePost(
+            @Field("circleId") String circleId,
+            Callback<PraiseCirclePostResult> cb);
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,12 +24,15 @@ import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
+import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
@@ -41,6 +45,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -64,7 +69,6 @@ public class PostDetailActivity extends SEBaseActivity {
     TextView commentEmpty;
     @Bind(R.id.comment_list)
     SubListView listView;
-
     @Bind(R.id.comment_praise)
     TextView commentPraise;
     @Bind(R.id.comment)
@@ -81,13 +85,16 @@ public class PostDetailActivity extends SEBaseActivity {
     private Context mContext;
     private LocationClient mLocationClient;
     private String location;
+    private CommentModule.ResultBean commentResultBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         mContext = this;
+        etContent.clearFocus();
         setTitleText("欧拉分享详情");
         initView();
         locations();
@@ -108,7 +115,7 @@ public class PostDetailActivity extends SEBaseActivity {
 //        }
         time.setText(resultBean.getTime());
         studyName.setText(resultBean.getContent());
-        commentPraise.setText(resultBean.getPraiseNumber());
+        commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
         if (!TextUtils.isEmpty(resultBean.getLocation())) {
             address.setText("@" + resultBean.getLocation());
         } else {
@@ -186,23 +193,53 @@ public class PostDetailActivity extends SEBaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.comment_praise:
-                ToastUtil.showToastShort(mContext, "点赞");
+                praise();
                 break;
             case R.id.comment:
-                ToastUtil.showToastShort(mContext, "评论");
+                Utils.showInputMethod(PostDetailActivity.this);
                 break;
             case R.id.share:
                 ToastUtil.showToastShort(mContext, "分享");
                 break;
             case R.id.bt_send:
-                addComment(null);
+                addComment();
                 break;
             default:
                 break;
         }
     }
 
-    private void addComment(CommentModule.ResultBean comment) {
+    private void praise() {
+        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        MCCircleManager.getInstance().praiseCirclePost(String.valueOf(resultBean.getCircleId()), new Callback<PraiseCirclePostResult>() {
+            @Override
+            public void success(PraiseCirclePostResult mcCommonResult, Response response) {
+                SVProgressHUD.dismiss(mContext);
+                if (mcCommonResult.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(mContext, mcCommonResult.getMessage(), 2.0f);
+                } else {
+                    resultBean.setPraiseNumber(resultBean.getPraiseNumber() + 1);
+                    commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                SVProgressHUD.dismiss(mContext);
+                ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+            }
+        });
+    }
+
+    /**
+     * {@link com.michen.olaxueyuan.ui.adapter.PostCommentAdapter#getView(int, View, ViewGroup)}
+     */
+    public void onEventMainThread(CommentModule.ResultBean comment) {
+        Utils.showInputMethod(PostDetailActivity.this);
+        this.commentResultBean = comment;
+    }
+
+    private void addComment() {
         SEUser user = SEAuthManager.getInstance().getAccessUser();
         if (user != null) {
             String postId;
@@ -212,14 +249,19 @@ public class PostDetailActivity extends SEBaseActivity {
                 ToastUtil.showToastShort(mContext, "请填写评论内容");
                 return;
             }
-            if (comment != null) {
-                postId = String.valueOf(comment.getCommentId());
-                toUserId = comment.getToUserId();
+            if (commentResultBean != null) {
+                Logger.json(commentResultBean);
+                postId = String.valueOf(commentResultBean.getCommentId());
+                toUserId = String.valueOf(commentResultBean.getUserId());
             } else {
                 postId = String.valueOf(resultBean.getCircleId());
                 toUserId = "";
             }
             SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+            Logger.e("user.getId()==" + user.getId());
+            Logger.e("postId==" + postId);
+            Logger.e("toUserId==" + toUserId);
+            Logger.e("content==" + content);
             Logger.e("location==" + location);
             QuestionCourseManager.getInstance().addComment(user.getId(), postId, toUserId
                     , content, location, "2", new Callback<CommentSucessResult>() {
@@ -236,6 +278,7 @@ public class PostDetailActivity extends SEBaseActivity {
                     SVProgressHUD.dismiss(mContext);
                 }
             });
+            this.commentResultBean = null;
         } else {
             startActivity(new Intent(mContext, UserLoginActivity.class));
         }
@@ -279,5 +322,11 @@ public class PostDetailActivity extends SEBaseActivity {
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
         mLocationClient.setLocOption(option);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

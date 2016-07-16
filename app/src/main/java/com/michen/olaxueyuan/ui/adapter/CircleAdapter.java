@@ -96,7 +96,7 @@ public class CircleAdapter extends BaseAdapter {
                 break;
             case 2:
                 if (!TextUtils.isEmpty(list.get(position).getImageGids())) {
-                    holder.commentPraise.setText(list.get(position).getPraiseNumber());
+                    holder.commentPraise.setText(String.valueOf(list.get(position).getPraiseNumber()));
                     holder.gridview.setVisibility(View.VISIBLE);
                     holder.commentLayout.setVisibility(View.VISIBLE);
                     ArrayList<String> imageUrls = getListFromString(list.get(position).getImageGids());
@@ -140,8 +140,10 @@ public class CircleAdapter extends BaseAdapter {
         holder.commentPraise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showToastShort(mContext, "点赞");
-                EventBus.getDefault().post(new CirclePraiseEvent(1, true));
+                /**
+                 * {@link com.michen.olaxueyuan.ui.circle.CircleFragment#onEventMainThread(CirclePraiseEvent)}}method
+                 */
+                EventBus.getDefault().post(new CirclePraiseEvent(1, true, position));
             }
         });
         holder.share.setOnClickListener(new View.OnClickListener() {
