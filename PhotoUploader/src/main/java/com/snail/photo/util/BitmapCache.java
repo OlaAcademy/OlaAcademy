@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.snail.photo.activity.UploadPicActivity;
+import com.snail.photo.upload.Constants;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -87,7 +87,7 @@ public class BitmapCache extends Activity {
 
                 }
                 if (thumb == null) {
-                    thumb = UploadPicActivity.bimap;
+                    thumb = Constants.bimap;
                 }
                 Log.e(TAG, "-------thumb------" + thumb);
                 put(path, thumb);
@@ -141,6 +141,7 @@ public class BitmapCache extends Activity {
                 options.inSampleSize = (int) Math.pow(2.0D, i);
                 options.inJustDecodeBounds = false;
                 bitmap = BitmapFactory.decodeStream(in, null, options);
+                in.close();
                 break;
             }
             i += 1;

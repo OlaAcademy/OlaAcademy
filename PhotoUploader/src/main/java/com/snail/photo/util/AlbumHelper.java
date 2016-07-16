@@ -76,6 +76,7 @@ public class AlbumHelper {
 				// thumbnailList.add(hash);
 				thumbnailList.put("" + image_id, image_path);
 			} while (cur.moveToNext());
+			cur.close();
 		}
 	}
 
@@ -114,9 +115,9 @@ public class AlbumHelper {
 				numOfSongs = cur.getInt(numOfSongsColumn);
 
 				// Do something with the values.
-				Log.i(TAG, _id + " album:" + album + " albumArt:" + albumArt
-						+ "albumKey: " + albumKey + " artist: " + artist
-						+ " numOfSongs: " + numOfSongs + "---");
+//				Log.i(TAG, _id + " album:" + album + " albumArt:" + albumArt
+//						+ "albumKey: " + albumKey + " artist: " + artist
+//						+ " numOfSongs: " + numOfSongs + "---");
 				HashMap<String, String> hash = new HashMap<String, String>();
 				hash.put("_id", _id + "");
 				hash.put("album", album);
@@ -165,10 +166,10 @@ public class AlbumHelper {
 				String bucketId = cur.getString(bucketIdIndex);
 				String picasaId = cur.getString(picasaIdIndex);
 
-				Log.i(TAG, _id + ", bucketId: " + bucketId + ", picasaId: "
-						+ picasaId + " name:" + name + " path:" + path
-						+ " title: " + title + " size: " + size + " bucket: "
-						+ bucketName + "---");
+//				Log.i(TAG, _id + ", bucketId: " + bucketId + ", picasaId: "
+//						+ picasaId + " name:" + name + " path:" + path
+//						+ " title: " + title + " size: " + size + " bucket: "
+//						+ bucketName + "---");
 
 				ImageBucket bucket = bucketList.get(bucketId);
 				if (bucket == null) {
@@ -185,6 +186,7 @@ public class AlbumHelper {
 				bucket.imageList.add(imageItem);
 
 			} while (cur.moveToNext());
+			cur.close();
 		}
 
 		Iterator<Entry<String, ImageBucket>> itr = bucketList.entrySet()
@@ -224,7 +226,7 @@ public class AlbumHelper {
 
 	String getOriginalImagePath(String image_id) {
 		String path = null;
-		Log.i(TAG, "---(^o^)----" + image_id);
+//		Log.i(TAG, "---(^o^)----" + image_id);
 		String[] projection = { Media._ID, Media.DATA };
 		Cursor cursor = cr.query(Media.EXTERNAL_CONTENT_URI, projection,
 				Media._ID + "=" + image_id, null, null);

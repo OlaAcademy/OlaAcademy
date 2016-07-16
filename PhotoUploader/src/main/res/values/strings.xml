@@ -16,5 +16,7 @@
     <string name="camera_cancel">取消</string>
     <string name="no_photo">相册没有图片</string>
     <string name="title_activity_base">BaseActivity</string>
-
+    <string name="postContent">这一刻的真知灼见....</string>
+    <string name="post">发贴</string>
+    <string name="publish">发布</string>
 </resources>

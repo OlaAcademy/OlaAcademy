@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.eventbusmodule.CirclePraiseEvent;
@@ -82,7 +81,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
             public void success(OLaCircleModule oLaCircleModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
                 listview.onRefreshComplete();
-                Logger.json(oLaCircleModule);
+//                Logger.json(oLaCircleModule);
                 if (oLaCircleModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(getActivity(), oLaCircleModule.getMessage(), 2.0f);
                 } else {
