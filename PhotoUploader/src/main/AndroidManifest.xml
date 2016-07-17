@@ -19,16 +19,7 @@
     <application
         android:allowBackup="true"
         android:label="@string/app_name">
-        <!--android:icon="@drawable/ic_launcher"-->
-        <activity
-            android:name=".activity.UploadPicActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".activity.AlbumActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".activity.ImageFile" />
-        <activity android:name=".activity.ShowAllPhoto" />
-        <activity android:name=".activity.GalleryActivity" />
+
     </application>
 
 </manifest>

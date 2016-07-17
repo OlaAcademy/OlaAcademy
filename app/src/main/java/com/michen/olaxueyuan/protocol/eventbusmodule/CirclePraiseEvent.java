@@ -14,9 +14,11 @@ public class CirclePraiseEvent implements Serializable {
      * 是否点赞
      */
     public boolean isRequest;
+    public int position;
 
-    public CirclePraiseEvent(int type, boolean isRequest) {
+    public CirclePraiseEvent(int type, boolean isRequest, int position) {
         this.type = type;
         this.isRequest = isRequest;
+        this.position = position;
     }
 }

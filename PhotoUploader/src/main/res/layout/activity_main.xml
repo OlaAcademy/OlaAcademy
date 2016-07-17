@@ -8,8 +8,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/button2"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/img_default" />
 
     <Button
         android:id="@+id/button3"

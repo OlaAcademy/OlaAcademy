@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,12 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,6 +25,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by mingge on 2016/7/14.
@@ -53,7 +59,7 @@ public class PostCommentAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_list_comment, null);
@@ -62,16 +68,39 @@ public class PostCommentAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        holder.itemCommentAvatar.setRectAdius(100);
         holder.itemCommentName.setText(list.get(position).getUserName());
         if (TextUtils.isEmpty(list.get(position).getLocation())) {
             holder.itemCommentLocation.setText("");
         } else {
             holder.itemCommentLocation.setText("@" + list.get(position).getLocation());
         }
-        holder.itemCommentOriginalContent.setText(list.get(position).getContent());
+        if (!TextUtils.isEmpty(list.get(position).getToUserName())) {
+            holder.itemCommentOriginalContent.setText("To:" + list.get(position).getToUserName() + ":" + list.get(position).getContent());
+        } else {
+            holder.itemCommentOriginalContent.setText(list.get(position).getContent());
+        }
         holder.itemCommentTime.setText(list.get(position).getTime());
         Picasso.with(mContext).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar()).placeholder(R.drawable.ic_default_avatar)
                 .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(holder.itemCommentAvatar);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SEUser user = SEAuthManager.getInstance().getAccessUser();
+                if (user != null) {
+                    if (user.getId().equals(String.valueOf(list.get(position).getUserId()))) {
+                        ToastUtil.showToastShort(mContext, R.string.no_comment_self);
+                    } else {
+                        /**
+                         * {@link com.michen.olaxueyuan.ui.circle.PostDetailActivity#onEventMainThread(CommentModule.ResultBean)}
+                         */
+                        EventBus.getDefault().post(list.get(position));
+                    }
+                } else {
+                    mContext.startActivity(new Intent(mContext, UserLoginActivity.class));
+                }
+            }
+        });
         return convertView;
     }
 

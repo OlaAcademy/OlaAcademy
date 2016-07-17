@@ -98,4 +98,6 @@
     <string name="hint_deploy_comment">内容 2-140个字</string>
     <string name="location">所在位置</string>
     <string name="positioning">定位中...</string>
+    <string name="no_comment_self">不能评论自己哟</string>
+    <string name="fill_comment_content">请填写评论内容</string>
 </resources>

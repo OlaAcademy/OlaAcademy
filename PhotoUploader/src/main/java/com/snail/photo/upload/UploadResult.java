@@ -6,5 +6,5 @@ package com.snail.photo.upload;
 public class UploadResult {
     public int code;
     public String message;
-    public String imageGid;
+    public String imgGid;
 }

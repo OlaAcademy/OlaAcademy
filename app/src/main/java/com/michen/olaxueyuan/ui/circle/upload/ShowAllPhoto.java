@@ -1,6 +1,4 @@
-package com.snail.photo.activity;
-
-import java.util.ArrayList;
+package com.michen.olaxueyuan.ui.circle.upload;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -9,11 +7,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,6 +23,8 @@ import com.snail.photo.util.Bimp;
 import com.snail.photo.util.ImageItem;
 import com.snail.photo.util.PublicWay;
 import com.snail.photo.util.Res;
+
+import java.util.ArrayList;
 
 /**
  * 这个是显示一个文件夹里面的所有图片时的界面
@@ -118,8 +118,9 @@ public class ShowAllPhoto extends Activity {
         public void onClick(View v) {
             //清空选择的图片
             Bimp.tempSelectBitmap.clear();
-            intent.setClass(mContext, UploadPicActivity.class);
-            startActivity(intent);
+//            intent.setClass(mContext, DeployActivity.class);
+//            startActivity(intent);
+            finish();
         }
     }
 
@@ -138,24 +139,20 @@ public class ShowAllPhoto extends Activity {
 
         gridImageAdapter
                 .setOnItemClickListener(new AlbumGridViewAdapter.OnItemClickListener() {
-                    public void onItemClick(final ToggleButton toggleButton,
-                                            int position, boolean isChecked,
-                                            Button button) {
+                    public void onItemClick(final ToggleButton toggleButton, int position, boolean isChecked, CheckBox button) {
                         if (Bimp.tempSelectBitmap.size() >= PublicWay.num && isChecked) {
-                            button.setVisibility(View.GONE);
                             toggleButton.setChecked(false);
-                            Toast.makeText(ShowAllPhoto.this, Res.getString("only_choose_num"), Toast.LENGTH_SHORT)
-                                    .show();
+//                            button.setChecked(false);
+                            Toast.makeText(ShowAllPhoto.this, Res.getString("only_choose_num"), Toast.LENGTH_SHORT).show();
                             return;
                         }
 
                         if (isChecked) {
-                            button.setVisibility(View.VISIBLE);
+                            button.setChecked(true);
                             Bimp.tempSelectBitmap.add(dataList.get(position));
-                            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size()
-                                    + "/" + PublicWay.num + ")");
+                            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
                         } else {
-                            button.setVisibility(View.GONE);
+                            button.setChecked(false);
                             Bimp.tempSelectBitmap.remove(dataList.get(position));
                             okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
                         }
@@ -174,8 +171,8 @@ public class ShowAllPhoto extends Activity {
 //					PublicWay.photoService.onActivityResult(0, -2,
 //							intent);
 //				}
-                intent.setClass(mContext, UploadPicActivity.class);
-                startActivity(intent);
+//                intent.setClass(mContext, DeployActivity.class);
+//                startActivity(intent);
                 // Intent intent = new Intent();
                 // Bundle bundle = new Bundle();
                 // bundle.putStringArrayList("selectedDataList",
@@ -208,17 +205,6 @@ public class ShowAllPhoto extends Activity {
             okButton.setTextColor(Color.parseColor("#E1E0DE"));
             preview.setTextColor(Color.parseColor("#E1E0DE"));
         }
-    }
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            this.finish();
-            intent.setClass(ShowAllPhoto.this, ImageFile.class);
-            startActivity(intent);
-        }
-
-        return false;
-
     }
 
     @Override

@@ -152,6 +152,11 @@ public class Utils {
         }*/
     }
 
+    public static void showInputMethod(Activity context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
     /**
      * 设置背景alpha值
      *
@@ -202,6 +207,7 @@ public class Utils {
         }
         return size;
     }
+
     /**
      * 获取屏幕宽度
      *
@@ -220,6 +226,7 @@ public class Utils {
         }
         return 0;
     }
+
     /**
      * 转换毫秒数成“分、秒”，如“01:53”。若超过60分钟则显示“时、分、秒”，如“01:01:30
      */
@@ -241,6 +248,7 @@ public class Utils {
             return strMinute + ":" + strSecond;
         }
     }
+
     /**
      * 取消dialog
      *
