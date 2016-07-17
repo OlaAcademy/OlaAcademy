@@ -74,6 +74,15 @@ public class OLaCircleModule implements Serializable {
         private String imageGids;
         private String location;
         private int praiseNumber;
+        private String userAvatar;
+
+        public String getUserAvatar() {
+            return userAvatar;
+        }
+
+        public void setUserAvatar(String userAvatar) {
+            this.userAvatar = userAvatar;
+        }
 
         public int getPraiseNumber() {
             return praiseNumber;
@@ -176,7 +185,8 @@ public class OLaCircleModule implements Serializable {
                     ", content='" + content + '\'' +
                     ", imageGids='" + imageGids + '\'' +
                     ", location='" + location + '\'' +
-                    ", praiseNumber='" + praiseNumber + '\'' +
+                    ", praiseNumber=" + praiseNumber +
+                    ", userAvatar=" + userAvatar +
                     '}';
         }
     }

@@ -19,6 +19,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.SubListView;
@@ -39,6 +40,7 @@ import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.story.activity.ImagePagerActivity;
 import com.snail.photo.util.NoScrollGridView;
 import com.snail.svprogresshud.SVProgressHUD;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -107,12 +109,12 @@ public class PostDetailActivity extends SEBaseActivity {
         avatar.setRectAdius(100);
         title.setText(resultBean.getUserName());
         //缺一个头像
-//        if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
-//            Picasso.with(mContext).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + resultBean.getUserAvatar()).placeholder(R.drawable.ic_default_avatar)
-//                    .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(avatar);
-//        } else {
-        avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
-//        }
+        if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
+            Picasso.with(mContext).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + resultBean.getUserAvatar()).placeholder(R.drawable.ic_default_avatar)
+                    .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(avatar);
+        } else {
+            avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
+        }
         time.setText(resultBean.getTime());
         studyName.setText(resultBean.getContent());
         commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
@@ -234,35 +236,34 @@ public class PostDetailActivity extends SEBaseActivity {
     /**
      * {@link com.michen.olaxueyuan.ui.adapter.PostCommentAdapter#getView(int, View, ViewGroup)}
      */
-    public void onEventMainThread(CommentModule.ResultBean comment) {
+    public void onEventMainThread(CommentModule.ResultBean comments) {
         Utils.showInputMethod(PostDetailActivity.this);
-        this.commentResultBean = comment;
+        this.commentResultBean = comments;
+        etContent.setFocusable(true);
     }
 
     private void addComment() {
         SEUser user = SEAuthManager.getInstance().getAccessUser();
         if (user != null) {
-            String postId;
+            String postId = String.valueOf(resultBean.getCircleId());
             String toUserId;
             String content = etContent.getText().toString().trim();
             if (TextUtils.isEmpty(content)) {
-                ToastUtil.showToastShort(mContext, "请填写评论内容");
+                ToastUtil.showToastShort(mContext,R.string.fill_comment_content);
                 return;
             }
             if (commentResultBean != null) {
                 Logger.json(commentResultBean);
-                postId = String.valueOf(commentResultBean.getCommentId());
                 toUserId = String.valueOf(commentResultBean.getUserId());
             } else {
-                postId = String.valueOf(resultBean.getCircleId());
                 toUserId = "";
             }
             SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
-            Logger.e("user.getId()==" + user.getId());
-            Logger.e("postId==" + postId);
-            Logger.e("toUserId==" + toUserId);
-            Logger.e("content==" + content);
-            Logger.e("location==" + location);
+//            Logger.e("user.getId()==" + user.getId());
+//            Logger.e("postId==" + postId);
+//            Logger.e("toUserId==" + toUserId);
+//            Logger.e("content==" + content);
+//            Logger.e("location==" + location);
             QuestionCourseManager.getInstance().addComment(user.getId(), postId, toUserId
                     , content, location, "2", new Callback<CommentSucessResult>() {
                 @Override
