@@ -1,22 +1,26 @@
-package com.snail.photo.activity;
+package com.michen.olaxueyuan.ui.circle.upload;
 
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import com.snail.photo.adapter.FolderAdapter;
+import com.snail.photo.upload.Constants;
 import com.snail.photo.util.Bimp;
+import com.snail.photo.util.ImageItem;
 import com.snail.photo.util.PublicWay;
 import com.snail.photo.util.Res;
+
+import java.util.ArrayList;
 
 /**
  * 这个类主要是用来进行显示包含图片的文件夹
@@ -44,26 +48,39 @@ public class ImageFile extends Activity {
 		textView.setText(Res.getString("photo"));
 		folderAdapter = new FolderAdapter(this);
 		gridView.setAdapter(folderAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ShowAllPhoto.dataList = (ArrayList<ImageItem>) Constants.contentList.get(position).imageList;
+                Intent intent = new Intent();
+                String folderName = Constants.contentList.get(position).bucketName;
+                intent.putExtra("folderName", folderName);
+                intent.setClass(mContext, ShowAllPhoto.class);
+                mContext.startActivity(intent);
+				finish();
+            }
+        });
 	}
 
 	private class CancelListener implements OnClickListener {// 取消按钮的监听
 		public void onClick(View v) {
 			//清空选择的图片
 			Bimp.tempSelectBitmap.clear();
-			Intent intent = new Intent();
-			intent.setClass(mContext, UploadPicActivity.class);
-			startActivity(intent);
+			finish();
+//			Intent intent = new Intent();
+//			intent.setClass(mContext, DeployActivity.class);
+//			startActivity(intent);
 		}
 	}
 
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Intent intent = new Intent();
-			intent.setClass(mContext, UploadPicActivity.class);
-			startActivity(intent);
-		}
-		
-		return true;
-	}
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if (keyCode == KeyEvent.KEYCODE_BACK) {
+//			Intent intent = new Intent();
+//			intent.setClass(mContext, DeployActivity.class);
+//			startActivity(intent);
+//		}
+//
+//		return true;
+//	}
 
 }

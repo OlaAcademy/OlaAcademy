@@ -24,14 +24,13 @@
         android:background="@drawable/plugin_camera_pic_choose_selector"
         android:textOff="@null"
         android:textOn="@null" />
-     <Button
+     <CheckBox
         android:id="@+id/choosedbt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/plugin_camera_choosed"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:visibility="gone" 
+        android:clickable="false"
         />
 	</RelativeLayout>
 </RelativeLayout>

@@ -3,13 +3,20 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-
+<!--原来的-->
+    <!--<ImageView-->
+        <!--android:id="@+id/item_grida_image"-->
+        <!--android:layout_width="68dp"-->
+        <!--android:layout_height="68dp"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:src="@drawable/ic_launcher" >-->
+    <!--</ImageView>-->
+    <!--现在的-->
     <ImageView
         android:id="@+id/item_grida_image"
         android:layout_width="68dp"
         android:layout_height="68dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher" >
+        android:scaleType="centerCrop">
     </ImageView>
 
 </LinearLayout>

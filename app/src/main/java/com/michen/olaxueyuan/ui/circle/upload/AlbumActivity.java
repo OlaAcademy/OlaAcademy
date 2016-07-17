@@ -1,9 +1,5 @@
-package com.snail.photo.activity;
+package com.michen.olaxueyuan.ui.circle.upload;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,33 +8,31 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.snail.photo.R;
+import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.photo.adapter.AlbumGridViewAdapter;
+import com.snail.photo.upload.Constants;
 import com.snail.photo.util.AlbumHelper;
 import com.snail.photo.util.Bimp;
-import com.snail.photo.util.ImageBucket;
 import com.snail.photo.util.ImageItem;
+import com.snail.photo.util.PicInfo;
 import com.snail.photo.util.PublicWay;
 import com.snail.photo.util.Res;
 
+import java.util.ArrayList;
+
 /**
- * 这个是进入相册显示所有图片的界面
- *
- * @author king
- * @version 2014年10月18日  下午11:47:15
- * @QQ:595163260
+ * 进入相册显示所有图片的界面
  */
-public class AlbumActivity extends Activity {
+public class AlbumActivity extends SEBaseActivity {
     //显示手机里的所有图片的列表控件
     private GridView gridView;
     //当手机里没有图片时，提示用户没有图片的控件
@@ -47,25 +41,20 @@ public class AlbumActivity extends Activity {
     private AlbumGridViewAdapter gridImageAdapter;
     //完成按钮
     private Button okButton;
-    // 返回按钮
-    private Button back;
-    // 取消按钮
-    private Button cancel;
     private Intent intent;
     // 预览按钮
     private Button preview;
     private Context mContext;
     private ArrayList<ImageItem> dataList;
     private AlbumHelper helper;
-    public static List<ImageBucket> contentList;
     public static Bitmap bitmap;
 
     private boolean isReg = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(Res.getLayoutID("plugin_camera_album"));
+        setTitleText("选取图片");
         PublicWay.activityList.add(this);
         mContext = this;
         register();
@@ -101,19 +90,20 @@ public class AlbumActivity extends Activity {
     // 完成按钮的监听
     private class AlbumSendListener implements OnClickListener {
         public void onClick(View v) {
-            overridePendingTransition(R.anim.activity_translate_in, R.anim.activity_translate_out);
-            intent.setClass(mContext, UploadPicActivity.class);
-            startActivity(intent);
+            overridePendingTransition(com.snail.photo.R.anim.activity_translate_in, com.snail.photo.R.anim.activity_translate_out);
+//            intent.setClass(mContext, DeployActivity.class);
+//            startActivity(intent);
             finish();
         }
 
     }
 
-    // 返回按钮监听
-    private class BackListener implements OnClickListener {
+    // 相册监听
+    private class PhotoListener implements OnClickListener {
         public void onClick(View v) {
             intent.setClass(AlbumActivity.this, ImageFile.class);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -121,8 +111,9 @@ public class AlbumActivity extends Activity {
     private class CancelListener implements OnClickListener {
         public void onClick(View v) {
             Bimp.tempSelectBitmap.clear();
-            intent.setClass(mContext, UploadPicActivity.class);
-            startActivity(intent);
+//            intent.setClass(mContext, DeployActivity.class);
+//            startActivity(intent);
+            finish();
         }
     }
 
@@ -132,16 +123,15 @@ public class AlbumActivity extends Activity {
         helper = AlbumHelper.getHelper();
         helper.init(getApplicationContext());
 
-        contentList = helper.getImagesBucketList(false);
+        Constants.contentList = helper.getImagesBucketList(false);
         dataList = new ArrayList<ImageItem>();
-        for (int i = 0; i < contentList.size(); i++) {
-            dataList.addAll(contentList.get(i).imageList);
+        for (int i = 0; i < Constants.contentList.size(); i++) {
+            dataList.addAll(Constants.contentList.get(i).imageList);
         }
 
-        back = (Button) findViewById(Res.getWidgetID("back"));
-        cancel = (Button) findViewById(Res.getWidgetID("cancel"));
-        cancel.setOnClickListener(new CancelListener());
-        back.setOnClickListener(new BackListener());
+        setRightText("相册");
+        setRightTextListener(new PhotoListener());
+        setLeftImageListener(new CancelListener());
         preview = (Button) findViewById(Res.getWidgetID("preview"));
         preview.setOnClickListener(new PreviewListener());
         intent = getIntent();
@@ -159,34 +149,41 @@ public class AlbumActivity extends Activity {
 
     private void initListener() {
 
-        gridImageAdapter
-                .setOnItemClickListener(new AlbumGridViewAdapter.OnItemClickListener() {
+        gridImageAdapter.setOnItemClickListener(new AlbumGridViewAdapter.OnItemClickListener() {
 
-                    @Override
-                    public void onItemClick(final ToggleButton toggleButton,
-                                            int position, boolean isChecked, Button chooseBt) {
-                        if (Bimp.tempSelectBitmap.size() >= PublicWay.num) {
-                            toggleButton.setChecked(false);
-                            chooseBt.setVisibility(View.GONE);
-                            if (!removeOneData(dataList.get(position))) {
-                                Toast.makeText(AlbumActivity.this, Res.getString("only_choose_num"),
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                            return;
-                        }
-                        if (isChecked) {
-                            chooseBt.setVisibility(View.VISIBLE);
-                            Bimp.tempSelectBitmap.add(dataList.get(position));
-                            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size()
-                                    + "/" + PublicWay.num + ")");
-                        } else {
-                            Bimp.tempSelectBitmap.remove(dataList.get(position));
-                            chooseBt.setVisibility(View.GONE);
-                            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
-                        }
-                        isShowOkBt();
+            @Override
+            public void onItemClick(final ToggleButton toggleButton, int position, boolean isChecked, CheckBox chooseBt) {
+                if (Bimp.tempSelectBitmap.size() >= PublicWay.num) {
+                    toggleButton.setChecked(false);
+                    if (!removeOneData(dataList.get(position))) {
+                        Toast.makeText(AlbumActivity.this, Res.getString("only_choose_num"),Toast.LENGTH_SHORT).show();
+                    }else{ //移除成功
+                        chooseBt.setChecked(false);
                     }
-                });
+                    return;
+                }//原有代码
+//                if (isChecked) {
+//                    chooseBt.setChecked(true);
+//                    Bimp.tempSelectBitmap.add(dataList.get(position));
+//                    okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+               //病例假中做出的修改
+                if (isChecked) {
+                    chooseBt.setChecked(true);
+                    ImageItem ima = dataList.get(position);
+                    PicInfo pi = new PicInfo();
+                    pi.type = "1";
+                    pi.isNew = true;
+                    ima.tag = pi;
+                    Bimp.tempSelectBitmap.add(ima);
+                    okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+                } else {
+                    chooseBt.setChecked(false);
+                    Bimp.tempSelectBitmap.remove(dataList.get(position));
+                    okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+                }
+                isShowOkBt();
+            }
+        });
 
         okButton.setOnClickListener(new AlbumSendListener());
 
@@ -219,15 +216,6 @@ public class AlbumActivity extends Activity {
             okButton.setTextColor(Color.parseColor("#E1E0DE"));
             preview.setTextColor(Color.parseColor("#E1E0DE"));
         }
-    }
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            intent.setClass(AlbumActivity.this, ImageFile.class);
-            startActivity(intent);
-        }
-        return false;
-
     }
 
     @Override

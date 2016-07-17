@@ -13,15 +13,18 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.eventbusmodule.CirclePraiseEvent;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 import com.michen.olaxueyuan.ui.story.activity.ImagePagerActivity;
 import com.snail.photo.util.NoScrollGridView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,12 +78,13 @@ public class CircleAdapter extends BaseAdapter {
         holder.avatar.setRectAdius(100);
         holder.title.setText(list.get(position).getUserName());
         //缺一个头像
-//        if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
-//            Picasso.with(mContext).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar()).placeholder(R.drawable.ic_default_avatar)
-//                    .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(holder.avatar);
-//        } else {
-        holder.avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
-//        }
+        if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
+            Picasso.with(mContext).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar())
+                    .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50))
+                    .into(holder.avatar);
+        } else {
+            holder.avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
+        }
         holder.time.setText(list.get(position).getTime());
         holder.studyName.setText(list.get(position).getContent());
         if (!TextUtils.isEmpty(list.get(position).getLocation())) {
@@ -95,10 +99,10 @@ public class CircleAdapter extends BaseAdapter {
                 holder.commentLayout.setVisibility(View.GONE);
                 break;
             case 2:
+                holder.commentLayout.setVisibility(View.VISIBLE);
+                holder.commentPraise.setText(String.valueOf(list.get(position).getPraiseNumber()));
                 if (!TextUtils.isEmpty(list.get(position).getImageGids())) {
-                    holder.commentPraise.setText(list.get(position).getPraiseNumber());
                     holder.gridview.setVisibility(View.VISIBLE);
-                    holder.commentLayout.setVisibility(View.VISIBLE);
                     ArrayList<String> imageUrls = getListFromString(list.get(position).getImageGids());
                     final ArrayList<String> imageList = imageUrls;
                     if (imageUrls.size() == 1) {
@@ -140,8 +144,10 @@ public class CircleAdapter extends BaseAdapter {
         holder.commentPraise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showToastShort(mContext, "点赞");
-                EventBus.getDefault().post(new CirclePraiseEvent(1, true));
+                /**
+                 * {@link com.michen.olaxueyuan.ui.circle.CircleFragment#onEventMainThread(CirclePraiseEvent)}}method
+                 */
+                EventBus.getDefault().post(new CirclePraiseEvent(1, true, position));
             }
         });
         holder.share.setOnClickListener(new View.OnClickListener() {

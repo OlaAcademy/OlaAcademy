@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.protocol.manager;
 
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
+import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 import com.michen.olaxueyuan.protocol.service.MCCircleService;
 
 import retrofit.Callback;
@@ -35,7 +36,17 @@ public class MCCircleManager {
      * @param type
      * @param callback
      */
-    public void deployPost(String userId,String title,String content,String imageGids, String location,String type, final Callback<MCCommonResult> callback) {
+    public void deployPost(String userId, String title, String content, String imageGids, String location, String type, final Callback<MCCommonResult> callback) {
         getCircleService().addOlaCircle(userId, title, content, imageGids, location, type, callback);
+    }
+
+    /**
+     * 帖子点赞
+     *
+     * @param circleId
+     * @param callback
+     */
+    public void praiseCirclePost(String circleId, Callback<PraiseCirclePostResult> callback) {
+        getCircleService().praiseCirclePost(circleId, callback);
     }
 }
