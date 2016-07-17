@@ -199,6 +199,7 @@ public class PostDetailActivity extends SEBaseActivity {
                 break;
             case R.id.comment:
                 Utils.showInputMethod(PostDetailActivity.this);
+                this.commentResultBean = null;
                 break;
             case R.id.share:
                 ToastUtil.showToastShort(mContext, "分享");
