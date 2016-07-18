@@ -4,21 +4,29 @@ package com.michen.olaxueyuan.ui.circle;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.michen.olaxueyuan.protocol.eventbusmodule.CirclePraiseEvent;
+import com.michen.olaxueyuan.protocol.eventbusmodule.CircleClickEvent;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
+import com.michen.olaxueyuan.sharesdk.ShareModel;
+import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.CircleAdapter;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
@@ -27,11 +35,15 @@ import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.utils.UIHandler;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -40,7 +52,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CircleFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener2 {
+public class CircleFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener2, PlatformActionListener, Handler.Callback {
     List<OLaCircleModule.ResultBean> list = new ArrayList<>();
     TitleManager titleManager;
     View rootView;
@@ -52,6 +64,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     PullToRefreshListView listview;
 
     CircleAdapter adapter;
+
+    private SharePopupWindow share;
 
     public CircleFragment() {
         // Required empty public constructor
@@ -136,10 +150,13 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
      *
      * @param circlePraiseEvent
      */
-    public void onEventMainThread(CirclePraiseEvent circlePraiseEvent) {
+    public void onEventMainThread(CircleClickEvent circlePraiseEvent) {
         switch (circlePraiseEvent.type) {
             case 1:
                 praise(circlePraiseEvent.position);
+                break;
+            case 2:
+                share(circlePraiseEvent.position);
                 break;
             default:
                 break;
@@ -168,6 +185,26 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         });
     }
 
+    private void share(int position){
+        OLaCircleModule.ResultBean circle =  list.get(position);
+        share = new SharePopupWindow(getActivity());
+        share.setPlatformActionListener(this);
+        ShareModel model = new ShareModel();
+        if (circle.getUserAvatar().indexOf("jpg")!=-1){
+            model.setImageUrl("http://api.olaxueyuan.com/upload/"+circle.getUserAvatar());
+        }else{
+            model.setImageUrl(SEAPP.PIC_BASE_URL+circle.getUserAvatar());
+        }
+        model.setText(circle.getContent());
+        model.setTitle("欧拉学院");
+        model.setUrl(SEConfig.getInstance().getAPIBaseURL()+"/circlepost.html?circleId="+circle.getCircleId());
+        share.initShareParams(model);
+        share.showShareWindow();
+        // 显示窗口 (设置layout在PopupWindow中显示的位置)
+        share.showAtLocation(getActivity().findViewById(R.id.main_circle),
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -187,6 +224,44 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         }
         circleId = list.get(list.size() - 1).getCircleId() + "";
         fetchData(circleId, "20");
+    }
+
+    /////////////////////// 分享相关  //////////////////////
+
+    @Override
+    public void onComplete(Platform plat, int action,
+                           HashMap<String, Object> res) {
+        Message msg = new Message();
+        msg.arg1 = 1;
+        msg.arg2 = action;
+        msg.obj = plat;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public void onError(Platform arg0, int arg1, Throwable arg2) {
+        Message msg = new Message();
+        msg.what = 1;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public void onCancel(Platform platform, int arg1) {
+        Message msg = new Message();
+        msg.what = 0;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        int what = msg.what;
+        if (what == 1) {
+            Toast.makeText(getActivity(), "分享失败", Toast.LENGTH_SHORT).show();
+        }
+        if (share != null) {
+            share.dismiss();
+        }
+        return false;
     }
 
 }
