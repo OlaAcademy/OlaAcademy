@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -190,8 +191,14 @@ public class UserFragment extends SuperFragment {
         }else{
             name.setText(userInfo.getName());
             remainDays.setText("还剩"+ userInfo.getVipTime() + "天");
+            String avatarUrl = "";
+            if (userInfo.getAvator().indexOf("jpg")!=-1){
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+userInfo.getAvator();
+            }else{
+                avatarUrl = SEAPP.PIC_BASE_URL+userInfo.getAvator();
+            }
             Picasso.with(getActivity())
-                    .load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator())
+                    .load(avatarUrl)
                     .placeholder(R.drawable.ic_default_avatar)
                     .error(R.drawable.ic_default_avatar)
                     .into(avatar);

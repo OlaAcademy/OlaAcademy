@@ -226,14 +226,11 @@ public class DeployPostActivity extends SEBaseActivity {
     public void doUpload() {
         //标题
         mTitle = mEt_title.getText().toString().trim();
-        if (TextUtils.isEmpty(mTitle) || mTitle.length() < 2) {
-            Toast.makeText(this, "请输入不少于两个字的帖子标题", Toast.LENGTH_SHORT).show();
-            return;
-        }
         String content = msgET.getText().toString().trim();
+        //内容
         int imageCount = Bimp.tempSelectBitmap.size();
-        if (TextUtils.isEmpty(content) || content.length() < 10) {
-            Toast.makeText(this, "请输入不少于十个字的帖子内容", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(content) || content.length() < 2) {
+            Toast.makeText(this, "请输入不少于两个字的帖子内容", Toast.LENGTH_SHORT).show();
             return;
         }
         SVProgressHUD.showInView(this, "正在发布中，请稍后...", true);

@@ -94,7 +94,7 @@
     <string name="title_activity_deploy_post">欧拉分享</string>
     <string name="publish">发布</string>
     <string name="hint_deploy_title">标题 2-15个字</string>
-    <string name="hint_deploy_content">内容 10-700个字</string>
+    <string name="hint_deploy_content">说说您的备考经验</string>
     <string name="hint_deploy_comment">内容 2-140个字</string>
     <string name="location">所在位置</string>
     <string name="positioning">定位中...</string>

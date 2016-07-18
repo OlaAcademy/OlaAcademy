@@ -2,7 +2,11 @@ package com.michen.olaxueyuan.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,10 +77,14 @@ public class PostCommentAdapter extends BaseAdapter {
         if (TextUtils.isEmpty(list.get(position).getLocation())) {
             holder.itemCommentLocation.setText("");
         } else {
-            holder.itemCommentLocation.setText("@" + list.get(position).getLocation());
+            holder.itemCommentLocation.setText(" @" + list.get(position).getLocation());
         }
         if (!TextUtils.isEmpty(list.get(position).getToUserName())) {
-            holder.itemCommentOriginalContent.setText("To:" + list.get(position).getToUserName() + ":" + list.get(position).getContent());
+            String comment = "@" + list.get(position).getToUserName() + ":" + list.get(position).getContent();
+            SpannableStringBuilder builder = new SpannableStringBuilder(comment);
+            ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.rgb(0,144,255));
+            builder.setSpan(redSpan, 0, list.get(position).getToUserName().length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.itemCommentOriginalContent.setText(builder);
         } else {
             holder.itemCommentOriginalContent.setText(list.get(position).getContent());
         }
