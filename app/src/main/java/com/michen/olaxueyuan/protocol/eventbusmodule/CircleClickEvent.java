@@ -5,9 +5,10 @@ import java.io.Serializable;
 /**
  * Created by mingge on 2016/7/14.
  */
-public class CirclePraiseEvent implements Serializable {
+public class CircleClickEvent implements Serializable {
     /**
      * type:1、欧拉圈列表点赞
+     * type:2、欧拉圈列表分享
      */
     public int type;
     /**
@@ -16,7 +17,7 @@ public class CirclePraiseEvent implements Serializable {
     public boolean isRequest;
     public int position;
 
-    public CirclePraiseEvent(int type, boolean isRequest, int position) {
+    public CircleClickEvent(int type, boolean isRequest, int position) {
         this.type = type;
         this.isRequest = isRequest;
         this.position = position;

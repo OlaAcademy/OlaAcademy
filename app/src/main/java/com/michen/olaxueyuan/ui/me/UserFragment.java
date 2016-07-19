@@ -11,20 +11,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
+import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
+import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.me.activity.DownloadListActivity;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserUpdateActivity;
 import com.michen.olaxueyuan.ui.me.adapter.UserPageAdapter;
 import com.michen.olaxueyuan.ui.setting.SettingActivity;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.protocol.result.SEUserResult;
-import com.michen.olaxueyuan.ui.SuperFragment;
-import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.FileOutputStream;
@@ -89,6 +90,24 @@ public class UserFragment extends SuperFragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchUserInfo();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     private void initView() {
         avatar.setRectAdius(300);
         titleTv.setText(R.string.me);
@@ -148,12 +167,6 @@ public class UserFragment extends SuperFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        fetchUserInfo();
-    }
-
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
         if (!module.isLogin){
@@ -190,8 +203,14 @@ public class UserFragment extends SuperFragment {
         }else{
             name.setText(userInfo.getName());
             remainDays.setText("还剩"+ userInfo.getVipTime() + "天");
+            String avatarUrl = "";
+            if (userInfo.getAvator().indexOf("jpg")!=-1){
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+userInfo.getAvator();
+            }else{
+                avatarUrl = SEAPP.PIC_BASE_URL+userInfo.getAvator();
+            }
             Picasso.with(getActivity())
-                    .load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator())
+                    .load(avatarUrl)
                     .placeholder(R.drawable.ic_default_avatar)
                     .error(R.drawable.ic_default_avatar)
                     .into(avatar);
@@ -243,18 +262,6 @@ public class UserFragment extends SuperFragment {
                 knowledgeBottomIndicator.setVisibility(View.VISIBLE);
                 break;
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
     }
 
 }

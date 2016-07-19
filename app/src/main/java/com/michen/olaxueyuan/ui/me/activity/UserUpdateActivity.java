@@ -18,13 +18,14 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.bean.ProvinceBean;
+import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.SECallBack;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
-import com.snail.circularimageview.CircularImageView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
@@ -60,7 +61,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
     private EditText nicknameET, signatureET, emailET;
     private TextView phoneTV, loaclTV;
     private Button _avatarButton;
-    private CircularImageView avatarImageView;
+    private RoundRectImageView avatarImageView;
     private ImageView iv_switch_man, iv_switch_woman;
 
     private SEUser _user;
@@ -217,9 +218,8 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         });
 
 
-        avatarImageView = (CircularImageView) findViewById(R.id.AvatarImageView);
-        avatarImageView.setBorderWidth(4);
-        avatarImageView.setBorderColor(getResources().getColor(R.color.lightgrey));
+        avatarImageView = (RoundRectImageView) findViewById(R.id.AvatarImageView);
+        avatarImageView.setRectAdius(300);
 
         updateLL = (LinearLayout) findViewById(R.id.updateLL);
         updateLL.setOnTouchListener(new View.OnTouchListener() {
@@ -303,7 +303,11 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
     private void updateAvatarImageView() {
         String avatarUrl = "";
         if (_user != null) {
-            avatarUrl = _user.getAvator();
+            if (_user.getAvator().indexOf("jpg")!=-1){
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+_user.getAvator();
+            }else{
+                avatarUrl = SEAPP.PIC_BASE_URL+_user.getAvator();
+            }
         }
 
         if (_updatedAvatarFilename != null) {
@@ -319,11 +323,9 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
                     .into(avatarImageView);
         } else if (!TextUtils.isEmpty(avatarUrl)) {
             Picasso.with(this)
-                    .load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + avatarUrl)
-                    .placeholder(R.drawable.ic_logo)
-                    .error(R.drawable.ic_logo)
-                    .resize(150, 150)
-                    .centerCrop()
+                    .load(avatarUrl)
+                    .placeholder(R.drawable.ic_avatar_default)
+                    .error(R.drawable.ic_avatar_default)
                     .into(avatarImageView);
         }
     }
