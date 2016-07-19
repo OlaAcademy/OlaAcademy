@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 public class SEBaseActivity extends FragmentActivity {
 
@@ -27,11 +28,11 @@ public class SEBaseActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        PushAgent.getInstance(this).onAppStart();
         // manifest中配置主题为Translucent，因此需要在这儿通过代码设置
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setTheme(R.style.AppTheme);
-        actionBar=getActionBar();
+        actionBar = getActionBar();
         // 返回箭头（默认不显示）
         actionBar.setDisplayHomeAsUpEnabled(false);
         // 左侧图标点击事件使能
@@ -83,7 +84,7 @@ public class SEBaseActivity extends FragmentActivity {
         leftImage.setVisibility(View.GONE);
     }
 
-    public void setLeftImageListener(View.OnClickListener l){
+    public void setLeftImageListener(View.OnClickListener l) {
         leftImage.setOnClickListener(l);
     }
 
@@ -140,9 +141,9 @@ public class SEBaseActivity extends FragmentActivity {
     }
 
 
-    public  boolean isShouldHideInput(View v, MotionEvent event) {
+    public boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
-            int[] leftTop = { 0, 0 };
+            int[] leftTop = {0, 0};
             //获取输入框当前的location位置
             v.getLocationInWindow(leftTop);
             int left = leftTop[0];

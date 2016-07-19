@@ -16,7 +16,6 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
-import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.eventbusmodule.CircleClickEvent;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
@@ -35,6 +34,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by mingge on 2016/7/11.
+ *
  */
 public class CircleAdapter extends BaseAdapter {
     private Context mContext;
