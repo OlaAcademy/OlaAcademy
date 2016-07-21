@@ -68,7 +68,7 @@ public class QuestionCourseManager {
     /**
      * 欧拉圈，获取视频观看历史记录列表(old)
      * <p>
-     * {@link #getCircleList(String, String, Callback)} ())}
+     * {@link #getCircleList(String, String, String, Callback)}
      *
      * @param callback
      */

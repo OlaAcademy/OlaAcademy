@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.question;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.michen.olaxueyuan.protocol.result.MessageListResult;
 import com.michen.olaxueyuan.protocol.result.MessageRecordResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.MessageListAdapter;
+import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -125,14 +127,18 @@ public class MessageActivity extends SEBaseActivity implements PullToRefreshBase
                  * {@link QuestionFragment#onEventMainThread(MessageReadEvent)}
                  */
                 EventBus.getDefault().post(new MessageReadEvent(true));
+                Intent intent = new Intent();
                 switch (event.type) {//type区分跳转的界面
                     case 1:
                         break;
-                    case 2:
+                    case 2://视频
+                        intent.setClass(mContext, CourseVideoActivity.class);
+                        intent.putExtra("pid", list.get(event.position).getOtherId()+"");
                         break;
-                    case 3:
+                    case 3://网页
                         break;
                 }
+                startActivity(intent);
             }
 
             @Override
