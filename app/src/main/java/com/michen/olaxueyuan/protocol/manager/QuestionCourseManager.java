@@ -67,7 +67,7 @@ public class QuestionCourseManager {
 
     /**
      * 欧拉圈，获取视频观看历史记录列表(old)
-     * <p/>
+     * <p>
      * {@link #getCircleList(String, String, Callback)} ())}
      *
      * @param callback
@@ -84,8 +84,8 @@ public class QuestionCourseManager {
      * @param pageSize
      * @param callback
      */
-    public void getCircleList(String circleId, String pageSize, final Callback<OLaCircleModule> callback) {
-        getQuestionService().getCircleList(circleId, pageSize, callback);
+    public void getCircleList(String circleId, String pageSize, String type, final Callback<OLaCircleModule> callback) {
+        getQuestionService().getCircleList(circleId, pageSize, type, callback);
     }
 
     /**

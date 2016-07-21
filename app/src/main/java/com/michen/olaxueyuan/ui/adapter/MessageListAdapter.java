@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.eventbusmodule.MessageReadEvent;
 import com.michen.olaxueyuan.protocol.result.MessageListResult;
 import com.squareup.picasso.Picasso;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by mingge on 16/7/19.
@@ -50,7 +52,7 @@ public class MessageListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = View.inflate(mContext, R.layout.message_list_listview_item, null);
@@ -77,6 +79,15 @@ public class MessageListAdapter extends BaseAdapter {
 //        }
         holder.time.setText(list.get(position).getTime());
         holder.content.setText(list.get(position).getContent());
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * {@link com.michen.olaxueyuan.ui.question.MessageActivity#onEventMainThread(MessageReadEvent)}
+                 */
+                EventBus.getDefault().post(new MessageReadEvent(position, false, list.get(position).getId() + "", list.get(position).getType()));
+            }
+        });
         return convertView;
     }
 

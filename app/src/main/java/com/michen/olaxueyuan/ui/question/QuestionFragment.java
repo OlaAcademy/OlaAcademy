@@ -16,6 +16,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.protocol.eventbusmodule.MessageReadEvent;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
@@ -113,6 +114,15 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     public void onEventMainThread(UserLoginNoticeModule module) {
         fetchData();
         getUnReadMessageCount();
+    }
+
+    /**
+     * {@link MessageActivity#onEventMainThread(MessageReadEvent)}*
+     */
+    public void onEventMainThread(MessageReadEvent event) {
+        if (event.isRefresh) {
+            getUnReadMessageCount();
+        }
     }
 
     private void fetchData() {

@@ -78,12 +78,14 @@ public interface QuestionService {
      *
      * @param circleId
      * @param pageSize
+     * @param type
      * @param cb
      */
     @FormUrlEncoded
     @POST("/ola/circle/getCircleList")
     void getCircleList(@Field("circleId") String circleId,
                        @Field("pageSize") String pageSize,
+                       @Field("type") String type,
                        Callback<OLaCircleModule> cb);
 
     /**
