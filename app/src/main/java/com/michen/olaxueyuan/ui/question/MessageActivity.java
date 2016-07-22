@@ -129,13 +129,13 @@ public class MessageActivity extends SEBaseActivity implements PullToRefreshBase
                 EventBus.getDefault().post(new MessageReadEvent(true));
                 Intent intent = new Intent();
                 switch (event.type) {//type区分跳转的界面
-                    case 1:
-                        break;
                     case 2://视频
                         intent.setClass(mContext, CourseVideoActivity.class);
-                        intent.putExtra("pid", list.get(event.position).getOtherId()+"");
+                        intent.putExtra("pid", list.get(event.position).getOtherId() + "");
                         break;
-                    case 3://网页
+                    case 3://网页,先用视频代替
+                        intent.setClass(mContext, WebViewActivity.class);
+                        intent.putExtra("mUrl", list.get(event.position).getUrl());
                         break;
                 }
                 startActivity(intent);

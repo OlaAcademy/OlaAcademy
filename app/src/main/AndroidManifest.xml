@@ -123,7 +123,7 @@
             android:value="${UMENG_CHANNEL_VALUE}" />
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="adccbb59420c2c5b8990919d569ede39"></meta-data>
+            android:value="adccbb59420c2c5b8990919d569ede39" />
         <!-- 下载 -->
         <service android:name=".download.DownloadService">
             <intent-filter>
@@ -402,6 +402,12 @@
             android:name=".ui.question.MessageActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
+
+        <service
+            android:name=".ui.umeng.MyPushIntentService"
+            android:process=":push" />
+
+        <activity android:name=".ui.question.WebViewActivity"></activity>
     </application>
 
 </manifest>
