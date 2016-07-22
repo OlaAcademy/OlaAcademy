@@ -124,8 +124,8 @@ public class CourseAdapter extends BaseAdapter {
                         slidingPagerView.setAdapter(new ImagePagerAdapter(context, result.bannerList));
                         slidingPagerView.setOnPageChangeListener(new MyOnPageChangeListener());
                         slidingPagerView.setInterval(4000);
-                        slidingPagerView.setScrollDurationFactor(2.0);
                         slidingPagerView.startAutoScroll();
+                        slidingPagerView.setCycle(true);
                     }
                 }
 

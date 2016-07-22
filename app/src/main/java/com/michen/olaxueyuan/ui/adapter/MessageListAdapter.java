@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
@@ -77,8 +78,16 @@ public class MessageListAdapter extends BaseAdapter {
 //        } else {
 //            holder.avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
 //        }
-        holder.time.setText(list.get(position).getTime());
+        if (list.get(position).getTime().length()>10) {
+            holder.time.setText(list.get(position).getTime().substring(0, 10));
+        }
         holder.content.setText(list.get(position).getContent());
+        if (list.get(position).getStatus()==1){
+            holder.bulletIV.setVisibility(View.GONE);
+        }else {
+            holder.bulletIV.setVisibility(View.VISIBLE);
+        }
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +109,8 @@ public class MessageListAdapter extends BaseAdapter {
         TextView time;
         @Bind(R.id.content)
         TextView content;
+        @Bind(R.id.bulletIV)
+        ImageView bulletIV;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

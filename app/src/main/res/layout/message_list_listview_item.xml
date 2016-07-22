@@ -50,6 +50,16 @@
             android:textColor="@color/black_323232"
             android:textSize="14dp" />
 
+        <ImageView
+            android:id="@+id/bulletIV"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/ic_bullet_red"
+            android:layout_below="@+id/time"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"/>
+
     </RelativeLayout>
     <View style="@style/line_horizontal"/>
 </LinearLayout>

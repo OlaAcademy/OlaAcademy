@@ -13,6 +13,6 @@
     <string-array name="circle_select">
         <item>全部</item>
         <item>学习记录</item>
-        <item>帖子</item>
+        <item>欧拉分享</item>
     </string-array>
 </resources>
