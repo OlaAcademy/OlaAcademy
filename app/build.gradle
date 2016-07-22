@@ -19,9 +19,9 @@ android {
         // 默认是umeng的渠道
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "OlaAcademy"]
 
-        ndk {
-            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
-        }
+//        ndk {
+//            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+//        }
     }
     lintOptions {
         checkReleaseBuilds false
@@ -109,7 +109,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':vitamio')
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.squareup.picasso:picasso:2.3.3'
@@ -153,4 +153,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile project(':BDUpdateSDK')
+    compile project(':PushSDK')
 }

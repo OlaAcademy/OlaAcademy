@@ -59,23 +59,42 @@
             android:textColor="@color/white"
             android:textSize="20dp" />
 
-        <ImageView
-            android:id="@+id/right_response"
+        <FrameLayout
+            android:id="@+id/right_response_framlayout"
             android:layout_width="33dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_setting"
-            android:visibility="gone" />
+            android:layout_marginRight="8dp">
+
+            <ImageView
+                android:id="@+id/right_response"
+                android:layout_width="33dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_setting"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/red_dot"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="top|right"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/ret_dot_shape"
+                android:gravity="center"
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="8dp"
+                android:visibility="gone" />
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/right_share"
             android:layout_width="33dp"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/right_response"
+            android:layout_toLeftOf="@+id/right_response_framlayout"
             android:scaleType="centerInside"
             android:src="@drawable/special_share_icon"
             android:visibility="gone" />

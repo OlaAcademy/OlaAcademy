@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui.question;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,15 +12,18 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.protocol.eventbusmodule.MessageReadEvent;
+import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
-import com.michen.olaxueyuan.ui.adapter.QuestionAdapter;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.ui.SuperFragment;
+import com.michen.olaxueyuan.ui.adapter.QuestionAdapter;
 import com.michen.olaxueyuan.ui.manager.TitlePopManager;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshExpandableListView;
@@ -27,6 +31,7 @@ import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -46,11 +51,14 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     PullToRefreshExpandableListView expandableListViews;
     @Bind(R.id.pop_line)
     View popLine;
+    @Bind(R.id.red_dot)
+    TextView redDot;
     private ExpandableListView expandableListView;
     QuestionAdapter adapter;
     QuestionCourseModule module;
     TitleManager titleManager;
     private String pid = "1";// 1 数学 2 英语 3 逻辑 4 协作
+    private int unReadMessageCount = 0;
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -65,11 +73,13 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
         EventBus.getDefault().register(this);
         initView();
         fetchData();
+        getUnReadMessageCount();
         return rootView;
     }
 
     private void initView() {
         titleManager = new TitleManager(R.string.math, this, rootView, false);
+        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
         Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
         drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
         titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
@@ -103,6 +113,16 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
         fetchData();
+        getUnReadMessageCount();
+    }
+
+    /**
+     * {@link MessageActivity#onEventMainThread(MessageReadEvent)}*
+     */
+    public void onEventMainThread(MessageReadEvent event) {
+        if (event.isRefresh) {
+            getUnReadMessageCount();
+        }
     }
 
     private void fetchData() {
@@ -141,11 +161,15 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
         });
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    @OnClick({R.id.title_tv, R.id.right_response, R.id.red_dot})
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.title_tv:
                 TitlePopManager.getInstance().showPop(getActivity(), titleManager, popLine, this, 1);
+                break;
+            case R.id.right_response:
+            case R.id.red_dot:
+                startActivity(new Intent(getActivity(), MessageActivity.class));
                 break;
         }
     }
@@ -169,4 +193,32 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     public void onRefresh(PullToRefreshBase refreshView) {
         fetchData();
     }
+
+    private void getUnReadMessageCount() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        QuestionCourseManager.getInstance().getUnreadCount(userId, new Callback<MessageUnReadResult>() {
+            @Override
+            public void success(MessageUnReadResult messageUnReadResult, Response response) {
+                if (messageUnReadResult.getApicode() == 10000) {
+                    unReadMessageCount = messageUnReadResult.getResult();
+                    redDot.setText(String.valueOf(unReadMessageCount));
+                    if (unReadMessageCount > 0) {
+                        redDot.setVisibility(View.VISIBLE);
+                    } else {
+                        redDot.setVisibility(View.GONE);
+                    }
+                    Logger.e("unReadMessageCount==" + unReadMessageCount);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
 }

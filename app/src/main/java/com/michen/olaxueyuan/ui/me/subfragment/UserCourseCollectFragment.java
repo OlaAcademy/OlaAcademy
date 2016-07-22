@@ -10,16 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.michen.olaxueyuan.common.manager.Logger;
+import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
-import com.michen.olaxueyuan.ui.me.adapter.UserCourseCollectAdapter;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
+import com.michen.olaxueyuan.ui.me.adapter.UserCourseCollectAdapter;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 
@@ -58,7 +57,7 @@ public class UserCourseCollectFragment extends SuperFragment implements PullToRe
     @Override
     public void onResume() {
         super.onResume();
-        Logger.e("isRefreshCourseCollectList()==" + isRefreshCourseCollectList);
+//        Logger.e("isRefreshCourseCollectList()==" + isRefreshCourseCollectList);
         if (isRefreshCourseCollectList) {
             isRefreshCourseCollectList = false;
             fetchData();
