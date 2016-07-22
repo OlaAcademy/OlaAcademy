@@ -71,6 +71,15 @@ public class MessageListResult implements Serializable {
         private int type;
         private String time;
         private String imageUrl;
+        private String url;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
 
         public void setContent(String content) {
             this.content = content;
@@ -147,6 +156,7 @@ public class MessageListResult implements Serializable {
                     ", type=" + type +
                     ", time='" + time + '\'' +
                     ", imageUrl='" + imageUrl + '\'' +
+                    ", url='" + url + '\'' +
                     '}';
         }
     }

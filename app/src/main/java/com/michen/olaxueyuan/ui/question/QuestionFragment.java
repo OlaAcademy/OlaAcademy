@@ -25,6 +25,7 @@ import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.QuestionAdapter;
 import com.michen.olaxueyuan.ui.manager.TitlePopManager;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshExpandableListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -169,6 +170,11 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
                 break;
             case R.id.right_response:
             case R.id.red_dot:
+                if (!SEAuthManager.getInstance().isAuthenticated()) {
+                    Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
+                    startActivity(loginIntent);
+                    return;
+                }
                 startActivity(new Intent(getActivity(), MessageActivity.class));
                 break;
         }
