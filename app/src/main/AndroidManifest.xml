@@ -402,6 +402,10 @@
             android:name=".ui.question.MessageActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
+
+        <service
+            android:name=".ui.umeng.MyPushIntentService"
+            android:process=":push" />
     </application>
 
 </manifest>
