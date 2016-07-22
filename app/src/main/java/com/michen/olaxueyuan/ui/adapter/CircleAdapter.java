@@ -135,7 +135,7 @@ public class CircleAdapter extends BaseAdapter {
                 switch (type) {
                     case 1:
                         intent.setClass(mContext, CourseVideoActivity.class);
-                        intent.putExtra("pid", list.get(position).getCourseId());
+                        intent.putExtra("pid", list.get(position).getCourseId()+"");
                     default:
                         break;
                     case 2:

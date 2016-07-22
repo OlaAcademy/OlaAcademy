@@ -3,6 +3,7 @@ package com.michen.olaxueyuan.ui.circle;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.CircleAdapter;
+import com.michen.olaxueyuan.ui.manager.CirclePopManager;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
@@ -52,7 +55,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CircleFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener2, PlatformActionListener, Handler.Callback {
+public class CircleFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener2, PlatformActionListener, Handler.Callback, CirclePopManager.CircleClickListener {
     List<OLaCircleModule.ResultBean> list = new ArrayList<>();
     TitleManager titleManager;
     View rootView;
@@ -62,6 +65,12 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     ImageView rightResponse;
     @Bind(R.id.listview)
     PullToRefreshListView listview;
+    @Bind(R.id.all_search_view)
+    LinearLayout allSearchView;
+    @Bind(R.id.pop_line)
+    View popLine;
+    private String type = "";//1 学习记录 2 帖子 "" 全部
+    private static final String PAGE_SIZE = "20";//每次加载20条
 
     CircleAdapter adapter;
 
@@ -78,13 +87,16 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         ButterKnife.bind(this, rootView);
         EventBus.getDefault().register(this);
         initView();
-        fetchData("", "10");
+        fetchData("", PAGE_SIZE);
         return rootView;
     }
 
     private void initView() {
         titleManager = new TitleManager(R.string.ola_circle, this, rootView, false);
         titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.ic_circle_add);
+        Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
+        drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
+        titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
         adapter = new CircleAdapter(getActivity());
         listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
@@ -92,7 +104,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
     private void fetchData(final String circleId, String pageSize) {
         SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
-        QuestionCourseManager.getInstance().getCircleList(circleId, pageSize, new Callback<OLaCircleModule>() {
+        QuestionCourseManager.getInstance().getCircleList(circleId, pageSize, type, new Callback<OLaCircleModule>() {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
                 SVProgressHUD.dismiss(getActivity());
@@ -122,7 +134,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         });
     }
 
-    @OnClick({R.id.right_response})
+    @OnClick({R.id.right_response, R.id.title_tv})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.right_response:
@@ -134,19 +146,22 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
                 Intent intent = new Intent(getActivity(), DeployPostActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.title_tv:
+                CirclePopManager.getInstance().showMarkPop(getActivity(), popLine, this, allSearchView);
+                break;
         }
     }
 
     // EventBus 回调
     public void onEventMainThread(Boolean addSuccess) {
         if (addSuccess) {
-            fetchData("", "10");
+            fetchData("", PAGE_SIZE);
         }
     }
 
     /**
      * 点赞
-     * {@link com.michen.olaxueyuan.ui.adapter.CircleAdapter.ViewHolder#commentPraise}
+     * {@link CircleAdapter.ViewHolder#commentPraise}
      *
      * @param circlePraiseEvent
      */
@@ -185,19 +200,19 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         });
     }
 
-    private void share(int position){
-        OLaCircleModule.ResultBean circle =  list.get(position);
+    private void share(int position) {
+        OLaCircleModule.ResultBean circle = list.get(position);
         share = new SharePopupWindow(getActivity());
         share.setPlatformActionListener(this);
         ShareModel model = new ShareModel();
-        if (circle.getUserAvatar().indexOf("jpg")!=-1){
-            model.setImageUrl("http://api.olaxueyuan.com/upload/"+circle.getUserAvatar());
-        }else{
-            model.setImageUrl(SEAPP.PIC_BASE_URL+circle.getUserAvatar());
+        if (circle.getUserAvatar().indexOf("jpg") != -1) {
+            model.setImageUrl("http://api.olaxueyuan.com/upload/" + circle.getUserAvatar());
+        } else {
+            model.setImageUrl(SEAPP.PIC_BASE_URL + circle.getUserAvatar());
         }
         model.setText(circle.getContent());
         model.setTitle("欧拉学院");
-        model.setUrl(SEConfig.getInstance().getAPIBaseURL()+"/circlepost.html?circleId="+circle.getCircleId());
+        model.setUrl(SEConfig.getInstance().getAPIBaseURL() + "/circlepost.html?circleId=" + circle.getCircleId());
         share.initShareParams(model);
         share.showShareWindow();
         // 显示窗口 (设置layout在PopupWindow中显示的位置)
@@ -214,7 +229,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
     @Override
     public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-        fetchData("", "20");
+        fetchData("", PAGE_SIZE);
     }
 
     @Override
@@ -223,7 +238,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         if (list.size() > 0) {
         }
         circleId = list.get(list.size() - 1).getCircleId() + "";
-        fetchData(circleId, "20");
+        fetchData(circleId, PAGE_SIZE);
     }
 
     /////////////////////// 分享相关  //////////////////////
@@ -264,4 +279,17 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         return false;
     }
 
+    @Override
+    public void circlePosition(int type, String text) {
+        titleTv.setText(text);
+        switch (type) {
+            case 0:
+                this.type = "";
+                break;
+            default:
+                this.type = String.valueOf(type);
+                break;
+        }
+        fetchData("", PAGE_SIZE);
+    }
 }
