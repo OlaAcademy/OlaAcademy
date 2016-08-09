@@ -69,7 +69,8 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_question, container, false);
+//        rootView = inflater.inflate(R.layout.fragment_question, container, false);
+        rootView = View.inflate(getActivity(),R.layout.fragment_question, null);
         ButterKnife.bind(this, rootView);
         EventBus.getDefault().register(this);
         initView();
