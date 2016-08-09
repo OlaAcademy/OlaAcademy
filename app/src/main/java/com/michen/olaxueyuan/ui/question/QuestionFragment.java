@@ -5,11 +5,13 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
@@ -24,6 +26,7 @@ import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.QuestionAdapter;
+import com.michen.olaxueyuan.ui.adapter.QuestionViewPagerAdapter;
 import com.michen.olaxueyuan.ui.manager.TitlePopManager;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
@@ -54,12 +57,39 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     View popLine;
     @Bind(R.id.red_dot)
     TextView redDot;
+    @Bind(R.id.maths_text)
+    TextView mathsText;
+    @Bind(R.id.maths_indicator)
+    View mathsIndicator;
+    @Bind(R.id.maths_layout)
+    RelativeLayout mathsLayout;
+    @Bind(R.id.english_text)
+    TextView englishText;
+    @Bind(R.id.english_indicator)
+    View englishIndicator;
+    @Bind(R.id.english_layout)
+    RelativeLayout englishLayout;
+    @Bind(R.id.logic_text)
+    TextView logicText;
+    @Bind(R.id.logic_indicator)
+    View logicIndicator;
+    @Bind(R.id.logic_layout)
+    RelativeLayout logicLayout;
+    @Bind(R.id.writing_text)
+    TextView writingText;
+    @Bind(R.id.writing_indicator)
+    View writingIndicator;
+    @Bind(R.id.writing_layout)
+    RelativeLayout writingLayout;
+    @Bind(R.id.view_pager)
+    ViewPager viewPager;
     private ExpandableListView expandableListView;
     QuestionAdapter adapter;
     QuestionCourseModule module;
     TitleManager titleManager;
     private String pid = "1";// 1 数学 2 英语 3 逻辑 4 协作
     private int unReadMessageCount = 0;
+    private QuestionViewPagerAdapter viewPagerAdapter;
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -70,7 +100,7 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        rootView = inflater.inflate(R.layout.fragment_question, container, false);
-        rootView = View.inflate(getActivity(),R.layout.fragment_question, null);
+        rootView = View.inflate(getActivity(), R.layout.fragment_question, null);
         ButterKnife.bind(this, rootView);
         EventBus.getDefault().register(this);
         initView();
@@ -108,6 +138,39 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
                     module.getResult().getChild().get(groupPosition).setIsExpanded(true);
                     adapter.updateList(module);
                 }
+            }
+        });
+        viewPagerAdapter = new QuestionViewPagerAdapter(getFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+        mathsText.setSelected(true);
+        mathsIndicator.setSelected(true);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        changeTab(true, false, false, false, -1);
+                        break;
+                    case 1:
+                        changeTab(false, true, false, false, -1);
+                        break;
+                    case 2:
+                        changeTab(false, false, true, false, -1);
+                        break;
+                    case 3:
+                        changeTab(false, false, false, true, -1);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
     }
@@ -163,7 +226,7 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
         });
     }
 
-    @OnClick({R.id.title_tv, R.id.right_response, R.id.red_dot})
+    @OnClick({R.id.title_tv, R.id.right_response, R.id.red_dot, R.id.maths_layout, R.id.english_layout, R.id.logic_layout, R.id.writing_layout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_tv:
@@ -178,9 +241,34 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
                 }
                 startActivity(new Intent(getActivity(), MessageActivity.class));
                 break;
+            case R.id.maths_layout:
+                changeTab(true, false, false, false, 0);
+                break;
+            case R.id.english_layout:
+                changeTab(false, true, false, false, 1);
+                break;
+            case R.id.logic_layout:
+                changeTab(false, false, true, false, 2);
+                break;
+            case R.id.writing_layout:
+                changeTab(false, false, false, true, 3);
+                break;
         }
     }
 
+    private void changeTab(boolean maths, boolean english, boolean logic, boolean writing, int position) {
+        mathsText.setSelected(maths);
+        mathsIndicator.setSelected(maths);
+        englishText.setSelected(english);
+        englishIndicator.setSelected(english);
+        logicText.setSelected(logic);
+        logicIndicator.setSelected(logic);
+        writingText.setSelected(writing);
+        writingIndicator.setSelected(writing);
+        if (position!=-1) {
+            viewPager.setCurrentItem(position);
+        }
+    }
     @Override
     public void pidPosition(int type, String pid) {
         if (type == 1) {
@@ -227,5 +315,4 @@ public class QuestionFragment extends SuperFragment implements TitlePopManager.P
             }
         });
     }
-
 }
