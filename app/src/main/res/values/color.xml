@@ -336,7 +336,8 @@
     <color name="special_text_color">#485254</color>
     <color name="special_author_text_color">#8f919d</color>
     <color name="special_read_text_color">#999999</color>
-    <color name="line_color">#e5e5e5</color>
+    <!--<color name="line_color">#e5e5e5</color>-->
+    <color name="line_color">#EBEBEB</color>
     <color name="return_text_color">#333333</color>
     <color name="indicator_text_color">#b2b2b2</color>
     <color name="light_title_blue">#018BE6</color>
@@ -350,7 +351,8 @@
     <color name="title_blue">#1B9BFB</color>
     <color name="title_hint_color">#f0f0f0</color>
     <color name="title_hint_text_color">#909090</color>
-    <color name="black_one">#232323</color>
+    <color name="black_one">#51545D</color>
+    <!--<color name="black_one">#232323</color>-->
     <color name="black_323232">#323232</color>
     <color name="blue_light">#1B9BFC</color>
     <color name="pop_title_bg">#E1E1E1</color>
@@ -374,5 +376,5 @@
     <drawable name="light_title_blue">#018BE6</drawable>
     <drawable name="white">#ffffff</drawable>
     <drawable name="blue_light">#1B9BFC</drawable>
-    <drawable name="black_one">#232323</drawable>
+    <drawable name="black_one">#51545D</drawable>
 </resources>
