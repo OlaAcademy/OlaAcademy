@@ -53,6 +53,7 @@ public class MainFragment extends Fragment {
         _viewPager = (ViewPager) fragmentView.findViewById(R.id.MainPager);
         _viewPager.setOffscreenPageLimit(999);
         _viewPagerAdapter = new MainPagerAdapter(getFragmentManager());
+//        _viewPagerAdapter = new MainPagerAdapter(getChildFragmentManager());
         _viewPager.setAdapter(_viewPagerAdapter);
         _viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

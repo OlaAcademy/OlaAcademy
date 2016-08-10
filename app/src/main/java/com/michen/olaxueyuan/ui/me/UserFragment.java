@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.ui.me;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -114,8 +115,13 @@ public class UserFragment extends SuperFragment {
         leftIcon.setVisibility(View.VISIBLE);
         leftIcon.setImageDrawable(getResources().getDrawable(R.drawable.icon_download));
         rightResponse.setVisibility(View.VISIBLE);
-
-        userPageAdapter = new UserPageAdapter(getActivity().getFragmentManager());
+        FragmentManager fragmentManager;
+        if (android.os.Build.VERSION.SDK_INT >= 17) {
+            fragmentManager = getChildFragmentManager();
+        } else {
+            fragmentManager = getFragmentManager();
+        }
+        userPageAdapter = new UserPageAdapter(fragmentManager);
         viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(userPageAdapter);
         viewPager.setOnPageChangeListener(new ViewPagerListener());
@@ -155,13 +161,13 @@ public class UserFragment extends SuperFragment {
         }
     }
 
-    private void headViewClick(){
+    private void headViewClick() {
         SEUser user = SEAuthManager.getInstance().getAccessUser();
         if (user == null) {
             Intent intent = new Intent(getActivity(), UserLoginActivity.class);
             intent.putExtra("isVisitor", 1);
             startActivity(intent);
-        }else {
+        } else {
             Intent intent = new Intent(getActivity(), UserUpdateActivity.class);
             startActivityForResult(intent, EDIT_USER_INFO);
         }
@@ -169,16 +175,16 @@ public class UserFragment extends SuperFragment {
 
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
-        if (!module.isLogin){
+        if (!module.isLogin) {
             updateHeadView(null);
-        }else{
+        } else {
             fetchUserInfo();
         }
     }
 
-    private void fetchUserInfo(){
+    private void fetchUserInfo() {
         SEUser user = SEAuthManager.getInstance().getAccessUser();
-        if (user!=null){
+        if (user != null) {
             SEUserManager um = SEUserManager.getInstance();
             um.queryUserInfo(user.getId(), new Callback<SEUserResult>() {
                 @Override
@@ -195,19 +201,19 @@ public class UserFragment extends SuperFragment {
         }
     }
 
-    private void updateHeadView(SEUser userInfo){
-        if (userInfo==null){
+    private void updateHeadView(SEUser userInfo) {
+        if (userInfo == null) {
             name.setText("登录／注册");
             remainDays.setText("还剩0天");
             avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
-        }else{
+        } else {
             name.setText(userInfo.getName());
-            remainDays.setText("还剩"+ userInfo.getVipTime() + "天");
+            remainDays.setText("还剩" + userInfo.getVipTime() + "天");
             String avatarUrl = "";
-            if (userInfo.getAvator().indexOf("jpg")!=-1){
-                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+userInfo.getAvator();
-            }else{
-                avatarUrl = SEAPP.PIC_BASE_URL+userInfo.getAvator();
+            if (userInfo.getAvator().indexOf("jpg") != -1) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator();
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + userInfo.getAvator();
             }
             Picasso.with(getActivity())
                     .load(avatarUrl)

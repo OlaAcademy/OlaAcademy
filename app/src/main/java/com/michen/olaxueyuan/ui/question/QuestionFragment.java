@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui.question;
 
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -142,7 +143,13 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                 }
             }
         });
-        viewPagerAdapter = new QuestionViewPagerAdapter(getFragmentManager());
+        FragmentManager fragmentManager;
+        if (android.os.Build.VERSION.SDK_INT >= 17) {
+            fragmentManager = getChildFragmentManager();
+        } else {
+            fragmentManager = getFragmentManager();
+        }
+        viewPagerAdapter = new QuestionViewPagerAdapter(fragmentManager);
         viewPager.setAdapter(viewPagerAdapter);
         mathsText.setSelected(true);
         mathsIndicator.setSelected(true);
@@ -291,20 +298,6 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         fetchData();
     }
 
-    public void pidPosition(int type, String pid) {
-        if (type == 1) {
-            this.pid = pid;
-            fetchData();
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
-    }
-
     @Override
     public void onRefresh(PullToRefreshBase refreshView) {
         fetchData();
@@ -335,5 +328,12 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 }
