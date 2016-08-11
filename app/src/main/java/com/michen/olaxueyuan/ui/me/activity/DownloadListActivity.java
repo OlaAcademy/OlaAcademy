@@ -237,8 +237,13 @@ public class DownloadListActivity extends SEBaseActivity {
 
         public void refresh() {
             label.setText(downloadInfo.getFileName());
-            Picasso.with(mAppContext).load(downloadInfo.getFileImage()).config(Bitmap.Config.RGB_565)
-                    .placeholder(R.drawable.ic_default_video).into(image);
+            if (downloadInfo.getFileImage()!=null){
+                Picasso.with(mAppContext).load(downloadInfo.getFileImage()).config(Bitmap.Config.RGB_565)
+                        .placeholder(R.drawable.ic_default_video).into(image);
+            }else{
+                image.setBackgroundResource(R.drawable.ic_default_video);
+            }
+
             state.setText(downloadInfo.getState().toString());
             if (downloadInfo.getFileLength() > 0) {
                 progressBar.setProgress((int) (downloadInfo.getProgress() * 100 / downloadInfo.getFileLength()));

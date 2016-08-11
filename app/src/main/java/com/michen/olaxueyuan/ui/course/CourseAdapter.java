@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.ui.common.HorizontalListView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.michen.olaxueyuan.R;
@@ -154,60 +155,32 @@ public class CourseAdapter extends BaseAdapter {
                 convertView = View.inflate(context, R.layout.item_course, null);
                 holder = new ViewHolder();
                 holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-                holder.gv_course = (GridView) convertView.findViewById(R.id.gv_course);
+                holder.horizontalListView = (HorizontalListView) convertView.findViewById(R.id.horizontalListView);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            MCSubCourse course = courseList.get(position - 1);
+            final MCSubCourse course = courseList.get(position - 1);
 //            Logger.e("course=="+course.toString());
             holder.tv_title.setText(course.name);
-            setGridView(holder.gv_course, course.subCourseArrayList);
+            HorizontalListViewAdapter adapter = new HorizontalListViewAdapter(course.subCourseArrayList);
+            holder.horizontalListView.setAdapter(adapter);
+            holder.horizontalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(context, CourseVideoActivity.class);
+                    intent.putExtra("pid", course.subCourseArrayList.get(position).id);
+                    context.startActivity(intent);
+                }
+            });
         }
         return convertView;
-    }
-
-    /**
-     * 设置GirdView参数，绑定数据
-     */
-    private void setGridView(GridView gridView, final ArrayList<MCSubCourse> subCourseList) {
-        if (subCourseList == null) {
-            return;
-        }
-        int length = 150;
-        DisplayMetrics dm = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
-        float density = dm.density;
-        int gridviewWidth = (int) (subCourseList.size() * (length + 4) * density);
-        int itemWidth = (int) (length * density);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                gridviewWidth, LinearLayout.LayoutParams.FILL_PARENT);
-        gridView.setLayoutParams(params); // 设置GirdView布局参数,横向布局的关键
-        gridView.setColumnWidth(itemWidth); // 设置列表项宽
-        gridView.setHorizontalSpacing(5); // 设置列表项水平间距
-        gridView.setStretchMode(GridView.NO_STRETCH);
-        gridView.setNumColumns(subCourseList.size()); // 设置列数量=列表集合数
-
-        GridViewAdapter adapter = new GridViewAdapter(subCourseList);
-        gridView.setAdapter(adapter);
-        adapter.updateData(subCourseList);
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(context, CourseListActivity.class);
-                Intent intent = new Intent(context, CourseVideoActivity.class);
-                intent.putExtra("pid", subCourseList.get(position).id);
-                context.startActivity(intent);
-            }
-        });
     }
 
 
     class ViewHolder {
         private TextView tv_title;
-        private GridView gv_course;
+        private HorizontalListView horizontalListView;
     }
 
     class TopViewHolder {
@@ -237,11 +210,11 @@ public class CourseAdapter extends BaseAdapter {
         }
     }
 
-    private class GridViewAdapter extends BaseAdapter {
+    private class HorizontalListViewAdapter extends BaseAdapter {
 
         private ArrayList<MCSubCourse> subCourseList;
 
-        public GridViewAdapter(ArrayList<MCSubCourse> subCourseList) {
+        public HorizontalListViewAdapter(ArrayList<MCSubCourse> subCourseList) {
             this.subCourseList = subCourseList;
         }
 

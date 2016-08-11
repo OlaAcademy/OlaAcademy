@@ -32,8 +32,8 @@ public class SEAPP extends Application {
          * 开源框架 Image-Loader
          */
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder() //
-                .showImageForEmptyUri(R.drawable.ic_launcher) //
-                .showImageOnFail(R.drawable.ic_launcher) //
+                .showImageForEmptyUri(R.drawable.icon_launcher) //
+                .showImageOnFail(R.drawable.icon_launcher) //
                 .cacheInMemory(true) //
                 .cacheOnDisk(true) //
                 .build();//
