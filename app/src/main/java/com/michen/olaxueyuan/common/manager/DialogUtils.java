@@ -81,7 +81,7 @@ public class DialogUtils {
         });
     }
 
-    public static void showSelectQuestionDialog(Context context, final View.OnClickListener listener, int type) {
+    public static void showSelectQuestionDialog(Context context, final View.OnClickListener listener, int selectType, String[] selectArray) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.question_select_dialog, null);
         final Dialog dialog = new AlertDialog.Builder(context).create();
@@ -100,8 +100,15 @@ public class DialogUtils {
         RelativeLayout selectOne = (RelativeLayout) view.findViewById(R.id.select_one);
         RelativeLayout selectTwo = (RelativeLayout) view.findViewById(R.id.select_two);
         RelativeLayout selectThree = (RelativeLayout) view.findViewById(R.id.select_three);
+        TextView nameOne = (TextView) view.findViewById(R.id.name_one);
+        TextView nameTwo = (TextView) view.findViewById(R.id.name_two);
+        TextView nameThree = (TextView) view.findViewById(R.id.name_three);
+        nameOne.setText(selectArray[0]);
+        nameTwo.setText(selectArray[1]);
+        nameThree.setText(selectArray[2]);
+
         TextView closeView = (TextView) view.findViewById(R.id.close);
-        switch (type) {
+        switch (selectType) {
             case 1:
                 imgTwo.setVisibility(View.VISIBLE);
                 break;

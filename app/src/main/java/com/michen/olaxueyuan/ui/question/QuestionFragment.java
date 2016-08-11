@@ -95,6 +95,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     private int unReadMessageCount = 0;
     private QuestionViewPagerAdapter viewPagerAdapter;
     private int selectType = 0;//三个条件0,1,2
+    private String[] selectArray = {};//
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -115,6 +116,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     }
 
     private void initView() {
+        selectArray = getActivity().getResources().getStringArray(R.array.question_select_maths);
         titleManager = new TitleManager("考点", this, rootView, false);
         titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
         expandableListViews.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
@@ -275,9 +277,9 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                                 selectType = 2;
                                 break;
                         }
-                        subjectName.setText(getActivity().getResources().getStringArray(R.array.question_select)[selectType]);
+                        subjectName.setText(selectArray[selectType]);
                     }
-                }, selectType);
+                }, selectType,selectArray);
                 break;
         }
     }
@@ -294,6 +296,22 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         if (setCurrentItem) {
             viewPager.setCurrentItem(position);
         }
+        switch (position) {
+            case 1:
+                selectArray = getActivity().getResources().getStringArray(R.array.question_select_english);
+                break;
+            case 2:
+                selectArray = getActivity().getResources().getStringArray(R.array.question_select_logic);
+                break;
+            case 3:
+                selectArray = getActivity().getResources().getStringArray(R.array.question_select_writing);
+                break;
+            case 0:
+            default:
+                selectArray = getActivity().getResources().getStringArray(R.array.question_select_maths);
+                break;
+        }
+        subjectName.setText(selectArray[0]);
         this.pid = String.valueOf(position + 1);
         fetchData();
     }
