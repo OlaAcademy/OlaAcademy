@@ -2,7 +2,7 @@ package com.michen.olaxueyuan.ui;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.course.CourseFragment;
@@ -13,7 +13,7 @@ import com.michen.olaxueyuan.ui.question.QuestionFragment;
 /**
  * Created by tianxiaopeng on 15-1-2.
  */
-public class MainPagerAdapter extends FragmentPagerAdapter {
+public class MainPagerAdapter extends FragmentStatePagerAdapter {
 //    private IndexFragment indexFragment;
 //    private InformationFragment consultFragment;
 //    private StoryFragment storyFragment;

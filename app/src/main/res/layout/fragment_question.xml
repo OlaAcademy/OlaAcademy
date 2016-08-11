@@ -1,45 +1,79 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.michen.olaxueyuan.ui.question.QuestionFragment">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/title_layout" />
+
+    <View
+        android:id="@+id/pop_line"
+        style="@style/line_horizontal_blue" />
+
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_head_question"
+        android:visibility="gone" />
 
-        <include layout="@layout/title_layout" />
+    <TextView
+        android:id="@+id/question_name"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:background="@color/title_hint_color"
+        android:gravity="bottom"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:text="北京考试大全"
+        android:textColor="@color/title_hint_text_color"
+        android:textSize="14dp"
+        android:visibility="gone" />
 
-        <View
-            android:id="@+id/pop_line"
-            style="@style/line_horizontal_blue" />
+    <include
+        android:id="@+id/indicator_view"
+        layout="@layout/fragment_question_indicator" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_head_question" />
+    <View
+        style="@style/line_horizontal"
+        android:layout_height="5dp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/white" />
+
+    <RelativeLayout
+        android:id="@+id/subject_layout"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:background="@color/line_color"
+        android:gravity="center">
 
         <TextView
-            android:id="@+id/question_name"
-            android:layout_width="match_parent"
-            android:layout_height="33dp"
-            android:background="@color/title_hint_color"
-            android:gravity="bottom"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:text="北京考试大全"
-            android:textColor="@color/title_hint_text_color"
-            android:textSize="14dp" />
+            android:id="@+id/subject_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="数学高分指南"
+            android:textColor="@color/black_one"
+            android:textSize="15dp" />
 
-        <com.snail.pulltorefresh.PullToRefreshExpandableListView
-            android:id="@+id/expandableListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:visibility="visible" />
-    </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/subject_name"
+            android:src="@drawable/subject_pulldown_icon" />
+    </RelativeLayout>
 
-</FrameLayout>
+    <com.snail.pulltorefresh.PullToRefreshExpandableListView
+        android:id="@+id/expandableListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="visible" />
+
+</LinearLayout>

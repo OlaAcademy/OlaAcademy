@@ -15,4 +15,9 @@
         <item>学习记录</item>
         <item>欧拉分享</item>
     </string-array>
+    <string-array name="question_select">
+        <item>数学高分指南</item>
+        <item>陈剑预测卷</item>
+        <item>真题名家详解</item>
+    </string-array>
 </resources>
