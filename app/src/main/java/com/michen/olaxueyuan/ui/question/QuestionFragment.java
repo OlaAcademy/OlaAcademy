@@ -4,6 +4,7 @@ package com.michen.olaxueyuan.ui.question;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -22,15 +23,18 @@ import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.eventbusmodule.MessageReadEvent;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.result.ExamModule;
 import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.QuestionAdapter;
+import com.michen.olaxueyuan.ui.adapter.QuestionListViewAdapter;
 import com.michen.olaxueyuan.ui.adapter.QuestionViewPagerAdapter;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshExpandableListView;
+import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
@@ -87,6 +91,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     TextView subjectName;
     @Bind(R.id.subject_layout)
     RelativeLayout subjectLayout;
+    @Bind(R.id.listview)
+    PullToRefreshListView listview;
     private ExpandableListView expandableListView;
     QuestionAdapter adapter;
     QuestionCourseModule module;
@@ -96,6 +102,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     private QuestionViewPagerAdapter viewPagerAdapter;
     private int selectType = 0;//三个条件0,1,2
     private String[] selectArray = {};//
+    private QuestionListViewAdapter questionListViewAdapter;
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -110,7 +117,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         ButterKnife.bind(this, rootView);
         EventBus.getDefault().register(this);
         initView();
-        fetchData();
+        fetchHomeCourseData();
         getUnReadMessageCount();
         return rootView;
     }
@@ -145,8 +152,14 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                 }
             }
         });
+        listview.setOnRefreshListener(this);
+        listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        listview.getRefreshableView().setDivider(null);
+        questionListViewAdapter = new QuestionListViewAdapter(getActivity());
+        listview.setAdapter(questionListViewAdapter);
+
         FragmentManager fragmentManager;
-        if (android.os.Build.VERSION.SDK_INT >= 17) {
+        if (Build.VERSION.SDK_INT >= 17) {
             fragmentManager = getChildFragmentManager();
         } else {
             fragmentManager = getFragmentManager();
@@ -188,7 +201,11 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
-        fetchData();
+        if (selectType==0) {
+            fetchHomeCourseData();
+        }else {
+            fetchExamListData();
+        }
         getUnReadMessageCount();
     }
 
@@ -201,41 +218,6 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         }
     }
 
-    private void fetchData() {
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
-        String userId = "";
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            userId = SEAuthManager.getInstance().getAccessUser().getId();
-        }
-        QuestionCourseManager.getInstance().fetchHomeCourseList(userId, pid, "1", new Callback<QuestionCourseModule>() {
-            @Override
-            public void success(QuestionCourseModule questionCourseModule, Response response) {
-                SVProgressHUD.dismiss(getActivity());
-                questionName.setText(questionCourseModule.getResult().getProfile());
-                expandableListViews.onRefreshComplete();
-//                Logger.json(questionCourseModule);
-                if (questionCourseModule.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), questionCourseModule.getMessage(), 2.0f);
-                } else {
-                    module = questionCourseModule;
-                    adapter.updateList(module);
-                    expandableListView.setFocusable(false);
-//                    for (int i = 0; i < module.getResult().getChild().size(); i++) {
-//                        expandableListView.expandGroup(i);
-//                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                if (getActivity() != null) {
-                    expandableListViews.onRefreshComplete();
-                    SVProgressHUD.dismiss(getActivity());
-                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
-                }
-            }
-        });
-    }
 
     @OnClick({R.id.right_response, R.id.red_dot, R.id.maths_layout, R.id.english_layout
             , R.id.logic_layout, R.id.writing_layout, R.id.subject_layout})
@@ -269,17 +251,20 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                         switch (v.getId()) {
                             case R.id.select_one:
                                 selectType = 0;
+                                fetchHomeCourseData();
                                 break;
                             case R.id.select_two:
                                 selectType = 1;
+                                fetchExamListData();
                                 break;
                             case R.id.select_three:
                                 selectType = 2;
+                                fetchExamListData();
                                 break;
                         }
                         subjectName.setText(selectArray[selectType]);
                     }
-                }, selectType,selectArray);
+                }, selectType, selectArray);
                 break;
         }
     }
@@ -313,12 +298,91 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         }
         subjectName.setText(selectArray[0]);
         this.pid = String.valueOf(position + 1);
-        fetchData();
+        selectType = 0;
+        fetchHomeCourseData();
     }
 
     @Override
     public void onRefresh(PullToRefreshBase refreshView) {
-        fetchData();
+        if (refreshView == listview) {
+            fetchExamListData();
+        }
+        if (refreshView == expandableListViews) {
+            fetchHomeCourseData();
+        }
+    }
+
+
+    private void fetchHomeCourseData() {
+        expandableListViews.setVisibility(View.VISIBLE);
+        listview.setVisibility(View.GONE);
+        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        QuestionCourseManager.getInstance().fetchHomeCourseList(userId, pid, "1", new Callback<QuestionCourseModule>() {
+            @Override
+            public void success(QuestionCourseModule questionCourseModule, Response response) {
+                SVProgressHUD.dismiss(getActivity());
+                questionName.setText(questionCourseModule.getResult().getProfile());
+                expandableListViews.onRefreshComplete();
+//                Logger.json(questionCourseModule);
+                if (questionCourseModule.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), questionCourseModule.getMessage(), 2.0f);
+                } else {
+                    module = questionCourseModule;
+                    adapter.updateList(module);
+                    expandableListView.setFocusable(false);
+                    /**
+                     * {@link QuestionHomeWorkFragment#onEventMainThread(QuestionCourseModule)}
+                     */
+                    EventBus.getDefault().post(questionCourseModule);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (getActivity() != null) {
+                    expandableListViews.onRefreshComplete();
+                    SVProgressHUD.dismiss(getActivity());
+                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+                }
+            }
+        });
+    }
+
+    private void fetchExamListData() {
+        expandableListViews.setVisibility(View.GONE);
+        listview.setVisibility(View.VISIBLE);
+        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        String userId = "";
+        SEAuthManager am = SEAuthManager.getInstance();
+        if (am.isAuthenticated()) {
+            userId = am.getAccessUser().getId();
+        }
+        QuestionCourseManager.getInstance().getExamList(userId, pid, String.valueOf(selectType), new Callback<ExamModule>() {
+            @Override
+            public void success(ExamModule examModule, Response response) {
+                SVProgressHUD.dismiss(getActivity());
+                listview.onRefreshComplete();
+//                Logger.json(examModule);
+                if (examModule.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), examModule.getMessage(), 2.0f);
+                } else {
+                    questionListViewAdapter.updateData(examModule.getResult(), Integer.parseInt(pid));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (getActivity() != null) {
+                    listview.onRefreshComplete();
+                    SVProgressHUD.dismiss(getActivity());
+                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+                }
+            }
+        });
     }
 
     private void getUnReadMessageCount() {
