@@ -172,8 +172,8 @@ public class CircleProgressBar extends ProgressBar {
         mProgressTextPaint2.setColor(mProgressTextColor);
         mProgressTextPaint2.getTextBounds(progressText2, 0, progressText2.length(), mProgressTextRect);
 
-        canvas.drawText(progressText, mCenterX, mCenterY + mProgressTextRect.height() / 2 + 20, mProgressTextPaint2);
-        canvas.drawText(progressText, mCenterX, mCenterY + mProgressTextRect.height() / 2, mProgressTextPaint);
+        canvas.drawText(progressText2, mCenterX, mCenterY + mProgressTextRect.height() / 2 - 13, mProgressTextPaint2);
+        canvas.drawText(progressText, mCenterX, mCenterY + mProgressTextRect.height() / 2 + 13, mProgressTextPaint);
     }
 
     private void drawProgress(Canvas canvas) {
