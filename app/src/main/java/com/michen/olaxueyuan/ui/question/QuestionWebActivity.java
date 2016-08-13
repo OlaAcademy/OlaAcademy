@@ -96,7 +96,7 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
             userId = am.getAccessUser().getId();
         }
 
-        contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/ola/jsp/question.jsp?objectId="+objectId+"&type=" + type + "&userId="+userId);
+        contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/question.html?objectId="+objectId+"&type=" + type + "&userId="+userId);
         contentWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {

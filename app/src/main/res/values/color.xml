@@ -365,6 +365,7 @@
     <color name="year_vip_text_color">#FF2323</color>
     <color name="system_course_money_color">#FD7828</color>
     <color name="answer_num_color">#FA7667</color>
+    <color name="study_group_color">#A1BBD3</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>

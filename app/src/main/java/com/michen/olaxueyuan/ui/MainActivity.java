@@ -14,7 +14,6 @@ import com.umeng.common.message.UmengMessageDeviceConfig;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
-import com.umeng.message.UmengRegistrar;
 
 import cn.sharesdk.framework.ShareSDK;
 
@@ -46,8 +45,8 @@ public class MainActivity extends BaseSearchActivity {
                 });
             }
         });
-        String device_token = UmengRegistrar.getRegistrationId(this);
-        Logger.e("device_token==" + device_token);
+//        String device_token = UmengRegistrar.getRegistrationId(this);
+//        Logger.e("device_token==" + device_token);
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
