@@ -7,77 +7,32 @@
 
     <View
         style="@style/line_horizontal"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp" />
+        android:layout_marginLeft="20dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="77dp"
-        android:paddingLeft="15dp"
         android:paddingRight="15dp">
-
-        <View
-            android:id="@+id/line_top"
-            android:layout_width="1dp"
-            android:layout_height="15dp"
-            android:layout_marginLeft="8.5dp"
-            android:background="@color/line_color" />
-
-        <ImageView
-            android:id="@+id/question_add_icon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_below="@+id/line_top"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:src="@drawable/blue_square" />
-
-        <View
-            android:id="@+id/line_bottom"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/question_add_icon"
-            android:layout_marginLeft="8.5dp"
-            android:background="@color/line_color" />
 
         <TextView
             android:id="@+id/question_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/question_add_icon"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginStart="15dp"
-            android:layout_toEndOf="@+id/question_add_icon"
-            android:layout_toRightOf="@+id/question_add_icon"
+            android:layout_marginTop="15dp"
             android:text="代数"
             android:textColor="@color/black_one"
             android:textSize="15dp" />
-
-        <TextView
-            android:id="@+id/question_knowledge_all_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/question_name"
-            android:layout_alignStart="@+id/question_name"
-            android:layout_below="@+id/question_add_icon"
-            android:layout_marginTop="7dp"
-            android:background="@drawable/blue_text_bg"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="29个知识点"
-            android:textColor="@color/white"
-            android:textSize="12dp" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="60dp"
             android:layout_height="6dp"
-            android:layout_alignTop="@+id/question_knowledge_all_count"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/question_knowledge_all_count"
+            android:layout_below="@+id/question_name"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
             android:indeterminate="false"
             android:progressDrawable="@drawable/progressbg" />
 
@@ -85,7 +40,8 @@
             android:id="@+id/question_knowledge_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/question_knowledge_all_count"
+            android:layout_below="@+id/question_name"
+            android:layout_marginTop="8dp"
             android:layout_marginLeft="10dp"
             android:layout_toEndOf="@+id/progressBar"
             android:layout_toRightOf="@+id/progressBar"
@@ -94,12 +50,12 @@
             android:textSize="12dp" />
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="22dp"
+            android:id="@+id/questionIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/wrong_topic_icon" />
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
 

@@ -1,17 +1,21 @@
 package com.michen.olaxueyuan.ui.question;
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.CircleProgressBar;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,6 +41,8 @@ public class QuestionHomeWorkFragment extends SuperFragment {
     TextView groupNameText;
     @Bind(R.id.circle_progress)
     CircleProgressBar circleProgress;
+    @Bind(R.id.homeworkRL)
+    RelativeLayout homeworkRL;
 
     @Nullable
     @Override
@@ -59,12 +65,32 @@ public class QuestionHomeWorkFragment extends SuperFragment {
      *
      * @param questionCourseModule
      */
-    public void onEventMainThread(QuestionCourseModule questionCourseModule) {
-        title.setText(questionCourseModule.getResult().getHomework().getName());
-        timeText.setText(questionCourseModule.getResult().getHomework().getTime());
-        courseNumText.setText(questionCourseModule.getResult().getHomework().getCount() + "道小题");
-        groupNameText.setText(questionCourseModule.getResult().getHomework().getGroupName());
-        simulateProgress(questionCourseModule.getResult().getHomework().getFinishedCount() * 100 / questionCourseModule.getResult().getHomework().getCount());
+    public void onEventMainThread(final QuestionCourseModule questionCourseModule) {
+        if (questionCourseModule.getResult().getHomework()!=null){
+            title.setText(questionCourseModule.getResult().getHomework().getName());
+            timeText.setText(questionCourseModule.getResult().getHomework().getTime());
+            courseNumText.setText(questionCourseModule.getResult().getHomework().getCount() + "道小题");
+            groupNameText.setText(questionCourseModule.getResult().getHomework().getGroupName());
+            simulateProgress(questionCourseModule.getResult().getHomework().getFinishedCount() * 100 / questionCourseModule.getResult().getHomework().getCount());
+        }else{
+            simulateProgress(0);
+            title.setText("欧拉练习");
+            groupNameText.setText("欧拉作业群");
+        }
+        homeworkRL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SEAuthManager.getInstance().isAuthenticated()){
+                    Intent intent = new Intent(getActivity(), QuestionWebActivity.class);
+                    intent.putExtra("objectId", questionCourseModule.getResult().getHomework().getId());
+                    intent.putExtra("type", 3);
+                    intent.putExtra("courseType", 1); //2 英语阅读
+                    startActivity(intent);
+                }else {
+                    startActivity(new Intent(getActivity(), UserLoginActivity.class));
+                }
+            }
+        });
     }
 
     private void simulateProgress(int progress) {

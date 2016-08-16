@@ -16,6 +16,7 @@
 
     <com.snail.pulltorefresh.PullToRefreshListView
         android:id="@+id/infoListView"
+        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FAFAFA" />

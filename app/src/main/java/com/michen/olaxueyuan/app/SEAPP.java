@@ -26,7 +26,7 @@ public class SEAPP extends Application {
 
         final String API_BASE_URL = "http://api.olaxueyuan.com";
 //        final String API_BASE_URL = "http://123.59.129.137:8080";
-        SEConfig.getInstance().init(API_BASE_URL, "欧拉联考 v1.2", this);
+        SEConfig.getInstance().init(API_BASE_URL, "欧拉联考 v1.2.1", this);
 
         /**
          * 开源框架 Image-Loader

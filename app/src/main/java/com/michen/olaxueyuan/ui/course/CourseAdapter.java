@@ -1,8 +1,8 @@
 package com.michen.olaxueyuan.ui.course;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,11 +23,10 @@ import com.michen.olaxueyuan.common.SEAutoSlidingPagerView;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.model.MCSubCourse;
 import com.michen.olaxueyuan.protocol.result.MCBannerResult;
-import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
-import com.michen.olaxueyuan.ui.course.turtor.TurtorActivity;
 import com.michen.olaxueyuan.ui.index.ImagePagerAdapter;
 import com.snail.svprogresshud.SVProgressHUD;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import retrofit.Callback;
@@ -104,8 +102,6 @@ public class CourseAdapter extends BaseAdapter {
             if (convertView == null) {
                 convertView = View.inflate(context, R.layout.view_information_top, null);
                 topViewHolder = new TopViewHolder();
-                topViewHolder.turtorRL = (RelativeLayout) convertView.findViewById(R.id.turtorRL);
-                topViewHolder.commodityRL = (RelativeLayout) convertView.findViewById(R.id.commodityRL);
                 topViewHolder.autoSlidingPagerView = (SEAutoSlidingPagerView) convertView.findViewById(R.id.autoSlideImage);
                 int width = context.getResources().getDisplayMetrics().widthPixels;
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, width * 320 / 750);
@@ -135,25 +131,12 @@ public class CourseAdapter extends BaseAdapter {
 
                 }
             });
-            topViewHolder.turtorRL.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent turtorIntent = new Intent(context, TurtorActivity.class);
-                    context.startActivity(turtorIntent);
-                }
-            });
-            topViewHolder.commodityRL.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent commodityIntent = new Intent(context, CommodityActivity.class);
-                    context.startActivity(commodityIntent);
-                }
-            });
 
         } else {
             if (convertView == null) {
                 convertView = View.inflate(context, R.layout.item_course, null);
                 holder = new ViewHolder();
+                holder.tv_all = (TextView) convertView.findViewById(R.id.allTV);
                 holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
                 holder.horizontalListView = (HorizontalListView) convertView.findViewById(R.id.horizontalListView);
                 convertView.setTag(holder);
@@ -163,6 +146,14 @@ public class CourseAdapter extends BaseAdapter {
             final MCSubCourse course = courseList.get(position - 1);
 //            Logger.e("course=="+course.toString());
             holder.tv_title.setText(course.name);
+            holder.tv_all.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context,CourseListActivity.class);
+                    intent.putExtra("courseList", (Serializable)course.subCourseArrayList);
+                    context.startActivity(intent);
+                }
+            });
             HorizontalListViewAdapter adapter = new HorizontalListViewAdapter(course.subCourseArrayList);
             holder.horizontalListView.setAdapter(adapter);
             holder.horizontalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -180,13 +171,12 @@ public class CourseAdapter extends BaseAdapter {
 
     class ViewHolder {
         private TextView tv_title;
+        private TextView tv_all;
         private HorizontalListView horizontalListView;
     }
 
     class TopViewHolder {
         SEAutoSlidingPagerView autoSlidingPagerView;
-        private RelativeLayout turtorRL;
-        private RelativeLayout commodityRL;
     }
 
     class GridViewHolder {
@@ -230,8 +220,16 @@ public class CourseAdapter extends BaseAdapter {
                 convertView = View.inflate(context, R.layout.item_gridview_course, null);
                 viewHolder = new GridViewHolder();
                 viewHolder.iv_course = (ImageView) convertView.findViewById(R.id.iv_course);
+                RelativeLayout.LayoutParams linearParams =(RelativeLayout.LayoutParams) viewHolder.iv_course.getLayoutParams();
+                Resources resources = context.getResources();
+                DisplayMetrics dm = resources.getDisplayMetrics();
+                linearParams.width = dm.widthPixels/2-45;
+                if (position%2==0)
+                    linearParams.setMargins(30, 0, 15, 0);
+                else
+                    linearParams.setMargins(15, 0, 30, 0);
+                viewHolder.iv_course.setLayoutParams(linearParams);
                 viewHolder.iv_course.setScaleType(ImageView.ScaleType.FIT_XY); // 设置缩放方式
-                viewHolder.iv_course.setPadding(10, 0, 20, 0); // 设置ImageView的内边距
                 viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
                 viewHolder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
                 viewHolder.tv_browser = (TextView) convertView.findViewById(R.id.tv_browser);
@@ -268,7 +266,7 @@ public class CourseAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return subCourseList.size();
+            return subCourseList.size()<=2?subCourseList.size():2;
         }
     }
 }

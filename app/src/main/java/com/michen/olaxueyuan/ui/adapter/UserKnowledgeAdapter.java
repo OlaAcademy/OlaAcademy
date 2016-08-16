@@ -128,7 +128,7 @@ public class UserKnowledgeAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, QuestionWebActivity.class);
-                intent.putExtra("type",3);
+                intent.putExtra("type",4);
                 intent.putExtra("objectId",childEntity.getId());
                 context.startActivity(intent);
             }

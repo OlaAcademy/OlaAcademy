@@ -81,6 +81,8 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
             setTitleText("模拟考试");
             MobclickAgent.onEvent(this, "enter_exam");
         }else if(type == 3){
+            setTitleText("欧拉作业");
+        }else if(type == 4){
             setTitleText("错题集");
         }
         objectId = getIntent().getExtras().getInt("objectId");
@@ -100,7 +102,7 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         contentWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                if (type==3){ //错题集直接显示答案
+                if (type==4){ //错题集直接显示答案
                     contentWebView.loadUrl("javascript:loadQuestion('1')");
                 }else {
                     contentWebView.loadUrl("javascript:loadQuestion('0')");
@@ -171,6 +173,7 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
                     }
                     break;
                 case 5:
+                    nextBtn.setEnabled(false);
                     Intent intent = new Intent(QuestionWebActivity.this, QuestionResultActivity.class);
                     intent.putExtra("answerArray", msg.obj.toString());
                     intent.putExtra("objectId", objectId);
@@ -255,6 +258,9 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        if (nextBtn!=null){
+            nextBtn.setEnabled(true);
+        }
     }
     public void onPause() {
         super.onPause();

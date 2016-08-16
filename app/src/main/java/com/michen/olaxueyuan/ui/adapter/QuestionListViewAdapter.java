@@ -68,9 +68,7 @@ public class QuestionListViewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.questionName.setText(mDatas.get(position).getName());
-        holder.questionKnowledgeAllCount.setText("预测" + mDatas.get(position).getTarget() + "分");
-        //Todo 需要知道总的题数是多少现在用覆盖考点代替
-        holder.questionKnowledgeCount.setText(mDatas.get(position).getProgress() + "/" + mDatas.get(position).getCoverpoint());
+        holder.questionKnowledgeCount.setText("难度"+ mDatas.get(position).getDegree());
         try {
             int subAllNum = mDatas.get(position).getCoverpoint();
             int subNum = mDatas.get(position).getProgress();
@@ -83,13 +81,13 @@ public class QuestionListViewAdapter extends BaseAdapter {
                     holder.progressBar.setProgress((subNum * 100) / subAllNum);
                 }
             }
-            if (position == mDatas.size() - 1) {
-                holder.lineBottom.setVisibility(View.GONE);
-            } else {
-                holder.lineBottom.setVisibility(View.VISIBLE);
-            }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (mDatas.get(position).getIsfree() == 0) {
+            holder.questionIV.setBackgroundResource(R.drawable.ic_question_normal);
+        }else {
+            holder.questionIV.setBackgroundResource(R.drawable.ic_question_blue);
         }
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,18 +128,14 @@ public class QuestionListViewAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        @Bind(R.id.question_add_icon)
-        ImageView questionAddIcon;
         @Bind(R.id.question_name)
         TextView questionName;
-        @Bind(R.id.question_knowledge_all_count)
-        TextView questionKnowledgeAllCount;
         @Bind(R.id.progressBar)
         ProgressBar progressBar;
         @Bind(R.id.question_knowledge_count)
         TextView questionKnowledgeCount;
-        @Bind(R.id.line_bottom)
-        View lineBottom;
+        @Bind(R.id.questionIV)
+        ImageView questionIV;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

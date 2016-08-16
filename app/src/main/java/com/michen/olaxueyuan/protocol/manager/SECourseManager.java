@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.protocol.manager;
 
 import com.michen.olaxueyuan.protocol.model.SECourse;
+import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
 import com.michen.olaxueyuan.protocol.result.MCCollectionResult;
 import com.michen.olaxueyuan.protocol.result.MCVideoResult;
@@ -563,6 +564,32 @@ public class SECourseManager {
         getCourseService().getOrderStatus(userId, gid, new Callback<GoodsOrderStatusResult>() {
             @Override
             public void success(GoodsOrderStatusResult result, Response response) {
+                if (callback != null) {
+                    callback.success(result, response);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (callback != null) {
+                    callback.failure(error);
+                }
+            }
+        });
+    }
+
+    /**
+     * 提交答案
+     *
+     * @param userId   userId
+     * @param answer   answer
+     * @param type    type   1考点 2 模考真题 3 作业
+     * @param callback
+     */
+    public void submitAnswer(String userId, String answer,String type, final Callback<CommentSucessResult> callback) {
+        getCourseService().submitAnswer(userId, answer, type, new Callback<CommentSucessResult>() {
+            @Override
+            public void success(CommentSucessResult result, Response response) {
                 if (callback != null) {
                     callback.success(result, response);
                 }

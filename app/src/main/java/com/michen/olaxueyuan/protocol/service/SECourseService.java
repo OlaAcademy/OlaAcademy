@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.protocol.service;
 
+import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
 import com.michen.olaxueyuan.protocol.result.MCCollectionResult;
 import com.michen.olaxueyuan.protocol.result.MCVideoResult;
@@ -195,6 +196,21 @@ public interface SECourseService {
     @GET("/ola/cour/getKeywordList")
     public void fetchKeywordList(Callback<MCKeywordResult> cb);
 
+    /**
+     * 提交答案
+     *
+     * @param userId   userId
+     * @param answer   answer
+     * @param type    type   1考点 2 模考真题 3 作业
+     */
+    @FormUrlEncoded
+    @POST("/ola/cour/checkAnswer")
+    public void submitAnswer(
+            @Field("userId") String userId,
+            @Field("answer") String answer,
+            @Field("type") String type,
+            Callback<CommentSucessResult> cb);
+
 
     /**
      * 视频检索
@@ -305,4 +321,5 @@ public interface SECourseService {
             @Field("userId") String userId,
             @Field("gid") String gid,
             Callback<GoodsOrderStatusResult> cb);
+
 }
