@@ -30,6 +30,14 @@
         </attr>
     </declare-styleable>
 
+    <!-- 横向listview -->
+    <declare-styleable name="HorizontalListView">
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="android:divider" />
+        <attr name="android:requiresFadingEdge" />
+        <attr name="android:fadingEdgeLength" />
+    </declare-styleable>
+
     <declare-styleable name="CircleProgressBar">
         <attr name="line_count" format="integer"/>
         <attr name="draw_progress_text" format="boolean"/>

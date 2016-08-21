@@ -139,7 +139,7 @@ public class ExamFragment extends SuperFragment implements TitleExamPopManager.E
     };
 
     private void initAdapter() {
-        if (module != null && module.getResult() != null && module.getResult().size() > 0) {
+        if (courseId!=null&& module != null && module.getResult() != null && module.getResult().size() > 0) {
             mAdapter = new HorizontalScrollViewAdapter(getActivity(), Integer.parseInt(courseId),module.getResult());
             //添加滚动回调
             mHorizontalScrollView

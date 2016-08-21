@@ -206,20 +206,25 @@ public class UserFragment extends SuperFragment {
             name.setText("登录／注册");
             remainDays.setText("还剩0天");
             avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
-        } else {
-            name.setText(userInfo.getName());
-            remainDays.setText("还剩" + userInfo.getVipTime() + "天");
-            String avatarUrl = "";
-            if (userInfo.getAvator().indexOf("jpg") != -1) {
-                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator();
-            } else {
-                avatarUrl = SEAPP.PIC_BASE_URL + userInfo.getAvator();
+        }else{
+            name.setText(userInfo.getName()!=null?userInfo.getName():"小欧");
+            remainDays.setText("还剩"+ userInfo.getVipTime() + "天");
+            if (userInfo.getAvator()!=null){
+                String avatarUrl = "";
+                if (userInfo.getAvator().indexOf("jpg")!=-1){
+                    avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+userInfo.getAvator();
+                }else{
+                    avatarUrl = SEAPP.PIC_BASE_URL+userInfo.getAvator();
+                }
+                Picasso.with(getActivity())
+                        .load(avatarUrl)
+                        .placeholder(R.drawable.ic_default_avatar)
+                        .error(R.drawable.ic_default_avatar)
+                        .into(avatar);
+            }else{
+                avatar.setBackgroundResource(R.drawable.ic_default_avatar);
             }
-            Picasso.with(getActivity())
-                    .load(avatarUrl)
-                    .placeholder(R.drawable.ic_default_avatar)
-                    .error(R.drawable.ic_default_avatar)
-                    .into(avatar);
+
             try {
                 FileOutputStream fos = SEConfig.getInstance().getContext().openFileOutput(SEAuthManager.AUTH_CONFIG_FILENAME, Context.MODE_PRIVATE);
                 ObjectOutputStream oos = new ObjectOutputStream(fos);

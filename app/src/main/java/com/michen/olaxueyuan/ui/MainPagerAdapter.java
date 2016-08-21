@@ -7,6 +7,7 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.course.CourseFragment;
 import com.michen.olaxueyuan.ui.examination.ExamFragment;
+import com.michen.olaxueyuan.ui.home.HomeFragment;
 import com.michen.olaxueyuan.ui.me.UserFragment;
 import com.michen.olaxueyuan.ui.question.QuestionFragment;
 
@@ -14,16 +15,12 @@ import com.michen.olaxueyuan.ui.question.QuestionFragment;
  * Created by tianxiaopeng on 15-1-2.
  */
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
-//    private IndexFragment indexFragment;
-//    private InformationFragment consultFragment;
-//    private StoryFragment storyFragment;
-//    private SearchFragment searchFragment;
 
     private QuestionFragment questionFragment;
     private ExamFragment examFragment;
     private CourseFragment courseFragment;
     private CircleFragment circleFragment;
-    //    private UserBaseFragment userFragment;
+    private HomeFragment homeFragment;
     private UserFragment userFragment;
 
     public MainPagerAdapter(FragmentManager fm) {
@@ -32,16 +29,11 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     private void construct() {
-//        indexFragment = new IndexFragment();
-//        consultFragment = new InformationFragment();
-//        searchFragment = new SearchFragment();
-//        storyFragment = new StoryFragment();
-
         questionFragment = new QuestionFragment();
         examFragment = new ExamFragment();
         courseFragment = new CourseFragment();
+        homeFragment = new HomeFragment();
         circleFragment = new CircleFragment();
-//        userFragment = new UserBaseFragment();
         userFragment = new UserFragment();
     }
 
@@ -56,9 +48,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return questionFragment;
             case 1:
-                return examFragment;
-            case 2:
                 return courseFragment;
+            case 2:
+                return examFragment;
             case 3:
                 return circleFragment;
             case 4:

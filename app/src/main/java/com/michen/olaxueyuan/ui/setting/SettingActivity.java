@@ -53,7 +53,7 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
         setTitleText("设置");
 
         versionText = (TextView) findViewById(R.id.versionText);
-        versionText.setText("V 1.2");
+        versionText.setText("V 1.2.1");
 
         //获取SharedPreferences对象
         sp = getSharedPreferences("SP", MODE_PRIVATE);

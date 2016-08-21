@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,7 +14,9 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
+import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
+import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.QuestionResultAdapter;
 import com.michen.olaxueyuan.ui.adapter.QuestionResultListAdapter;
@@ -25,6 +28,7 @@ import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -87,9 +91,9 @@ public class QuestionResultActivity extends SEBaseActivity {
         if (type==1){
             startExam.setText("购买教材");
             outerURL = getIntent().getStringExtra("outerURL");
-        }else if(type==2){
+        }else if(type==2||type==3){
             startExam.setText("全部解析");
-        }else if(type==3){
+        }else if(type==4){
             startExam.setVisibility(View.INVISIBLE);
             finishAnswer.setVisibility(View.INVISIBLE);
         }
@@ -132,6 +136,9 @@ public class QuestionResultActivity extends SEBaseActivity {
             }
             gridAnswer.setSelector(new ColorDrawable(Color.TRANSPARENT));
             gridAnswer.setAdapter(resultAdapter);
+
+            //提交答案
+            submitAnswer();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -168,6 +175,44 @@ public class QuestionResultActivity extends SEBaseActivity {
                 }
                 break;
         }
+    }
+
+    private void submitAnswer(){
+        JSONArray answerArray = new JSONArray();
+        try {
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = new JSONObject();
+                JSONObject object = (JSONObject) array.get(i);
+                if (!TextUtils.isEmpty(object.optString("optionId"))){
+                    jsonObject.put("no",object.optString("questionId"));
+                    jsonObject.put("optId",object.optString("optionId"));
+                    answerArray.put(jsonObject);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        final SEAuthManager am = SEAuthManager.getInstance();
+        SECourseManager courseManager = SECourseManager.getInstance();
+        String userId = "";
+        if (am.isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        courseManager.submitAnswer(userId, answerArray.toString(), type+"", new Callback<CommentSucessResult>() {
+            @Override
+            public void success(CommentSucessResult result, Response response) {
+                // 刷新首页数据
+                if (am.isAuthenticated()){
+                    EventBus.getDefault().post(new UserLoginNoticeModule(true));
+                }
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 
     public void performRefresh() {
