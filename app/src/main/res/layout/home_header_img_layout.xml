@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.michen.olaxueyuan.common.AutoScrollViewPager
+        android:id="@+id/img_viewpager_home"
+        android:layout_width="match_parent"
+        android:layout_height="162dp" />
+
+    <LinearLayout
+        android:id="@+id/pointer_layout_home"
+        android:layout_width="match_parent"
+        android:layout_height="13dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:gravity="top|center_horizontal"
+        android:orientation="horizontal" />
+</FrameLayout>

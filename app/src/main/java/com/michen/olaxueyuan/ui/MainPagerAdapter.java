@@ -50,7 +50,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return courseFragment;
             case 2:
-                return examFragment;
+                return homeFragment;
             case 3:
                 return circleFragment;
             case 4:
