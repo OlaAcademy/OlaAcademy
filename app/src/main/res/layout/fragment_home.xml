@@ -96,6 +96,13 @@
                 android:divider="@null"
                 widget:dividerWidth="2dp" />
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginLeft="7.5dp"
+                android:layout_marginRight="7.5dp" />
+
             <View
                 style="@style/line_horizontal"
                 android:layout_height="5dp" />

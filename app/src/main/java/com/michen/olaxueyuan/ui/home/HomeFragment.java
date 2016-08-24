@@ -4,6 +4,8 @@ package com.michen.olaxueyuan.ui.home;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +23,13 @@ import com.michen.olaxueyuan.ui.common.HorizontalListView;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.michen.olaxueyuan.ui.course.turtor.TurtorActivity;
 import com.michen.olaxueyuan.ui.home.data.DirectBroadCastAdapter;
+import com.michen.olaxueyuan.ui.home.data.DirectBroadCastRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.HeaderImgeManager;
 import com.michen.olaxueyuan.ui.home.data.HomeQuestionAdapter;
 import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,9 +67,12 @@ public class HomeFragment extends SuperFragment {
     TextView showAllDirectBroadcast;
     @Bind(R.id.horizontalListView)
     HorizontalListView horizontalListView;
+    @Bind(R.id.recycler_view)
+    RecyclerView recyclerView;
 
     HomeQuestionAdapter homeQuestionAdapter;
     DirectBroadCastAdapter directBroadCastAdapter;
+    DirectBroadCastRecyclerAdapter directBroadCastRecyclerAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +86,7 @@ public class HomeFragment extends SuperFragment {
     private void initView() {
         homeQuestionAdapter = new HomeQuestionAdapter(getActivity());
         questionListListview.setAdapter(homeQuestionAdapter);
-        directBroadCastAdapter=new DirectBroadCastAdapter(getActivity());
+        directBroadCastAdapter = new DirectBroadCastAdapter(getActivity());
         horizontalListView.setAdapter(directBroadCastAdapter);
     }
 
@@ -108,7 +116,14 @@ public class HomeFragment extends SuperFragment {
     private void initData(HomeModule result) {
         new HeaderImgeManager(getActivity(), imgViewpagerHome, pointerLayoutHome, result.getResult().getBannerList());
         homeQuestionAdapter.updateData(result.getResult().getQuestionList());
-        directBroadCastAdapter.updateData(result.getResult().getGoodsList());
+        List<HomeModule.ResultBean.GoodsListBean> goodsList = result.getResult().getGoodsList();
+        goodsList.addAll(result.getResult().getGoodsList());
+        directBroadCastAdapter.updateData(goodsList);
+//        directBroadCastAdapter.updateData(result.getResult().getGoodsList());
+        directBroadCastRecyclerAdapter=new DirectBroadCastRecyclerAdapter(getActivity(),goodsList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(directBroadCastRecyclerAdapter);
+//        directBroadCastRecyclerAdapter=new DirectBroadCastRecyclerAdapter(getActivity(),result.getResult().getGoodsList());
     }
 
     @OnClick({R.id.put_question_layout, R.id.find_teacher_layout, R.id.find_data_layout, R.id.find_data_group

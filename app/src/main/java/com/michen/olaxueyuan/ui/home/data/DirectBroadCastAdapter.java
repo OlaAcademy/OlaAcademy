@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -23,7 +24,7 @@ import java.util.List;
  * Created by mingge on 2016/8/23.
  */
 public class DirectBroadCastAdapter extends BaseAdapter {
-    private List<HomeModule.ResultBean.GoodsListBean> subCourseList=new ArrayList<>();
+    private List<HomeModule.ResultBean.GoodsListBean> subCourseList = new ArrayList<>();
     private Context context;
 
     public DirectBroadCastAdapter(Context context) {
@@ -32,6 +33,7 @@ public class DirectBroadCastAdapter extends BaseAdapter {
 
     public void updateData(List<HomeModule.ResultBean.GoodsListBean> subCourseList) {
         this.subCourseList = subCourseList;
+        Logger.json(subCourseList);
         notifyDataSetChanged();
     }
 
@@ -51,7 +53,6 @@ public class DirectBroadCastAdapter extends BaseAdapter {
             else
                 linearParams.setMargins(15, 0, 30, 0);
             viewHolder.iv_course.setLayoutParams(linearParams);
-            viewHolder.iv_course.setScaleType(ImageView.ScaleType.FIT_XY); // 设置缩放方式
             viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
             viewHolder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             viewHolder.tv_browser = (TextView) convertView.findViewById(R.id.tv_browser);
@@ -85,16 +86,13 @@ public class DirectBroadCastAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        if (subCourseList != null) {
-            return subCourseList.get(position);
-        } else {
-            return null;
-        }
+        return subCourseList.get(position);
     }
 
     @Override
     public int getCount() {
-        return subCourseList.size() <= 2 ? subCourseList.size() : 2;
+        return subCourseList.size();
+//        return subCourseList.size() <= 2 ? subCourseList.size() : 2;
     }
 
     class GridViewHolder {

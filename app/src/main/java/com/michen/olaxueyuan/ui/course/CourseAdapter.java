@@ -266,7 +266,8 @@ public class CourseAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return subCourseList.size()<=2?subCourseList.size():2;
+//            return subCourseList.size()<=2?subCourseList.size():2;
+            return subCourseList.size();
         }
     }
 }

@@ -59,7 +59,7 @@ public class HomeQuestionAdapter extends BaseAdapter {
         holder.indexNum.setText("0" + position);
 //        holder.title.setText(list.get(position).getTitle());
         holder.title.setText(list.get(position).getContent());
-        holder.time.setText(String.valueOf(list.get(position).getTime().getTime()));
+        holder.time.setText(list.get(position).getTime());
         holder.listenNum.setText(mContext.getString(R.string.num_to_listen_in, list.get(position).getNumber()));
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
