@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_white_item_bg">
+
+    <ImageView
+        android:id="@+id/iv_course"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/iv_course"
+        android:layout_below="@+id/iv_course"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="#646464" />
+
+    <ImageView
+        android:id="@+id/iv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/iv_course"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/icon_time" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/iv_time"
+        android:text=""
+        android:textColor="#909090"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/iv_browse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/tv_time"
+        android:src="@drawable/icon_browse" />
+
+    <TextView
+        android:id="@+id/tv_browser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/iv_browse"
+        android:maxLength="10"
+        android:text=""
+        android:textColor="#909090"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_is_free"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/iv_course"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/tv_browser"
+        android:ellipsize="end"
+        android:gravity="right"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="#909090"
+        android:textSize="12sp" />
+
+</RelativeLayout>

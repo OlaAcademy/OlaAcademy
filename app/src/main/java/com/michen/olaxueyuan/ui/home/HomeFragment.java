@@ -19,17 +19,15 @@ import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
-import com.michen.olaxueyuan.ui.common.HorizontalListView;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.michen.olaxueyuan.ui.course.turtor.TurtorActivity;
-import com.michen.olaxueyuan.ui.home.data.DirectBroadCastAdapter;
+import com.michen.olaxueyuan.ui.home.data.CourseDatabaseRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.DirectBroadCastRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.HeaderImgeManager;
 import com.michen.olaxueyuan.ui.home.data.HomeQuestionAdapter;
+import com.michen.olaxueyuan.ui.home.data.QualityCourseRecyclerAdapter;
 import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,20 +57,25 @@ public class HomeFragment extends SuperFragment {
     TextView showAllQuestion;
     @Bind(R.id.questionList_listview)
     SubListView questionListListview;
-    @Bind(R.id.goods_listview)
-    SubListView goodsListview;
     @Bind(R.id.scroll)
     PullToRefreshScrollView scroll;
     @Bind(R.id.show_all_direct_broadcast)
     TextView showAllDirectBroadcast;
-    @Bind(R.id.horizontalListView)
-    HorizontalListView horizontalListView;
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
+    @Bind(R.id.show_all_quality_course)
+    TextView showAllQualityCourse;
+    @Bind(R.id.recycler_view_quality_course)
+    RecyclerView recyclerViewQualityCourse;
+    @Bind(R.id.show_all_course_database)
+    TextView showAllCourseDatabase;
+    @Bind(R.id.recycler_view_course_database)
+    RecyclerView recyclerViewCourseDatabase;
 
     HomeQuestionAdapter homeQuestionAdapter;
-    DirectBroadCastAdapter directBroadCastAdapter;
     DirectBroadCastRecyclerAdapter directBroadCastRecyclerAdapter;
+    QualityCourseRecyclerAdapter qualityCourseRecyclerAdapter;
+    CourseDatabaseRecyclerAdapter courseDatabaseRecyclerAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,10 +87,18 @@ public class HomeFragment extends SuperFragment {
     }
 
     private void initView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewQualityCourse.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewCourseDatabase.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
         homeQuestionAdapter = new HomeQuestionAdapter(getActivity());
         questionListListview.setAdapter(homeQuestionAdapter);
-        directBroadCastAdapter = new DirectBroadCastAdapter(getActivity());
-        horizontalListView.setAdapter(directBroadCastAdapter);
+        directBroadCastRecyclerAdapter = new DirectBroadCastRecyclerAdapter(getActivity());
+        recyclerView.setAdapter(directBroadCastRecyclerAdapter);
+        qualityCourseRecyclerAdapter = new QualityCourseRecyclerAdapter(getActivity());
+        recyclerViewQualityCourse.setAdapter(qualityCourseRecyclerAdapter);
+        courseDatabaseRecyclerAdapter = new CourseDatabaseRecyclerAdapter(getActivity());
+        recyclerViewCourseDatabase.setAdapter(courseDatabaseRecyclerAdapter);
     }
 
     private void fetchData() {
@@ -116,18 +127,14 @@ public class HomeFragment extends SuperFragment {
     private void initData(HomeModule result) {
         new HeaderImgeManager(getActivity(), imgViewpagerHome, pointerLayoutHome, result.getResult().getBannerList());
         homeQuestionAdapter.updateData(result.getResult().getQuestionList());
-        List<HomeModule.ResultBean.GoodsListBean> goodsList = result.getResult().getGoodsList();
-        goodsList.addAll(result.getResult().getGoodsList());
-        directBroadCastAdapter.updateData(goodsList);
-//        directBroadCastAdapter.updateData(result.getResult().getGoodsList());
-        directBroadCastRecyclerAdapter=new DirectBroadCastRecyclerAdapter(getActivity(),goodsList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(directBroadCastRecyclerAdapter);
-//        directBroadCastRecyclerAdapter=new DirectBroadCastRecyclerAdapter(getActivity(),result.getResult().getGoodsList());
+
+        directBroadCastRecyclerAdapter.updateData(result.getResult().getGoodsList());
+        qualityCourseRecyclerAdapter.updateData(result.getResult().getGoodsList());
+        courseDatabaseRecyclerAdapter.updateData(result.getResult().getCourseList());
     }
 
-    @OnClick({R.id.put_question_layout, R.id.find_teacher_layout, R.id.find_data_layout, R.id.find_data_group
-            , R.id.show_all_question, R.id.show_all_direct_broadcast})
+    @OnClick({R.id.put_question_layout, R.id.find_teacher_layout, R.id.find_data_layout, R.id.find_data_group, R.id.show_all_question
+            , R.id.show_all_direct_broadcast, R.id.show_all_quality_course, R.id.show_all_course_database})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.put_question_layout:
@@ -141,6 +148,10 @@ public class HomeFragment extends SuperFragment {
             case R.id.show_all_question:
                 break;
             case R.id.show_all_direct_broadcast:
+                break;
+            case R.id.show_all_quality_course:
+                break;
+            case R.id.show_all_course_database:
                 break;
         }
     }

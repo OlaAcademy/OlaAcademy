@@ -24,6 +24,16 @@ public class BaseRecyclerAdapter<T, K extends RecyclerView.ViewHolder> extends R
         layoutInflater = LayoutInflater.from(context);
     }
 
+    public BaseRecyclerAdapter(Context context) {
+        this.context = context;
+        layoutInflater = LayoutInflater.from(context);
+    }
+
+    public void updateData(List<T> list) {
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public K onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;

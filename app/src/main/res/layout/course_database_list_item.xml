@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/selector_white_item_bg"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_course"
+        android:scaleType="fitXY"
+        android:layout_width="150dp"
+        android:layout_height="70dp" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/iv_course"
+        android:layout_below="@+id/iv_course"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="#646464" />
+
+    <ImageView
+        android:id="@+id/iv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/iv_course"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/icon_time"/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_toRightOf="@+id/iv_time"
+        android:layout_margin="5dp"
+        android:textColor="#909090"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/iv_browse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tv_time"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/icon_browse"/>
+
+    <TextView
+        android:id="@+id/tv_browser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/iv_browse"
+        android:textColor="#909090"
+        android:textSize="12sp" />
+
+</RelativeLayout>

@@ -22,12 +22,12 @@ import butterknife.ButterKnife;
 /**
  * Created by mingge on 2016/8/24.
  */
-public class DirectBroadCastRecyclerAdapter extends BaseRecyclerAdapter<HomeModule.ResultBean.GoodsListBean, DirectBroadCastRecyclerAdapter.DirectBroadCastItemHolder> {
-    public DirectBroadCastRecyclerAdapter(Context context) {
+public class CourseDatabaseRecyclerAdapter extends BaseRecyclerAdapter<HomeModule.ResultBean.CourseListBean, CourseDatabaseRecyclerAdapter.CourseDatabaseItemHolder> {
+    public CourseDatabaseRecyclerAdapter(Context context) {
         super(context);
     }
 
-    public class DirectBroadCastItemHolder extends RecyclerView.ViewHolder {
+    public class CourseDatabaseItemHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_course)
         ImageView ivCourse;
         @Bind(R.id.tv_name)
@@ -41,21 +41,21 @@ public class DirectBroadCastRecyclerAdapter extends BaseRecyclerAdapter<HomeModu
         @Bind(R.id.tv_browser)
         TextView tvBrowser;
 
-        public DirectBroadCastItemHolder(View itemView) {
+        public CourseDatabaseItemHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
 
     @Override
-    public DirectBroadCastItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.direct_broadcast_list_item, parent, false);
-        DirectBroadCastItemHolder holder = new DirectBroadCastItemHolder(view);
+    public CourseDatabaseItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = layoutInflater.inflate(R.layout.course_database_list_item, parent, false);
+        CourseDatabaseItemHolder holder = new CourseDatabaseItemHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(DirectBroadCastItemHolder holder, int position) {
+    public void onBindViewHolder(CourseDatabaseItemHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.ivCourse.getLayoutParams();
         Resources resources = context.getResources();
@@ -67,12 +67,12 @@ public class DirectBroadCastRecyclerAdapter extends BaseRecyclerAdapter<HomeModu
             linearParams.setMargins(15, 0, 30, 0);
         holder.ivCourse.setLayoutParams(linearParams);
 
-        HomeModule.ResultBean.GoodsListBean course = list.get(position);
+        HomeModule.ResultBean.CourseListBean course = list.get(position);
         holder.tvName.setText(course.getName());
-        holder.tvTime.setText(String.valueOf(course.getTotaltime()));
-        holder.tvBrowser.setText(context.getString(R.string.num_watch, course.getVideonum()));
+        holder.tvTime.setText(course.getTotalTime());
+        holder.tvBrowser.setText(context.getString(R.string.num_watch, course.getPlaycount()));
         try {
-            Picasso.with(context).load(course.getImage()).config(Bitmap.Config.RGB_565)
+            Picasso.with(context).load(course.getBannerPic()).config(Bitmap.Config.RGB_565)
                     .placeholder(R.drawable.default_index).error(R.drawable.default_index).into(holder.ivCourse);
         } catch (Exception e) {
             e.printStackTrace();

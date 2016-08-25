@@ -5,23 +5,23 @@ def releaseTime() {
 }
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 22
     buildToolsVersion '22.0.1'
 
     defaultConfig {
         applicationId "com.michen.olaxueyuan"
         minSdkVersion 15
-        targetSdkVersion 20
-        versionCode 5
-        versionName "1.1"
+        targetSdkVersion 22
+        versionCode 8
+        versionName "1.2"
         // dex突破65535的限制
         multiDexEnabled true
         // 默认是umeng的渠道
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "OlaAcademy"]
 
-//        ndk {
-//            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
-//        }
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
     }
     lintOptions {
         checkReleaseBuilds false
@@ -154,4 +154,6 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile project(':BDUpdateSDK')
     compile project(':PushSDK')
+    compile 'com.android.support:recyclerview-v7:22.0.0'
+    compile 'com.android.support:design:22.2.1'
 }
