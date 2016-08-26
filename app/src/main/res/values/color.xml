@@ -366,6 +366,12 @@
     <color name="system_course_money_color">#FD7828</color>
     <color name="answer_num_color">#FA7667</color>
     <color name="study_group_color">#A1BBD3</color>
+    <color name="black_272b36">#272b36</color>
+    <color name="black_4f5564">#4f5564</color>
+    <color name="black_a8aaad">#a8aaad</color>
+    <color name="red_f44336">#f44336</color>
+    <color name="black_51545d">#51545d</color>
+    <color name="black_a4a6a9">#a4a6a9</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>

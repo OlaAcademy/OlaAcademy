@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by mingge on 16/5/27.
  */
-public class SystemCourseResult extends ServiceResult implements Serializable{
+public class SystemCourseResult extends ServiceResult implements Serializable {
     @Override
     public String toString() {
         return "SystemCourseResult{" +
@@ -67,7 +67,7 @@ public class SystemCourseResult extends ServiceResult implements Serializable{
         return result;
     }
 
-    public static class ResultEntity implements Serializable{
+    public static class ResultEntity implements Serializable {
         private int attentionnum;
         private String detail;
         private int id;
@@ -82,6 +82,24 @@ public class SystemCourseResult extends ServiceResult implements Serializable{
         private String type;
         private String url;
         private int videonum;
+        private CreateTimeBean createTime;
+        private int status;
+
+        public CreateTimeBean getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(CreateTimeBean createTime) {
+            this.createTime = createTime;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
 
         @Override
         public String toString() {
@@ -213,6 +231,105 @@ public class SystemCourseResult extends ServiceResult implements Serializable{
 
         public int getVideonum() {
             return videonum;
+        }
+
+        public static class CreateTimeBean implements Serializable {
+            private int date;
+            private int day;
+            private int hours;
+            private int minutes;
+            private int month;
+            private int seconds;
+            private long time;
+            private int timezoneOffset;
+            private int year;
+
+            @Override
+            public String toString() {
+                return "CreateTimeBean{" +
+                        "date=" + date +
+                        ", day=" + day +
+                        ", hours=" + hours +
+                        ", minutes=" + minutes +
+                        ", month=" + month +
+                        ", seconds=" + seconds +
+                        ", time=" + time +
+                        ", timezoneOffset=" + timezoneOffset +
+                        ", year=" + year +
+                        '}';
+            }
+
+            public int getDate() {
+                return date;
+            }
+
+            public void setDate(int date) {
+                this.date = date;
+            }
+
+            public int getDay() {
+                return day;
+            }
+
+            public void setDay(int day) {
+                this.day = day;
+            }
+
+            public int getHours() {
+                return hours;
+            }
+
+            public void setHours(int hours) {
+                this.hours = hours;
+            }
+
+            public int getMinutes() {
+                return minutes;
+            }
+
+            public void setMinutes(int minutes) {
+                this.minutes = minutes;
+            }
+
+            public int getMonth() {
+                return month;
+            }
+
+            public void setMonth(int month) {
+                this.month = month;
+            }
+
+            public int getSeconds() {
+                return seconds;
+            }
+
+            public void setSeconds(int seconds) {
+                this.seconds = seconds;
+            }
+
+            public long getTime() {
+                return time;
+            }
+
+            public void setTime(long time) {
+                this.time = time;
+            }
+
+            public int getTimezoneOffset() {
+                return timezoneOffset;
+            }
+
+            public void setTimezoneOffset(int timezoneOffset) {
+                this.timezoneOffset = timezoneOffset;
+            }
+
+            public int getYear() {
+                return year;
+            }
+
+            public void setYear(int year) {
+                this.year = year;
+            }
         }
     }
 }

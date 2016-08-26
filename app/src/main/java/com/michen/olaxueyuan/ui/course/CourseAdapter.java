@@ -15,15 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.michen.olaxueyuan.ui.common.HorizontalListView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SEAutoSlidingPagerView;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.model.MCSubCourse;
 import com.michen.olaxueyuan.protocol.result.MCBannerResult;
+import com.michen.olaxueyuan.ui.common.HorizontalListView;
 import com.michen.olaxueyuan.ui.index.ImagePagerAdapter;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.io.Serializable;
@@ -266,7 +266,8 @@ public class CourseAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return subCourseList.size()<=2?subCourseList.size():2;
+//            return subCourseList.size()<=2?subCourseList.size():2;
+            return subCourseList.size();
         }
     }
 }

@@ -17,6 +17,7 @@ import com.michen.olaxueyuan.ui.manager.TitlePopManager;
 import com.michen.olaxueyuan.ui.me.adapter.SystemCourseAdapter;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
+import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -66,10 +67,12 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
     }
 
     private void fectData() {
+        SVProgressHUD.showInView(CommodityActivity.this, getString(R.string.request_running), true);
         MCOrgManager.getInstance().getGoodsList(pid, new Callback<SystemCourseResult>() {
             @Override
             public void success(SystemCourseResult systemCourseResult, Response response) {
                 listview.onRefreshComplete();
+                SVProgressHUD.dismiss(CommodityActivity.this);
 //                Logger.json(systemCourseResult);
                 if (systemCourseResult.getApicode() != 10000) {
                     ToastUtil.showToastShort(CommodityActivity.this, systemCourseResult.getMessage());
@@ -82,6 +85,7 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
             @Override
             public void failure(RetrofitError error) {
                 if (!CommodityActivity.this.isFinishing()) {
+                    SVProgressHUD.dismiss(CommodityActivity.this);
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(CommodityActivity.this, R.string.data_request_fail);
                 }

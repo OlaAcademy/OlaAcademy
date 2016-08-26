@@ -35,7 +35,7 @@ public class CirclePopManager {
     }
 
     /**
-     * 讲骨堂条件筛选
+     * 欧拉圈条件筛选
      *
      * @param context
      * @param popLine

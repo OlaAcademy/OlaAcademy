@@ -36,7 +36,7 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
-import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
+import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
@@ -62,7 +62,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class PostDetailActivity extends SEBaseActivity implements PlatformActionListener, Handler.Callback{
+public class PostDetailActivity extends SEBaseActivity implements PlatformActionListener, Handler.Callback {
     @Bind(R.id.avatar)
     RoundRectImageView avatar;
     @Bind(R.id.title)
@@ -94,12 +94,13 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
 
     private SharePopupWindow shareView;
 
-    OLaCircleModule.ResultBean resultBean;
     PostCommentAdapter commentAdapter;
     private Context mContext;
     private LocationClient mLocationClient;
     private String location;
     private CommentModule.ResultBean commentResultBean;
+    private int circleId;
+    private PostDetailModule.ResultBean resultBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,16 +117,63 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
     }
 
     private void initView() {
-        resultBean = (OLaCircleModule.ResultBean) getIntent().getSerializableExtra("OLaCircleModule.ResultBean");
-        final int type = resultBean.getType();
+        circleId = getIntent().getIntExtra("circleId", 0);
+        queryCircleDetail(String.valueOf(circleId));
+        commentAdapter = new PostCommentAdapter(mContext);
+        listView.setAdapter(commentAdapter);
+    }
+
+    private void getCommentListData() {
+        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        QuestionCourseManager.getInstance().getCommentList(String.valueOf(circleId), "2", new Callback<CommentModule>() {
+            @Override
+            public void success(CommentModule commentModule, Response response) {
+                Logger.json(commentModule);
+                SVProgressHUD.dismiss(mContext);
+                if (commentModule.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(mContext, commentModule.getMessage(), 2.0f);
+                } else {
+                    commentAdapter.upDateData(commentModule.getResult());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                SVProgressHUD.dismiss(mContext);
+            }
+        });
+    }
+
+    private void queryCircleDetail(String circleId) {
+        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        QuestionCourseManager.getInstance().queryCircleDetail(circleId, new Callback<PostDetailModule>() {
+            @Override
+            public void success(PostDetailModule postDetailModule, Response response) {
+                SVProgressHUD.dismiss(mContext);
+                if (postDetailModule.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(mContext, postDetailModule.getMessage(), 2.0f);
+                } else {
+                    resultBean=postDetailModule.getResult();
+                    updateDetail(postDetailModule.getResult());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                SVProgressHUD.dismiss(mContext);
+            }
+        });
+    }
+
+    private void updateDetail(PostDetailModule.ResultBean resultBean) {
         avatar.setRectAdius(100);
         title.setText(resultBean.getUserName());
         if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
             String avatarUrl = "";
-            if (resultBean.getUserAvatar().indexOf("jpg")!=-1){
-                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+resultBean.getUserAvatar();
-            }else{
-                avatarUrl = SEAPP.PIC_BASE_URL+resultBean.getUserAvatar();
+            if (resultBean.getUserAvatar().indexOf("jpg") != -1) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + resultBean.getUserAvatar();
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + resultBean.getUserAvatar();
             }
             Picasso.with(mContext).load(avatarUrl).placeholder(R.drawable.ic_default_avatar)
                     .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(avatar);
@@ -159,30 +207,6 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
         } else {
             gridview.setVisibility(View.GONE);
         }
-
-        commentAdapter = new PostCommentAdapter(mContext);
-        listView.setAdapter(commentAdapter);
-    }
-
-    private void getCommentListData() {
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
-        QuestionCourseManager.getInstance().getCommentList(String.valueOf(resultBean.getCircleId()), "2", new Callback<CommentModule>() {
-            @Override
-            public void success(CommentModule commentModule, Response response) {
-                Logger.json(commentModule);
-                SVProgressHUD.dismiss(mContext);
-                if (commentModule.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(mContext, commentModule.getMessage(), 2.0f);
-                } else {
-                    commentAdapter.upDateData(commentModule.getResult());
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(mContext);
-            }
-        });
     }
 
     private ArrayList<String> getListFromString(String images) {
@@ -231,7 +255,7 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
 
     private void praise() {
         SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
-        MCCircleManager.getInstance().praiseCirclePost(String.valueOf(resultBean.getCircleId()), new Callback<PraiseCirclePostResult>() {
+        MCCircleManager.getInstance().praiseCirclePost(String.valueOf(circleId), new Callback<PraiseCirclePostResult>() {
             @Override
             public void success(PraiseCirclePostResult mcCommonResult, Response response) {
                 SVProgressHUD.dismiss(mContext);
@@ -251,19 +275,19 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
         });
     }
 
-    private void share(){
-        OLaCircleModule.ResultBean circle =  resultBean;
+    private void share() {
+        PostDetailModule.ResultBean circle = resultBean;
         shareView = new SharePopupWindow(this);
         shareView.setPlatformActionListener(this);
         ShareModel model = new ShareModel();
-        if (circle.getUserAvatar().indexOf("jpg")!=-1){
-            model.setImageUrl("http://api.olaxueyuan.com/upload/"+circle.getUserAvatar());
-        }else{
-            model.setImageUrl(SEAPP.PIC_BASE_URL+circle.getUserAvatar());
+        if (circle.getUserAvatar().indexOf("jpg") != -1) {
+            model.setImageUrl("http://api.olaxueyuan.com/upload/" + circle.getUserAvatar());
+        } else {
+            model.setImageUrl(SEAPP.PIC_BASE_URL + circle.getUserAvatar());
         }
         model.setText(circle.getContent());
         model.setTitle("欧拉学院");
-        model.setUrl(SEConfig.getInstance().getAPIBaseURL()+"/circlepost.html?circleId="+circle.getCircleId());
+        model.setUrl(SEConfig.getInstance().getAPIBaseURL() + "/circlepost.html?circleId=" + circle.getId());
         shareView.initShareParams(model);
         shareView.showShareWindow();
         // 显示窗口 (设置layout在PopupWindow中显示的位置)
@@ -284,11 +308,11 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
     private void addComment() {
         SEUser user = SEAuthManager.getInstance().getAccessUser();
         if (user != null) {
-            String postId = String.valueOf(resultBean.getCircleId());
+            String postId = String.valueOf(circleId);
             String toUserId;
             String content = etContent.getText().toString().trim();
             if (TextUtils.isEmpty(content)) {
-                ToastUtil.showToastShort(mContext,R.string.fill_comment_content);
+                ToastUtil.showToastShort(mContext, R.string.fill_comment_content);
                 return;
             }
             if (commentResultBean != null) {
@@ -300,19 +324,19 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
             SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
             QuestionCourseManager.getInstance().addComment(user.getId(), postId, toUserId
                     , content, location, "2", new Callback<CommentSucessResult>() {
-                @Override
-                public void success(CommentSucessResult commentSuccess, Response response) {
-                    SVProgressHUD.dismiss(mContext);
-                    etContent.setText("");
-                    etContent.clearComposingText();
-                    getCommentListData();
-                }
+                        @Override
+                        public void success(CommentSucessResult commentSuccess, Response response) {
+                            SVProgressHUD.dismiss(mContext);
+                            etContent.setText("");
+                            etContent.clearComposingText();
+                            getCommentListData();
+                        }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    SVProgressHUD.dismiss(mContext);
-                }
-            });
+                        @Override
+                        public void failure(RetrofitError error) {
+                            SVProgressHUD.dismiss(mContext);
+                        }
+                    });
             this.commentResultBean = null;
         } else {
             startActivity(new Intent(mContext, UserLoginActivity.class));
