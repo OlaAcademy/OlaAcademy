@@ -21,6 +21,7 @@ import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.michen.olaxueyuan.ui.course.turtor.TurtorActivity;
+import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.home.data.CourseDatabaseRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.DirectBroadCastRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.HeaderImgeManager;
@@ -32,6 +33,7 @@ import com.snail.svprogresshud.SVProgressHUD;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -146,14 +148,25 @@ public class HomeFragment extends SuperFragment {
             case R.id.find_data_group:
                 break;
             case R.id.show_all_question:
+                chageIndex(3);
                 break;
             case R.id.show_all_direct_broadcast:
                 break;
             case R.id.show_all_quality_course:
+                chageIndex(1);
                 break;
             case R.id.show_all_course_database:
+                chageIndex(1);
                 break;
         }
+    }
+
+    private void chageIndex(int position) {
+        /**
+         *{@link com.michen.olaxueyuan.ui.MainFragment#onEventMainThread(ChangeIndexEvent)}
+         * {@link com.michen.olaxueyuan.ui.circle.CircleFragment#onEventMainThread(ChangeIndexEvent)}
+         */
+        EventBus.getDefault().post(new ChangeIndexEvent(position, true));
     }
 
     private void showTurtorView() {

@@ -140,7 +140,8 @@ public class CircleAdapter extends BaseAdapter {
                         break;
                     case 2:
                         intent.setClass(mContext, PostDetailActivity.class);//
-                        intent.putExtra("OLaCircleModule.ResultBean", list.get(position));
+//                        intent.putExtra("OLaCircleModule.ResultBean", list.get(position));
+                        intent.putExtra("circleId", list.get(position).getCircleId());
                         break;
                 }
                 mContext.startActivity(intent);

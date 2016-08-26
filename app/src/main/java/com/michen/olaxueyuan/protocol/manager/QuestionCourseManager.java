@@ -9,6 +9,7 @@ import com.michen.olaxueyuan.protocol.result.MessageRecordResult;
 import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
+import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.service.QuestionService;
 
@@ -67,7 +68,7 @@ public class QuestionCourseManager {
 
     /**
      * 欧拉圈，获取视频观看历史记录列表(old)
-     * <p>
+     * <p/>
      * {@link #getCircleList(String, String, String, Callback)}
      *
      * @param callback
@@ -145,5 +146,15 @@ public class QuestionCourseManager {
      */
     public void getUnreadCount(String userId, Callback<MessageUnReadResult> callback) {
         getQuestionService().getUnreadCount(userId, callback);
+    }
+
+    /**
+     * 帖子详情
+     *
+     * @param circleId
+     * @param callback
+     */
+    public void queryCircleDetail(String circleId, Callback<PostDetailModule> callback) {
+        getQuestionService().queryCircleDetail(circleId, callback);
     }
 }

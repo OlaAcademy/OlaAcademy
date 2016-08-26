@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.home.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
+import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,10 @@ public class HomeQuestionAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(mContext, PostDetailActivity.class);//
+                intent.putExtra("circleId", list.get(position).getId());
+                mContext.startActivity(intent);
             }
         });
         return convertView;

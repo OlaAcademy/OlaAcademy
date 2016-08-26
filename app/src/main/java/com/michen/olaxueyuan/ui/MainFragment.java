@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SETabBar;
+import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +52,7 @@ public class MainFragment extends Fragment {
         register();
 
         View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
+        EventBus.getDefault().register(this);
 
         _viewPager = (ViewPager) fragmentView.findViewById(R.id.MainPager);
         _viewPager.setOffscreenPageLimit(999);
@@ -170,6 +174,7 @@ public class MainFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         unregister();
+        EventBus.getDefault().unregister(this);
     }
 
     private void handleOnDidSelectTab(int tabIndex) {
@@ -236,6 +241,15 @@ public class MainFragment extends Fragment {
             actionBar.show();
         } else {
             actionBar.hide();
+        }
+    }
+
+    /**
+     * {@link com.michen.olaxueyuan.ui.home.HomeFragment#chageIndex(int)}
+     */
+    public void onEventMainThread(ChangeIndexEvent changeIndexEvent) {
+        if (changeIndexEvent.isChange) {
+            _viewPager.setCurrentItem(changeIndexEvent.position, false);
         }
     }
 }
