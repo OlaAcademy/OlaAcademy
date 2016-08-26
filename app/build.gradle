@@ -12,8 +12,8 @@ android {
         applicationId "com.michen.olaxueyuan"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 5
-        versionName "1.1"
+        versionCode 8
+        versionName "1.2"
         // dex突破65535的限制
         multiDexEnabled true
         // 默认是umeng的渠道
