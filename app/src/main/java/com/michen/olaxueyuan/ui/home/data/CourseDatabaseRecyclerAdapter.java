@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.home.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.BaseRecyclerAdapter;
+import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -67,7 +69,7 @@ public class CourseDatabaseRecyclerAdapter extends BaseRecyclerAdapter<HomeModul
             linearParams.setMargins(15, 0, 30, 0);
         holder.ivCourse.setLayoutParams(linearParams);
 
-        HomeModule.ResultBean.CourseListBean course = list.get(position);
+        final HomeModule.ResultBean.CourseListBean course = list.get(position);
         holder.tvName.setText(course.getName());
         holder.tvTime.setText(course.getTotalTime());
         holder.tvBrowser.setText(context.getString(R.string.num_watch, course.getPlaycount()));
@@ -80,7 +82,9 @@ public class CourseDatabaseRecyclerAdapter extends BaseRecyclerAdapter<HomeModul
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(context, CourseVideoActivity.class);
+                intent.putExtra("pid", String.valueOf(course.getId()));
+                context.startActivity(intent);
             }
         });
     }

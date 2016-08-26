@@ -27,6 +27,7 @@ import com.michen.olaxueyuan.ui.home.data.DirectBroadCastRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.HeaderImgeManager;
 import com.michen.olaxueyuan.ui.home.data.HomeQuestionAdapter;
 import com.michen.olaxueyuan.ui.home.data.QualityCourseRecyclerAdapter;
+import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
 
@@ -41,7 +42,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends SuperFragment {
+public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener {
     View view;
     @Bind(R.id.img_viewpager_home)
     AutoScrollViewPager imgViewpagerHome;
@@ -89,6 +90,8 @@ public class HomeFragment extends SuperFragment {
     }
 
     private void initView() {
+        scroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        scroll.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewQualityCourse.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewCourseDatabase.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -109,6 +112,7 @@ public class HomeFragment extends SuperFragment {
             public void success(HomeModule result, Response response) {
 //                Logger.json(result);
                 if (getActivity() != null) {
+                    scroll.onRefreshComplete();
                     if (result.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.getMessage(), 2.0f);
                     } else {
@@ -120,6 +124,7 @@ public class HomeFragment extends SuperFragment {
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null) {
+                    scroll.onRefreshComplete();
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
             }
@@ -153,7 +158,8 @@ public class HomeFragment extends SuperFragment {
             case R.id.show_all_direct_broadcast:
                 break;
             case R.id.show_all_quality_course:
-                chageIndex(1);
+                Intent commodityIntent = new Intent(getActivity(), CommodityActivity.class);
+                getActivity().startActivity(commodityIntent);
                 break;
             case R.id.show_all_course_database:
                 chageIndex(1);
@@ -195,5 +201,10 @@ public class HomeFragment extends SuperFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+        fetchData();
     }
 }

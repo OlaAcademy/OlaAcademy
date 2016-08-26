@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.home.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.protocol.result.HomeModule;
+import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
 import com.michen.olaxueyuan.ui.BaseRecyclerAdapter;
+import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -22,7 +24,7 @@ import butterknife.ButterKnife;
 /**
  * Created by mingge on 2016/8/24.
  */
-public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<HomeModule.ResultBean.GoodsListBean, QualityCourseRecyclerAdapter.QualityCourseItemHolder> {
+public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCourseResult.ResultEntity, QualityCourseRecyclerAdapter.QualityCourseItemHolder> {
     public QualityCourseRecyclerAdapter(Context context) {
         super(context);
     }
@@ -57,7 +59,7 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<HomeModule
     }
 
     @Override
-    public void onBindViewHolder(QualityCourseItemHolder holder, int position) {
+    public void onBindViewHolder(QualityCourseItemHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
         RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.ivCourse.getLayoutParams();
         Resources resources = context.getResources();
@@ -69,7 +71,7 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<HomeModule
             linearParams.setMargins(15, 0, 30, 0);
         holder.ivCourse.setLayoutParams(linearParams);
 
-        HomeModule.ResultBean.GoodsListBean course = list.get(position);
+        final SystemCourseResult.ResultEntity course = list.get(position);
         if (course.getPrice() > 0) {
             holder.tvIsFree.setText("￥" + course.getPrice());
             holder.tvIsFree.setTextColor(context.getResources().getColor(R.color.red_f44336));
@@ -89,7 +91,10 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<HomeModule
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(context, SystemVideoActivity.class);
+                intent.putExtra("pid", String.valueOf(list.get(position).getId()));
+                intent.putExtra("ResultEntity",list.get(position));
+                context.startActivity(intent);
             }
         });
     }

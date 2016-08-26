@@ -79,7 +79,7 @@ public class HomeModule implements Serializable {
          * videonum : 27
          */
 
-        private List<GoodsListBean> goodsList;
+        private List<SystemCourseResult.ResultEntity> goodsList;
         /**
          * address : http://math.ufile.ucloud.com.cn/guide1.jpg
          * bannerPic : http://banner.ufile.ucloud.com.cn/banner4.jpg
@@ -112,11 +112,11 @@ public class HomeModule implements Serializable {
             this.questionList = questionList;
         }
 
-        public List<GoodsListBean> getGoodsList() {
+        public List<SystemCourseResult.ResultEntity> getGoodsList() {
             return goodsList;
         }
 
-        public void setGoodsList(List<GoodsListBean> goodsList) {
+        public void setGoodsList(List<SystemCourseResult.ResultEntity> goodsList) {
             this.goodsList = goodsList;
         }
 

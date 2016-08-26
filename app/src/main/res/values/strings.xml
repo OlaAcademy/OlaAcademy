@@ -52,7 +52,7 @@
     <string name="alipay_not_install">您手机未安装支付宝</string>
     <string name="pay_num">购买人数%s人</string>
     <string name="course">课程</string>
-    <string name="num_watch">%s人观看</string>
+    <string name="num_watch">%s观看</string>
     <string name="num_knowledge">%s个知识点</string>
     <string name="rmb_mark">¥</string>
     <string name="math">数学</string>
