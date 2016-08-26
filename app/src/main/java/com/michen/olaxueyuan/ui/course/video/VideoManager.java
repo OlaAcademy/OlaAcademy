@@ -43,6 +43,9 @@ public class VideoManager {
     }
 
     public void setPortrait() {
+        if (activity.isFinishing()){
+            return;
+        }
         activity.bottomView.setVisibility(View.VISIBLE);
         activity.titleLayout.setVisibility(View.VISIBLE);
         activity.listLayout.setVisibility(View.GONE);
@@ -58,6 +61,9 @@ public class VideoManager {
     }
 
     public void setLandScape() {
+        if (activity.isFinishing()){
+            return;
+        }
         activity.bottomView.setVisibility(View.GONE);
         activity.titleLayout.setVisibility(View.GONE);
         activity.listLayout.setVisibility(View.GONE);
@@ -72,6 +78,9 @@ public class VideoManager {
     }
 
     public boolean setOnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        if (activity.isFinishing()){
+            return false;
+        }
         float mOldX = e1.getX(), mOldY = e1.getY();
         int y = (int) e2.getRawY();
         int x = (int) e1.getRawX();
@@ -138,6 +147,9 @@ public class VideoManager {
      * @param percent
      */
     private void onVolumeSlide(float percent) {
+        if (activity.isFinishing()){
+            return;
+        }
         if (activity.mVolume == -1) {
             activity.mVolume = activity.mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
             if (activity.mVolume < 0)
@@ -167,6 +179,9 @@ public class VideoManager {
      * @param percent
      */
     private void onBrightnessSlide(float percent) {
+        if (activity.isFinishing()){
+            return;
+        }
         if (activity.mBrightness < 0) {
             activity.mBrightness = activity.getWindow().getAttributes().screenBrightness;
             if (activity.mBrightness <= 0.00f)
