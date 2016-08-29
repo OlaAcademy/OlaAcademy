@@ -74,7 +74,7 @@ public class CourseDatabaseRecyclerAdapter extends BaseRecyclerAdapter<HomeModul
         holder.tvTime.setText(course.getTotalTime());
         holder.tvBrowser.setText(context.getString(R.string.num_watch, course.getPlaycount()));
         try {
-            Picasso.with(context).load(course.getBannerPic()).config(Bitmap.Config.RGB_565)
+            Picasso.with(context).load(course.getAddress()).config(Bitmap.Config.RGB_565)
                     .placeholder(R.drawable.default_index).error(R.drawable.default_index).into(holder.ivCourse);
         } catch (Exception e) {
             e.printStackTrace();

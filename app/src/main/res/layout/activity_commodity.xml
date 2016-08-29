@@ -12,7 +12,7 @@
 
     <View
         android:id="@+id/pop_line"
-        style="@style/line_horizontal_blue" />
+        style="@style/line_horizontal" />
 
     <ImageView
         android:layout_width="match_parent"

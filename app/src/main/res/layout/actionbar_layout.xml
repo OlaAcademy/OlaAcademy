@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:background="@color/blue_light"
+    android:background="@color/white_light"
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:textSize="16sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black_51545d"
         android:padding="5dp"
         android:background="@null" />
 
@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColor="@color/white"
+        android:textColor="@color/black_51545d"
         android:textSize="20sp"
         android:text="标题" />
 
@@ -51,7 +51,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:textSize="16sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black_51545d"
         android:padding="5dp"
         android:background="@null" />
 

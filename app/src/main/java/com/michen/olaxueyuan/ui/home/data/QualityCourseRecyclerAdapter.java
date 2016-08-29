@@ -83,7 +83,7 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
         holder.tvTime.setText(course.getTotaltime() + "分钟");
         holder.tvBrowser.setText(context.getString(R.string.num_watch, course.getVideonum()));
         try {
-            Picasso.with(context).load(course.getImage()).config(Bitmap.Config.RGB_565)
+            Picasso.with(context).load(course.getUrl()).config(Bitmap.Config.RGB_565)
                     .placeholder(R.drawable.default_index).error(R.drawable.default_index).into(holder.ivCourse);
         } catch (Exception e) {
             e.printStackTrace();

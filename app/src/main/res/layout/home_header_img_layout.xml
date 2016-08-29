@@ -6,7 +6,7 @@
     <com.michen.olaxueyuan.common.AutoScrollViewPager
         android:id="@+id/img_viewpager_home"
         android:layout_width="match_parent"
-        android:layout_height="162dp" />
+        android:layout_height="200dp" />
 
     <LinearLayout
         android:id="@+id/pointer_layout_home"

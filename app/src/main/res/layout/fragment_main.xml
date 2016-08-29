@@ -13,12 +13,14 @@
             android:id="@+id/MainPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"/>
+            android:layout_weight="1.0" />
 
         <com.michen.olaxueyuan.common.SETabBar
             android:id="@+id/TabBar"
             android:layout_width="match_parent"
-            android:layout_height="54dp"/>
+            android:layout_height="54dp"
+            android:alpha="0.95"
+            android:background="@color/bottom_bar_bg" />
     </LinearLayout>
 
 </FrameLayout>
