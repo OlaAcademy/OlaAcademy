@@ -58,7 +58,7 @@ public class HomeQuestionAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.indexNum.setText("0" + position);
+        holder.indexNum.setText("0" + (position+1));
 //        holder.title.setText(list.get(position).getTitle());
         holder.title.setText(list.get(position).getContent());
         holder.time.setText(list.get(position).getTime());

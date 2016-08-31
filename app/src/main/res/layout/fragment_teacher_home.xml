@@ -3,8 +3,8 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!--<ScrollView-->
-    <com.snail.pulltorefresh.PullToRefreshScrollView
+    <!--<com.snail.pulltorefresh.PullToRefreshScrollView-->
+    <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -203,7 +203,7 @@
                 android:layout_marginBottom="5dp" />
 
         </LinearLayout>
-        </com.snail.pulltorefresh.PullToRefreshScrollView>
-    <!--</ScrollView>-->
+        <!--</com.snail.pulltorefresh.PullToRefreshScrollView>-->
+    </ScrollView>
 
 </LinearLayout>

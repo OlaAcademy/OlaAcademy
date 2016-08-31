@@ -63,6 +63,7 @@ public class CourseDatabaseRecyclerAdapter extends BaseRecyclerAdapter<HomeModul
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
         linearParams.width = dm.widthPixels / 2 - 45;
+        linearParams.height = linearParams.width * 17 / 31;
         if (position % 2 == 0)
             linearParams.setMargins(30, 0, 15, 0);
         else

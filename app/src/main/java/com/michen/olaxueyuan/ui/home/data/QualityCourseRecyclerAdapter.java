@@ -65,6 +65,7 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
         linearParams.width = dm.widthPixels / 2 - 45;
+        linearParams.height = linearParams.width * 17 / 31;
         if (position % 2 == 0)
             linearParams.setMargins(30, 0, 15, 0);
         else
@@ -93,7 +94,7 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
             public void onClick(View v) {
                 Intent intent = new Intent(context, SystemVideoActivity.class);
                 intent.putExtra("pid", String.valueOf(list.get(position).getId()));
-                intent.putExtra("ResultEntity",list.get(position));
+                intent.putExtra("ResultEntity", list.get(position));
                 context.startActivity(intent);
             }
         });
