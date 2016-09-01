@@ -64,12 +64,13 @@ public class TeacherHomeManager {
      * 作业列表
      *
      * @param userId
+     * @param type       1 学生 2 老师
      * @param homeworkId 当前页最后一条的id(否)
      * @param pageSize   每页条数(否)
      * @param cb
      */
-    public void getHomeworkList(String userId, String homeworkId, String pageSize, final Callback<HomeworkListResult> callback) {
-        getTeacherHomeService().getHomeworkList(userId, homeworkId, pageSize, callback);
+    public void getHomeworkList(String userId, String type, String homeworkId, String pageSize, final Callback<HomeworkListResult> callback) {
+        getTeacherHomeService().getHomeworkList(userId, type, homeworkId, pageSize, callback);
     }
 
     /**

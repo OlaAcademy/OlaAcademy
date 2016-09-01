@@ -1,209 +1,37 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/teacher_view"
     android:background="@color/white">
 
-    <!--<com.snail.pulltorefresh.PullToRefreshScrollView-->
-    <ScrollView
-        android:id="@+id/scroll"
+    <com.michen.olaxueyuan.common.stickview.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.michen.olaxueyuan.common.stickview.StickyListHeadersListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white_light"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:fadingEdge="none"
+            android:listSelector="#00000000"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="10dp">
+
+        </com.michen.olaxueyuan.common.stickview.StickyListHeadersListView>
+    </com.michen.olaxueyuan.common.stickview.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:descendantFocusability="beforeDescendants"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical">
-
-            <include layout="@layout/home_header_img_layout" />
-
-            <include layout="@layout/home_title_item" />
-
-            <View
-                style="@style/line_horizontal"
-                android:layout_height="10dp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="38dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/newest_answer"
-                    android:textColor="@color/black_272b36"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/show_all_question"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/selector_white_item_bg"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="显示全部"
-                    android:textColor="@color/black_a8aaad"
-                    android:textSize="12sp" />
-            </RelativeLayout>
-
-            <com.michen.olaxueyuan.common.SubListView
-                android:id="@+id/questionList_listview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@null" />
-
-            <View
-                style="@style/line_horizontal"
-                android:layout_height="10dp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginBottom="2dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/direct_broadcast_hall"
-                    android:textColor="@color/black_272b36"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/show_all_direct_broadcast"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="显示全部"
-                    android:textColor="@color/black_a8aaad"
-                    android:textSize="12sp" />
-
-                <View
-                    style="@style/line_horizontal_margin_10dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="4dp" />
-            </RelativeLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:visibility="gone" />
-
-            <View
-                style="@style/line_horizontal"
-                android:layout_height="5dp"
-                android:visibility="gone" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginBottom="2dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="精品课程"
-                    android:textColor="@color/black_272b36"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/show_all_quality_course"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/line_quality_course"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/selector_white_item_bg"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="显示全部"
-                    android:textColor="@color/black_a8aaad"
-                    android:textSize="12sp" />
-
-                <View
-                    android:id="@+id/line_quality_course"
-                    style="@style/line_horizontal_margin_10dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="4dp" />
-            </RelativeLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_quality_course"
-                android:layout_width="match_parent"
-                android:layout_height="120dp" />
-
-            <View
-                style="@style/line_horizontal"
-                android:layout_height="5dp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginBottom="2dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="课程库"
-                    android:textColor="@color/black_272b36"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/show_all_course_database"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/line_course_database"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/selector_white_item_bg"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="显示全部"
-                    android:textColor="@color/black_a8aaad"
-                    android:textSize="12sp" />
-
-                <View
-                    android:id="@+id/line_course_database"
-                    style="@style/line_horizontal_margin_10dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="4dp" />
-            </RelativeLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_course_database"
-                android:layout_width="match_parent"
-                android:layout_height="120dp" />
-
-            <View
-                style="@style/line_horizontal"
-                android:layout_height="5dp"
-                android:layout_marginBottom="5dp" />
-
-        </LinearLayout>
-        <!--</com.snail.pulltorefresh.PullToRefreshScrollView>-->
-    </ScrollView>
-
-</LinearLayout>
+        android:gravity="center"
+        android:text="内容为空"
+        android:textSize="30sp"
+        android:visibility="gone" />
+</RelativeLayout>

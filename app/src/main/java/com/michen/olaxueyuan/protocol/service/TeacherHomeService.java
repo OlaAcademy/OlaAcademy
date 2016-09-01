@@ -59,6 +59,7 @@ public interface TeacherHomeService {
      * 作业列表
      *
      * @param userId
+     * @param type 1 学生 2 老师
      * @param homeworkId 当前页最后一条的id(否)
      * @param pageSize   每页条数(否)
      * @param cb
@@ -67,6 +68,7 @@ public interface TeacherHomeService {
     @POST("/ola/homework/getHomeworkList")
     void getHomeworkList(
             @Field("userId") String userId,
+            @Field("type") String type,
             @Field("homeworkId") String homeworkId,
             @Field("pageSize") String pageSize,
             Callback<HomeworkListResult> cb);

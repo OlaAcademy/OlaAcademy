@@ -19,13 +19,13 @@ public class SEUser implements Serializable {
     private String sex;
     private String local;
     private String vipTime;
-    private String isActive;
+    private int isActive;// 1 学生 2 老师
 
-    public String getIsActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(String isActive) {
+    public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
 

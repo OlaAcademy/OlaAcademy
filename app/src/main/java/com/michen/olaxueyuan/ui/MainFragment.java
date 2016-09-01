@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SETabBar;
+import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 
 import de.greenrobot.event.EventBus;
@@ -252,5 +253,18 @@ public class MainFragment extends Fragment {
             _viewPager.setCurrentItem(changeIndexEvent.position, false);
         }
     }
+
+    // EventBus 回调
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        _viewPagerAdapter.upDateMainFragment();
+        /*if (module.isLogin) {
+            Logger.e(""+ SEAuthManager.getInstance().getAccessUser().getIsActive());
+//            _viewPagerAdapter.notifyDataSetChanged();
+            _viewPagerAdapter.upDateMainFragment();
+        } else {
+            _viewPagerAdapter.upDateMainFragment();
+        }*/
+    }
+
 }
 
