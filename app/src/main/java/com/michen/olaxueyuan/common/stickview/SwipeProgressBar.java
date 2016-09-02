@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
 /**
- * Created by hanhanliu on 15/5/13.
+ * Created by mingge on 2016/9/2.
  */
 public class SwipeProgressBar {
     // Default progress animation colors are grays.

@@ -256,7 +256,7 @@ public class MainFragment extends Fragment {
 
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
-        _viewPagerAdapter.upDateMainFragment();
+//        _viewPagerAdapter.upDateMainFragment();
         /*if (module.isLogin) {
             Logger.e(""+ SEAuthManager.getInstance().getAccessUser().getIsActive());
 //            _viewPagerAdapter.notifyDataSetChanged();

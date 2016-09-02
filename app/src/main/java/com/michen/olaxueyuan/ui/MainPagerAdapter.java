@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
-import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.course.CourseFragment;
 import com.michen.olaxueyuan.ui.examination.ExamFragment;
@@ -55,12 +54,12 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int index) {
         switch (index) {
             case 0:
-                if (SEAuthManager.getInstance() != null && SEAuthManager.getInstance().getAccessUser() != null
-                        && SEAuthManager.getInstance().getAccessUser().getIsActive() == 2) {
-                    return teacherHomeFragment;
-                } else {
-                    return questionFragment;
-                }
+//                if (SEAuthManager.getInstance() != null && SEAuthManager.getInstance().getAccessUser() != null
+//                        && SEAuthManager.getInstance().getAccessUser().getIsActive() == 2) {
+                return teacherHomeFragment;
+//                } else {
+//                    return questionFragment;
+//                }
             case 1:
                 return courseFragment;
             case 2:

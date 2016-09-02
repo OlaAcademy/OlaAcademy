@@ -1,0 +1,127 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_light"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="106dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:layout_marginLeft="32dp"
+            android:background="@drawable/conference_list_bg"
+            android:paddingBottom="5dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/address"
+                android:layout_marginRight="6dp"
+                android:layout_toLeftOf="@+id/collection_layout"
+                android:ellipsize="end"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:text="第二届全国关节其关节学术会议"
+                android:textColor="@color/return_text_color"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:text="地址：天安门"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/spontor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/title"
+                android:layout_alignRight="@+id/title"
+                android:layout_below="@+id/address"
+                android:ellipsize="end"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:text="发起人：六百风"
+                android:textSize="13dp" />
+
+          <!--  <RelativeLayout
+                android:id="@+id/collection_layout"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:id="@+id/collection_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/followed_icon" />
+
+                <ProgressBar
+                    android:id="@+id/progressbar"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+
+            </RelativeLayout>-->
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/left_layout"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:id="@+id/top_line"
+                android:layout_width="1dp"
+                android:layout_height="35dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/main_color" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/top_line"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/shape_circle"
+                android:gravity="center"
+                android:text="07"
+                android:textColor="@color/main_color"
+                android:textSize="10sp" />
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/time"
+                android:layout_centerHorizontal="true"
+                android:background="@color/main_color" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

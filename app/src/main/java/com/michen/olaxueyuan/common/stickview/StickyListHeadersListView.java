@@ -24,7 +24,7 @@ import com.michen.olaxueyuan.R;
 
 
 /**
- * Created by hanhanliu on 15/5/14.
+ * Created by mingge on 2016/9/2.
  */
 public class StickyListHeadersListView extends FrameLayout {
 

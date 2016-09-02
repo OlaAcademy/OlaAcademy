@@ -9,22 +9,22 @@ import java.util.List;
 public class HomeworkListResult implements Serializable {
     /**
      * message : 成功
-     * result : [{"id":1,"name":"每周一练","count":"10","finishedCount":2,"userName":"小欧4738","avatar":"664c3a2d-8ddd-4acc-a0c3-5382f625cbb5","groupId":"1","groupName":"欧拉学习群","time":"2016-08-02 17:50"}]
+     * result : [{"avatar":"","groupId":"2","groupName":"Forever群","id":4,"name":"数学作业","userName":"","count":1,"finishedCount":0,"time":"2016-09-01 10:00"},{"avatar":"","groupId":"2","groupName":"Forever群","id":1,"name":"每周一练","userName":"","count":8,"finishedCount":7,"time":"2016-08-15 00:00"}]
      * apicode : 10000
      */
 
     private String message;
     private int apicode;
     /**
-     * id : 1
-     * name : 每周一练
-     * count : 10
-     * finishedCount : 2
-     * userName : 小欧4738
-     * avatar : 664c3a2d-8ddd-4acc-a0c3-5382f625cbb5
-     * groupId : 1
-     * groupName : 欧拉学习群
-     * time : 2016-08-02 17:50
+     * avatar :
+     * groupId : 2
+     * groupName : Forever群
+     * id : 4
+     * name : 数学作业
+     * userName :
+     * count : 1
+     * finishedCount : 0
+     * time : 2016-09-01 10:00
      */
 
     private List<ResultBean> result;
@@ -53,56 +53,16 @@ public class HomeworkListResult implements Serializable {
         this.result = result;
     }
 
-    public static class ResultBean implements Serializable{
-        private int id;
-        private String name;
-        private String count;
-        private int finishedCount;
-        private String userName;
+    public static class ResultBean implements Serializable {
         private String avatar;
         private String groupId;
         private String groupName;
+        private int id;
+        private String name;
+        private String userName;
+        private int count;
+        private int finishedCount;
         private String time;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getCount() {
-            return count;
-        }
-
-        public void setCount(String count) {
-            this.count = count;
-        }
-
-        public int getFinishedCount() {
-            return finishedCount;
-        }
-
-        public void setFinishedCount(int finishedCount) {
-            this.finishedCount = finishedCount;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
 
         public String getAvatar() {
             return avatar;
@@ -126,6 +86,46 @@ public class HomeworkListResult implements Serializable {
 
         public void setGroupName(String groupName) {
             this.groupName = groupName;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        public int getFinishedCount() {
+            return finishedCount;
+        }
+
+        public void setFinishedCount(int finishedCount) {
+            this.finishedCount = finishedCount;
         }
 
         public String getTime() {

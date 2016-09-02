@@ -20,7 +20,7 @@ import android.widget.AbsListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 /**
- * Created by hanhanliu on 15/5/13.
+ * Created by mingge on 2016/9/2.
  */
 public class SwipeRefreshLayout extends ViewGroup {
     private static final long RETURN_TO_ORIGINAL_POSITION_TIMEOUT = 300;

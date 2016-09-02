@@ -3,7 +3,7 @@ package com.michen.olaxueyuan.common.stickview;
 import android.view.animation.Interpolator;
 
 /**
- * Created by hanhanliu on 15/5/13.
+ * Created by mingge on 2016/9/2.
  */
 public class BakedBezierInterpolator implements Interpolator {
     private static final BakedBezierInterpolator INSTANCE = new BakedBezierInterpolator();
