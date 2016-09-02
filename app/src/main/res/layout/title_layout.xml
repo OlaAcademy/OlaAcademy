@@ -114,5 +114,7 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <View style="@style/line_horizontal_line_d5d5d5" />
+    <View
+        android:id="@+id/pop_line"
+        style="@style/line_horizontal_line_d5d5d5" />
 </LinearLayout>
