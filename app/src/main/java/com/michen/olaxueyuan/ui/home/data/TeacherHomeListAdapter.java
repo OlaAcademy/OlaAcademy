@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.ui.home.data;
 
+import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
@@ -7,15 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.CircleProgressBar;
 import com.michen.olaxueyuan.common.stickview.StickyListHeadersAdapter;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by mingge on 2016/9/2.
@@ -122,11 +129,7 @@ public class TeacherHomeListAdapter extends BaseAdapter implements
         ViewHolder holder = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.conference_item_layout, parent, false);
-            holder = new ViewHolder();
-            holder.title = (TextView) convertView.findViewById(R.id.title);
-            holder.time = (TextView) convertView.findViewById(R.id.time);
-            holder.address = (TextView) convertView.findViewById(R.id.address);
-            holder.sponor = (TextView) convertView.findViewById(R.id.spontor);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -136,13 +139,11 @@ public class TeacherHomeListAdapter extends BaseAdapter implements
             return convertView;
         }
         final HomeworkListResult.ResultBean conferenceItemModel = mConferenceList.get(position);
-
-//        holder.title.setText(conferenceItemModel.getTitle());
-//        holder.address.setText(mContext.getString(R.string.address, conferenceItemModel.getLocal()));
-//        holder.sponor.setText(mContext.getString(R.string.sponsor, conferenceItemModel.getSponsor()));
-        holder.time.setText(conferenceItemModel.getTime().substring(8, 11));
-
-        final ViewHolder viewHolder = holder;
+        holder.title.setText(conferenceItemModel.getName());
+        holder.timeText.setText(conferenceItemModel.getTime());
+        holder.courseNumText.setText(conferenceItemModel.getCount() + "道小题");
+        holder.groupNameText.setText(conferenceItemModel.getGroupName());
+        simulateProgress(holder.circleProgress, conferenceItemModel.getFinishedCount() * 100 / conferenceItemModel.getCount());
         return convertView;
     }
 
@@ -235,14 +236,50 @@ public class TeacherHomeListAdapter extends BaseAdapter implements
     }
 
     class ViewHolder {
+        @Bind(R.id.title)
+        TextView title;
+        @Bind(R.id.time_icon)
+        ImageView timeIcon;
+        @Bind(R.id.time_text)
+        TextView timeText;
+        @Bind(R.id.course_num_icon)
+        ImageView courseNumIcon;
+        @Bind(R.id.course_num_text)
+        TextView courseNumText;
+        @Bind(R.id.group_name_text)
+        TextView groupNameText;
+        @Bind(R.id.circle_progress)
+        CircleProgressBar circleProgress;
+        @Bind(R.id.homeworkRL)
+        RelativeLayout homeworkRL;
+        @Bind(R.id.top_line)
+        TextView topLine;
+        @Bind(R.id.time)
+        TextView time;
+        @Bind(R.id.left_layout)
+        RelativeLayout leftLayout;
 
-        public TextView title;
-
-        public TextView address;
-
-        public TextView sponor;
-
-        public TextView time;
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 
+    private void simulateProgress(final CircleProgressBar circleProgress, int progress) {
+        ValueAnimator animator = ValueAnimator.ofInt(0, progress);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                try {
+                    int progress = (int) animation.getAnimatedValue();
+                    circleProgress.setProgress(progress);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatCount(0);
+        animator.setDuration(2000);
+        animator.start();
+    }
 }

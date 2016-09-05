@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -45,6 +46,8 @@ public class TeacherHomeFragment extends SuperFragment implements AdapterView.On
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.empty)
     TextView empty;
+    @Bind(R.id.right_response)
+    ImageView rightResponse;
 
     TitleManager titleManager;
     private TextView mEmptyView;
@@ -187,7 +190,7 @@ public class TeacherHomeFragment extends SuperFragment implements AdapterView.On
         });
     }
 
-    @OnClick({R.id.empty})
+    @OnClick({R.id.empty, R.id.right_response})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.load_more:
@@ -195,6 +198,9 @@ public class TeacherHomeFragment extends SuperFragment implements AdapterView.On
                 break;
             case R.id.empty:
                 onRefresh();
+                break;
+            case R.id.right_response:
+                ToastUtil.showToastShort(getActivity(),"老师版");
                 break;
         }
     }
