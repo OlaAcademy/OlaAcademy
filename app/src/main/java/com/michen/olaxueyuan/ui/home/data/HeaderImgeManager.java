@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.home.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,6 +16,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.AutoScrollViewPager;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
+import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -176,6 +178,9 @@ public class HeaderImgeManager {
         public void onClick(View v) {
             imgViewpager.stopAutoScroll();
             HomeModule.ResultBean.BannerListBean banner = mBanners.get(position);
+            Intent intent = new Intent(context, CourseVideoActivity.class);
+            intent.putExtra("pid", String.valueOf(banner.getObjectId()));
+            context.startActivity(intent);
         }
     }
 

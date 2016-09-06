@@ -50,7 +50,7 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
 
     @Override
     public void initView() {
-        titleManager = new TitleManager(this, R.string.course, this, true);
+        titleManager = new TitleManager(this, R.string.data_base, this, true);
         Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
         drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
         titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);

@@ -168,7 +168,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         viewPager.setAdapter(viewPagerAdapter);
         mathsText.setSelected(true);
         mathsIndicator.setSelected(true);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

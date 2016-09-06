@@ -17,16 +17,20 @@ import com.michen.olaxueyuan.common.AutoScrollViewPager;
 import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
+import com.michen.olaxueyuan.ui.circle.DeployPostActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.michen.olaxueyuan.ui.course.turtor.TurtorActivity;
+import com.michen.olaxueyuan.ui.group.GroupListActivity;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.home.data.CourseDatabaseRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.DirectBroadCastRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.HeaderImgeManager;
 import com.michen.olaxueyuan.ui.home.data.HomeQuestionAdapter;
 import com.michen.olaxueyuan.ui.home.data.QualityCourseRecyclerAdapter;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -145,12 +149,22 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.put_question_layout:
+                if (!SEAuthManager.getInstance().isAuthenticated()) {
+                    Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
+                    startActivity(loginIntent);
+                    return;
+                }
+                Intent intent = new Intent(getActivity(), DeployPostActivity.class);
+                startActivity(intent);
                 break;
             case R.id.find_teacher_layout:
+                showTurtorView();
                 break;
             case R.id.find_data_layout:
+                showCommodityView();
                 break;
             case R.id.find_data_group:
+                startActivity(new Intent(getActivity(), GroupListActivity.class));
                 break;
             case R.id.show_all_question:
                 chageIndex(3);
