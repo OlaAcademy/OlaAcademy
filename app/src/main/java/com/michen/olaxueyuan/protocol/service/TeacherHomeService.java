@@ -47,12 +47,14 @@ public interface TeacherHomeService {
      * 学生所在群列表
      *
      * @param userId
+     * @param type  1 数学 2 英语 3 逻辑 4 写作
      * @param cb
      */
     @FormUrlEncoded
     @POST("/ola/homework/getUserGroupList")
     void getUserGroupList(
             @Field("userId") String userId,
+            @Field("type") String type,
             Callback<UserGroupListResult> cb);
 
     /**

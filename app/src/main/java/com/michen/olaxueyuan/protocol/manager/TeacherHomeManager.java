@@ -44,7 +44,7 @@ public class TeacherHomeManager {
      * 老师所创建群列表
      *
      * @param userId
-     * @param cb
+     * @param callback
      */
     public void getTeacherGroupList(String userId, final Callback<TeacherGroupListResult> callback) {
         getTeacherHomeService().getTeacherGroupList(userId, callback);
@@ -54,10 +54,11 @@ public class TeacherHomeManager {
      * 学生所在群列表
      *
      * @param userId
-     * @param cb
+     * @param type   1 数学 2 英语 3 逻辑 4 写作
+     * @param callback
      */
-    public void getUserGroupList(String userId, final Callback<UserGroupListResult> callback) {
-        getTeacherHomeService().getUserGroupList(userId, callback);
+    public void getUserGroupList(String userId, String type, final Callback<UserGroupListResult> callback) {
+        getTeacherHomeService().getUserGroupList(userId, type, callback);
     }
 
     /**
@@ -67,7 +68,7 @@ public class TeacherHomeManager {
      * @param type       1 学生 2 老师
      * @param homeworkId 当前页最后一条的id(否)
      * @param pageSize   每页条数(否)
-     * @param cb
+     * @param callback
      */
     public void getHomeworkList(String userId, String type, String homeworkId, String pageSize, final Callback<HomeworkListResult> callback) {
         getTeacherHomeService().getHomeworkList(userId, type, homeworkId, pageSize, callback);
@@ -77,7 +78,7 @@ public class TeacherHomeManager {
      * 题目列表
      *
      * @param homeworkId
-     * @param cb
+     * @param callback
      */
     public void getSubjectList(String homeworkId, final Callback<SubjectListResult> callback) {
         getTeacherHomeService().getSubjectList(homeworkId, callback);

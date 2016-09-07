@@ -70,6 +70,7 @@ public class GroupListActivity extends SuperActivity {
         titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
         groupListViewPagerAdapter = new GroupListViewPagerAdapter(getFragmentManager());
         viewPager.setAdapter(groupListViewPagerAdapter);
+        viewPager.setOffscreenPageLimit(4);
         mathsText.setSelected(true);
         mathsIndicator.setSelected(true);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

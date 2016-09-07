@@ -10,91 +10,131 @@ public class UserGroupListResult implements Serializable {
 
     /**
      * message : 成功
-     * result : [{"createUser":0,"id":1,"avatar":"","name":"欧拉学习群","time":"2016-08-02 17:48"}]
+     * result : [{"avatar":"","createUser":381,"id":2,"name":"陈剑数学群","profile":"根据《管理类联考数学高分指南》每周发布一套专项试题","type":1,"time":"2016-08-31 00:00","isMember":1,"number":3}]
      * apicode : 10000
      */
 
     private String message;
     private int apicode;
     /**
-     * createUser : 0
-     * id : 1
      * avatar :
-     * name : 欧拉学习群
-     * time : 2016-08-02 17:48
+     * createUser : 381
+     * id : 2
+     * name : 陈剑数学群
+     * profile : 根据《管理类联考数学高分指南》每周发布一套专项试题
+     * type : 1
+     * time : 2016-08-31 00:00
+     * isMember : 1
+     * number : 3
      */
 
-    private List<ResultBean> result;
-
-    public String getMessage() {
-        return message;
-    }
+    private List<ResultEntity> result;
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public int getApicode() {
-        return apicode;
     }
 
     public void setApicode(int apicode) {
         this.apicode = apicode;
     }
 
-    public List<ResultBean> getResult() {
-        return result;
-    }
-
-    public void setResult(List<ResultBean> result) {
+    public void setResult(List<ResultEntity> result) {
         this.result = result;
     }
 
-    public static class ResultBean implements Serializable{
+    public String getMessage() {
+        return message;
+    }
+
+    public int getApicode() {
+        return apicode;
+    }
+
+    public List<ResultEntity> getResult() {
+        return result;
+    }
+
+    public static class ResultEntity implements Serializable{
+        private String avatar;
         private int createUser;
         private int id;
-        private String avatar;
         private String name;
+        private String profile;
+        private int type;
         private String time;
+        private int isMember;
+        private int number;
 
-        public int getCreateUser() {
-            return createUser;
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
         }
 
         public void setCreateUser(int createUser) {
             this.createUser = createUser;
         }
 
-        public int getId() {
-            return id;
-        }
-
         public void setId(int id) {
             this.id = id;
-        }
-
-        public String getAvatar() {
-            return avatar;
-        }
-
-        public void setAvatar(String avatar) {
-            this.avatar = avatar;
-        }
-
-        public String getName() {
-            return name;
         }
 
         public void setName(String name) {
             this.name = name;
         }
 
-        public String getTime() {
-            return time;
+        public void setProfile(String profile) {
+            this.profile = profile;
+        }
+
+        public void setType(int type) {
+            this.type = type;
         }
 
         public void setTime(String time) {
             this.time = time;
+        }
+
+        public void setIsMember(int isMember) {
+            this.isMember = isMember;
+        }
+
+        public void setNumber(int number) {
+            this.number = number;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public int getCreateUser() {
+            return createUser;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getProfile() {
+            return profile;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public int getIsMember() {
+            return isMember;
+        }
+
+        public int getNumber() {
+            return number;
         }
     }
 }
