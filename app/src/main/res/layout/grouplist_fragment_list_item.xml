@@ -33,6 +33,8 @@
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/avatar"
         android:background="@drawable/blue_text_bg"
+        android:drawableLeft="@drawable/group_member_count_icon"
+        android:drawablePadding="5dp"
         android:gravity="center"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"

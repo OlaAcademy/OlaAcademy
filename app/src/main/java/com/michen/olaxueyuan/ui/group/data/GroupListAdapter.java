@@ -1,7 +1,6 @@
 package com.michen.olaxueyuan.ui.group.data;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.result.UserGroupListResult;
-import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,6 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by mingge on 16/9/7.
@@ -77,13 +76,18 @@ public class GroupListAdapter extends BaseAdapter {
         } else {
             holder.joinGroup.setText("取消关注");
         }
+        holder.joinGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * {@link com.michen.olaxueyuan.ui.group.GroupListFragment#onEventMainThread(JoinGroupEvent)}
+                 */
+                EventBus.getDefault().post(new JoinGroupEvent(list.get(position).getIsMember() + 1, true, String.valueOf(list.get(position).getId())));
+            }
+        });
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(mContext, PostDetailActivity.class);//
-                intent.putExtra("circleId", list.get(position).getId());
-                mContext.startActivity(intent);
             }
         });
         return convertView;
