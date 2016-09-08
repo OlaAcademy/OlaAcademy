@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="77dp"
+        android:layout_height="87dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
 
@@ -17,8 +17,9 @@
             android:id="@+id/question_add_icon"
             android:layout_width="17dp"
             android:layout_height="17dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/question_add_icon" />
+            android:layout_marginTop="25dp"
+            android:src="@drawable/question_add_icon"
+            android:visibility="visible" />
 
         <View
             android:id="@+id/line"
@@ -45,7 +46,7 @@
 
         <TextView
             android:id="@+id/question_knowledge_all_count"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/question_name"
             android:layout_alignStart="@+id/question_name"
@@ -64,8 +65,6 @@
             android:layout_width="60dp"
             android:layout_height="6dp"
             android:layout_alignTop="@+id/question_knowledge_all_count"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/question_knowledge_all_count"
             android:indeterminate="false"
@@ -81,14 +80,14 @@
             android:layout_toRightOf="@+id/progressBar"
             android:text="20/29"
             android:textColor="@color/title_hint_text_color"
-            android:textSize="12dp" />
+            android:textSize="10dp" />
 
         <ImageView
             android:layout_width="16dp"
             android:layout_height="22dp"
+            android:layout_alignTop="@+id/question_name"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:src="@drawable/ic_question_blue" />
     </RelativeLayout>
 </LinearLayout>

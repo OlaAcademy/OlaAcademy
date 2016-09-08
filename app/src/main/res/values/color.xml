@@ -335,7 +335,7 @@
     <color name="actionbar_bg_pressed">#dfdfdf</color>
     <color name="special_text_color">#485254</color>
     <color name="special_author_text_color">#8f919d</color>
-    <color name="special_read_text_color">#999999</color>
+    <color name="special_read_text_color">#a8aaad</color>
     <!--<color name="line_color">#e5e5e5</color>-->
     <color name="line_color">#EBEBEB</color>
     <color name="return_text_color">#333333</color>
@@ -349,8 +349,8 @@
     <color name="cm_disenble">#cccccc</color>
     <color name="video_title_red">#f40b00</color>
     <color name="title_blue">#1B9BFB</color>
-    <color name="title_hint_color">#f0f0f0</color>
-    <color name="title_hint_text_color">#909090</color>
+    <color name="title_hint_color">#a8aaad</color>
+    <color name="title_hint_text_color">#a8aaad</color>
     <color name="black_one">#51545D</color>
     <!--<color name="black_one">#232323</color>-->
     <color name="black_323232">#323232</color>
@@ -366,6 +366,15 @@
     <color name="system_course_money_color">#FD7828</color>
     <color name="answer_num_color">#FA7667</color>
     <color name="study_group_color">#A1BBD3</color>
+    <color name="black_272b36">#272b36</color>
+    <color name="black_4f5564">#4f5564</color>
+    <color name="black_a8aaad">#a8aaad</color>
+    <color name="red_f44336">#f44336</color>
+    <color name="black_51545d">#51545d</color>
+    <color name="black_a4a6a9">#a4a6a9</color>
+    <color name="white_light">#f8f8f8</color>
+    <color name="line_d5d5d5">#d5d5d5</color>
+    <color name="bottom_bar_bg">#f3f3f3</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>
@@ -377,5 +386,6 @@
     <drawable name="light_title_blue">#018BE6</drawable>
     <drawable name="white">#ffffff</drawable>
     <drawable name="blue_light">#1B9BFC</drawable>
+    <drawable name="common_blue">#4285f4</drawable>
     <drawable name="black_one">#51545D</drawable>
 </resources>

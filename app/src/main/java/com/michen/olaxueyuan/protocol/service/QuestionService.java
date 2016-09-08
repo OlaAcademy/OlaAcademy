@@ -9,6 +9,7 @@ import com.michen.olaxueyuan.protocol.result.MessageRecordResult;
 import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
+import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 
 import retrofit.Callback;
@@ -160,6 +161,11 @@ public interface QuestionService {
     @POST("/ola/message/getUnreadCount")
     void getUnreadCount(@Field("userId") String userId,
                         Callback<MessageUnReadResult> cb);
+
+    @FormUrlEncoded
+    @POST("/ola/circle/queryCircleDetail")
+    void queryCircleDetail(@Field("circleId") String circleId,
+                           Callback<PostDetailModule> cb);
 
 
 }

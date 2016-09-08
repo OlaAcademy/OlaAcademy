@@ -31,6 +31,7 @@ import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.CircleAdapter;
+import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.manager.CirclePopManager;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
@@ -67,7 +68,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     PullToRefreshListView listview;
     @Bind(R.id.all_search_view)
     LinearLayout allSearchView;
-    @Bind(R.id.pop_line)
+    @Bind(R.id.pop_line2)
     View popLine;
     private String type = "";//1 学习记录 2 帖子 "" 全部
     private static final String PAGE_SIZE = "20";//每次加载20条
@@ -155,6 +156,17 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     // EventBus 回调
     public void onEventMainThread(Boolean addSuccess) {
         if (addSuccess) {
+            fetchData("", PAGE_SIZE);
+        }
+    }
+
+    /**
+     * {@link com.michen.olaxueyuan.ui.home.HomeFragment#chageIndex(int)}
+     */
+    public void onEventMainThread(ChangeIndexEvent changeIndexEvent) {
+        if (changeIndexEvent.isChange) {
+            this.type = "2";
+            titleTv.setText(getActivity().getResources().getStringArray(R.array.circle_select)[2]);
             fetchData("", PAGE_SIZE);
         }
     }

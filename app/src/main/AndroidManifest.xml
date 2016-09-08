@@ -407,7 +407,8 @@
             android:name=".ui.umeng.MyPushIntentService"
             android:process=":push" />
 
-        <activity android:name=".ui.question.WebViewActivity"></activity>
+        <activity android:name=".ui.question.WebViewActivity" />
+        <activity android:name=".ui.group.GroupListActivity"></activity>
     </application>
 
 </manifest>

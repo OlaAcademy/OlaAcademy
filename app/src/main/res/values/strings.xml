@@ -100,4 +100,15 @@
     <string name="positioning">定位中...</string>
     <string name="no_comment_self">不能评论自己哟</string>
     <string name="fill_comment_content">请填写评论内容</string>
+    <string name="my_question">我要提问</string>
+    <string name="find_teacher">我找老师</string>
+    <string name="find_data">我找资料</string>
+    <string name="join_group">我要入群</string>
+    <string name="newest_answer">最新问答</string>
+    <string name="num_to_listen_in">%s人收听</string>
+    <string name="direct_broadcast_hall">直播大厅</string>
+    <string name="listView_footer_hint_normal">查看更多</string>
+    <string name="month">%s月</string>
+    <string name="data_base">资料库</string>
+
 </resources>

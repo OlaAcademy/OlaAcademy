@@ -14,7 +14,7 @@
         <include layout="@layout/title_layout" />
 
         <View
-            android:id="@+id/pop_line"
+            android:id="@+id/pop_line2"
             android:layout_width="150dp"
             android:layout_height="1px"
             android:layout_gravity="center"

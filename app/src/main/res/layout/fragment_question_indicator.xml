@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
     android:background="@color/white"
     android:orientation="horizontal"
     android:weightSum="4">
@@ -24,12 +24,12 @@
             android:gravity="center"
             android:text="数学"
             android:textColor="@color/black_blue_text_color"
-            android:textSize="15dp" />
+            android:textSize="17dp" />
 
         <View
             android:id="@+id/maths_indicator"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/indicator_bottom_selector" />
     </RelativeLayout>
@@ -50,12 +50,12 @@
             android:gravity="center"
             android:text="英语"
             android:textColor="@color/black_blue_text_color"
-            android:textSize="15dp" />
+            android:textSize="17dp" />
 
         <View
             android:id="@+id/english_indicator"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/indicator_bottom_selector" />
     </RelativeLayout>
@@ -76,12 +76,12 @@
             android:gravity="center"
             android:text="逻辑"
             android:textColor="@color/black_blue_text_color"
-            android:textSize="15dp" />
+            android:textSize="17dp" />
 
         <View
             android:id="@+id/logic_indicator"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/indicator_bottom_selector" />
     </RelativeLayout>
@@ -102,12 +102,12 @@
             android:gravity="center"
             android:text="写作"
             android:textColor="@color/black_blue_text_color"
-            android:textSize="15dp" />
+            android:textSize="17dp" />
 
         <View
             android:id="@+id/writing_indicator"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/indicator_bottom_selector" />
     </RelativeLayout>

@@ -88,9 +88,9 @@ public class DialogUtils {
         dialog.show();
         dialog.getWindow().setContentView(view);
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-//        int screenWidth = Utils.getScreenMetrics(context).x;
-//        params.width = screenWidth - 160;
-        params.width = Utils.dip2px(context, 200);
+        int screenWidth = Utils.getScreenMetrics(context).x;
+        params.width = screenWidth - 230;
+//        params.width = Utils.dip2px(context, 260);
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         params.gravity = Gravity.CENTER;
         dialog.getWindow().setAttributes(params);

@@ -3,7 +3,7 @@
     android:id="@+id/title_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/title_blue"
+    android:background="@color/white_light"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -28,7 +28,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/cancel_message"
-            android:textColor="@color/white"
+            android:textColor="@color/black_51545d"
             android:textSize="18dp"
             android:visibility="gone" />
 
@@ -42,7 +42,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="10dp"
             android:text=""
-            android:textColor="@color/white"
+            android:textColor="@color/black_51545d"
             android:textSize="18dp"
             android:visibility="gone" />
 
@@ -52,12 +52,13 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:ellipsize="end"
-            android:paddingLeft="40dp"
-            android:paddingRight="66dp"
+            android:paddingLeft="53dp"
+            android:paddingRight="53dp"
+            android:gravity="center"
             android:singleLine="true"
             android:text=""
-            android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:textColor="@color/black_51545d"
+            android:textSize="17dp" />
 
         <FrameLayout
             android:id="@+id/right_response_framlayout"
@@ -108,10 +109,12 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/send"
-            android:textColor="@color/white"
+            android:textColor="@color/black_51545d"
             android:textSize="18dp"
             android:visibility="gone" />
     </RelativeLayout>
 
-    <!--<View style="@style/line_horizontal_blue" />-->
+    <View
+        android:id="@+id/pop_line"
+        style="@style/line_horizontal_line_d5d5d5" />
 </LinearLayout>
