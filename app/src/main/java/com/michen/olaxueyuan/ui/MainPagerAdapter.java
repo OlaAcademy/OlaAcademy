@@ -56,9 +56,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
 //                if (SEAuthManager.getInstance() != null && SEAuthManager.getInstance().getAccessUser() != null
 //                        && SEAuthManager.getInstance().getAccessUser().getIsActive() == 2) {
-                return teacherHomeFragment;
+//                return teacherHomeFragment;
 //                } else {
-//                    return questionFragment;
+                return questionFragment;
 //                }
             case 1:
                 return courseFragment;

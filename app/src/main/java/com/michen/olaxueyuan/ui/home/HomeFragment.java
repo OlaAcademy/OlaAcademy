@@ -164,6 +164,11 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
                 showCommodityView();
                 break;
             case R.id.find_data_group:
+                if (!SEAuthManager.getInstance().isAuthenticated()) {
+                    Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
+                    startActivity(loginIntent);
+                    return;
+                }
                 startActivity(new Intent(getActivity(), GroupListActivity.class));
                 break;
             case R.id.show_all_question:
@@ -173,6 +178,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
                 break;
             case R.id.show_all_quality_course:
                 Intent commodityIntent = new Intent(getActivity(), CommodityActivity.class);
+                commodityIntent.putExtra("title", "精品课程");
+                commodityIntent.putExtra("type", "1");
                 getActivity().startActivity(commodityIntent);
                 break;
             case R.id.show_all_course_database:
@@ -196,6 +203,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
 
     private void showCommodityView() {
         Intent commodityIntent = new Intent(getActivity(), CommodityActivity.class);
+        commodityIntent.putExtra("title", "资料库");
+        commodityIntent.putExtra("type", "2");
         startActivity(commodityIntent);
     }
 
