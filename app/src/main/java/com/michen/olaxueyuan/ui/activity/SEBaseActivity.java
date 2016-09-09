@@ -57,7 +57,7 @@ public class SEBaseActivity extends FragmentActivity {
 
     private void initLeft() {
         leftImage.setVisibility(View.VISIBLE);
-        leftImage.setImageResource(R.drawable.ic_back_white);
+        leftImage.setImageResource(R.drawable.ic_back);
         leftImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
