@@ -1,18 +1,18 @@
 package com.michen.olaxueyuan.ui.course.commodity;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.MCOrgManager;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.ui.manager.TitlePopManager;
 import com.michen.olaxueyuan.ui.me.adapter.SystemCourseAdapter;
 import com.snail.pulltorefresh.PullToRefreshBase;
@@ -37,9 +37,10 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
     TitleManager titleManager;
     @Bind(R.id.listview)
     PullToRefreshListView listview;
-    private String pid = "1";
+    private String pid = "1";// 1 视频 2 题库
     private SystemCourseAdapter adapter;
     private SystemCourseResult module;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +51,19 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
 
     @Override
     public void initView() {
-        titleManager = new TitleManager(this, R.string.data_base, this, true);
-        Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
-        drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
-        titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
+        title = getIntent().getStringExtra("title");
+        pid = getIntent().getStringExtra("type");
+        if (TextUtils.isEmpty(pid)) {
+            pid = "1";
+        }
+        if (!TextUtils.isEmpty(title)) {
+            titleManager = new TitleManager(this, title, this, true);
+        } else {
+            titleManager = new TitleManager(this, R.string.data_base, this, true);
+        }
+//        Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
+//        drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
+//        titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
 
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.setOnRefreshListener(this);
@@ -115,7 +125,7 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
                 finish();
                 break;
             case R.id.title_tv:
-                TitlePopManager.getInstance().showPop(this, titleManager, popLine, this, 4);
+//                TitlePopManager.getInstance().showPop(this, titleManager, popLine, this, 4);
                 break;
         }
     }
