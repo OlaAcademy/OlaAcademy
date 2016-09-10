@@ -16,9 +16,8 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
-import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
-import com.michen.olaxueyuan.protocol.eventbusmodule.CirclePraiseEvent;
+import com.michen.olaxueyuan.protocol.eventbusmodule.CircleClickEvent;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
@@ -35,6 +34,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by mingge on 2016/7/11.
+ *
  */
 public class CircleAdapter extends BaseAdapter {
     private Context mContext;
@@ -77,9 +77,14 @@ public class CircleAdapter extends BaseAdapter {
         final int type = list.get(position).getType();
         holder.avatar.setRectAdius(100);
         holder.title.setText(list.get(position).getUserName());
-        //缺一个头像
         if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
-            Picasso.with(mContext).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar())
+            String avatarUrl = "";
+            if (list.get(position).getUserAvatar().indexOf("jpg")!=-1){
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+list.get(position).getUserAvatar();
+            }else{
+                avatarUrl = SEAPP.PIC_BASE_URL+list.get(position).getUserAvatar();
+            }
+            Picasso.with(mContext).load(avatarUrl)
                     .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50))
                     .into(holder.avatar);
         } else {
@@ -130,12 +135,13 @@ public class CircleAdapter extends BaseAdapter {
                 switch (type) {
                     case 1:
                         intent.setClass(mContext, CourseVideoActivity.class);
-                        intent.putExtra("pid", list.get(position).getCourseId());
+                        intent.putExtra("pid", list.get(position).getCourseId()+"");
                     default:
                         break;
                     case 2:
                         intent.setClass(mContext, PostDetailActivity.class);//
-                        intent.putExtra("OLaCircleModule.ResultBean", list.get(position));
+//                        intent.putExtra("OLaCircleModule.ResultBean", list.get(position));
+                        intent.putExtra("circleId", list.get(position).getCircleId());
                         break;
                 }
                 mContext.startActivity(intent);
@@ -145,15 +151,15 @@ public class CircleAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 /**
-                 * {@link com.michen.olaxueyuan.ui.circle.CircleFragment#onEventMainThread(CirclePraiseEvent)}}method
+                 * {@link com.michen.olaxueyuan.ui.circle.CircleFragment#onEventMainThread(CircleClickEvent)}}method
                  */
-                EventBus.getDefault().post(new CirclePraiseEvent(1, true, position));
+                EventBus.getDefault().post(new CircleClickEvent(1, true, position));
             }
         });
         holder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showToastShort(mContext, "分享");
+                EventBus.getDefault().post(new CircleClickEvent(2, true, position));
             }
         });
 

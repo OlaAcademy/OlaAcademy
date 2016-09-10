@@ -4,8 +4,12 @@ import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
 import com.michen.olaxueyuan.protocol.result.MCQuestionListResult;
+import com.michen.olaxueyuan.protocol.result.MessageListResult;
+import com.michen.olaxueyuan.protocol.result.MessageRecordResult;
+import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
+import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.service.QuestionService;
 
@@ -64,8 +68,8 @@ public class QuestionCourseManager {
 
     /**
      * 欧拉圈，获取视频观看历史记录列表(old)
-     * <p>
-     * {@link #getCircleList(String, String, Callback)} ())}
+     * <p/>
+     * {@link #getCircleList(String, String, String, Callback)}
      *
      * @param callback
      */
@@ -81,8 +85,8 @@ public class QuestionCourseManager {
      * @param pageSize
      * @param callback
      */
-    public void getCircleList(String circleId, String pageSize, final Callback<OLaCircleModule> callback) {
-        getQuestionService().getCircleList(circleId, pageSize, callback);
+    public void getCircleList(String circleId, String pageSize, String type, final Callback<OLaCircleModule> callback) {
+        getQuestionService().getCircleList(circleId, pageSize, type, callback);
     }
 
     /**
@@ -111,4 +115,46 @@ public class QuestionCourseManager {
         getQuestionService().addComment(userId, postId, toUserId, content, location, type, callback);
     }
 
+    /**
+     * 消息列表
+     *
+     * @param userId
+     * @param messageId 当前页最后一条的id
+     * @param pageSize  每页条数
+     * @param callback
+     */
+    public void getMessageList(String userId, String messageId, String pageSize, Callback<MessageListResult> callback) {
+        getQuestionService().getMessageList(userId, messageId, pageSize, callback);
+    }
+
+    /**
+     * 消息标记为已读
+     *
+     * @param userId
+     * @param messageIds 消息id拼接的字符串
+     * @param callback
+     */
+    public void addMessageRecord(String userId, String messageIds, Callback<MessageRecordResult> callback) {
+        getQuestionService().addMessageRecord(userId, messageIds, callback);
+    }
+
+    /**
+     * 未读消息数
+     *
+     * @param userId
+     * @param callback
+     */
+    public void getUnreadCount(String userId, Callback<MessageUnReadResult> callback) {
+        getQuestionService().getUnreadCount(userId, callback);
+    }
+
+    /**
+     * 帖子详情
+     *
+     * @param circleId
+     * @param callback
+     */
+    public void queryCircleDetail(String circleId, Callback<PostDetailModule> callback) {
+        getQuestionService().queryCircleDetail(circleId, callback);
+    }
 }

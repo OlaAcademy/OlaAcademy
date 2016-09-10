@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,8 +25,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lidroid.xutils.exception.DbException;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.download.DownloadService;
@@ -34,6 +37,8 @@ import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.result.CourseCollectResult;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
+import com.michen.olaxueyuan.sharesdk.ShareModel;
+import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.adapter.CourseVideoListAdapter;
 import com.michen.olaxueyuan.ui.course.video.VideoManager;
 import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
@@ -47,11 +52,15 @@ import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.utils.UIHandler;
 import de.greenrobot.event.EventBus;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.Vitamio;
@@ -61,7 +70,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CourseVideoActivity extends Activity implements View.OnClickListener, VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication {
+public class CourseVideoActivity extends Activity implements View.OnClickListener, VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication, PlatformActionListener, Handler.Callback {
 
     @Bind(R.id.left_return)
     public TextView leftReturn;
@@ -145,6 +154,8 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     private Context mAppContext;
     private DownloadManager downloadManager;
 
+    private SharePopupWindow share;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,6 +184,11 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         mDismissHandler.sendEmptyMessage(1);
         mDismissHandler.sendEmptyMessageDelayed(1, 500);
         MobclickAgent.onResume(this);          //统计时长
+
+        //分享
+        if (share != null) {
+            share.dismiss();
+        }
     }
 
     // EventBus 回调
@@ -339,7 +355,7 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     }
 
     @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return
-            , R.id.video_download_btn, R.id.video_collect_btn})
+            , R.id.video_download_btn, R.id.video_collect_btn,R.id.video_share_btn})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_return:
@@ -385,6 +401,15 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
                                     , getString(R.string.cancel_message));
                         } else {
                             collectVideo(videoId, "1");
+                        }
+                    }
+                }
+                break;
+            case R.id.video_share_btn:
+                if (courseVideoResult != null && courseVideoResult.getResult().getVideoList().size() > 0) {
+                    for (CourseVideoResult.ResultBean.VideoListBean videoInfo: courseVideoResult.getResult().getVideoList()){
+                        if (videoInfo.isSelected()){
+                            shareCourse(videoInfo);
                         }
                     }
                 }
@@ -585,4 +610,58 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
             SVProgressHUD.showInViewWithoutIndicator(this, "添加下载失败", 2.0f);
         }
     }
+
+    private void shareCourse(CourseVideoResult.ResultBean.VideoListBean videoInfo){
+        mVideoView.pause();
+        share = new SharePopupWindow(this);
+        share.setPlatformActionListener(this);
+        ShareModel model = new ShareModel();
+        model.setImageUrl(SEConfig.getInstance().getAPIBaseURL()+"/ola/images/icon.png");
+        model.setText(videoInfo.getName());
+        model.setTitle("欧拉学院");
+        model.setUrl("http://api.olaxueyuan.com/course.html?courseId="+courseId);
+        share.initShareParams(model);
+        share.showShareWindow();
+        // 显示窗口 (设置layout在PopupWindow中显示的位置)
+        share.showAtLocation(findViewById(R.id.root),
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
+    /////////////////////// 分享相关  ///////////////////////
+    @Override
+    public void onCancel(Platform arg0, int arg1) {
+        Message msg = new Message();
+        msg.what = 0;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public void onComplete(Platform plat, int action,
+                           HashMap<String, Object> res) {
+        Message msg = new Message();
+        msg.arg1 = 1;
+        msg.arg2 = action;
+        msg.obj = plat;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public void onError(Platform arg0, int arg1, Throwable arg2) {
+        Message msg = new Message();
+        msg.what = 1;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        int what = msg.what;
+        if (what == 1) {
+            Toast.makeText(this, "分享失败", Toast.LENGTH_SHORT).show();
+        }
+        if (share != null) {
+            share.dismiss();
+        }
+        return false;
+    }
+
 }

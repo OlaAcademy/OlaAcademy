@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.ui.me;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,20 +12,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
+import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
+import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.me.activity.DownloadListActivity;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserUpdateActivity;
 import com.michen.olaxueyuan.ui.me.adapter.UserPageAdapter;
 import com.michen.olaxueyuan.ui.setting.SettingActivity;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.protocol.result.SEUserResult;
-import com.michen.olaxueyuan.ui.SuperFragment;
-import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.FileOutputStream;
@@ -89,14 +91,37 @@ public class UserFragment extends SuperFragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchUserInfo();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     private void initView() {
         avatar.setRectAdius(300);
         titleTv.setText(R.string.me);
         leftIcon.setVisibility(View.VISIBLE);
         leftIcon.setImageDrawable(getResources().getDrawable(R.drawable.icon_download));
         rightResponse.setVisibility(View.VISIBLE);
-
-        userPageAdapter = new UserPageAdapter(getActivity().getFragmentManager());
+        FragmentManager fragmentManager;
+        if (android.os.Build.VERSION.SDK_INT >= 17) {
+            fragmentManager = getChildFragmentManager();
+        } else {
+            fragmentManager = getFragmentManager();
+        }
+        userPageAdapter = new UserPageAdapter(fragmentManager);
         viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(userPageAdapter);
         viewPager.setOnPageChangeListener(new ViewPagerListener());
@@ -136,36 +161,30 @@ public class UserFragment extends SuperFragment {
         }
     }
 
-    private void headViewClick(){
+    private void headViewClick() {
         SEUser user = SEAuthManager.getInstance().getAccessUser();
         if (user == null) {
             Intent intent = new Intent(getActivity(), UserLoginActivity.class);
             intent.putExtra("isVisitor", 1);
             startActivity(intent);
-        }else {
+        } else {
             Intent intent = new Intent(getActivity(), UserUpdateActivity.class);
             startActivityForResult(intent, EDIT_USER_INFO);
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        fetchUserInfo();
-    }
-
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
-        if (!module.isLogin){
+        if (!module.isLogin) {
             updateHeadView(null);
-        }else{
+        } else {
             fetchUserInfo();
         }
     }
 
-    private void fetchUserInfo(){
+    private void fetchUserInfo() {
         SEUser user = SEAuthManager.getInstance().getAccessUser();
-        if (user!=null){
+        if (user != null) {
             SEUserManager um = SEUserManager.getInstance();
             um.queryUserInfo(user.getId(), new Callback<SEUserResult>() {
                 @Override
@@ -182,19 +201,30 @@ public class UserFragment extends SuperFragment {
         }
     }
 
-    private void updateHeadView(SEUser userInfo){
-        if (userInfo==null){
+    private void updateHeadView(SEUser userInfo) {
+        if (userInfo == null) {
             name.setText("登录／注册");
             remainDays.setText("还剩0天");
             avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
         }else{
-            name.setText(userInfo.getName());
+            name.setText(userInfo.getName()!=null?userInfo.getName():"小欧");
             remainDays.setText("还剩"+ userInfo.getVipTime() + "天");
-            Picasso.with(getActivity())
-                    .load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator())
-                    .placeholder(R.drawable.ic_default_avatar)
-                    .error(R.drawable.ic_default_avatar)
-                    .into(avatar);
+            if (userInfo.getAvator()!=null){
+                String avatarUrl = "";
+                if (userInfo.getAvator().indexOf("jpg")!=-1){
+                    avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+userInfo.getAvator();
+                }else{
+                    avatarUrl = SEAPP.PIC_BASE_URL+userInfo.getAvator();
+                }
+                Picasso.with(getActivity())
+                        .load(avatarUrl)
+                        .placeholder(R.drawable.ic_default_avatar)
+                        .error(R.drawable.ic_default_avatar)
+                        .into(avatar);
+            }else{
+                avatar.setBackgroundResource(R.drawable.ic_default_avatar);
+            }
+
             try {
                 FileOutputStream fos = SEConfig.getInstance().getContext().openFileOutput(SEAuthManager.AUTH_CONFIG_FILENAME, Context.MODE_PRIVATE);
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -243,18 +273,6 @@ public class UserFragment extends SuperFragment {
                 knowledgeBottomIndicator.setVisibility(View.VISIBLE);
                 break;
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
     }
 
 }

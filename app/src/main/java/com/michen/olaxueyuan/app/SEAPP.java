@@ -26,14 +26,14 @@ public class SEAPP extends Application {
 
         final String API_BASE_URL = "http://api.olaxueyuan.com";
 //        final String API_BASE_URL = "http://123.59.129.137:8080";
-        SEConfig.getInstance().init(API_BASE_URL, "欧拉联考 v1.1", this);
+        SEConfig.getInstance().init(API_BASE_URL, "欧拉联考 v1.2.1", this);
 
         /**
          * 开源框架 Image-Loader
          */
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder() //
-                .showImageForEmptyUri(R.drawable.ic_launcher) //
-                .showImageOnFail(R.drawable.ic_launcher) //
+                .showImageForEmptyUri(R.drawable.icon_launcher) //
+                .showImageOnFail(R.drawable.icon_launcher) //
                 .cacheInMemory(true) //
                 .cacheOnDisk(true) //
                 .build();//

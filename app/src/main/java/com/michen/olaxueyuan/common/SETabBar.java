@@ -98,10 +98,10 @@ public class SETabBar extends FrameLayout {
                     normalBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_point_normal);
                     break;
                 case 1:
-                    normalBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_exam_normal);
+                    normalBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_course_normal);
                     break;
                 case 2:
-                    normalBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_course_normal);
+                    normalBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_home_normal);
                     break;
                 case 3:
                     normalBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_circle_normal);
@@ -123,10 +123,10 @@ public class SETabBar extends FrameLayout {
                 selectedBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_point_selected);
                 break;
             case 1:
-                selectedBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_exam_selected);
+                selectedBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_course_selected);
                 break;
             case 2:
-                selectedBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_course_selected);
+                selectedBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_home_selected);
                 break;
             case 3:
                 selectedBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_circle_selected);

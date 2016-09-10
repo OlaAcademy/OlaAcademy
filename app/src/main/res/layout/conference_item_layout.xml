@@ -1,0 +1,144 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_light"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="98dp">
+
+        <RelativeLayout
+            android:background="@drawable/conference_list_bg"
+            android:id="@+id/homeworkRL"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="32dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="12dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="25dp">
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/normal_text_15dp_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="概率组合" />
+
+            <ImageView
+                android:id="@+id/time_icon"
+                android:layout_width="11dp"
+                android:layout_height="11dp"
+                android:layout_below="@+id/title"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/iconfont_shijian" />
+
+            <TextView
+                android:id="@+id/time_text"
+                style="@style/hint_text_10dp_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@+id/time_icon"
+                android:gravity="center"
+                android:text="8月12号" />
+
+            <ImageView
+                android:id="@+id/course_num_icon"
+                android:layout_width="11dp"
+                android:layout_height="11dp"
+                android:layout_below="@+id/title"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@+id/time_text"
+                android:src="@drawable/iconfont_shujuku" />
+
+            <TextView
+                android:id="@+id/course_num_text"
+                style="@style/hint_text_10dp_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@+id/course_num_icon"
+                android:gravity="center"
+                android:text="50道小题" />
+
+            <TextView
+                android:id="@+id/group_name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/time_icon"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/study_group_text_bg"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="陈建数学群"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <com.michen.olaxueyuan.common.CircleProgressBar
+                android:id="@+id/circle_progress"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                app:progress_stroke_width="3dp"
+                app:style_circle="solid" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/left_layout"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:id="@+id/top_line"
+                android:layout_width="1dp"
+                android:layout_height="35dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/main_color" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/top_line"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/shape_circle"
+                android:gravity="center"
+                android:text="07"
+                android:textColor="@color/main_color"
+                android:textSize="10sp" />
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/time"
+                android:layout_centerHorizontal="true"
+                android:background="@color/main_color" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

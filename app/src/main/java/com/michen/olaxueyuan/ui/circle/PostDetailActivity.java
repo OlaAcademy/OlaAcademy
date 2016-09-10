@@ -3,8 +3,11 @@ package com.michen.olaxueyuan.ui.circle;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -32,8 +36,10 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
-import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
+import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
+import com.michen.olaxueyuan.sharesdk.ShareModel;
+import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
@@ -43,16 +49,20 @@ import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.utils.UIHandler;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class PostDetailActivity extends SEBaseActivity {
+public class PostDetailActivity extends SEBaseActivity implements PlatformActionListener, Handler.Callback {
     @Bind(R.id.avatar)
     RoundRectImageView avatar;
     @Bind(R.id.title)
@@ -82,12 +92,15 @@ public class PostDetailActivity extends SEBaseActivity {
     @Bind(R.id.bt_send)
     Button btSend;
 
-    OLaCircleModule.ResultBean resultBean;
+    private SharePopupWindow shareView;
+
     PostCommentAdapter commentAdapter;
     private Context mContext;
     private LocationClient mLocationClient;
     private String location;
     private CommentModule.ResultBean commentResultBean;
+    private int circleId;
+    private PostDetailModule.ResultBean resultBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,20 +110,72 @@ public class PostDetailActivity extends SEBaseActivity {
         EventBus.getDefault().register(this);
         mContext = this;
         etContent.clearFocus();
-        setTitleText("欧拉分享详情");
+        setTitleText("欧拉分享");
         initView();
         locations();
         getCommentListData();
     }
 
     private void initView() {
-        resultBean = (OLaCircleModule.ResultBean) getIntent().getSerializableExtra("OLaCircleModule.ResultBean");
-        final int type = resultBean.getType();
+        circleId = getIntent().getIntExtra("circleId", 0);
+        queryCircleDetail(String.valueOf(circleId));
+        commentAdapter = new PostCommentAdapter(mContext);
+        listView.setAdapter(commentAdapter);
+    }
+
+    private void getCommentListData() {
+        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        QuestionCourseManager.getInstance().getCommentList(String.valueOf(circleId), "2", new Callback<CommentModule>() {
+            @Override
+            public void success(CommentModule commentModule, Response response) {
+                Logger.json(commentModule);
+                SVProgressHUD.dismiss(mContext);
+                if (commentModule.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(mContext, commentModule.getMessage(), 2.0f);
+                } else {
+                    commentAdapter.upDateData(commentModule.getResult());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                SVProgressHUD.dismiss(mContext);
+            }
+        });
+    }
+
+    private void queryCircleDetail(String circleId) {
+        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        QuestionCourseManager.getInstance().queryCircleDetail(circleId, new Callback<PostDetailModule>() {
+            @Override
+            public void success(PostDetailModule postDetailModule, Response response) {
+                SVProgressHUD.dismiss(mContext);
+                if (postDetailModule.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(mContext, postDetailModule.getMessage(), 2.0f);
+                } else {
+                    resultBean=postDetailModule.getResult();
+                    updateDetail(postDetailModule.getResult());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                SVProgressHUD.dismiss(mContext);
+            }
+        });
+    }
+
+    private void updateDetail(PostDetailModule.ResultBean resultBean) {
         avatar.setRectAdius(100);
         title.setText(resultBean.getUserName());
-        //缺一个头像
         if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
-            Picasso.with(mContext).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + resultBean.getUserAvatar()).placeholder(R.drawable.ic_default_avatar)
+            String avatarUrl = "";
+            if (resultBean.getUserAvatar().indexOf("jpg") != -1) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + resultBean.getUserAvatar();
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + resultBean.getUserAvatar();
+            }
+            Picasso.with(mContext).load(avatarUrl).placeholder(R.drawable.ic_default_avatar)
                     .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(avatar);
         } else {
             avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
@@ -142,30 +207,6 @@ public class PostDetailActivity extends SEBaseActivity {
         } else {
             gridview.setVisibility(View.GONE);
         }
-
-        commentAdapter = new PostCommentAdapter(mContext);
-        listView.setAdapter(commentAdapter);
-    }
-
-    private void getCommentListData() {
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
-        QuestionCourseManager.getInstance().getCommentList(String.valueOf(resultBean.getCircleId()), "2", new Callback<CommentModule>() {
-            @Override
-            public void success(CommentModule commentModule, Response response) {
-                Logger.json(commentModule);
-                SVProgressHUD.dismiss(mContext);
-                if (commentModule.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(mContext, commentModule.getMessage(), 2.0f);
-                } else {
-                    commentAdapter.upDateData(commentModule.getResult());
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(mContext);
-            }
-        });
     }
 
     private ArrayList<String> getListFromString(String images) {
@@ -202,7 +243,7 @@ public class PostDetailActivity extends SEBaseActivity {
                 this.commentResultBean = null;
                 break;
             case R.id.share:
-                ToastUtil.showToastShort(mContext, "分享");
+                share();
                 break;
             case R.id.bt_send:
                 addComment();
@@ -214,7 +255,7 @@ public class PostDetailActivity extends SEBaseActivity {
 
     private void praise() {
         SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
-        MCCircleManager.getInstance().praiseCirclePost(String.valueOf(resultBean.getCircleId()), new Callback<PraiseCirclePostResult>() {
+        MCCircleManager.getInstance().praiseCirclePost(String.valueOf(circleId), new Callback<PraiseCirclePostResult>() {
             @Override
             public void success(PraiseCirclePostResult mcCommonResult, Response response) {
                 SVProgressHUD.dismiss(mContext);
@@ -234,6 +275,27 @@ public class PostDetailActivity extends SEBaseActivity {
         });
     }
 
+    private void share() {
+        PostDetailModule.ResultBean circle = resultBean;
+        shareView = new SharePopupWindow(this);
+        shareView.setPlatformActionListener(this);
+        ShareModel model = new ShareModel();
+        if (circle.getUserAvatar().indexOf("jpg") != -1) {
+            model.setImageUrl("http://api.olaxueyuan.com/upload/" + circle.getUserAvatar());
+        } else {
+            model.setImageUrl(SEAPP.PIC_BASE_URL + circle.getUserAvatar());
+        }
+        model.setText(circle.getContent());
+        model.setTitle("欧拉学院");
+        model.setUrl(SEConfig.getInstance().getAPIBaseURL() + "/circlepost.html?circleId=" + circle.getId());
+        shareView.initShareParams(model);
+        shareView.showShareWindow();
+        // 显示窗口 (设置layout在PopupWindow中显示的位置)
+        shareView.showAtLocation(findViewById(R.id.circle_detail),
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
+
     /**
      * {@link com.michen.olaxueyuan.ui.adapter.PostCommentAdapter#getView(int, View, ViewGroup)}
      */
@@ -246,11 +308,11 @@ public class PostDetailActivity extends SEBaseActivity {
     private void addComment() {
         SEUser user = SEAuthManager.getInstance().getAccessUser();
         if (user != null) {
-            String postId = String.valueOf(resultBean.getCircleId());
+            String postId = String.valueOf(circleId);
             String toUserId;
             String content = etContent.getText().toString().trim();
             if (TextUtils.isEmpty(content)) {
-                ToastUtil.showToastShort(mContext,R.string.fill_comment_content);
+                ToastUtil.showToastShort(mContext, R.string.fill_comment_content);
                 return;
             }
             if (commentResultBean != null) {
@@ -260,26 +322,21 @@ public class PostDetailActivity extends SEBaseActivity {
                 toUserId = "";
             }
             SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
-//            Logger.e("user.getId()==" + user.getId());
-//            Logger.e("postId==" + postId);
-//            Logger.e("toUserId==" + toUserId);
-//            Logger.e("content==" + content);
-//            Logger.e("location==" + location);
             QuestionCourseManager.getInstance().addComment(user.getId(), postId, toUserId
                     , content, location, "2", new Callback<CommentSucessResult>() {
-                @Override
-                public void success(CommentSucessResult commentSuccess, Response response) {
-                    SVProgressHUD.dismiss(mContext);
-                    etContent.setText("");
-                    etContent.clearComposingText();
-                    getCommentListData();
-                }
+                        @Override
+                        public void success(CommentSucessResult commentSuccess, Response response) {
+                            SVProgressHUD.dismiss(mContext);
+                            etContent.setText("");
+                            etContent.clearComposingText();
+                            getCommentListData();
+                        }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    SVProgressHUD.dismiss(mContext);
-                }
-            });
+                        @Override
+                        public void failure(RetrofitError error) {
+                            SVProgressHUD.dismiss(mContext);
+                        }
+                    });
             this.commentResultBean = null;
         } else {
             startActivity(new Intent(mContext, UserLoginActivity.class));
@@ -330,5 +387,50 @@ public class PostDetailActivity extends SEBaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    /////////////////////// 分享相关  ///////////////////////
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (shareView != null) {
+            shareView.dismiss();
+        }
+    }
+
+    @Override
+    public void onCancel(Platform arg0, int arg1) {
+        Message msg = new Message();
+        msg.what = 0;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public void onComplete(Platform plat, int action,
+                           HashMap<String, Object> res) {
+        Message msg = new Message();
+        msg.arg1 = 1;
+        msg.arg2 = action;
+        msg.obj = plat;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public void onError(Platform arg0, int arg1, Throwable arg2) {
+        Message msg = new Message();
+        msg.what = 1;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        int what = msg.what;
+        if (what == 1) {
+            Toast.makeText(this, "分享失败", Toast.LENGTH_SHORT).show();
+        }
+        if (shareView != null) {
+            shareView.dismiss();
+        }
+        return false;
     }
 }

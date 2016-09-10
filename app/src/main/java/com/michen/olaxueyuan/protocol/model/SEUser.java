@@ -19,6 +19,15 @@ public class SEUser implements Serializable {
     private String sex;
     private String local;
     private String vipTime;
+    private int isActive;// 1 学生 2 老师
+
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
+    }
 
     private boolean _isDataDirty = false;
 

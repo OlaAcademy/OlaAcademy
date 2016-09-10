@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:paddingLeft="20dp">
+
+        <ImageView
+            android:id="@+id/icon_course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/iconfont_shaixuantubiaogaozhuanqu" />
+
+        <TextView
+            android:id="@+id/today_homework"
+            style="@style/title_text_17dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/icon_course"
+            android:gravity="center"
+            android:text="今日作业" />
+
+        <TextView
+            android:id="@+id/course_more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:background="@drawable/selector_white_item_bg"
+            android:gravity="bottom"
+            android:paddingBottom="12dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="显示全部"
+            android:textColor="@color/title_hint_text_color"
+            android:textSize="10dp" />
+    </RelativeLayout>
+
+    <View style="@style/line_horizontal_margin_10dp" />
+
+    <RelativeLayout
+        android:id="@+id/homeworkRL"
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/normal_text_15dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="概率组合" />
+
+        <ImageView
+            android:id="@+id/time_icon"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_below="@+id/title"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/iconfont_shijian" />
+
+        <TextView
+            android:id="@+id/time_text"
+            style="@style/hint_text_10dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/time_icon"
+            android:gravity="center"
+            android:text="8月12号" />
+
+        <ImageView
+            android:id="@+id/course_num_icon"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_below="@+id/title"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@+id/time_text"
+            android:src="@drawable/iconfont_shujuku" />
+
+        <TextView
+            android:id="@+id/course_num_text"
+            style="@style/hint_text_10dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/course_num_icon"
+            android:gravity="center"
+            android:text="50道小题" />
+
+        <TextView
+            android:id="@+id/group_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/time_icon"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/study_group_text_bg"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="陈建数学群"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+
+        <com.michen.olaxueyuan.common.CircleProgressBar
+            android:id="@+id/circle_progress"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            app:progress_stroke_width="3dp"
+            app:style_circle="solid" />
+    </RelativeLayout>
+</LinearLayout>

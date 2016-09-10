@@ -1,0 +1,41 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.michen.olaxueyuan.ui.question.QuestionFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/title_layout" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_head_question" />
+
+        <TextView
+            android:id="@+id/question_name"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:background="@color/title_hint_color"
+            android:gravity="bottom"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:text="北京考试大全"
+            android:textColor="@color/title_hint_text_color"
+            android:textSize="14dp" />
+
+        <com.snail.pulltorefresh.PullToRefreshExpandableListView
+            android:id="@+id/expandableListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</FrameLayout>

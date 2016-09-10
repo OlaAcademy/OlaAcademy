@@ -1,0 +1,115 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:paddingBottom="18dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="18dp"
+    android:weightSum="4">
+
+    <LinearLayout
+        android:id="@+id/put_question_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/selector_white_item_bg"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/tiwen_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:text="@string/my_question"
+            android:textColor="@color/normal_text_color"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/find_teacher_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/selector_white_item_bg"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/laoshi_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:text="@string/find_teacher"
+            android:textColor="@color/normal_text_color"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/find_data_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/selector_white_item_bg"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/ziliao_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:text="@string/find_data"
+            android:textColor="@color/normal_text_color"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/find_data_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/selector_white_item_bg"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/ruqun_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:text="@string/join_group"
+            android:textColor="@color/normal_text_color"
+            android:textSize="12dp" />
+    </LinearLayout>
+</LinearLayout>

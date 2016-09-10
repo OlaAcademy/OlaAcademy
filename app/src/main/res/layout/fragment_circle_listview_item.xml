@@ -107,6 +107,6 @@
             android:layout_marginLeft="70dp"
             android:layout_toRightOf="@+id/comment"
             android:padding="8dp"
-            android:src="@drawable/icon_comment" />
+            android:src="@drawable/icon_share" />
     </RelativeLayout>
 </LinearLayout>

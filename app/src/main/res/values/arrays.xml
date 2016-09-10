@@ -10,4 +10,32 @@
         <item>课程</item>
         <item>教材</item>
     </string-array>
+    <string-array name="circle_select">
+        <item>全部</item>
+        <item>学习记录</item>
+        <item>欧拉分享</item>
+    </string-array>
+
+    <!--顺序：知识点、模考、真题-->
+    <string-array name="question_select_maths">
+        <item>陈剑数学高分指南</item>
+        <item>数学预测八套卷</item>
+        <item>历年真题名家详解</item>
+    </string-array>
+    <string-array name="question_select_english">
+        <item>阅读基本功之长难句</item>
+        <item>薛冰英语阅读详解</item>
+        <item>历年真题名家详解</item>
+    </string-array>
+    <string-array name="question_select_logic">
+        <item>杨武金逻辑顿悟精炼</item>
+        <item>逻辑预测八套卷</item>
+        <item>历年真题名家详解</item>
+    </string-array>
+    <string-array name="question_select_writing">
+        <item>陈君华写作高分指南</item>
+        <item>写作预测八套卷</item>
+        <item>历年真题名家详解</item>
+    </string-array>
+    <!--结束-->
 </resources>

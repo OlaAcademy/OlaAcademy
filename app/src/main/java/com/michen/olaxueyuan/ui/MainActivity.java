@@ -2,22 +2,25 @@ package com.michen.olaxueyuan.ui;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
 import com.baidu.autoupdatesdk.UICheckUpdateCallback;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.sriramramani.droid.inspector.server.ViewServer;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.common.message.UmengMessageDeviceConfig;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.MsgConstant;
+import com.umeng.message.PushAgent;
 
 import cn.sharesdk.framework.ShareSDK;
 
 public class MainActivity extends BaseSearchActivity {
 
     private ProgressDialog dialog;
-
-    public MainActivity() {
-        super();
-    }
+    PushAgent mPushAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,24 @@ public class MainActivity extends BaseSearchActivity {
         setContentView(R.layout.activity_main);
 
         ShareSDK.initSDK(this);
+        mPushAgent = PushAgent.getInstance(this);
+        mPushAgent.onAppStart();
+        mPushAgent.enable(new IUmengRegisterCallback() {
+            @Override
+            public void onRegistered(String s) {
+                Logger.e("s==" + s);
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        updateStatus();
+                    }
+                });
+            }
+        });
+//        String device_token = UmengRegistrar.getRegistrationId(this);
+//        Logger.e("device_token==" + device_token);
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -42,21 +63,19 @@ public class MainActivity extends BaseSearchActivity {
         BDAutoUpdateSDK.uiUpdateAction(this, new MyUICheckUpdateCallback());
     }
 
-    private class MyUICheckUpdateCallback implements UICheckUpdateCallback {
+    public Handler handler = new Handler();
 
-        @Override
-        public void onCheckComplete() {
-            dialog.dismiss();
-        }
+    private void updateStatus() {
+        String pkgName = getApplicationContext().getPackageName();
+        String info = String.format("==enabled:%s\nisRegistered:%s\nDeviceToken:%s\n" +
+                        "SdkVersion:%s\nAppVersionCode:%s\nAppVersionName:%s",
+                mPushAgent.isEnabled(), mPushAgent.isRegistered(),
+                mPushAgent.getRegistrationId(), MsgConstant.SDK_VERSION,
+                UmengMessageDeviceConfig.getAppVersionCode(this), UmengMessageDeviceConfig.getAppVersionName(this));
+        Logger.e("应用包名：" + pkgName + "\n" + info);
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dialog.dismiss();
-        ShareSDK.stopSDK(this);
-        ViewServer.get(this).removeWindow(this);
+        Logger.e("updateStatus===:" + String.format("enabled:%s  isRegistered:%s",
+                mPushAgent.isEnabled(), mPushAgent.isRegistered()));
     }
 
     @Override
@@ -71,4 +90,24 @@ public class MainActivity extends BaseSearchActivity {
         MobclickAgent.onPause(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.dismiss();
+        ShareSDK.stopSDK(this);
+        ViewServer.get(this).removeWindow(this);
+    }
+
+    public MainActivity() {
+        super();
+    }
+
+    private class MyUICheckUpdateCallback implements UICheckUpdateCallback {
+
+        @Override
+        public void onCheckComplete() {
+            dialog.dismiss();
+        }
+
+    }
 }

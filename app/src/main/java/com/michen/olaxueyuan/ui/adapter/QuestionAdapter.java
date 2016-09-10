@@ -103,13 +103,13 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (list.get(groupPosition).isExpanded()) {
+       /* if (list.get(groupPosition).isExpanded()) {
 //            Logger.e("isExpanded==" + list.get(groupPosition).isExpanded());
             holder.line.setVisibility(View.VISIBLE);
         } else {
 //            Logger.e("isExpanded==" + list.get(groupPosition).isExpanded());
             holder.line.setVisibility(View.GONE);
-        }
+        }*/
 //        Picasso.with(context).load(list.get(groupPosition).getAddress()).resize(17, 17).config(Bitmap.Config.RGB_565)
 //                .placeholder(R.drawable.ic_launcher_imageview).into(holder.questionAddIcon);
         return convertView;
@@ -159,11 +159,11 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
                     holder.progressBar.setProgress((subNum * 100) / subAllNum);
                 }
             }
-            if (childPosition == list.get(groupPosition).getChild().size() - 1) {
+           /* if (childPosition == list.get(groupPosition).getChild().size() - 1) {
                 holder.lineBottom.setVisibility(View.GONE);
             } else {
                 holder.lineBottom.setVisibility(View.VISIBLE);
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }

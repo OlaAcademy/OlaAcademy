@@ -3,17 +3,18 @@ package com.michen.olaxueyuan.ui.me.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.Utils;
-import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
-import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -82,12 +83,16 @@ public class SystemCourseAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, SystemVideoActivity.class);
-                intent.putExtra("pid", String.valueOf(list.get(position).getId()));
-                intent.putExtra("ResultEntity",list.get(position));
-//                Logger.e("courseId==" + list.get(position).getId());
-                context.startActivity(intent);
-//                ToastUtil.showShortToast(context, "我是第" + position + "个");
+                if (list.get(position).getType().equals("1")) {
+                    Intent intent = new Intent(context, SystemVideoActivity.class);
+                    intent.putExtra("pid", String.valueOf(list.get(position).getId()));
+                    intent.putExtra("ResultEntity", list.get(position));
+                    context.startActivity(intent);
+                } else {
+                    Uri uri = Uri.parse(list.get(position).getUrl());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    context.startActivity(intent);
+                }
             }
         });
         return convertView;

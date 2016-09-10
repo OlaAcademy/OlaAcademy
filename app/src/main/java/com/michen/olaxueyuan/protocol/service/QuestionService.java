@@ -4,8 +4,12 @@ import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
 import com.michen.olaxueyuan.protocol.result.MCQuestionListResult;
+import com.michen.olaxueyuan.protocol.result.MessageListResult;
+import com.michen.olaxueyuan.protocol.result.MessageRecordResult;
+import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
+import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 
 import retrofit.Callback;
@@ -75,12 +79,14 @@ public interface QuestionService {
      *
      * @param circleId
      * @param pageSize
+     * @param type
      * @param cb
      */
     @FormUrlEncoded
     @POST("/ola/circle/getCircleList")
     void getCircleList(@Field("circleId") String circleId,
                        @Field("pageSize") String pageSize,
+                       @Field("type") String type,
                        Callback<OLaCircleModule> cb);
 
     /**
@@ -116,5 +122,50 @@ public interface QuestionService {
                     @Field("location") String location,
                     @Field("type") String type,
                     Callback<CommentSucessResult> cb);
+
+    /**
+     * 消息列表
+     *
+     * @param userId
+     * @param messageId 当前页最后一条的id
+     * @param pageSize  每页条数
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/message/getMessageList")
+    void getMessageList(@Field("userId") String userId,
+                        @Field("messageId") String messageId,
+                        @Field("pageSize") String pageSize,
+                        Callback<MessageListResult> cb);
+
+    /**
+     * 消息标记为已读
+     *
+     * @param userId
+     * @param messageIds 消息id拼接的字符串
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/message/addMessageRecord")
+    void addMessageRecord(@Field("userId") String userId,
+                          @Field("messageIds") String messageIds,
+                          Callback<MessageRecordResult> cb);
+
+    /**
+     * 未读消息数
+     *
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/message/getUnreadCount")
+    void getUnreadCount(@Field("userId") String userId,
+                        Callback<MessageUnReadResult> cb);
+
+    @FormUrlEncoded
+    @POST("/ola/circle/queryCircleDetail")
+    void queryCircleDetail(@Field("circleId") String circleId,
+                           Callback<PostDetailModule> cb);
+
 
 }

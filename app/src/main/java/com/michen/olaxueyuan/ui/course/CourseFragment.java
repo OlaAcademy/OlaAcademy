@@ -74,16 +74,7 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
             }
         });
-        courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SECourseCate courseCate = (SECourseCate) adapter.getItem(position - 1);
-                int cid = courseCate.getId();
-                Intent intent = new Intent(getActivity(), CourseListActivity.class);
-                intent.putExtra("cid", cid);
-                startActivity(intent);
-            }
-        });
+
         return mMainView;
     }
 
