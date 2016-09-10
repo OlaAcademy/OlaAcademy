@@ -31,11 +31,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="38dp">
 
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="11dp"
+                    android:background="@color/blue_light" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="18dp"
                     android:text="@string/newest_answer"
                     android:textColor="@color/black_272b36"
                     android:textSize="16sp" />
@@ -115,11 +122,18 @@
                 android:layout_marginBottom="2dp"
                 android:visibility="visible">
 
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="13dp"
+                    android:background="@color/blue_light" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="18dp"
                     android:text="精品课程"
                     android:textColor="@color/black_272b36"
                     android:textSize="16sp" />
@@ -149,7 +163,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_quality_course"
                 android:layout_width="match_parent"
-                android:layout_height="120dp" />
+                android:layout_height="140dp" />
 
             <View
                 style="@style/line_horizontal"
@@ -161,11 +175,18 @@
                 android:layout_marginBottom="2dp"
                 android:visibility="visible">
 
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="13dp"
+                    android:background="@color/blue_light" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="18dp"
                     android:text="课程库"
                     android:textColor="@color/black_272b36"
                     android:textSize="16sp" />
@@ -195,7 +216,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_course_database"
                 android:layout_width="match_parent"
-                android:layout_height="120dp" />
+                android:layout_height="140dp" />
 
             <View
                 style="@style/line_horizontal"
@@ -203,7 +224,7 @@
                 android:layout_marginBottom="5dp" />
 
         </LinearLayout>
-        </com.snail.pulltorefresh.PullToRefreshScrollView>
+    </com.snail.pulltorefresh.PullToRefreshScrollView>
     <!--</ScrollView>-->
 
 </LinearLayout>

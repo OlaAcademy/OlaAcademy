@@ -6,17 +6,24 @@
     android:orientation="vertical">
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="13dp"
+            android:background="@color/blue_light" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:text="asd"
             android:textSize="16sp" />
 
         <TextView
@@ -24,29 +31,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:text="显示全部"
             android:textColor="#a8aaad"
-            android:text="显示全部"/>
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_margin="10dp"
-        android:background="#e6e6e6"/>
+        android:background="#e6e6e6" />
 
     <com.michen.olaxueyuan.ui.common.HorizontalListView
         android:id="@+id/horizontalListView"
         android:layout_width="fill_parent"
-        android:layout_height="130dp"
+        android:layout_height="140dp"
         android:divider="@null"
         widget:dividerWidth="2dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="#e6e6e6"/>
+        android:background="#e6e6e6" />
 
 </LinearLayout>
