@@ -26,9 +26,11 @@ import de.greenrobot.event.EventBus;
 public class GroupListAdapter extends BaseAdapter {
     private Context mContext;
     List<UserGroupListResult.ResultEntity> list = new ArrayList<>();
+    private int subjectType;
 
-    public GroupListAdapter(Context mContext) {
+    public GroupListAdapter(Context mContext,int subjectType) {
         this.mContext = mContext;
+        this.subjectType=subjectType;
     }
 
     public void updateData(List<UserGroupListResult.ResultEntity> list) {
@@ -61,13 +63,6 @@ public class GroupListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        try {
-            holder.avatar.setRectAdius(100);
-            Picasso.with(mContext).load(list.get(position).getAvatar()).config(Bitmap.Config.RGB_565)
-                    .placeholder(R.drawable.default_index).error(R.drawable.ic_default_avatar).into(holder.avatar);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         holder.title.setText(list.get(position).getName());
         holder.memberCount.setText(list.get(position).getNumber() + "人");
         holder.introduceText.setText(list.get(position).getProfile());
@@ -82,9 +77,16 @@ public class GroupListAdapter extends BaseAdapter {
                 /**
                  * {@link com.michen.olaxueyuan.ui.group.GroupListFragment#onEventMainThread(JoinGroupEvent)}
                  */
-                EventBus.getDefault().post(new JoinGroupEvent(list.get(position).getIsMember() + 1, true, String.valueOf(list.get(position).getId())));
+                EventBus.getDefault().post(new JoinGroupEvent(list.get(position).getIsMember() + 1, true, String.valueOf(list.get(position).getId()),subjectType));
             }
         });
+        try {
+            holder.avatar.setRectAdius(100);
+            Picasso.with(mContext).load(list.get(position).getAvatar()).config(Bitmap.Config.RGB_565)
+                    .placeholder(R.drawable.default_index).error(R.drawable.ic_default_avatar).into(holder.avatar);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

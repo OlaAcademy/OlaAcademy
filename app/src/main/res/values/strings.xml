@@ -110,5 +110,6 @@
     <string name="listView_footer_hint_normal">查看更多</string>
     <string name="month">%s月</string>
     <string name="data_base">资料库</string>
+    <string name="course_database">课程库</string>
 
 </resources>
