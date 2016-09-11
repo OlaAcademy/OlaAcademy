@@ -375,6 +375,7 @@
     <color name="white_light">#f8f8f8</color>
     <color name="line_d5d5d5">#d5d5d5</color>
     <color name="bottom_bar_bg">#f3f3f3</color>
+    <color name="red_f01c06">#f01c06</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>

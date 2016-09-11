@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.michen.olaxueyuan.common.RoundRectImageView
+                android:id="@+id/group_avatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="35dp"
+                android:src="@drawable/ic_default_avatar" />
+
+            <TextView
+                android:id="@+id/group_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:text="作业群号："
+                android:textColor="@color/black_one"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/share_group_or_tell_group_num"
+                android:textColor="@color/black_a4a6a9"
+                android:textSize="12dp" />
+
+            <Button
+                android:id="@+id/invitation_friend"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="35dp"
+                android:background="@drawable/shape_rectangle_corner25_fill_blue"
+                android:text="@string/invitation_friend_join"
+                android:textColor="@color/white"
+                android:textSize="17dp" />
+
+            <RelativeLayout
+                android:id="@+id/group_name_view"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <View style="@style/line_horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/group_name"
+                    android:textColor="@color/black_one"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/group_name_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/group_name_img"
+                    android:text="欧拉学院"
+                    android:textColor="@color/black_a4a6a9" />
+
+                <ImageView
+                    android:id="@+id/group_name_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_next" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/intro_view"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <View style="@style/line_horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/introduction"
+                    android:textColor="@color/black_one"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_next" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/notice_view"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <View style="@style/line_horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/group_notice"
+                    android:textColor="@color/black_one"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/notice_hint_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/notice_img"
+                    android:text="未发布公告"
+                    android:textColor="@color/black_a4a6a9" />
+
+                <ImageView
+                    android:id="@+id/notice_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_next" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/group_member_view"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <View style="@style/line_horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/group_member"
+                    android:textColor="@color/black_one"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/group_member_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/group_member_img"
+                    android:text="0"
+                    android:textColor="@color/black_a4a6a9" />
+
+                <ImageView
+                    android:id="@+id/group_member_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_next" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/work_history_view"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <View style="@style/line_horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/work_history"
+                    android:textColor="@color/black_one"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/work_history_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/work_history_img"
+                    android:text="0"
+                    android:textColor="@color/black_a4a6a9" />
+
+                <ImageView
+                    android:id="@+id/work_history_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_next" />
+            </RelativeLayout>
+            <Button
+                android:id="@+id/dissolution_group"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="35dp"
+                android:background="@drawable/shape_rectangle_red_one_dp"
+                android:text="@string/dissolution_group"
+                android:textColor="@color/red_f01c06"
+                android:textSize="17dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
