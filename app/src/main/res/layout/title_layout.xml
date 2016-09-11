@@ -28,8 +28,8 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/cancel_message"
-            android:textColor="@color/black_51545d"
-            android:textSize="18dp"
+            android:textColor="@color/title_edge_blue"
+            android:textSize="15dp"
             android:visibility="gone" />
 
         <TextView
@@ -109,8 +109,8 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/send"
-            android:textColor="@color/black_51545d"
-            android:textSize="18dp"
+            android:textColor="@color/title_edge_blue"
+            android:textSize="15dp"
             android:visibility="gone" />
     </RelativeLayout>
 

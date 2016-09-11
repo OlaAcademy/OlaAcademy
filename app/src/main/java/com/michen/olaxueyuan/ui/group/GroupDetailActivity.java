@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.ui.group;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 群详情页
+ */
 public class GroupDetailActivity extends SEBaseActivity {
 
     @Bind(R.id.group_avatar)
@@ -56,14 +60,17 @@ public class GroupDetailActivity extends SEBaseActivity {
 
     @OnClick({R.id.invitation_friend, R.id.group_name_view, R.id.intro_view, R.id.notice_view, R.id.group_member_view, R.id.work_history_view, R.id.dissolution_group})
     public void onClick(View view) {
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.invitation_friend:
+                intent = new Intent(this, InvitationJoinGroupActivity.class);
                 break;
             case R.id.group_name_view:
                 break;
             case R.id.intro_view:
                 break;
             case R.id.notice_view:
+                intent = new Intent(this, GroupNoticeActivity.class);
                 break;
             case R.id.group_member_view:
                 break;
@@ -71,6 +78,9 @@ public class GroupDetailActivity extends SEBaseActivity {
                 break;
             case R.id.dissolution_group:
                 break;
+        }
+        if (intent != null) {
+            startActivity(intent);
         }
     }
 }
