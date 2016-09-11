@@ -55,7 +55,6 @@
         android:layout_below="@id/item_comment_name"
         android:layout_marginBottom="8dp"
         android:lineSpacingExtra="1.2dp"
-        android:minLines="3"
         android:paddingLeft="5dp"
         android:paddingRight="10dp"
         android:textColor="@color/LightTextColor"

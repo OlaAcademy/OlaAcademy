@@ -108,7 +108,7 @@ public class QuestionHomeWorkFragment extends SuperFragment {
         });
         animator.setRepeatCount(ValueAnimator.INFINITE);
         animator.setRepeatCount(0);
-        animator.setDuration(2000);
+        animator.setDuration(1500);
         animator.start();
     }
 

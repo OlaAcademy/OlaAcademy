@@ -1,8 +1,6 @@
 package com.michen.olaxueyuan.ui.course;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.michen.olaxueyuan.R;
@@ -18,7 +16,6 @@ public class CourseListActivity extends SEBaseActivity {
     private ListView courseListView;
     private CourseListAdapter adapter;
 
-
     private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;
 
     @Override
@@ -28,18 +25,12 @@ public class CourseListActivity extends SEBaseActivity {
 
         setTitleText("课程");
 
-        List<MCSubCourse> courseList = (List<MCSubCourse>) getIntent().getSerializableExtra("courseList");
+        final List<MCSubCourse> courseList = (List<MCSubCourse>) getIntent().getSerializableExtra("courseList");
 
         courseListView = (ListView) findViewById(R.id.lv_point);
 
         adapter = new CourseListAdapter(CourseListActivity.this, courseList);
         courseListView.setAdapter(adapter);
-
-        courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            }
-        });
     }
 
 }
