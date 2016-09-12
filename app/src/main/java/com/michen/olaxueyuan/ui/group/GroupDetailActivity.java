@@ -56,6 +56,7 @@ public class GroupDetailActivity extends SEBaseActivity {
     }
 
     private void initView() {
+        groupAvatar.setRectAdius(100);
     }
 
     @OnClick({R.id.invitation_friend, R.id.group_name_view, R.id.intro_view, R.id.notice_view, R.id.group_member_view, R.id.work_history_view, R.id.dissolution_group})
