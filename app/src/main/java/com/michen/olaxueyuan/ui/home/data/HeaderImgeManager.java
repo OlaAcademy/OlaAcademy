@@ -17,6 +17,7 @@ import com.michen.olaxueyuan.common.AutoScrollViewPager;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
+import com.michen.olaxueyuan.ui.course.WebViewActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -178,9 +179,16 @@ public class HeaderImgeManager {
         public void onClick(View v) {
             imgViewpager.stopAutoScroll();
             HomeModule.ResultBean.BannerListBean banner = mBanners.get(position);
-            Intent intent = new Intent(context, CourseVideoActivity.class);
-            intent.putExtra("pid", String.valueOf(banner.getObjectId()));
-            context.startActivity(intent);
+            if (banner.getType()==1){
+                Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra("textUrl", banner.getUrl());
+                context.startActivity(intent);
+            }else{
+                Intent intent = new Intent(context, CourseVideoActivity.class);
+                intent.putExtra("pid", String.valueOf(banner.getObjectId()));
+                context.startActivity(intent);
+            }
+
         }
     }
 

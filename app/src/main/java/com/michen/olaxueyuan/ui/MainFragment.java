@@ -104,7 +104,7 @@ public class MainFragment extends Fragment {
         });
 
         _tabBar.limitTabNum(5);
-        switchToPage(0);
+        switchToPage(2);
 
         return fragmentView;
     }
