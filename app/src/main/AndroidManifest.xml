@@ -407,8 +407,26 @@
             android:name=".ui.umeng.MyPushIntentService"
             android:process=":push" />
 
-        <activity android:name=".ui.question.WebViewActivity" />
-        <activity android:name=".ui.group.GroupListActivity"></activity>
+        <activity
+            android:name=".ui.question.WebViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.group.GroupListActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.group.GroupDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.group.InvitationJoinGroupActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.group.GroupNoticeActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

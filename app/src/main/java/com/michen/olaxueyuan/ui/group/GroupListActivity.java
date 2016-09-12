@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.TitleManager;
-import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.ui.adapter.GroupListViewPagerAdapter;
 
@@ -67,7 +66,7 @@ public class GroupListActivity extends SuperActivity {
     @Override
     public void initView() {
         titleManager = new TitleManager(this, "群列表", this, true);
-        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
+//        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
         groupListViewPagerAdapter = new GroupListViewPagerAdapter(getFragmentManager());
         viewPager.setAdapter(groupListViewPagerAdapter);
         viewPager.setOffscreenPageLimit(4);
@@ -115,9 +114,9 @@ public class GroupListActivity extends SuperActivity {
             case R.id.left_return:
                 finish();
                 break;
-            case R.id.right_response:
-                ToastUtil.showToastShort(this, "我是右上角图标");
-                break;
+//            case R.id.right_response:
+//                ToastUtil.showToastShort(this, "我是右上角图标");
+//                break;
             case R.id.maths_layout:
                 changeTab(true, false, false, false, true, 0);
                 break;

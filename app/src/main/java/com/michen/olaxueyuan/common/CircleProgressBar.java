@@ -126,7 +126,7 @@ public class CircleProgressBar extends ProgressBar {
     /**
      * In order to work well, need to modify some of the following fields through reflection.
      * Another available way: write the following attributes to the xml
-     * <p>
+     * <p/>
      * android:indeterminateOnly="false"
      * android:indeterminate="false"
      */
@@ -221,7 +221,8 @@ public class CircleProgressBar extends ProgressBar {
         canvas.drawArc(mProgressRectF, 0.0f, 360.0f, false, mProgressPaint);
 
         mProgressPaint.setColor(mProgressColor);
-        canvas.drawArc(mProgressRectF, -90.0f, 360.0f * getProgress() / getMax(), false, mProgressPaint);
+//        canvas.drawArc(mProgressRectF, -90.0f, 360.0f * getProgress() / getMax(), false, mProgressPaint);
+        canvas.drawArc(mProgressRectF, -270.0f, 360.0f * getProgress() / getMax(), false, mProgressPaint);
     }
 
     /**

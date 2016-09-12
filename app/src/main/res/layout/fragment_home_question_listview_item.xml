@@ -22,13 +22,14 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="45dp"
         android:layout_toRightOf="@+id/index_num"
         android:ellipsize="end"
-        android:maxLines="2"
+        android:lines="2"
         android:paddingTop="10dp"
-        android:text="标题"
+        android:text=""
         android:textColor="@color/black_51545d"
         android:textSize="15dp" />
 
@@ -38,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/title"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="1小时前"
         android:textColor="@color/black_a4a6a9"
         android:textSize="12dp" />
@@ -49,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/title"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="100人收听"
         android:textColor="@color/black_a4a6a9"
         android:textSize="12dp" />

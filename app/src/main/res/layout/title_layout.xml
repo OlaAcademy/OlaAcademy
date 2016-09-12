@@ -28,8 +28,8 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/cancel_message"
-            android:textColor="@color/black_51545d"
-            android:textSize="18dp"
+            android:textColor="@color/title_edge_blue"
+            android:textSize="15dp"
             android:visibility="gone" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:drawableLeft="@drawable/title_back_nromal"
+            android:drawableLeft="@drawable/ic_back"
             android:gravity="center"
             android:paddingLeft="15dp"
             android:paddingRight="10dp"
@@ -85,7 +85,7 @@
                 android:background="@drawable/ret_dot_shape"
                 android:gravity="center"
                 android:text="99"
-                android:textColor="@color/white"
+                android:textColor="@color/black_51545d"
                 android:textSize="8dp"
                 android:visibility="gone" />
         </FrameLayout>
@@ -109,8 +109,8 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/send"
-            android:textColor="@color/black_51545d"
-            android:textSize="18dp"
+            android:textColor="@color/title_edge_blue"
+            android:textSize="15dp"
             android:visibility="gone" />
     </RelativeLayout>
 

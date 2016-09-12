@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
+import com.michen.olaxueyuan.ui.group.GroupDetailActivity;
 import com.michen.olaxueyuan.ui.home.data.TeacherHomeListAdapter;
 import com.snail.svprogresshud.SVProgressHUD;
 
@@ -200,7 +202,7 @@ public class TeacherHomeFragment extends SuperFragment implements AdapterView.On
                 onRefresh();
                 break;
             case R.id.right_response:
-                ToastUtil.showToastShort(getActivity(),"老师版");
+                startActivity(new Intent(getActivity(), GroupDetailActivity.class));
                 break;
         }
     }

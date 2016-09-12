@@ -149,8 +149,8 @@ public class CourseAdapter extends BaseAdapter {
             holder.tv_all.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context,CourseListActivity.class);
-                    intent.putExtra("courseList", (Serializable)course.subCourseArrayList);
+                    Intent intent = new Intent(context, CourseListActivity.class);
+                    intent.putExtra("courseList", (Serializable) course.subCourseArrayList);
                     context.startActivity(intent);
                 }
             });
@@ -220,11 +220,12 @@ public class CourseAdapter extends BaseAdapter {
                 convertView = View.inflate(context, R.layout.item_gridview_course, null);
                 viewHolder = new GridViewHolder();
                 viewHolder.iv_course = (ImageView) convertView.findViewById(R.id.iv_course);
-                RelativeLayout.LayoutParams linearParams =(RelativeLayout.LayoutParams) viewHolder.iv_course.getLayoutParams();
+                RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) viewHolder.iv_course.getLayoutParams();
                 Resources resources = context.getResources();
                 DisplayMetrics dm = resources.getDisplayMetrics();
-                linearParams.width = dm.widthPixels/2-45;
-                if (position%2==0)
+                linearParams.width = dm.widthPixels / 2 - 45;
+                linearParams.height = linearParams.width * 17 / 31;
+                if (position % 2 == 0)
                     linearParams.setMargins(30, 0, 15, 0);
                 else
                     linearParams.setMargins(15, 0, 30, 0);

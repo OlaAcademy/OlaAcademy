@@ -10,10 +10,14 @@
 
     <include layout="@layout/title_layout" />
 
+    <include
+        android:id="@+id/indicator_view"
+        layout="@layout/fragment_question_indicator" />
+
     <com.snail.pulltorefresh.PullToRefreshListView
         android:id="@+id/infoListView"
-        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FAFAFA" />
+        android:background="#FAFAFA"
+        android:scrollbars="none" />
 </LinearLayout>

@@ -48,7 +48,7 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
 
     private void intView() {
         type = getArguments().getInt("type", 1);
-        adapter = new GroupListAdapter(getActivity());
+        adapter = new GroupListAdapter(getActivity(),type);
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.setOnRefreshListener(this);
         listview.setAdapter(adapter);
@@ -89,7 +89,7 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
      * @param joinGroupEvent
      */
     public void onEventMainThread(JoinGroupEvent joinGroupEvent) {
-        if (joinGroupEvent.isValid) {
+        if (joinGroupEvent.isValid&&type==joinGroupEvent.subjectType) {
             attendGroup(joinGroupEvent.groupId, String.valueOf(joinGroupEvent.type));
         }
     }
