@@ -2,28 +2,99 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/white_light"
     android:orientation="vertical">
 
-    <com.michen.olaxueyuan.common.RoundRectImageView
-        android:id="@+id/add_group_avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/add_group_avatar_icon" />
-
-    <Button
-        android:id="@+id/create_group"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="25dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginRight="35dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/shape_rectangle_corner25_fill_blue"
-        android:text="发布作业"
-        android:textColor="@color/white"
-        android:textSize="17dp" />
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.michen.olaxueyuan.common.RoundRectImageView
+                android:id="@+id/add_group_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="80dp"
+                android:src="@drawable/add_group_avatar_icon" />
+
+            <EditText
+                android:id="@+id/group_name"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:hint="@string/write_group_name"
+                android:maxLength="11"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/black_one"
+                android:textColorHint="@color/line_d5d5d5"
+                android:textSize="12dp" />
+
+            <EditText
+                android:id="@+id/group_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="left"
+                android:hint="@string/write_group_intro"
+                android:maxLength="150"
+                android:minHeight="100dp"
+                android:padding="15dp"
+                android:textColorHint="@color/line_d5d5d5"
+                android:textSize="12dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/agreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/agreement_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/agreement"
+                    android:text="我已阅读并同意"
+                    android:textColor="@color/black_51545d"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/service_declaration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/agreement_text"
+                    android:text="服务声明"
+                    android:textColor="@color/blue_4a8af4"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/create_group"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_rectangle_corner25_fill_blue"
+                android:text="发布作业"
+                android:textColor="@color/white"
+                android:textSize="17dp" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

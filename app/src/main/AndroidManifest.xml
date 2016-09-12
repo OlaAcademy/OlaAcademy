@@ -429,6 +429,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.group.CreateGroupActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
     </application>
