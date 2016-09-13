@@ -119,5 +119,8 @@
     <string name="work_history">作业历史</string>
     <string name="dissolution_group">解散群</string>
     <string name="share_group_or_tell_group_num">分享入群邀请或告知学生群号</string>
+    <string name="write_group_name">填写群名称（2-10个字）</string>
+    <string name="write_group_intro">填写群简介（0-150个字）</string>
+    <string name="my_homework">我的作业</string>
 
 </resources>
