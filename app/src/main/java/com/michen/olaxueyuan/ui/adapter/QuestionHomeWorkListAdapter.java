@@ -68,6 +68,27 @@ public class QuestionHomeWorkListAdapter extends BaseAdapter {
         if (month.startsWith("0")) {
             month = month.substring(1, 2);
         }
+        if (position == 0) {
+            holder.headerLayout.setVisibility(View.VISIBLE);
+            holder.headerLine.setVisibility(View.GONE);
+        } else if (position > 0 && position < list.size()) {
+            String monthBefore = list.get(position - 1).getTime().substring(DEFAULT_INDEX - 1, DEFAULT_INDEX + 1);
+            if (monthBefore.startsWith("0")) {
+                monthBefore = monthBefore.substring(1, 2);
+            }
+            if (monthBefore.equals(month)) {
+                holder.headerLayout.setVisibility(View.GONE);
+                holder.headerLine.setVisibility(View.GONE);
+            } else {
+                holder.headerLayout.setVisibility(View.VISIBLE);
+                holder.headerLine.setVisibility(View.VISIBLE);
+            }
+        }
+        if (position == list.size() - 1) {
+            holder.bottomLine.setVisibility(View.VISIBLE);
+        } else {
+            holder.bottomLine.setVisibility(View.GONE);
+        }
         holder.todayHomework.setText(mContext.getString(R.string.month, month));
         holder.title.setText(list.get(position).getName());
         holder.timeText.setText(list.get(position).getTime());
@@ -115,6 +136,8 @@ public class QuestionHomeWorkListAdapter extends BaseAdapter {
         CircleProgressBar circleProgress;
         @Bind(R.id.homeworkRL)
         RelativeLayout homeworkRL;
+        @Bind(R.id.header_line)
+        View headerLine;
         @Bind(R.id.bottom_line)
         View bottomLine;
 
