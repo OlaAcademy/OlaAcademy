@@ -87,7 +87,7 @@ public class MainFragment extends Fragment {
 
         _tabBar.getItemViewAt(0).setTitleText("考点");
         _tabBar.getItemViewAt(1).setTitleText("题库");
-        _tabBar.getItemViewAt(2).setTitleText("课程");
+        _tabBar.getItemViewAt(2).setTitleText("主页");
         _tabBar.getItemViewAt(3).setTitleText("欧拉圈");
         _tabBar.getItemViewAt(4).setTitleText("我的");
 

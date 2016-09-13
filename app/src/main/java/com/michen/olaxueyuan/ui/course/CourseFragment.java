@@ -1,25 +1,22 @@
 package com.michen.olaxueyuan.ui.course;
 
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.model.MCSubCourse;
-import com.michen.olaxueyuan.protocol.model.SECourseCate;
 import com.michen.olaxueyuan.protocol.result.MCCourseListResult;
 import com.michen.olaxueyuan.ui.BaseSearchActivity;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.manager.TitlePopManager;
 import com.snail.pulltorefresh.PullToRefreshBase;
@@ -30,6 +27,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -39,6 +37,31 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
     TextView titleTv;
     @Bind(R.id.pop_line)
     View popLine;
+    @Bind(R.id.maths_text)
+    TextView mathsText;
+    @Bind(R.id.maths_indicator)
+    View mathsIndicator;
+    @Bind(R.id.maths_layout)
+    RelativeLayout mathsLayout;
+    @Bind(R.id.english_text)
+    TextView englishText;
+    @Bind(R.id.english_indicator)
+    View englishIndicator;
+    @Bind(R.id.english_layout)
+    RelativeLayout englishLayout;
+    @Bind(R.id.logic_text)
+    TextView logicText;
+    @Bind(R.id.logic_indicator)
+    View logicIndicator;
+    @Bind(R.id.logic_layout)
+    RelativeLayout logicLayout;
+    @Bind(R.id.writing_text)
+    TextView writingText;
+    @Bind(R.id.writing_indicator)
+    View writingIndicator;
+    @Bind(R.id.writing_layout)
+    RelativeLayout writingLayout;
+
     private PullToRefreshListView courseListView;
     private CourseAdapter adapter;
     private ArrayList<MCSubCourse> courseArrayList;
@@ -63,6 +86,8 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
         courseListView = (PullToRefreshListView) mMainView.findViewById(R.id.infoListView);
         adapter = new CourseAdapter(getActivity());
         courseListView.setAdapter(adapter);
+        mathsText.setSelected(true);
+        mathsIndicator.setSelected(true);
         performRefresh();
         courseListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
@@ -85,10 +110,7 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
     }
 
     private void setupNavBar() {
-        titleManager = new TitleManager("数学", this, mMainView, false);
-        Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
-        drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
-        titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
+        titleManager = new TitleManager(R.string.course_database, this, mMainView, false);
     }
 
     private void performRefresh() {
@@ -116,13 +138,35 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
         });
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.title_tv:
-                TitlePopManager.getInstance().showPop(getActivity(), titleManager, popLine, this, 3);
+    @OnClick({ R.id.maths_layout, R.id.english_layout, R.id.logic_layout, R.id.writing_layout})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.maths_layout:
+                changeTab(true, false, false, false, 0);
+                break;
+            case R.id.english_layout:
+                changeTab(false, true, false, false, 1);
+                break;
+            case R.id.logic_layout:
+                changeTab(false, false, true, false, 2);
+                break;
+            case R.id.writing_layout:
+                changeTab(false, false, false, true, 3);
                 break;
         }
+    }
+
+    private void changeTab(boolean maths, boolean english, boolean logic, boolean writing, int position) {
+        mathsText.setSelected(maths);
+        mathsIndicator.setSelected(maths);
+        englishText.setSelected(english);
+        englishIndicator.setSelected(english);
+        logicText.setSelected(logic);
+        logicIndicator.setSelected(logic);
+        writingText.setSelected(writing);
+        writingIndicator.setSelected(writing);
+        this.pid = String.valueOf(position + 1);
+        performRefresh();
     }
 
     @Override

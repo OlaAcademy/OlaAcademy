@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -20,7 +21,9 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
+import com.michen.olaxueyuan.ui.group.CreateGroupActivity;
 import com.michen.olaxueyuan.ui.home.data.TeacherHomeListAdapter;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
@@ -200,7 +203,13 @@ public class TeacherHomeFragment extends SuperFragment implements AdapterView.On
                 onRefresh();
                 break;
             case R.id.right_response:
-                ToastUtil.showToastShort(getActivity(),"老师版");
+                if (!SEAuthManager.getInstance().isAuthenticated()) {
+                    Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
+                    startActivity(loginIntent);
+                    return;
+                }
+//                startActivity(new Intent(getActivity(), GroupDetailActivity.class));
+                startActivity(new Intent(getActivity(), CreateGroupActivity.class));
                 break;
         }
     }

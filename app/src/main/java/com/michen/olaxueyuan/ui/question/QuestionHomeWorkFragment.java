@@ -66,13 +66,13 @@ public class QuestionHomeWorkFragment extends SuperFragment {
      * @param questionCourseModule
      */
     public void onEventMainThread(final QuestionCourseModule questionCourseModule) {
-        if (questionCourseModule.getResult().getHomework()!=null){
+        if (questionCourseModule.getResult().getHomework() != null) {
             title.setText(questionCourseModule.getResult().getHomework().getName());
             timeText.setText(questionCourseModule.getResult().getHomework().getTime());
             courseNumText.setText(questionCourseModule.getResult().getHomework().getCount() + "道小题");
             groupNameText.setText(questionCourseModule.getResult().getHomework().getGroupName());
             simulateProgress(questionCourseModule.getResult().getHomework().getFinishedCount() * 100 / questionCourseModule.getResult().getHomework().getCount());
-        }else{
+        } else {
             simulateProgress(0);
             title.setText("欧拉练习");
             groupNameText.setText("欧拉作业群");
@@ -80,13 +80,13 @@ public class QuestionHomeWorkFragment extends SuperFragment {
         homeworkRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SEAuthManager.getInstance().isAuthenticated()){
+                if (SEAuthManager.getInstance().isAuthenticated()) {
                     Intent intent = new Intent(getActivity(), QuestionWebActivity.class);
                     intent.putExtra("objectId", questionCourseModule.getResult().getHomework().getId());
                     intent.putExtra("type", 3);
                     intent.putExtra("courseType", 1); //2 英语阅读
                     startActivity(intent);
-                }else {
+                } else {
                     startActivity(new Intent(getActivity(), UserLoginActivity.class));
                 }
             }
@@ -108,7 +108,7 @@ public class QuestionHomeWorkFragment extends SuperFragment {
         });
         animator.setRepeatCount(ValueAnimator.INFINITE);
         animator.setRepeatCount(0);
-        animator.setDuration(2000);
+        animator.setDuration(1200);
         animator.start();
     }
 
@@ -123,6 +123,7 @@ public class QuestionHomeWorkFragment extends SuperFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.course_more:
+                startActivity(new Intent(getActivity(), QuestionHomeWorkListActivity.class));
                 break;
         }
     }
