@@ -1,6 +1,5 @@
 package com.michen.olaxueyuan.ui.course;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +9,8 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -28,9 +29,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lidroid.xutils.exception.DbException;
+import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.Logger;
+import com.michen.olaxueyuan.common.manager.TitleManager;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.download.DownloadManager;
 import com.michen.olaxueyuan.download.DownloadService;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
@@ -40,15 +46,11 @@ import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.adapter.CourseVideoListAdapter;
+import com.michen.olaxueyuan.ui.course.video.CourseVideoFragmentManger;
 import com.michen.olaxueyuan.ui.course.video.VideoManager;
 import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.common.manager.TitleManager;
-import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.michen.olaxueyuan.common.manager.Utils;
-import com.michen.olaxueyuan.download.DownloadManager;
-import com.michen.olaxueyuan.ui.me.subfragment.UserCourseCollectFragment;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
+import com.michen.olaxueyuan.ui.me.subfragment.UserCourseCollectFragment;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.umeng.analytics.MobclickAgent;
 
@@ -70,7 +72,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CourseVideoActivity extends Activity implements View.OnClickListener, VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication, PlatformActionListener, Handler.Callback {
+public class CourseVideoActivity extends FragmentActivity implements View.OnClickListener, VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication, PlatformActionListener, Handler.Callback {
 
     @Bind(R.id.left_return)
     public TextView leftReturn;
@@ -134,6 +136,20 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     ImageView videoCollectBtn;
     @Bind(R.id.bottom_view)
     public RelativeLayout bottomView;
+    @Bind(R.id.catalig_text)
+    public TextView cataligText;
+    @Bind(R.id.catalog_indicator)
+    public View catalogIndicator;
+    @Bind(R.id.catalog_layout)
+    RelativeLayout catalogLayout;
+    @Bind(R.id.handout_text)
+    public TextView handoutText;
+    @Bind(R.id.handout_indicator)
+    public View handoutIndicator;
+    @Bind(R.id.handout_layout)
+    RelativeLayout handoutLayout;
+    @Bind(R.id.view_pager)
+    public ViewPager mViewPager;
 
     private String courseId;
     private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;
@@ -148,7 +164,6 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     public Context context;
     public MediaControllerView controller;
     public long msec = 0;//是否播放过
-    private boolean isFromNet = true;//false：不从网络请求数据，true：从网络请求接口
     private CourseVideoResult courseVideoResult;
 
     private Context mAppContext;
@@ -215,6 +230,7 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         courseId = getIntent().getExtras().getString("pid");
         new TitleManager(this, getString(R.string.video_detail), this, true);
         mVideoView.setOnClickListener(this);
+        CourseVideoFragmentManger.getInstance().initView(this);
     }
 
     public void initData() {
@@ -226,27 +242,10 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         mVideoView.setOnInfoListener(infoListener);
         mVideoView.setOnVideoPlayFailListener(this);
 //        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
-        isFromNet = getIntent().getBooleanExtra("isFromNet", true);
         CourseVideoResult result = (CourseVideoResult) getIntent().getSerializableExtra("result");
-        if (isFromNet) {
-            performRefresh();
-        } else {
-            fromIntentData(result);
-        }
+        performRefresh();
     }
 
-    public void fromIntentData(CourseVideoResult result) {
-        courseVideoResult = result;
-        videoArrayList = result.getResult().getVideoList();
-        if (videoArrayList != null && videoArrayList.size() > 0) {
-            videoArrayList.get(0).setSelected(true);
-            adapter = new CourseVideoListAdapter(CourseVideoActivity.this);
-            listview.setAdapter(adapter);
-            initListViewItemClick();
-            adapter.updateData(videoArrayList);
-            mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
-        }
-    }
 
     private void initListViewItemClick() {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -298,14 +297,15 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
                 if (result.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(CourseVideoActivity.this, result.getMessage(), 2.0f);
                 } else {
+                    EventBus.getDefault().post(result);
                     courseVideoResult = result;
                     videoArrayList = result.getResult().getVideoList();
                     if (videoArrayList != null && videoArrayList.size() > 0) {
-                        videoArrayList.get(0).setSelected(true);
-                        adapter = new CourseVideoListAdapter(CourseVideoActivity.this);
-                        listview.setAdapter(adapter);
-                        initListViewItemClick();
-                        adapter.updateData(videoArrayList);
+//                        videoArrayList.get(0).setSelected(true);
+//                        adapter = new CourseVideoListAdapter(CourseVideoActivity.this);
+//                        listview.setAdapter(adapter);
+//                        initListViewItemClick();
+//                        adapter.updateData(videoArrayList);
                         mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
 //                        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
                         if (result.getResult().getIsCollect().equals("1")) {
@@ -355,7 +355,7 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
     }
 
     @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return
-            , R.id.video_download_btn, R.id.video_collect_btn,R.id.video_share_btn})
+            , R.id.video_download_btn, R.id.video_collect_btn, R.id.video_share_btn, R.id.catalog_layout, R.id.handout_layout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_return:
@@ -374,8 +374,8 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
                 break;
             case R.id.video_download_btn:
                 if (courseVideoResult != null && courseVideoResult.getResult().getVideoList().size() > 0) {
-                    for (CourseVideoResult.ResultBean.VideoListBean videoInfo: courseVideoResult.getResult().getVideoList()){
-                        if (videoInfo.isSelected()){
+                    for (CourseVideoResult.ResultBean.VideoListBean videoInfo : courseVideoResult.getResult().getVideoList()) {
+                        if (videoInfo.isSelected()) {
                             downloadCourse(videoInfo);
                         }
                     }
@@ -389,15 +389,15 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
                         final String videoId = String.valueOf(courseVideoResult.getResult().getVideoList().get(0).getId());
                         if (courseVideoResult.getResult().getIsCollect().equals("1")) {
                             DialogUtils.showDialog(CourseVideoActivity.this, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    switch (v.getId()) {
-                                        case R.id.yes:
-                                            collectVideo(videoId, "0");
-                                            break;
-                                    }
-                                }
-                            }, getString(R.string.sure_uncollect), getString(R.string.confirm_message)
+                                        @Override
+                                        public void onClick(View v) {
+                                            switch (v.getId()) {
+                                                case R.id.yes:
+                                                    collectVideo(videoId, "0");
+                                                    break;
+                                            }
+                                        }
+                                    }, getString(R.string.sure_uncollect), getString(R.string.confirm_message)
                                     , getString(R.string.cancel_message));
                         } else {
                             collectVideo(videoId, "1");
@@ -407,12 +407,18 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
                 break;
             case R.id.video_share_btn:
                 if (courseVideoResult != null && courseVideoResult.getResult().getVideoList().size() > 0) {
-                    for (CourseVideoResult.ResultBean.VideoListBean videoInfo: courseVideoResult.getResult().getVideoList()){
-                        if (videoInfo.isSelected()){
+                    for (CourseVideoResult.ResultBean.VideoListBean videoInfo : courseVideoResult.getResult().getVideoList()) {
+                        if (videoInfo.isSelected()) {
                             shareCourse(videoInfo);
                         }
                     }
                 }
+                break;
+            case R.id.catalog_layout:
+                mViewPager.setCurrentItem(0);
+                break;
+            case R.id.handout_layout:
+                mViewPager.setCurrentItem(1);
                 break;
             default:
                 break;
@@ -596,7 +602,7 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         });
     }
 
-    private void downloadCourse(CourseVideoResult.ResultBean.VideoListBean videoInfo){
+    private void downloadCourse(CourseVideoResult.ResultBean.VideoListBean videoInfo) {
         String target = "/sdcard/OlaAcademy/" + videoInfo.getId() + ".mp4";
         try {
             downloadManager.addNewDownload(videoInfo.getAddress(),
@@ -611,15 +617,15 @@ public class CourseVideoActivity extends Activity implements View.OnClickListene
         }
     }
 
-    private void shareCourse(CourseVideoResult.ResultBean.VideoListBean videoInfo){
+    private void shareCourse(CourseVideoResult.ResultBean.VideoListBean videoInfo) {
         mVideoView.pause();
         share = new SharePopupWindow(this);
         share.setPlatformActionListener(this);
         ShareModel model = new ShareModel();
-        model.setImageUrl(SEConfig.getInstance().getAPIBaseURL()+"/ola/images/icon.png");
+        model.setImageUrl(SEConfig.getInstance().getAPIBaseURL() + "/ola/images/icon.png");
         model.setText(videoInfo.getName());
         model.setTitle("欧拉学院");
-        model.setUrl("http://api.olaxueyuan.com/course.html?courseId="+courseId);
+        model.setUrl("http://api.olaxueyuan.com/course.html?courseId=" + courseId);
         share.initShareParams(model);
         share.showShareWindow();
         // 显示窗口 (设置layout在PopupWindow中显示的位置)

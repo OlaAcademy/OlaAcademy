@@ -125,7 +125,7 @@ public class MainFragment extends Fragment {
     private BroadcastReceiver changeTabReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            switchToPage(0);
+            switchToPage(2);
         }
     };
 
