@@ -283,6 +283,9 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
             }
         });
     }
+    public void playVideo(int position){
+        mVideoView.setVideoPath(videoArrayList.get(position).getAddress());
+    }
 
     SECourseManager courseManager = SECourseManager.getInstance();
 

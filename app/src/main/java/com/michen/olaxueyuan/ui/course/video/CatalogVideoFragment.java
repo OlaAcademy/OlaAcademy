@@ -14,6 +14,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
 import com.michen.olaxueyuan.ui.adapter.CourseVideoListAdapter;
+import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 import com.michen.olaxueyuan.ui.me.activity.BaseFragment;
 import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
@@ -80,6 +81,7 @@ public class CatalogVideoFragment extends BaseFragment {
                         videoArrayList.get(i).setSelected(false);
                     }
                     videoArrayList.get(position).setSelected(true);
+                    ((CourseVideoActivity)getActivity()).playVideo(position);
                     adapter.updateData(videoArrayList);
                 }
             }
