@@ -105,6 +105,7 @@ public class CourseVideoFragmentManger {
 
         activity.catalogIndicator.setSelected(false);
         activity.handoutIndicator.setSelected(true);
+        activity.setDownloadPdfPosition(activity.pdfPosition);
     }
 
 }

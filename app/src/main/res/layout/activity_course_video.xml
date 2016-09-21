@@ -161,20 +161,12 @@
 
     <View style="@style/line_horizontal" />
 
-    <android.support.v4.view.ViewPager
+    <!--<android.support.v4.view.ViewPager-->
+    <com.michen.olaxueyuan.common.NonSwipeableViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
-    <ListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/white"
-        android:divider="@null"
-        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/bottom_view"

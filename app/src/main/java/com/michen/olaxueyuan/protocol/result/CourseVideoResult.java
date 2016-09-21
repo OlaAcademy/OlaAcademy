@@ -113,7 +113,7 @@ public class CourseVideoResult extends ServiceResult implements Serializable{
         public static class VideoListBean implements Serializable{
             private String address;
             private String content;
-            private int id;
+            private long id;
             private int isfree;
             private String name;
             private String orgname;
@@ -122,7 +122,25 @@ public class CourseVideoResult extends ServiceResult implements Serializable{
             private String timeSpan;
             private String tname;
             private String weight;
+            private String url;
+            private String size;
             private boolean isSelected;
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+
+            public String getSize() {
+                return size;
+            }
+
+            public void setSize(String size) {
+                this.size = size;
+            }
 
             public boolean isSelected() {
                 return isSelected;
@@ -146,6 +164,8 @@ public class CourseVideoResult extends ServiceResult implements Serializable{
                         ", timeSpan='" + timeSpan + '\'' +
                         ", tname='" + tname + '\'' +
                         ", weight='" + weight + '\'' +
+                        ", url='" + url + '\'' +
+                        ", size='" + size + '\'' +
                         ", isSelected=" + isSelected +
                         '}';
             }
@@ -166,11 +186,11 @@ public class CourseVideoResult extends ServiceResult implements Serializable{
                 this.content = content;
             }
 
-            public int getId() {
+            public long getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(long id) {
                 this.id = id;
             }
 

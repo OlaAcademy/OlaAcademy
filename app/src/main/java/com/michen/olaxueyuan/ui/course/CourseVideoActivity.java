@@ -1,8 +1,6 @@
 package com.michen.olaxueyuan.ui.course;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
@@ -10,19 +8,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -31,6 +26,7 @@ import android.widget.Toast;
 import com.lidroid.xutils.exception.DbException;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.common.NonSwipeableViewPager;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
@@ -38,6 +34,7 @@ import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.download.DownloadManager;
 import com.michen.olaxueyuan.download.DownloadService;
+import com.michen.olaxueyuan.protocol.event.VideoPdfEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.result.CourseCollectResult;
@@ -45,10 +42,8 @@ import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
-import com.michen.olaxueyuan.ui.adapter.CourseVideoListAdapter;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoFragmentManger;
 import com.michen.olaxueyuan.ui.course.video.VideoManager;
-import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.me.subfragment.UserCourseCollectFragment;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -124,8 +119,6 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     public TextView geture_tv_progress_time;
     @Bind(R.id.gesture_progress_layout)
     public RelativeLayout gesture_progress_layout;
-    @Bind(R.id.listview)
-    public ListView listview;
     @Bind(R.id.title_layout)
     public LinearLayout titleLayout;
     @Bind(R.id.root)
@@ -149,11 +142,10 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     @Bind(R.id.handout_layout)
     RelativeLayout handoutLayout;
     @Bind(R.id.view_pager)
-    public ViewPager mViewPager;
+    public NonSwipeableViewPager mViewPager;
 
     private String courseId;
     private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;
-    private CourseVideoListAdapter adapter;
 
     public AudioManager mAudioManager;
     public int mMaxVolume;   // 最大声音
@@ -166,10 +158,10 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     public long msec = 0;//是否播放过
     private CourseVideoResult courseVideoResult;
 
-    private Context mAppContext;
     private DownloadManager downloadManager;
 
     private SharePopupWindow share;
+    public int pdfPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,12 +211,6 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         MobclickAgent.onPause(this);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
-    }
 
     public void initView() {
         courseId = getIntent().getExtras().getString("pid");
@@ -241,50 +227,19 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         mGestureDetector = new GestureDetector(this, new MyGestureListener());
         mVideoView.setOnInfoListener(infoListener);
         mVideoView.setOnVideoPlayFailListener(this);
-//        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
-        CourseVideoResult result = (CourseVideoResult) getIntent().getSerializableExtra("result");
         performRefresh();
     }
 
-
-    private void initListViewItemClick() {
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (videoArrayList != null && videoArrayList.size() > 0) {
-                    if (videoArrayList.get(position).getIsfree() == 0) {
-                        if (!SEAuthManager.getInstance().isAuthenticated()) {
-                            startActivity(new Intent(CourseVideoActivity.this, UserLoginActivity.class));
-                        } else {
-                            new AlertDialog.Builder(CourseVideoActivity.this)
-                                    .setTitle("友情提示")
-                                    .setMessage("购买会员后即可拥有")
-                                    .setPositiveButton("去购买", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            startActivity(new Intent(CourseVideoActivity.this, BuyVipActivity.class));
-                                        }
-                                    })
-                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // do nothing
-                                        }
-                                    })
-                                    .show();
-                        }
-                        return;
-                    }
-                    for (int i = 0; i < videoArrayList.size(); i++) {
-                        videoArrayList.get(i).setSelected(false);
-                    }
-                    videoArrayList.get(position).setSelected(true);
-                    mVideoView.setVideoPath(videoArrayList.get(position).getAddress());
-                    adapter.updateData(videoArrayList);
-                }
-            }
-        });
-    }
-    public void playVideo(int position){
+    public void playVideo(int position) {
         mVideoView.setVideoPath(videoArrayList.get(position).getAddress());
+        pdfPosition = position;
+    }
+
+    public void setDownloadPdfPosition(int position) {
+        /**
+         * {@link com.michen.olaxueyuan.ui.course.video.HandOutVideoFragment#onEventMainThread(VideoPdfEvent)}
+         */
+        EventBus.getDefault().post(new VideoPdfEvent(videoArrayList.get(position).getUrl(),videoArrayList.get(position).getId(), 1,position));
     }
 
     SECourseManager courseManager = SECourseManager.getInstance();
@@ -304,13 +259,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                     courseVideoResult = result;
                     videoArrayList = result.getResult().getVideoList();
                     if (videoArrayList != null && videoArrayList.size() > 0) {
-//                        videoArrayList.get(0).setSelected(true);
-//                        adapter = new CourseVideoListAdapter(CourseVideoActivity.this);
-//                        listview.setAdapter(adapter);
-//                        initListViewItemClick();
-//                        adapter.updateData(videoArrayList);
                         mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
-//                        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
                         if (result.getResult().getIsCollect().equals("1")) {
                             videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
                         } else {
@@ -422,6 +371,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                 break;
             case R.id.handout_layout:
                 mViewPager.setCurrentItem(1);
+                setDownloadPdfPosition(pdfPosition);
                 break;
             default:
                 break;
@@ -673,4 +623,10 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         return false;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
+    }
 }
