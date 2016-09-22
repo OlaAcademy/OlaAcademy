@@ -303,7 +303,8 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
     private void updateAvatarImageView() {
         String avatarUrl = "";
         if (_user != null) {
-            if (_user.getAvator().indexOf("jpg")!=-1){
+//            if (_user.getAvator().indexOf("jpg")!=-1){
+            if (_user.getAvator().contains(".")){
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+_user.getAvator();
             }else{
                 avatarUrl = SEAPP.PIC_BASE_URL+_user.getAvator();

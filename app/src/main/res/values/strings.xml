@@ -127,5 +127,14 @@
     <string name="no_handout">暂无讲义</string>
     <string name="catalog_text">目录</string>
     <string name="handout_text">讲义</string>
+    <string name="service_olaxueyuan_com">service@olaxueyuan.com</string>
+    <string name="wrong_topic_text">错题本</string>
+    <string name="vip_buy_text">VIP购买</string>
+    <string name="vip_money_30">30元/月</string>
+    <string name="my_buy_text">我的购买</string>
+    <string name="my_collect_text">我的收藏</string>
+    <string name="my_download_text">我的下载</string>
+    <string name="service_email_text">客服邮箱</string>
+    <string name="feedback">反馈</string>
 
 </resources>

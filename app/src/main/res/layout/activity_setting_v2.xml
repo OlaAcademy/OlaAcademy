@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_setting"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/BackGround">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_height="10dp" />
+
+        <RelativeLayout
+            android:id="@+id/passRL"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/selector_white_item_bg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:paddingLeft="5dp"
+                android:text="修改密码"
+                android:textColor="@color/black_272b36"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/ic_next" />
+        </RelativeLayout>
+
+        <View style="@style/line_horizontal" />
+
+        <RelativeLayout
+            android:id="@+id/info_setting_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/selector_white_item_bg"
+            android:padding="12dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/info_setting_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/buy_vip_next"
+                android:paddingRight="3dp"
+                android:text=""
+                android:textColor="@color/black_a8aaad"
+                android:textSize="13dp" />
+
+            <ImageView
+                android:id="@+id/info_setting_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_next" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:text="消息设置"
+                android:textColor="@color/black_272b36"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_height="5dp" />
+
+        <RelativeLayout
+            android:id="@+id/downloadRL"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/selector_white_item_bg"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingLeft="5dp"
+                android:text="允许非wifi网络播放视频"
+                android:textColor="@color/black_272b36"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/downloadTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="WIFI"
+                android:textColor="@color/black_a8aaad"
+                android:textSize="13dp" />
+        </RelativeLayout>
+
+        <View style="@style/line_horizontal" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_white_item_bg"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingLeft="5dp"
+                android:text="清理缓存"
+                android:textColor="@color/black_272b36"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/cache_size_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text=""
+                android:textColor="@color/black_a8aaad"
+                android:textSize="13dp" />
+        </RelativeLayout>
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_height="5dp" />
+
+        <RelativeLayout
+            android:id="@+id/aboutRL"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/selector_white_item_bg"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="关于欧拉学院"
+                android:textColor="@color/black_272b36"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/ic_next" />
+        </RelativeLayout>
+
+        <View style="@style/line_horizontal" />
+
+        <RelativeLayout
+            android:id="@+id/rate_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/selector_white_item_bg"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="评分"
+                android:textColor="@color/black_272b36"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/ic_next" />
+        </RelativeLayout>
+
+        <View style="@style/line_horizontal" />
+
+        <RelativeLayout
+            android:id="@+id/feedback_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/selector_white_item_bg"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="意见反馈"
+                android:textColor="@color/black_272b36"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/ic_next" />
+        </RelativeLayout>
+
+        <View style="@style/line_horizontal" />
+
+        <RelativeLayout
+            android:id="@+id/shareRL"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/selector_white_item_bg"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="推荐给好友"
+                android:textColor="@color/black_272b36"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/ic_next" />
+        </RelativeLayout>
+
+        <View style="@style/line_horizontal" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/BackGround">
+
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/shape_rectangle_bg_red_25_dp"
+                android:text="退出登录"
+                android:textColor="@color/red_f01c06" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
