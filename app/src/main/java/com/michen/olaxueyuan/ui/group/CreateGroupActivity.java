@@ -172,7 +172,7 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         } catch (Exception e) {
             e.printStackTrace();
-            userId = "381";
+//            userId = "381";
         }
         SVProgressHUD.showInView(context, getString(R.string.request_running), true);
         TeacherHomeManager.getInstance().createGroup(userId, name, _imageName, new Callback<CreateGroupResult>() {

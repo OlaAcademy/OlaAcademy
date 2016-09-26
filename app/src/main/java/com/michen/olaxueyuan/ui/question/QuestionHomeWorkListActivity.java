@@ -62,7 +62,7 @@ public class QuestionHomeWorkListActivity extends SEBaseActivity implements Pull
             e.printStackTrace();
             userId = "381";
         }
-        TeacherHomeManager.getInstance().getHomeworkList(userId, "2", homeworkId, PAGE_SIZE, new Callback<HomeworkListResult>() {
+        TeacherHomeManager.getInstance().getHomeworkList(userId, "1", homeworkId, PAGE_SIZE, new Callback<HomeworkListResult>() {
             @Override
             public void success(HomeworkListResult homeworkListResult, Response response) {
                 Logger.json(homeworkListResult);

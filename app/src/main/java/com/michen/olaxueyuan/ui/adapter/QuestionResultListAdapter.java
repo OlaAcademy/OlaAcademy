@@ -24,19 +24,21 @@ public class QuestionResultListAdapter extends BaseAdapter {
     private Context context;
     private List<CourseVideoResult.ResultBean.VideoListBean> videoList = new ArrayList<>();
     private CourseVideoResult result;
+    private String pid;
 
     public QuestionResultListAdapter(Context context) {
         super();
         this.context = context;
     }
 
-    public void updateData(List<CourseVideoResult.ResultBean.VideoListBean> videoList, CourseVideoResult result) {
+    public void updateData(List<CourseVideoResult.ResultBean.VideoListBean> videoList, CourseVideoResult result, String pid) {
         if (videoList != null) {
             this.videoList = videoList;
         }
         if (result != null) {
             this.result = result;
         }
+        this.pid = pid;
         notifyDataSetChanged();
     }
 
@@ -76,8 +78,9 @@ public class QuestionResultListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CourseVideoActivity.class);
-                intent.putExtra("isFromNet", false);
-                intent.putExtra("result",result);
+//                intent.putExtra("isFromNet", false);
+//                intent.putExtra("result", result);
+                intent.putExtra("pid", pid);
                 context.startActivity(intent);
 //                EventBus.getDefault().post(result);
             }

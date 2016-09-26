@@ -240,11 +240,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/knowledge_icon"
                     android:text="知识点课程"
                     android:textColor="@color/black_323232"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    android:layout_alignTop="@+id/knowledge_icon"
+                    android:layout_toRightOf="@+id/knowledge_icon"
+                    android:layout_toEndOf="@+id/knowledge_icon" />
             </RelativeLayout>
 
             <View style="@style/line_horizontal_margin_10dp" />

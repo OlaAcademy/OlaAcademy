@@ -231,7 +231,7 @@ public class QuestionResultActivity extends SEBaseActivity {
                     if (videoArrayList != null && videoArrayList.size() > 0) {
                         listAdapter = new QuestionResultListAdapter(QuestionResultActivity.this);
                         listKnowledge.setAdapter(listAdapter);
-                        listAdapter.updateData(videoArrayList,result);
+                        listAdapter.updateData(videoArrayList,result,String.valueOf(objectId));
                     }
                 }
             }

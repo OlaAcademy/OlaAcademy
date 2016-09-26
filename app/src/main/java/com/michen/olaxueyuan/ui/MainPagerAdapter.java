@@ -11,6 +11,7 @@ import com.michen.olaxueyuan.ui.examination.ExamFragment;
 import com.michen.olaxueyuan.ui.home.HomeFragment;
 import com.michen.olaxueyuan.ui.home.TeacherHomeFragment;
 import com.michen.olaxueyuan.ui.me.UserFragment;
+import com.michen.olaxueyuan.ui.me.UserFragmentV2;
 import com.michen.olaxueyuan.ui.question.QuestionFragment;
 
 /**
@@ -25,6 +26,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private HomeFragment homeFragment;
     private UserFragment userFragment;
     private TeacherHomeFragment teacherHomeFragment;
+    private UserFragmentV2 userFragmentV2;
 
     public MainPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -43,6 +45,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         circleFragment = new CircleFragment();
         userFragment = new UserFragment();
         teacherHomeFragment = new TeacherHomeFragment();
+        userFragmentV2=new UserFragmentV2();
     }
 
     @Override
@@ -67,7 +70,8 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             case 3:
                 return circleFragment;
             case 4:
-                return userFragment;
+//                return userFragment;
+                return userFragmentV2;
             default:
                 return null;
         }
