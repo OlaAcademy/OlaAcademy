@@ -267,7 +267,9 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            VideoManager.getInstance().setOnScroll(e1, e2, distanceX, distanceY);
+            if (!SystemVideoActivity.this.isFinishing()) {
+                VideoManager.getInstance().setOnScroll(e1, e2, distanceX, distanceY);
+            }
             return false;
         }
     }

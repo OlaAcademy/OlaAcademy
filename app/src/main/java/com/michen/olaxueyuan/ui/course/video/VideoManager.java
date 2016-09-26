@@ -43,7 +43,7 @@ public class VideoManager {
     }
 
     public void setPortrait() {
-        if (activity.isFinishing()){
+        if (activity!=null&&activity.isFinishing()){
             return;
         }
         activity.bottomView.setVisibility(View.VISIBLE);
@@ -61,7 +61,7 @@ public class VideoManager {
     }
 
     public void setLandScape() {
-        if (activity.isFinishing()){
+        if (activity!=null&&activity.isFinishing()){
             return;
         }
         activity.bottomView.setVisibility(View.GONE);
@@ -78,7 +78,7 @@ public class VideoManager {
     }
 
     public boolean setOnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        if (activity.isFinishing()){
+        if (activity!=null&&activity.isFinishing()){
             return false;
         }
         float mOldX = e1.getX(), mOldY = e1.getY();
@@ -89,12 +89,15 @@ public class VideoManager {
 
         palyerCurrentPosition = activity.mVideoView.getCurrentPosition();
         playerDuration = activity.mVideoView.getDuration();
-        if (activity.getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+        if (activity!=null&&activity.getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             activity.mVideoView.getLocationOnScreen(location);
             Rect anchorRect = new Rect(location[0], location[1], location[0] + activity.mVideoView.getWidth(), location[1] + activity.mVideoView.getHeight());
             if (mOldY > anchorRect.bottom) {
                 return false;
             }
+        }
+        if (activity!=null&&activity.isFinishing()){
+            return false;
         }
         // 横向的距离变化大则调整进度，纵向的变化大则调整音量和亮度
         if (Math.abs(distanceX) >= Math.abs(distanceY)) {
@@ -147,7 +150,7 @@ public class VideoManager {
      * @param percent
      */
     private void onVolumeSlide(float percent) {
-        if (activity.isFinishing()){
+        if (activity!=null&&activity.isFinishing()){
             return;
         }
         if (activity.mVolume == -1) {
@@ -179,7 +182,7 @@ public class VideoManager {
      * @param percent
      */
     private void onBrightnessSlide(float percent) {
-        if (activity.isFinishing()){
+        if (activity!=null&&activity.isFinishing()){
             return;
         }
         if (activity.mBrightness < 0) {

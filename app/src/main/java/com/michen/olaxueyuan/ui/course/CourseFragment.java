@@ -122,23 +122,27 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
         courseManager.fetchHomeCourseList(userId, pid, "2", new Callback<MCCourseListResult>() {
             @Override
             public void success(MCCourseListResult result, Response response) {
-                if (!result.apicode.equals("10000")) {
-                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.message, 2.0f);
-                } else {
-                    courseArrayList = result.course.courseArrayList;
-                    adapter.updateData(courseArrayList);
+                if (getActivity() != null) {
+                    if (!result.apicode.equals("10000")) {
+                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.message, 2.0f);
+                    } else {
+                        courseArrayList = result.course.courseArrayList;
+                        adapter.updateData(courseArrayList);
+                    }
+                    courseListView.onRefreshComplete();
                 }
-                courseListView.onRefreshComplete();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                courseListView.onRefreshComplete();
+                if (getActivity() != null) {
+                    courseListView.onRefreshComplete();
+                }
             }
         });
     }
 
-    @OnClick({ R.id.maths_layout, R.id.english_layout, R.id.logic_layout, R.id.writing_layout})
+    @OnClick({R.id.maths_layout, R.id.english_layout, R.id.logic_layout, R.id.writing_layout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.maths_layout:

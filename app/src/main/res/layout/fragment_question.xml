@@ -14,19 +14,6 @@
         android:src="@drawable/ic_head_question"
         android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/question_name"
-        android:layout_width="match_parent"
-        android:layout_height="33dp"
-        android:background="@color/title_hint_color"
-        android:gravity="bottom"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:text="北京考试大全"
-        android:textColor="@color/title_hint_text_color"
-        android:textSize="14dp"
-        android:visibility="gone" />
-
     <include
         android:id="@+id/indicator_view"
         layout="@layout/fragment_question_indicator" />

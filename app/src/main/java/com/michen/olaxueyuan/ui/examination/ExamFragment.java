@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.HorizontalScrollViewAdapter;
 import com.michen.olaxueyuan.common.MyHorizontalScrollView;
@@ -22,6 +21,7 @@ import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
+import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.manager.TitleExamPopManager;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -107,13 +107,15 @@ public class ExamFragment extends SuperFragment implements TitleExamPopManager.E
         QuestionCourseManager.getInstance().getExamList(userId, courseId, courseType, new Callback<ExamModule>() {
             @Override
             public void success(ExamModule examModule, Response response) {
-                SVProgressHUD.dismiss(getActivity());
+                if (getActivity() != null) {
+                    SVProgressHUD.dismiss(getActivity());
 //                Logger.json(examModule);
-                if (examModule.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), examModule.getMessage(), 2.0f);
-                } else {
-                    module = examModule;
-                    handler.sendEmptyMessage(0);
+                    if (examModule.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), examModule.getMessage(), 2.0f);
+                    } else {
+                        module = examModule;
+                        handler.sendEmptyMessage(0);
+                    }
                 }
             }
 
@@ -139,8 +141,8 @@ public class ExamFragment extends SuperFragment implements TitleExamPopManager.E
     };
 
     private void initAdapter() {
-        if (courseId!=null&& module != null && module.getResult() != null && module.getResult().size() > 0) {
-            mAdapter = new HorizontalScrollViewAdapter(getActivity(), Integer.parseInt(courseId),module.getResult());
+        if (courseId != null && module != null && module.getResult() != null && module.getResult().size() > 0) {
+            mAdapter = new HorizontalScrollViewAdapter(getActivity(), Integer.parseInt(courseId), module.getResult());
             //添加滚动回调
             mHorizontalScrollView
                     .setCurrentImageChangeListener(new MyHorizontalScrollView.CurrentImageChangeListener() {
