@@ -238,8 +238,13 @@ public class DownloadListActivity extends SEBaseActivity {
         public void refresh() {
             label.setText(downloadInfo.getFileName());
             if (downloadInfo.getFileImage()!=null){
-                Picasso.with(mAppContext).load(downloadInfo.getFileImage()).config(Bitmap.Config.RGB_565)
-                        .placeholder(R.drawable.ic_default_video).into(image);
+                try {
+                    Picasso.with(mAppContext).load(downloadInfo.getFileImage()).config(Bitmap.Config.RGB_565)
+                            .placeholder(R.drawable.ic_default_video).into(image);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    image.setImageResource(R.drawable.ic_default_video);
+                }
             }else{
                 image.setBackgroundResource(R.drawable.ic_default_video);
             }

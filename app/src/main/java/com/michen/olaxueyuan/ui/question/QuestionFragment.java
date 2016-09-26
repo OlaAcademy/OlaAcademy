@@ -53,8 +53,6 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     TextView titleTv;
     @Bind(R.id.right_response)
     ImageView rightResponse;
-    @Bind(R.id.question_name)
-    TextView questionName;
     @Bind(R.id.expandableListView)
     PullToRefreshExpandableListView expandableListViews;
     @Bind(R.id.pop_line)
@@ -201,9 +199,9 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
-        if (selectType==0) {
+        if (selectType == 0) {
             fetchHomeCourseData();
-        }else {
+        } else {
             fetchExamListData();
         }
         getUnReadMessageCount();
@@ -324,20 +322,21 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         QuestionCourseManager.getInstance().fetchHomeCourseList(userId, pid, "1", new Callback<QuestionCourseModule>() {
             @Override
             public void success(QuestionCourseModule questionCourseModule, Response response) {
-                SVProgressHUD.dismiss(getActivity());
-                questionName.setText(questionCourseModule.getResult().getProfile());
-                expandableListViews.onRefreshComplete();
+                if (getActivity() != null) {
+                    SVProgressHUD.dismiss(getActivity());
+                    expandableListViews.onRefreshComplete();
 //                Logger.json(questionCourseModule);
-                if (questionCourseModule.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), questionCourseModule.getMessage(), 2.0f);
-                } else {
-                    module = questionCourseModule;
-                    adapter.updateList(module);
-                    expandableListView.setFocusable(false);
-                    /**
-                     * {@link QuestionHomeWorkFragment#onEventMainThread(QuestionCourseModule)}
-                     */
-                    EventBus.getDefault().post(questionCourseModule);
+                    if (questionCourseModule.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), questionCourseModule.getMessage(), 2.0f);
+                    } else {
+                        module = questionCourseModule;
+                        adapter.updateList(module);
+                        expandableListView.setFocusable(false);
+                        /**
+                         * {@link QuestionHomeWorkFragment#onEventMainThread(QuestionCourseModule)}
+                         */
+                        EventBus.getDefault().post(questionCourseModule);
+                    }
                 }
             }
 
@@ -364,13 +363,15 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         QuestionCourseManager.getInstance().getExamList(userId, pid, String.valueOf(selectType), new Callback<ExamModule>() {
             @Override
             public void success(ExamModule examModule, Response response) {
-                SVProgressHUD.dismiss(getActivity());
-                listview.onRefreshComplete();
+                if (getActivity() != null) {
+                    SVProgressHUD.dismiss(getActivity());
+                    listview.onRefreshComplete();
 //                Logger.json(examModule);
-                if (examModule.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), examModule.getMessage(), 2.0f);
-                } else {
-                    questionListViewAdapter.updateData(examModule.getResult(), Integer.parseInt(pid));
+                    if (examModule.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), examModule.getMessage(), 2.0f);
+                    } else {
+                        questionListViewAdapter.updateData(examModule.getResult(), Integer.parseInt(pid));
+                    }
                 }
             }
 
@@ -394,14 +395,16 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             @Override
             public void success(MessageUnReadResult messageUnReadResult, Response response) {
                 if (messageUnReadResult.getApicode() == 10000) {
-                    unReadMessageCount = messageUnReadResult.getResult();
-                    redDot.setText(String.valueOf(unReadMessageCount));
-                    if (unReadMessageCount > 0) {
-                        redDot.setVisibility(View.VISIBLE);
-                    } else {
-                        redDot.setVisibility(View.GONE);
+                    if (getActivity() != null) {
+                        unReadMessageCount = messageUnReadResult.getResult();
+                        redDot.setText(String.valueOf(unReadMessageCount));
+                        if (unReadMessageCount > 0) {
+                            redDot.setVisibility(View.VISIBLE);
+                        } else {
+                            redDot.setVisibility(View.GONE);
+                        }
+                        Logger.e("unReadMessageCount==" + unReadMessageCount);
                     }
-                    Logger.e("unReadMessageCount==" + unReadMessageCount);
                 }
             }
 
