@@ -189,7 +189,9 @@ public class UserFragment extends SuperFragment {
             um.queryUserInfo(user.getId(), new Callback<SEUserResult>() {
                 @Override
                 public void success(SEUserResult result, Response response) {
-                    updateHeadView(result.data);
+                    if (getActivity() != null) {
+                        updateHeadView(result.data);
+                    }
                 }
 
                 @Override
@@ -206,23 +208,30 @@ public class UserFragment extends SuperFragment {
             name.setText("登录／注册");
             remainDays.setText("还剩0天");
             avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
-        }else{
-            name.setText(userInfo.getName()!=null?userInfo.getName():"小欧");
-            remainDays.setText("还剩"+ userInfo.getVipTime() + "天");
-            if (userInfo.getAvator()!=null){
-                String avatarUrl = "";
-                if (userInfo.getAvator().indexOf("jpg")!=-1){
-                    avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+userInfo.getAvator();
-                }else{
-                    avatarUrl = SEAPP.PIC_BASE_URL+userInfo.getAvator();
+        } else {
+            try {
+                name.setText(userInfo.getName() != null ? userInfo.getName() : "小欧");
+                remainDays.setText("还剩" + userInfo.getVipTime() + "天");
+                if (userInfo.getAvator() != null) {
+                    String avatarUrl = "";
+                    if (userInfo.getAvator().indexOf("jpg") != -1) {
+                        avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator();
+                    } else {
+                        avatarUrl = SEAPP.PIC_BASE_URL + userInfo.getAvator();
+                    }
+                    Picasso.with(getActivity())
+                            .load(avatarUrl)
+                            .placeholder(R.drawable.ic_default_avatar)
+                            .error(R.drawable.ic_default_avatar)
+                            .into(avatar);
+                } else {
+                    avatar.setBackgroundResource(R.drawable.ic_default_avatar);
                 }
-                Picasso.with(getActivity())
-                        .load(avatarUrl)
-                        .placeholder(R.drawable.ic_default_avatar)
-                        .error(R.drawable.ic_default_avatar)
-                        .into(avatar);
-            }else{
-                avatar.setBackgroundResource(R.drawable.ic_default_avatar);
+            } catch (Exception e) {
+                e.printStackTrace();
+                name.setText("小欧");
+                remainDays.setText("还剩0天");
+                avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
             }
 
             try {

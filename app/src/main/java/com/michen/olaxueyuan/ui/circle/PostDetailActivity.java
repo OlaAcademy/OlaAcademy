@@ -354,7 +354,12 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
                     return;
                 }
 //                Log.e("Test", bdLocation.getAddrStr());
-                location = bdLocation.getCity() + bdLocation.getDistrict();
+                try {
+                    location = bdLocation.getCity() + bdLocation.getDistrict();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    location="定位失败";
+                }
             }
 
         });

@@ -108,19 +108,21 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         QuestionCourseManager.getInstance().getCircleList(circleId, pageSize, type, new Callback<OLaCircleModule>() {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
-                SVProgressHUD.dismiss(getActivity());
-                listview.onRefreshComplete();
+                if (getActivity() != null) {
+                    SVProgressHUD.dismiss(getActivity());
+                    listview.onRefreshComplete();
 //                Logger.json(oLaCircleModule);
-                if (oLaCircleModule.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), oLaCircleModule.getMessage(), 2.0f);
-                } else {
+                    if (oLaCircleModule.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), oLaCircleModule.getMessage(), 2.0f);
+                    } else {
 //                    Logger.json(oLaCircleModule);
-                    if (circleId.equals("")) {
-                        list.clear();
-                        listview.setAdapter(adapter);
+                        if (circleId.equals("")) {
+                            list.clear();
+                            listview.setAdapter(adapter);
+                        }
+                        list.addAll(oLaCircleModule.getResult());
+                        adapter.updateData(list);
                     }
-                    list.addAll(oLaCircleModule.getResult());
-                    adapter.updateData(list);
                 }
             }
 
@@ -195,19 +197,23 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         MCCircleManager.getInstance().praiseCirclePost(String.valueOf(list.get(position).getCircleId()), new Callback<PraiseCirclePostResult>() {
             @Override
             public void success(PraiseCirclePostResult mcCommonResult, Response response) {
-                SVProgressHUD.dismiss(getActivity());
-                if (mcCommonResult.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), mcCommonResult.getMessage(), 2.0f);
-                } else {
-                    list.get(position).setPraiseNumber(list.get(position).getPraiseNumber() + 1);
-                    adapter.notifyDataSetChanged();
+                if (getActivity() != null) {
+                    SVProgressHUD.dismiss(getActivity());
+                    if (mcCommonResult.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), mcCommonResult.getMessage(), 2.0f);
+                    } else {
+                        list.get(position).setPraiseNumber(list.get(position).getPraiseNumber() + 1);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(getActivity());
-                ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+                if (getActivity() != null) {
+                    SVProgressHUD.dismiss(getActivity());
+                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+                }
             }
         });
     }

@@ -148,8 +148,13 @@ public class DeployPostActivity extends SEBaseActivity {
                     mTv_location.setText("定位失败");
                     return;
                 }
-                Log.e("Test", bdLocation.getAddrStr());
-                mLocation = bdLocation.getCity() + bdLocation.getDistrict();
+//                Log.e("Test", bdLocation.getAddrStr());
+                try {
+                    mLocation = bdLocation.getCity() + bdLocation.getDistrict();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mLocation = "定位失败";
+                }
                 mTv_location.setText(mLocation);
             }
 

@@ -34,7 +34,11 @@
             android:layout_alignBottom="@+id/title"
             android:layout_marginRight="15dp"
             android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@+id/time"
             android:layout_toRightOf="@+id/title"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="地址"
             android:textColor="@color/title_hint_text_color"
             android:textSize="12dp" />

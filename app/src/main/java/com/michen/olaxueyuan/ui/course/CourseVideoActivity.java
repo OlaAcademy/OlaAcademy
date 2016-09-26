@@ -293,17 +293,25 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            VideoManager.getInstance().setOnScroll(e1, e2, distanceX, distanceY);
+            try {
+                VideoManager.getInstance().setOnScroll(e1, e2, distanceX, distanceY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return false;
         }
     }
 
     public void setVideoViewHeight() {
-        int width = Utils.getScreenWidth(context);
-        int height = width * 9 / 16;
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mVideoView.getLayoutParams();
-        layoutParams.height = height;
-        mVideoView.setLayoutParams(layoutParams);
+        try {
+            int width = Utils.getScreenWidth(context);
+            int height = width * 9 / 16;
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mVideoView.getLayoutParams();
+            layoutParams.height = height;
+            mVideoView.setLayoutParams(layoutParams);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return
