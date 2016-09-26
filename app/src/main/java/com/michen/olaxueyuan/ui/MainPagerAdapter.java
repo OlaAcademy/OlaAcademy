@@ -43,7 +43,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         courseFragment = new CourseFragment();
         homeFragment = new HomeFragment();
         circleFragment = new CircleFragment();
-        userFragment = new UserFragment();
+//        userFragment = new UserFragment();
         teacherHomeFragment = new TeacherHomeFragment();
         userFragmentV2=new UserFragmentV2();
     }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -354,7 +353,7 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
                 if (bdLocation == null) {
                     return;
                 }
-                Log.e("Test", bdLocation.getAddrStr());
+//                Log.e("Test", bdLocation.getAddrStr());
                 location = bdLocation.getCity() + bdLocation.getDistrict();
             }
 
