@@ -47,7 +47,7 @@
             android:layout_height="45dp"
             android:background="@drawable/selector_white_item_bg"
             android:padding="12dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/info_setting_text"
@@ -196,6 +196,7 @@
         <View style="@style/line_horizontal" />
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/feedback_layout"
             android:layout_width="match_parent"
             android:layout_height="45dp"
