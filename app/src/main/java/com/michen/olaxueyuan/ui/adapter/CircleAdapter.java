@@ -25,7 +25,10 @@ import com.michen.olaxueyuan.ui.story.activity.ImagePagerActivity;
 import com.snail.photo.util.NoScrollGridView;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -90,7 +93,7 @@ public class CircleAdapter extends BaseAdapter {
         } else {
             holder.avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
         }
-        holder.time.setText(list.get(position).getTime());
+        holder.time.setText(formatTime(list.get(position).getTime()));
         holder.studyName.setText(list.get(position).getContent());
         if (!TextUtils.isEmpty(list.get(position).getLocation())) {
             holder.address.setText("@" + list.get(position).getLocation());
@@ -187,6 +190,32 @@ public class CircleAdapter extends BaseAdapter {
         intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, urls2);
         intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
         mContext.startActivity(intent);
+    }
+
+    private String formatTime (String time){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat df2 = new SimpleDateFormat("MM-dd HH:mm");
+        String timeString = time;
+        Date now;
+        try {
+            now = new Date();
+            Date date=df.parse(time);
+            long l=now.getTime()-date.getTime();
+            if (l<=60*1000){
+                timeString = "刚刚";
+            }else if(l<60*60*1000){
+                timeString = l/(60*1000)+"分钟前";
+            }else if(l<24*60*60*1000){
+                timeString = l/(60*60*1000)+"小时前";
+            }else if(l<30*24*60*60*1000){
+                timeString = l/(24*60*60*1000)+"天前";
+            }else{
+                timeString = df2.format(date);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return timeString;
     }
 
     class ViewHolder {

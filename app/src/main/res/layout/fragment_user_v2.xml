@@ -113,12 +113,13 @@
                 android:id="@+id/wrong_topic_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/free_vip_icon" />
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_mistake" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/wrong_topic_img"
                 android:text="@string/wrong_topic_text"
                 android:textColor="@color/black_272b36"
@@ -160,7 +161,8 @@
                 android:id="@+id/buy_vip_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/free_vip_icon" />
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_vip" />
 
             <TextView
                 android:id="@+id/buy_vip_text"
@@ -186,7 +188,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/buy_vip_img"
                 android:layout_toRightOf="@+id/buy_vip_img"
                 android:text="@string/vip_buy_text"
@@ -210,12 +212,13 @@
                 android:id="@+id/my_buy_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/free_vip_icon" />
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_buy" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/my_buy_img"
                 android:text="@string/my_buy_text"
                 android:textColor="@color/black_272b36"
@@ -255,12 +258,13 @@
                 android:id="@+id/my_collect_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/free_vip_icon" />
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_collect" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/my_collect_img"
                 android:text="@string/my_collect_text"
                 android:textColor="@color/black_272b36"
@@ -300,12 +304,13 @@
                 android:id="@+id/my_download_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/free_vip_icon" />
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_download_me" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/my_download_img"
                 android:text="@string/my_download_text"
                 android:textColor="@color/black_272b36"
@@ -347,12 +352,13 @@
                 android:id="@+id/service_email_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/free_vip_icon" />
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_email" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/service_email_img"
                 android:text="@string/service_email_text"
                 android:textColor="@color/black_272b36"
