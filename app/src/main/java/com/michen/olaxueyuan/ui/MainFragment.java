@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -17,8 +18,11 @@ import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SETabBar;
+import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
+import com.michen.olaxueyuan.protocol.event.SignInEvent;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
+import com.michen.olaxueyuan.ui.me.UserFragmentV2;
 
 import de.greenrobot.event.EventBus;
 
@@ -105,7 +109,6 @@ public class MainFragment extends Fragment {
 
         _tabBar.limitTabNum(5);
         switchToPage(2);
-
         return fragmentView;
     }
 
@@ -208,6 +211,12 @@ public class MainFragment extends Fragment {
                 setActionBarVisible(false);
                 _viewPager.setCurrentItem(tabIndex, false);
                 ((MainActivity) mActivity).setTitleText("");
+                SharedPreferences preference = getActivity().getSharedPreferences("dot", Context.MODE_PRIVATE);
+                long time = preference.getLong("time", 0);
+                if (System.currentTimeMillis() - time > 8 * 60 * 60 * 1000) {
+                    EventBus.getDefault().post(new SignInEvent(true));
+                    preference.edit().putLong("time", System.currentTimeMillis()).apply();
+                }
                 break;
             default:
                 break;
@@ -266,5 +275,17 @@ public class MainFragment extends Fragment {
         }*/
     }
 
+    /**
+     * {@link UserFragmentV2#getCheckinStatus()}
+     *
+     * @param dotEvent
+     */
+    public void onEventMainThread(ShowBottomTabDotEvent dotEvent) {
+        if (dotEvent.isShowDot) {
+            _tabBar.getItemViewAt(dotEvent.position).showRedDot();
+        } else {
+            _tabBar.getItemViewAt(dotEvent.position).hideRedDot();
+        }
+    }
 }
 

@@ -14,9 +14,14 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.DialogUtils;
+import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
+import com.michen.olaxueyuan.protocol.event.SignInEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
+import com.michen.olaxueyuan.protocol.result.CheckInResult;
+import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
@@ -93,8 +98,16 @@ public class UserFragmentV2 extends SuperFragment {
     public void onEventMainThread(UserLoginNoticeModule module) {
         if (!module.isLogin) {
             updateHeadView(null);
+            EventBus.getDefault().post(new ShowBottomTabDotEvent(4, false));
         } else {
             fetchUserInfo();
+            getCheckinStatus();
+        }
+    }
+
+    public void onEventMainThread(SignInEvent signInEvent) {
+        if (signInEvent.isSign) {
+            checkIn();
         }
     }
 
@@ -123,6 +136,8 @@ public class UserFragmentV2 extends SuperFragment {
                 isLogin(DownloadListActivity.class);
                 break;
             case R.id.service_email_layout:
+                //Todo 测试一下，然后关掉
+//                showSignDialog("", "", "");
                 break;
             default:
                 break;
@@ -187,7 +202,7 @@ public class UserFragmentV2 extends SuperFragment {
                 remainDays.setText("还剩" + userInfo.getVipTime() + "天");
                 if (userInfo.getAvator() != null) {
                     String avatarUrl = "";
-    //                if (userInfo.getAvator().contains("jpg")||userInfo.getAvator().contains("gif")) {
+                    //                if (userInfo.getAvator().contains("jpg")||userInfo.getAvator().contains("gif")) {
                     if (userInfo.getAvator().contains(".")) {
                         avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator();
                     } else {
@@ -217,6 +232,86 @@ public class UserFragmentV2 extends SuperFragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void getCheckinStatus() {//查看签到状态
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
+            @Override
+            public void success(CheckinStatusResult checkinStatusResult, Response response) {
+                if (getActivity() != null) {
+                    if (checkinStatusResult.getApicode() == 10000) {
+                        /**
+                         * {@link com.michen.olaxueyuan.ui.MainFragment#onEventMainThread(ShowBottomTabDotEvent)}
+                         */
+                        if (checkinStatusResult.getResult().getStatus() == 1) {
+                            EventBus.getDefault().post(new ShowBottomTabDotEvent(4, false));
+                        } else {
+                            EventBus.getDefault().post(new ShowBottomTabDotEvent(4, true));
+                        }
+                        if (isShowSignDialog) {
+                            showSignDialog("", "", "");
+                            isShowSignDialog = false;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    boolean isShowSignDialog;//是否显示签到的dialog
+
+    private void checkIn() {//签到
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        SEUserManager.getInstance().checkin(userId, new Callback<CheckInResult>() {
+            @Override
+            public void success(CheckInResult checkInResult, Response response) {
+                if (getActivity() != null) {
+                    if (checkInResult.getApicode() == 10000) {
+                        isShowSignDialog = true;
+                        getCheckinStatus();
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    private void showSignDialog(String dayNum, String dayScore, String subjectNum) {
+        DialogUtils.showSignDialog(getActivity(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.close_icon:
+                        break;
+                    case R.id.wechat_sign:
+                        break;
+                    case R.id.wechat_circle_sign:
+                        break;
+                    case R.id.qq_friend_sign:
+                        break;
+                    case R.id.qq_friend_space_sign:
+                        break;
+                    case R.id.sina_sign:
+                        break;
+                }
+            }
+        }, "10天", "打卡获取5枚欧拉币", "1134道");
     }
 
     @Override

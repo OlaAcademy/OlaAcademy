@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -156,6 +157,92 @@ public class DialogUtils {
                 imgOne.setVisibility(View.GONE);
                 imgTwo.setVisibility(View.GONE);
                 imgThree.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    /**
+     * 签到
+     *
+     * @param context
+     * @param listener
+     * @param dayNum
+     * @param dayScore
+     * @param subjectNum
+     */
+    public static void showSignDialog(Context context, final View.OnClickListener listener, String dayNum, String dayScore, String subjectNum) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.sign_dialog, null);
+        final Dialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        dialog.getWindow().setContentView(view);
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        int screenWidth = Utils.getScreenMetrics(context).x;
+        params.width = screenWidth - 160;
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        params.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(params);
+        ImageView closeIcon = (ImageView) view.findViewById(R.id.close_icon);
+
+        TextView signDayNum = (TextView) view.findViewById(R.id.sign_day_num);
+        TextView signDayScore = (TextView) view.findViewById(R.id.sign_day_score);
+        TextView signSubjectNum = (TextView) view.findViewById(R.id.sign_subject_num);
+
+        RadioButton wechatSign = (RadioButton) view.findViewById(R.id.wechat_sign);
+        RadioButton wechatCircleSign = (RadioButton) view.findViewById(R.id.wechat_circle_sign);
+        RadioButton qqFriendSign = (RadioButton) view.findViewById(R.id.qq_friend_sign);
+        RadioButton qqFriend_spaceSign = (RadioButton) view.findViewById(R.id.qq_friend_space_sign);
+        RadioButton sinaSign = (RadioButton) view.findViewById(R.id.sina_sign);
+
+        if (!TextUtils.isEmpty(dayNum)) {
+            signDayNum.setText(dayNum);
+        }
+        if (!TextUtils.isEmpty(dayScore)) {
+            signDayScore.setText(dayScore);
+        }
+        if (!TextUtils.isEmpty(subjectNum)) {
+            signSubjectNum.setText(subjectNum);
+        }
+        closeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                listener.onClick(view);
+            }
+        });
+        wechatSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                listener.onClick(view);
+            }
+        });
+        wechatCircleSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                listener.onClick(view);
+            }
+        });
+        qqFriendSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                listener.onClick(view);
+            }
+        });
+        qqFriend_spaceSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                listener.onClick(view);
+            }
+        });
+        sinaSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                listener.onClick(view);
             }
         });
     }

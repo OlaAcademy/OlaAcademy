@@ -1,15 +1,17 @@
 package com.michen.olaxueyuan.protocol.service;
 
+import com.michen.olaxueyuan.protocol.result.CheckInResult;
+import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
+import com.michen.olaxueyuan.protocol.result.SEPasswordResult;
 import com.michen.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
 import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
-import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
-import com.michen.olaxueyuan.protocol.result.SEPasswordResult;
 import com.michen.olaxueyuan.protocol.result.UserKnowledgeResult;
+import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
 
 import retrofit.Callback;
 import retrofit.client.Response;
@@ -31,7 +33,7 @@ public interface SEUserService {
     /**
      * 注册
      *
-     * @param phone code
+     * @param phone  code
      * @param pass
      * @param stauts 1 iphone 2 android
      */
@@ -51,7 +53,7 @@ public interface SEUserService {
     @FormUrlEncoded
     @POST("/ola/user/queryUser")
     public void queryUserInfo(@Field("id") String id,
-                        Callback<SEUserResult> cb);
+                              Callback<SEUserResult> cb);
 
     /**
      * 找回密码--获取验证码
@@ -192,5 +194,29 @@ public interface SEUserService {
     void getBuyGoodsList(
             @Field("userId") String userId,
             Callback<UserBuyGoodsResult> cb);
+
+    /**
+     * 获取今日签到状态
+     *
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/dailyact/getCheckinStatus")
+    void getCheckinStatus(
+            @Field("userId") String userId,
+            Callback<CheckinStatusResult> cb);
+
+    /**
+     * 签到
+     *
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/dailyact/checkin")
+    void checkin(
+            @Field("userId") String userId,
+            Callback<CheckInResult> cb);
 
 }

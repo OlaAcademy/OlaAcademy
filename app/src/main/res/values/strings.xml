@@ -136,5 +136,10 @@
     <string name="my_download_text">我的下载</string>
     <string name="service_email_text">客服邮箱</string>
     <string name="feedback">反馈</string>
+    <string name="wechat_friends">微信</string>
+    <string name="wechat_circle">朋友圈</string>
+    <string name="qq_friend">QQ好友</string>
+    <string name="qq_space">QQ空间</string>
+    <string name="sina_blog">微博</string>
 
 </resources>
