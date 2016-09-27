@@ -390,6 +390,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }else {
+            return;
         }
         QuestionCourseManager.getInstance().getUnreadCount(userId, new Callback<MessageUnReadResult>() {
             @Override

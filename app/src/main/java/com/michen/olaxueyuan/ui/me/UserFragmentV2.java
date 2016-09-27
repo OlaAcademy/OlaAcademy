@@ -24,6 +24,8 @@ import com.michen.olaxueyuan.protocol.result.CheckInResult;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
+import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
+import com.michen.olaxueyuan.ui.MainFragment;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.DownloadListActivity;
@@ -79,6 +81,7 @@ public class UserFragmentV2 extends SuperFragment {
     RelativeLayout serviceEmailLayout;
 
     private final static int EDIT_USER_INFO = 0x1010;
+    private SharePopupWindow share;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +108,10 @@ public class UserFragmentV2 extends SuperFragment {
         }
     }
 
+    /**
+     * {@link MainFragment#signIn()}
+     * @param signInEvent
+     */
     public void onEventMainThread(SignInEvent signInEvent) {
         if (signInEvent.isSign) {
             checkIn();

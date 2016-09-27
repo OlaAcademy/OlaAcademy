@@ -20,6 +20,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SETabBar;
 import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
 import com.michen.olaxueyuan.protocol.event.SignInEvent;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.me.UserFragmentV2;
@@ -211,12 +212,7 @@ public class MainFragment extends Fragment {
                 setActionBarVisible(false);
                 _viewPager.setCurrentItem(tabIndex, false);
                 ((MainActivity) mActivity).setTitleText("");
-                SharedPreferences preference = getActivity().getSharedPreferences("dot", Context.MODE_PRIVATE);
-                long time = preference.getLong("time", 0);
-                if (System.currentTimeMillis() - time > 8 * 60 * 60 * 1000) {
-                    EventBus.getDefault().post(new SignInEvent(true));
-                    preference.edit().putLong("time", System.currentTimeMillis()).apply();
-                }
+                signIn();
                 break;
             default:
                 break;
@@ -273,6 +269,29 @@ public class MainFragment extends Fragment {
         } else {
             _viewPagerAdapter.upDateMainFragment();
         }*/
+        signIn();
+    }
+
+    private void signIn() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        } else {
+            return;
+        }
+        SharedPreferences preference = getActivity().getSharedPreferences("dot", Context.MODE_PRIVATE);
+        long time = preference.getLong("time", 0);
+        String pUserId = preference.getString("userId", "");
+        if (System.currentTimeMillis() - time > 8 * 60 * 60 * 1000 || !userId.equals(pUserId)) {
+            /**
+             * {@link UserFragmentV2#onEventMainThread(SignInEvent)}
+             */
+            EventBus.getDefault().post(new SignInEvent(true));
+            preference.edit().putLong("time", System.currentTimeMillis()).apply();
+            preference.edit().putString("userId", userId).apply();
+//            Logger.e("time==" + time);
+//            Logger.e("userId==" + pUserId);
+        }
     }
 
     /**
