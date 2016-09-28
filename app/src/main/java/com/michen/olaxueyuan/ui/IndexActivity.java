@@ -15,7 +15,6 @@ public class IndexActivity extends Activity {
     public final static String SP_FILENAME_CONFIG = "sp_fileName_config";
     public final static String SP_PARAMSNAME_ISGUIDE = "sp_paramsName_isGuide";
     public final static String SP_VERSION_CODE = "version_code";
-    private SharedPreferences mSp;
     private boolean isUpdate;//是否升级了版本
 
     @Override
@@ -23,7 +22,7 @@ public class IndexActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
-        mSp = getSharedPreferences(SP_FILENAME_CONFIG, MODE_PRIVATE);
+        SharedPreferences mSp = getSharedPreferences(SP_FILENAME_CONFIG, MODE_PRIVATE);
         final boolean isGuide = mSp.getBoolean(SP_PARAMSNAME_ISGUIDE, false);
         try {
             final int versionCode = mSp.getInt(SP_VERSION_CODE, 0);

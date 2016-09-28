@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.michen.olaxueyuan.R;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,23 +89,7 @@ public class GuidePageActivity extends Activity {
 //            View view1=new View(GuidePageActivity.this);
             View bgView = view.findViewById(R.id.rl_bg);
             bgView.setBackgroundResource(imageArray[position]);
-            bgView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (position == mPageCount - 1) {
-                        // 进入主页面。
-                        startActivity(new Intent(GuidePageActivity.this, MainActivity.class));
-                        GuidePageActivity.this.finish();
-                        try {
-                            mSp.edit().putBoolean(IndexActivity.SP_PARAMSNAME_ISGUIDE, true).apply();
-                            int nowVersionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-                            mSp.edit().putInt(IndexActivity.SP_VERSION_CODE, nowVersionCode).apply();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
+
             bgView.setOnTouchListener(new View.OnTouchListener() {
                 private float x, ux;
 
@@ -179,6 +164,17 @@ public class GuidePageActivity extends Activity {
             points.get(position).setBackgroundResource(R.drawable.solid_icon);
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 }

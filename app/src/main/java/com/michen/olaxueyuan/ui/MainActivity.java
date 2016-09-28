@@ -34,7 +34,7 @@ public class MainActivity extends BaseSearchActivity {
         mPushAgent.enable(new IUmengRegisterCallback() {
             @Override
             public void onRegistered(String s) {
-                Logger.e("s==" + s);
+//                Logger.e("s==" + s);
                 handler.post(new Runnable() {
 
                     @Override
