@@ -82,7 +82,8 @@ public class CircleAdapter extends BaseAdapter {
         holder.title.setText(list.get(position).getUserName());
         if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
             String avatarUrl = "";
-            if (list.get(position).getUserAvatar().indexOf("jpg")!=-1){
+//            if (list.get(position).getUserAvatar().indexOf("jpg")!=-1){
+            if (list.get(position).getUserAvatar().contains(".")){
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+list.get(position).getUserAvatar();
             }else{
                 avatarUrl = SEAPP.PIC_BASE_URL+list.get(position).getUserAvatar();

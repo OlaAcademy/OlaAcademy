@@ -169,7 +169,8 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
         title.setText(resultBean.getUserName());
         if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
             String avatarUrl = "";
-            if (resultBean.getUserAvatar().indexOf("jpg") != -1) {
+//            if (resultBean.getUserAvatar().indexOf("jpg") != -1) {
+            if (resultBean.getUserAvatar().contains(".")) {
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + resultBean.getUserAvatar();
             } else {
                 avatarUrl = SEAPP.PIC_BASE_URL + resultBean.getUserAvatar();
@@ -279,7 +280,8 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
         shareView = new SharePopupWindow(this);
         shareView.setPlatformActionListener(this);
         ShareModel model = new ShareModel();
-        if (circle.getUserAvatar().indexOf("jpg") != -1) {
+//        if (circle.getUserAvatar().indexOf("jpg") != -1) {
+        if (circle.getUserAvatar().contains(".")) {
             model.setImageUrl("http://api.olaxueyuan.com/upload/" + circle.getUserAvatar());
         } else {
             model.setImageUrl(SEAPP.PIC_BASE_URL + circle.getUserAvatar());

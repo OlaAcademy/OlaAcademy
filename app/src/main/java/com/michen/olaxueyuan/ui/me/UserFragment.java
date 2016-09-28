@@ -214,7 +214,8 @@ public class UserFragment extends SuperFragment {
                 remainDays.setText("还剩" + userInfo.getVipTime() + "天");
                 if (userInfo.getAvator() != null) {
                     String avatarUrl = "";
-                    if (userInfo.getAvator().indexOf("jpg") != -1) {
+//                    if (userInfo.getAvator().indexOf("jpg") != -1) {
+                    if (userInfo.getAvator().contains(".")) {
                         avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator();
                     } else {
                         avatarUrl = SEAPP.PIC_BASE_URL + userInfo.getAvator();
