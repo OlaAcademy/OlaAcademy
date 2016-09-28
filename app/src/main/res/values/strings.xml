@@ -141,5 +141,6 @@
     <string name="qq_friend">QQ好友</string>
     <string name="qq_space">QQ空间</string>
     <string name="sina_blog">微博</string>
+    <string name="share_to_friends">快分享给小伙伴吧</string>
 
 </resources>

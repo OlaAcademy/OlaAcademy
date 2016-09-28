@@ -213,35 +213,30 @@ public class DialogUtils {
         wechatSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
                 listener.onClick(view);
             }
         });
         wechatCircleSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
                 listener.onClick(view);
             }
         });
         qqFriendSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
                 listener.onClick(view);
             }
         });
         qqFriend_spaceSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
                 listener.onClick(view);
             }
         });
         sinaSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
                 listener.onClick(view);
             }
         });

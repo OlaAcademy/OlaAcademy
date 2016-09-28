@@ -46,7 +46,8 @@
                 android:layout_marginLeft="5dp"
                 android:text="10天"
                 android:textColor="@color/sign_dialog_text_color"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/sign_day_score"
@@ -55,7 +56,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/sign_ola_text_bg"
                 android:gravity="center"
-                android:text="打卡获取5欧拉金币"
+                android:text="签到获取欧拉币"
                 android:textColor="@color/white"
                 android:textSize="11dp" />
 
@@ -67,7 +68,8 @@
                 android:paddingRight="5dp"
                 android:text="10道"
                 android:textColor="@color/sign_dialog_text_color"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:visibility="invisible" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -76,7 +78,8 @@
                 android:layout_marginTop="5dp"
                 android:text="累计打卡"
                 android:textColor="@color/white"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:visibility="invisible" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,7 +89,8 @@
                 android:layout_marginTop="5dp"
                 android:text="累计打卡"
                 android:textColor="@color/white"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:visibility="invisible" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -105,7 +109,7 @@
             android:layout_gravity="center"
             android:background="@color/white"
             android:padding="5dp"
-            android:text="快分享给小伙伴吧"
+            android:text="@string/share_to_friends"
             android:textColor="@color/black_one"
             android:textSize="15dp" />
     </FrameLayout>
@@ -113,9 +117,9 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_marginTop="20dp"
         android:layout_marginBottom="25dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:weightSum="5">
 

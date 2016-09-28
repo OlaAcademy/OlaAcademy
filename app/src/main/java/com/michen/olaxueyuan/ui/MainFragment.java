@@ -269,7 +269,6 @@ public class MainFragment extends Fragment {
         } else {
             _viewPagerAdapter.upDateMainFragment();
         }*/
-        signIn();
     }
 
     private void signIn() {
@@ -282,15 +281,13 @@ public class MainFragment extends Fragment {
         SharedPreferences preference = getActivity().getSharedPreferences("dot", Context.MODE_PRIVATE);
         long time = preference.getLong("time", 0);
         String pUserId = preference.getString("userId", "");
-        if (System.currentTimeMillis() - time > 8 * 60 * 60 * 1000 || !userId.equals(pUserId)) {
+        if (System.currentTimeMillis() - time > 8 * 60 * 60 * 1000 || !userId.equals(pUserId)) {//距离上次访问签到接口8小时或者保存的userid和当前不符
             /**
              * {@link UserFragmentV2#onEventMainThread(SignInEvent)}
              */
             EventBus.getDefault().post(new SignInEvent(true));
             preference.edit().putLong("time", System.currentTimeMillis()).apply();
             preference.edit().putString("userId", userId).apply();
-//            Logger.e("time==" + time);
-//            Logger.e("userId==" + pUserId);
         }
     }
 
