@@ -65,12 +65,16 @@ public class TeacherHomeFragment extends SuperFragment implements AdapterView.On
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_teacher_home, container, false);
-        ButterKnife.bind(this, view);
-        initView();
-        initViews();
-        fetchData();
-        return view;
+        if (container == null) {
+            return null;
+        } else {
+            view = inflater.inflate(R.layout.fragment_teacher_home, container, false);
+            ButterKnife.bind(this, view);
+            initView();
+            initViews();
+            fetchData();
+            return view;
+        }
     }
 
     private void initView() {

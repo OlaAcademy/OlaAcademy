@@ -4,8 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.view.ViewGroup;
 
-import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.course.CourseFragment;
 import com.michen.olaxueyuan.ui.examination.ExamFragment;
@@ -15,10 +15,13 @@ import com.michen.olaxueyuan.ui.me.UserFragment;
 import com.michen.olaxueyuan.ui.me.UserFragmentV2;
 import com.michen.olaxueyuan.ui.question.QuestionFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tianxiaopeng on 15-1-2.
  */
-public class MainPagerAdapter extends FragmentStatePagerAdapter {
+public class MainPagerAdapterV2 extends FragmentStatePagerAdapter {
 
     private QuestionFragment questionFragment;
     private ExamFragment examFragment;
@@ -28,13 +31,14 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private UserFragment userFragment;
     private TeacherHomeFragment teacherHomeFragment;
     private UserFragmentV2 userFragmentV2;
+    private List<Fragment> list = new ArrayList<>();
 
-    public MainPagerAdapter(FragmentManager fm) {
+    public MainPagerAdapterV2(FragmentManager fm) {
         super(fm);
         construct();
     }
 
-    public void updateList() {
+    public void upDateMainFragment() {
         notifyDataSetChanged();
     }
 
@@ -51,7 +55,6 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-//        return list.size();
         return 5;
     }
 
@@ -59,12 +62,12 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int index) {
         switch (index) {
             case 0:
-                if (SEAuthManager.getInstance() != null && SEAuthManager.getInstance().getAccessUser() != null
-                        && SEAuthManager.getInstance().getAccessUser().getIsActive() == 2) {
-                    return teacherHomeFragment;
-                } else {
-                    return questionFragment;
-                }
+//                if (SEAuthManager.getInstance() != null && SEAuthManager.getInstance().getAccessUser() != null
+//                        && SEAuthManager.getInstance().getAccessUser().getIsActive() == 2) {
+//                return teacherHomeFragment;
+//                } else {
+                return questionFragment;
+//                }
             case 1:
                 return courseFragment;
             case 2:
@@ -80,7 +83,13 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        return super.instantiateItem(container, position);
+    }
+
+    @Override
     public int getItemPosition(Object object) {
+//        return super.getItemPosition(object);
         return PagerAdapter.POSITION_NONE;
     }
 }

@@ -261,14 +261,7 @@ public class MainFragment extends Fragment {
 
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
-//        _viewPagerAdapter.upDateMainFragment();
-        /*if (module.isLogin) {
-            Logger.e(""+ SEAuthManager.getInstance().getAccessUser().getIsActive());
-//            _viewPagerAdapter.notifyDataSetChanged();
-            _viewPagerAdapter.upDateMainFragment();
-        } else {
-            _viewPagerAdapter.upDateMainFragment();
-        }*/
+        _viewPagerAdapter.updateList();//判断是老师登录还是学生登录来切换第一个界面
     }
 
     private void signIn() {

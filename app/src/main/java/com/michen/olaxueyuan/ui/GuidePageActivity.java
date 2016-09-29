@@ -1,8 +1,12 @@
 package com.michen.olaxueyuan.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,8 +19,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.umeng.analytics.MobclickAgent;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +41,15 @@ public class GuidePageActivity extends Activity {
     private List<ImageView> points = new ArrayList<>();
     private int mCurrentPosterIndex = 0;
     private int mPageCount = 3;
-    private int[] imageArray = {R.drawable.guide_page_one, R.drawable.guide_page_two, R.drawable.guide_page_three};
-    //            ,R.drawable.bg_index_fourth};
+    private String[] imageNameArray = {"guide_page_one.jpg", "guide_page_two.jpg", "guide_page_three.jpg"};
     private SharedPreferences mSp;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide_page);
+        mContext = this;
         ButterKnife.bind(this);
         mSp = getSharedPreferences(IndexActivity.SP_FILENAME_CONFIG, MODE_PRIVATE);
         initPointers();
@@ -76,6 +83,19 @@ public class GuidePageActivity extends Activity {
         mViewPager.addOnPageChangeListener(new PosterPageChange());
     }
 
+    private void jumpToMainActivity() {
+        Intent intent = new Intent(mContext, MainActivity.class);
+        startActivity(intent);
+        try {
+            mSp.edit().putBoolean(IndexActivity.SP_PARAMSNAME_ISGUIDE, true).apply();
+            int nowVersionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+            mSp.edit().putInt(IndexActivity.SP_VERSION_CODE, nowVersionCode).apply();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finish();
+    }
+
     class PosterPagerAdapter extends PagerAdapter {
 
         @Override
@@ -85,10 +105,21 @@ public class GuidePageActivity extends Activity {
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            View view = LayoutInflater.from(GuidePageActivity.this).inflate(R.layout.item_viewpager_guide, null);
-//            View view1=new View(GuidePageActivity.this);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_viewpager_guide, null);
+//            View view1=new View(mContext);
             View bgView = view.findViewById(R.id.rl_bg);
-            bgView.setBackgroundResource(imageArray[position]);
+            try {
+                InputStream inputStream = mContext.getAssets().open(imageNameArray[position]);
+                if (Build.VERSION.SDK_INT >= 16) {
+                    bgView.setBackground(new BitmapDrawable(null, BitmapFactory.decodeStream(inputStream)));
+                } else {
+                    bgView.setBackgroundDrawable(new BitmapDrawable(null, BitmapFactory.decodeStream(inputStream)));
+                }
+                inputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                jumpToMainActivity();
+            }
 
             bgView.setOnTouchListener(new View.OnTouchListener() {
                 private float x, ux;
@@ -98,29 +129,19 @@ public class GuidePageActivity extends Activity {
                     if (position == mPageCount - 1) {
                         // 当按下时处理
                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            // 设置背景为选中状态
                             // 获取按下时的x轴坐标
                             x = event.getX();
+                            Logger.e("x==" + x);
                         } else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
-                            // 设置背景为未选中正常状态
                             // 获取松开时的x坐标
                             ux = event.getX();
-                            // 判断当前项中按钮控件不为空时
-                        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {// 当滑动时背景为选中状态
-                            if (x - ux > 10) {
-                                Intent intent = new Intent(GuidePageActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                try {
-                                    mSp.edit().putBoolean(IndexActivity.SP_PARAMSNAME_ISGUIDE, true).apply();
-                                    int nowVersionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-                                    mSp.edit().putInt(IndexActivity.SP_VERSION_CODE, nowVersionCode).apply();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                finish();
+                            Logger.e("ux==" + ux);
+                        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                            Logger.e("x "+x+"- ux===" + (x - ux));
+                            if (x - ux > 1) {
+                                jumpToMainActivity();
                             }
                         } else {// 其他模式
-                            // 设置背景为未选中正常状态
                         }
                     }
                     return true;
