@@ -20,29 +20,32 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.michen.olaxueyuan.protocol.SECallBack;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
-import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
 import com.michen.olaxueyuan.protocol.result.CreateGroupResult;
-import com.michen.olaxueyuan.protocol.result.MCUploadResult;
-import com.michen.olaxueyuan.protocol.result.ServiceError;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.imagechooser.api.ChooserType;
 import com.snail.imagechooser.api.ChosenImage;
 import com.snail.imagechooser.api.ImageChooserListener;
 import com.snail.imagechooser.api.ImageChooserManager;
+import com.snail.photo.upload.UploadResult;
+import com.snail.photo.upload.UploadService;
+import com.snail.photo.util.PictureUtil;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.Callback;
+import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 
 public class CreateGroupActivity extends SEBaseActivity implements ImageChooserListener {
     @Bind(R.id.add_group_avatar)
@@ -77,6 +80,7 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
 
     private boolean needToUpdate = false;
     private int sex = 1;
+    private String type = "1";// 1 数学 2 英语 3 逻辑 4 协作
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,8 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
     }
 
     private void initView() {
+        setTitleText(getString(R.string.edit_group_data));
+        addGroupAvatar.setRectAdius(100);
         agreement.setChecked(true);
         agreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -101,6 +107,8 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
                 }
             }
         });
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://upload.olaxueyuan.com").build();
+        uploadService = restAdapter.create(UploadService.class);
     }
 
     public void initPop() {
@@ -164,18 +172,28 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
     private void createGroup() {
         String name = groupName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            ToastUtil.showToastShort(context, "群名称不能为空");
+            ToastUtil.showToastShort(context, R.string.group_name_not_null);
             return;
         }
-        String userId = null;
+        String userId = "";
         try {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         } catch (Exception e) {
             e.printStackTrace();
+            ToastUtil.showToastShort(context, R.string.login_time_out);
+            return;
 //            userId = "381";
         }
+        if (needToUpdate) {
+            uploadAvatar(userId, name);
+        } else {
+            saveGroupInfo(userId, name);
+        }
+    }
+
+    private void saveGroupInfo(String userId, String name) {
         SVProgressHUD.showInView(context, getString(R.string.request_running), true);
-        TeacherHomeManager.getInstance().createGroup(userId, name, _imageName, new Callback<CreateGroupResult>() {
+        TeacherHomeManager.getInstance().createGroup(userId, type, name, _imageName, new Callback<CreateGroupResult>() {
             @Override
             public void success(CreateGroupResult createGroupResult, Response response) {
                 if (createGroupResult.getApicode() != 10000) {
@@ -192,7 +210,7 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
         });
     }
 
-    @OnClick({R.id.service_declaration, R.id.create_group,R.id.add_group_avatar})
+    @OnClick({R.id.service_declaration, R.id.create_group, R.id.add_group_avatar})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.service_declaration:
@@ -253,9 +271,6 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
                 if (image != null) {
                     _updatedAvatarFilename = image.getFileThumbnail();
                     updateAvatarImageView();
-                    if (needToUpdate) {
-                        updateAvatar();
-                    }
                 }
             }
         });
@@ -272,27 +287,6 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
         SVProgressHUD.showInViewWithoutIndicator(this, "无法选择照片，请重试。", 3.f);
     }
 
-    /**
-     * 头像更新到服务器
-     */
-    private void updateAvatar() {
-        SVProgressHUD.showInView(this, "头像上传中，请稍候...", true);
-        SEUserManager.getInstance().uploadAvatar(_updatedAvatarFilename, new SECallBack() {
-            @Override
-            public void success() {
-                SVProgressHUD.showInViewWithoutIndicator(context, "上传头像成功!", 2);
-                MCUploadResult uploadResult = SEUserManager.getInstance().getUploadResult();
-                _imageName = uploadResult.imageName;
-            }
-
-            @Override
-            public void failure(ServiceError error) {
-                SVProgressHUD.showInViewWithoutIndicator(context, "上传头像出错，请检查您的网络。", 2);
-            }
-        });
-        needToUpdate = false;
-    }
-
     private void updateAvatarImageView() {
         if (_updatedAvatarFilename != null) {
             File imageFile = new File(_updatedAvatarFilename);
@@ -306,5 +300,42 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
                     .centerCrop()
                     .into(addGroupAvatar);
         }
+    }
+
+    private void uploadAvatar(String userId, String name) {
+        // 判断照片是否有旋转
+        int degree = PictureUtil.readPictureDegree(_updatedAvatarFilename);
+        File imageFile = new File(_updatedAvatarFilename);
+        uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree, userId, name);
+        needToUpdate = false;
+    }
+
+    private ExecutorService service = Executors.newFixedThreadPool(5);
+    private UploadService uploadService;
+
+    private void uploadImagesByExecutors(final TypedFile photo, final int angle, final String userId, final String name) {
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+
+                uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
+                    @Override
+                    public void success(UploadResult result, Response response) {
+                        if (result.code != 1) {
+                            SVProgressHUD.showInViewWithoutIndicator(context, result.message, 2.0f);
+                            return;
+                        }
+                        SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_success), 2);
+                        _imageName = result.imgGid;
+                        saveGroupInfo(userId, name);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_fail), 2.0f);
+                    }
+                });
+            }
+        });
     }
 }

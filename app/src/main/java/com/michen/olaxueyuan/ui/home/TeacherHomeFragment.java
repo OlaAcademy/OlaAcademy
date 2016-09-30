@@ -90,7 +90,7 @@ public class TeacherHomeFragment extends SuperFragment implements AdapterView.On
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         } catch (Exception e) {
             e.printStackTrace();
-            userId = "381";
+//            userId = "381";
         }
         TeacherHomeManager.getInstance().getHomeworkList(userId, "2", homeworkId, PAGE_SIZE, new Callback<HomeworkListResult>() {
             @Override

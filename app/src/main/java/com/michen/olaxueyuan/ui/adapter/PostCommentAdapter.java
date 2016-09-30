@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
@@ -82,15 +83,23 @@ public class PostCommentAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(list.get(position).getToUserName())) {
             String comment = "@" + list.get(position).getToUserName() + ":" + list.get(position).getContent();
             SpannableStringBuilder builder = new SpannableStringBuilder(comment);
-            ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.rgb(0,144,255));
-            builder.setSpan(redSpan, 0, list.get(position).getToUserName().length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.rgb(0, 144, 255));
+            builder.setSpan(redSpan, 0, list.get(position).getToUserName().length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.itemCommentOriginalContent.setText(builder);
         } else {
             holder.itemCommentOriginalContent.setText(list.get(position).getContent());
         }
         holder.itemCommentTime.setText(list.get(position).getTime());
-        Picasso.with(mContext).load(SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar()).placeholder(R.drawable.ic_default_avatar)
-                .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(holder.itemCommentAvatar);
+        if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
+            String avatarUrl = "";
+            if (list.get(position).getUserAvatar().contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar();
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();
+            }
+            Picasso.with(mContext).load(avatarUrl).placeholder(R.drawable.ic_default_avatar)
+                    .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(holder.itemCommentAvatar);
+        }
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

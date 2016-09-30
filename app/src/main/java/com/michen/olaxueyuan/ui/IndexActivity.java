@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Window;
 
 import com.michen.olaxueyuan.R;
 
@@ -19,7 +18,7 @@ public class IndexActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
         SharedPreferences mSp = getSharedPreferences(SP_FILENAME_CONFIG, MODE_PRIVATE);

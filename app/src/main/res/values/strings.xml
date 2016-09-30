@@ -142,5 +142,10 @@
     <string name="qq_space">QQ空间</string>
     <string name="sina_blog">微博</string>
     <string name="share_to_friends">快分享给小伙伴吧</string>
+    <string name="edit_group_data">编辑群资料</string>
+    <string name="group_name_not_null">群名称不能为空</string>
+    <string name="login_time_out">登录失效，请重新登录</string>
+    <string name="upload_avatar_success">上传头像成功!</string>
+    <string name="upload_avatar_fail">图片上传失败</string>
 
 </resources>
