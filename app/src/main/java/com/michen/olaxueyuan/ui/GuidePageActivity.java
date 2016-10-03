@@ -132,15 +132,16 @@ public class GuidePageActivity extends Activity {
                             // 获取按下时的x轴坐标
                             x = event.getX();
                             Logger.e("x==" + x);
+                            jumpToMainActivity();
                         } else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
                             // 获取松开时的x坐标
                             ux = event.getX();
                             Logger.e("ux==" + ux);
                         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                            Logger.e("x "+x+"- ux===" + (x - ux));
-                            if (x - ux > 1) {
-                                jumpToMainActivity();
-                            }
+                            Logger.e("x " + x + "- ux===" + (x - ux));
+//                            if (x - ux > 1) {
+//                            jumpToMainActivity();
+//                            }
                         } else {// 其他模式
                         }
                     }

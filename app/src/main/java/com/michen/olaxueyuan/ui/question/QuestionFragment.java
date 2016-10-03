@@ -116,7 +116,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         } else {
             rootView = View.inflate(getActivity(), R.layout.fragment_question, null);
             ButterKnife.bind(this, rootView);
-            EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
             initView();
             fetchHomeCourseData();
             getUnReadMessageCount();
@@ -203,6 +203,9 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
+        if (redDot==null){
+            return;
+        }
         if (selectType == 0) {
             fetchHomeCourseData();
         } else {

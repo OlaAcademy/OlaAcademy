@@ -107,6 +107,9 @@ public class UserFragmentV2 extends SuperFragment implements PlatformActionListe
 
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
+        if (avatar == null) {
+            return;
+        }
         if (!module.isLogin) {
             updateHeadView(null);
             EventBus.getDefault().post(new ShowBottomTabDotEvent(4, false));

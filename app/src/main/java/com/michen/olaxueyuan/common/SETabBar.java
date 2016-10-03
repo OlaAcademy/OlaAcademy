@@ -164,7 +164,7 @@ public class SETabBar extends FrameLayout {
         }
 
         if (!_itemViews.isEmpty()) {
-            setSelectedTabIndex(0);
+            setSelectedTabIndex(2);
         }
     }
 
