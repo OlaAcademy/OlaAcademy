@@ -21,6 +21,9 @@ import com.michen.olaxueyuan.common.SETabBar;
 import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
 import com.michen.olaxueyuan.protocol.event.SignInEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.SEUserManager;
+import com.michen.olaxueyuan.protocol.result.CheckInResult;
+import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.course.CourseFragment;
@@ -33,6 +36,9 @@ import com.michen.olaxueyuan.ui.me.UserFragmentV2;
 import com.michen.olaxueyuan.ui.question.QuestionFragment;
 
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -196,9 +202,55 @@ public class MainFragment extends Fragment {
             EventBus.getDefault().post(new SignInEvent(true));
             preference.edit().putLong("time", System.currentTimeMillis()).apply();
             preference.edit().putString("userId", userId).apply();
+
+            SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
+                @Override
+                public void success(CheckinStatusResult checkinStatusResult, Response response) {
+                    if (getActivity() != null) {
+                        if (checkinStatusResult.getApicode() == 10000) {
+                            /**
+                             * {@link com.michen.olaxueyuan.ui.MainFragment#onEventMainThread(ShowBottomTabDotEvent)}
+                             */
+                            if (checkinStatusResult.getResult().getStatus() == 1) {
+                                EventBus.getDefault().post(new ShowBottomTabDotEvent(4, false));
+                            } else {
+                                EventBus.getDefault().post(new ShowBottomTabDotEvent(4, true));
+                                isShowSignDialog = true;
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                }
+            });
         }
     }
+    boolean isShowSignDialog;//是否显示签到的dialog
 
+    private void checkIn() {//签到
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated() && isShowSignDialog) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        } else {
+            return;
+        }
+        SEUserManager.getInstance().checkin(userId, new Callback<CheckInResult>() {
+            @Override
+            public void success(CheckInResult checkInResult, Response response) {
+                if (getActivity() != null) {
+                    if (checkInResult.getApicode() == 10000) {
+                        isShowSignDialog = false;
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+            }
+        });
+    }
     /**
      * {@link UserFragmentV2#getCheckinStatus()}
      *
