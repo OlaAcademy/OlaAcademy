@@ -178,7 +178,11 @@ public class MainFragment extends Fragment {
                 changeFragment(questionFragment, teacherHomeFragment, courseFragment, homeFragment, circleFragment, userFragmentV2);
             }
         }
-        getCheckinStatus(false);
+        if (userFragmentV2.isVisible()) {
+            signIn();
+        } else {
+            getCheckinStatus(false);
+        }
     }
 
     // EventBus 回调
@@ -191,13 +195,14 @@ public class MainFragment extends Fragment {
      */
     private void getCheckinStatus(final boolean sign) {
         String userId = "";
+        final SharedPreferences preference = getActivity().getSharedPreferences("dot", Context.MODE_PRIVATE);
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         } else {
             _tabBar.getItemViewAt(4).hideRedDot();
+            preference.edit().putLong("time", 0).apply();
             return;
         }
-        final SharedPreferences preference = getActivity().getSharedPreferences("dot", Context.MODE_PRIVATE);
         long time = preference.getLong("time", 0);
         String pUserId = preference.getString("userId", "");
         boolean isSigned = preference.getBoolean("isSigned", false);
