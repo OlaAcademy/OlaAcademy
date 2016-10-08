@@ -52,7 +52,7 @@
     <string name="alipay_not_install">您手机未安装支付宝</string>
     <string name="pay_num">购买人数%s人</string>
     <string name="course">课程</string>
-    <string name="num_watch">%s观看</string>
+    <string name="num_watch">%d观看</string>
     <string name="num_knowledge">%s个知识点</string>
     <string name="rmb_mark">¥</string>
     <string name="math">数学</string>
@@ -147,5 +147,8 @@
     <string name="login_time_out">登录失效，请重新登录</string>
     <string name="upload_avatar_success">上传头像成功!</string>
     <string name="upload_avatar_fail">图片上传失败</string>
+    <string name="free">免费</string>
+    <string name="hot">热门</string>
+    <string name="newest">最新</string>
 
 </resources>

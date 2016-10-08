@@ -44,6 +44,7 @@ import retrofit.client.Response;
 /**
  * Created by mingge on 2016/5/20.
  */
+@Deprecated
 public class UserFragment extends SuperFragment {
     View rootView;
     @Bind(R.id.left_icon)

@@ -11,6 +11,7 @@ import com.michen.olaxueyuan.ui.me.subfragment.UserVipFragment;
 /**
  * Created by mingge on 2016/5/20.
  */
+@Deprecated
 public class UserPageAdapter extends FragmentStatePagerAdapter {
     private UserKnowledgeFragment userKnowledgeFragment;
     private UserVipFragment userVipFragment;

@@ -42,6 +42,8 @@ public class CourseDatabaseRecyclerAdapter extends BaseRecyclerAdapter<HomeModul
         ImageView ivBrowse;
         @Bind(R.id.tv_browser)
         TextView tvBrowser;
+        @Bind(R.id.text_tip)
+        TextView textTip;
 
         public CourseDatabaseItemHolder(View itemView) {
             super(itemView);
@@ -74,6 +76,11 @@ public class CourseDatabaseRecyclerAdapter extends BaseRecyclerAdapter<HomeModul
         holder.tvName.setText(course.getName());
         holder.tvTime.setText(course.getTotalTime());
         holder.tvBrowser.setText(context.getString(R.string.num_watch, course.getPlaycount()));
+        if (position == 0) {
+            holder.textTip.setText(R.string.hot);
+        } else {
+            holder.textTip.setText(R.string.newest);
+        }
         try {
             Picasso.with(context).load(course.getAddress()).config(Bitmap.Config.RGB_565)
                     .placeholder(R.drawable.default_index).error(R.drawable.default_index).into(holder.ivCourse);
