@@ -18,8 +18,6 @@ import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SETabBar;
-import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
-import com.michen.olaxueyuan.protocol.event.SignInEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.CheckInResult;
@@ -90,9 +88,8 @@ public class MainFragment extends Fragment {
                 handleOnDidSelectTab(tabIndex);
             }
         });
-
         _tabBar.limitTabNum(5);
-//        _tabBar.setSelectedTabIndex(2);
+        getCheckinStatus(false);
         return fragmentView;
     }
 
@@ -104,7 +101,7 @@ public class MainFragment extends Fragment {
         switch (tabIndex) {
             case 0:
                 setActionBarVisible(false);
-                isTeacher();
+                isTeacher(true);
                 break;
             case 1:
                 setActionBarVisible(false);
@@ -121,7 +118,7 @@ public class MainFragment extends Fragment {
             case 4:
                 setActionBarVisible(false);
                 changeFragment(userFragmentV2, teacherHomeFragment, questionFragment, courseFragment, homeFragment, circleFragment);
-                signIn();
+                getCheckinStatus(true);
                 break;
             default:
                 break;
@@ -134,7 +131,6 @@ public class MainFragment extends Fragment {
     public void onEventMainThread(ChangeIndexEvent changeIndexEvent) {
         if (changeIndexEvent.isChange) {
             _tabBar.setSelectedTabIndex(changeIndexEvent.position);
-//            switchToPage(changeIndexEvent.position);
         }
     }
 
@@ -168,54 +164,68 @@ public class MainFragment extends Fragment {
         for (int i = 0; i < fragments.length; i++) {
             transaction.hide(fragments[i]);
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
-    private void isTeacher() {
+    private void isTeacher(boolean flag) {
         if (SEAuthManager.getInstance() != null && SEAuthManager.getInstance().getAccessUser() != null
                 && SEAuthManager.getInstance().getAccessUser().getIsActive() == 2) {
-            changeFragment(teacherHomeFragment, questionFragment, courseFragment, homeFragment, circleFragment, userFragmentV2);
+            if (flag || questionFragment.isVisible()) {
+                changeFragment(teacherHomeFragment, questionFragment, courseFragment, homeFragment, circleFragment, userFragmentV2);
+            }
         } else {
-            changeFragment(questionFragment, teacherHomeFragment, courseFragment, homeFragment, circleFragment, userFragmentV2);
+            if (flag || teacherHomeFragment.isVisible()) {
+                changeFragment(questionFragment, teacherHomeFragment, courseFragment, homeFragment, circleFragment, userFragmentV2);
+            }
         }
+        getCheckinStatus(false);
     }
 
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
-        isTeacher();
+        isTeacher(false);
     }
 
-    private void signIn() {
+    /**
+     * @param sign 是否要调用签到的接口
+     */
+    private void getCheckinStatus(final boolean sign) {
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         } else {
+            _tabBar.getItemViewAt(4).hideRedDot();
             return;
         }
-        SharedPreferences preference = getActivity().getSharedPreferences("dot", Context.MODE_PRIVATE);
+        final SharedPreferences preference = getActivity().getSharedPreferences("dot", Context.MODE_PRIVATE);
         long time = preference.getLong("time", 0);
         String pUserId = preference.getString("userId", "");
-        if (System.currentTimeMillis() - time > 8 * 60 * 60 * 1000 || !userId.equals(pUserId)) {//距离上次访问签到接口8小时或者保存的userid和当前不符
-            /**
-             * {@link UserFragmentV2#onEventMainThread(SignInEvent)}
-             */
-            EventBus.getDefault().post(new SignInEvent(true));
+        boolean isSigned = preference.getBoolean("isSigned", false);
+        //距离上次访问签到接口8小时或者保存的userid和当前不符,或者没有签到
+        if (System.currentTimeMillis() - time > 8 * 60 * 60 * 1000 || !userId.equals(pUserId) || !isSigned) {
             preference.edit().putLong("time", System.currentTimeMillis()).apply();
             preference.edit().putString("userId", userId).apply();
-
             SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
                 @Override
                 public void success(CheckinStatusResult checkinStatusResult, Response response) {
                     if (getActivity() != null) {
                         if (checkinStatusResult.getApicode() == 10000) {
-                            /**
-                             * {@link com.michen.olaxueyuan.ui.MainFragment#onEventMainThread(ShowBottomTabDotEvent)}
-                             */
                             if (checkinStatusResult.getResult().getStatus() == 1) {
-                                EventBus.getDefault().post(new ShowBottomTabDotEvent(4, false));
+                                preference.edit().putBoolean("isSigned", true).apply();
+                                _tabBar.getItemViewAt(4).hideRedDot();
+                                if (isShowSignDialog) {
+                                    /**
+                                     * {@link UserFragmentV2#onEventMainThread(CheckinStatusResult)}
+                                     */
+                                    EventBus.getDefault().post(checkinStatusResult);
+                                    isShowSignDialog = false;
+                                }
                             } else {
-                                EventBus.getDefault().post(new ShowBottomTabDotEvent(4, true));
-                                isShowSignDialog = true;
+                                preference.edit().putBoolean("isSigned", false).apply();
+                                _tabBar.getItemViewAt(4).showRedDot();
+                                if (sign) {//调用签到接口
+                                    signIn();
+                                }
                             }
                         }
                     }
@@ -227,11 +237,12 @@ public class MainFragment extends Fragment {
             });
         }
     }
+
     boolean isShowSignDialog;//是否显示签到的dialog
 
-    private void checkIn() {//签到
+    private void signIn() {//签到
         String userId = "";
-        if (SEAuthManager.getInstance().isAuthenticated() && isShowSignDialog) {
+        if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         } else {
             return;
@@ -241,7 +252,8 @@ public class MainFragment extends Fragment {
             public void success(CheckInResult checkInResult, Response response) {
                 if (getActivity() != null) {
                     if (checkInResult.getApicode() == 10000) {
-                        isShowSignDialog = false;
+                        isShowSignDialog = true;
+                        getCheckinStatus(false);
                     }
                 }
             }
@@ -250,18 +262,6 @@ public class MainFragment extends Fragment {
             public void failure(RetrofitError error) {
             }
         });
-    }
-    /**
-     * {@link UserFragmentV2#getCheckinStatus()}
-     *
-     * @param dotEvent
-     */
-    public void onEventMainThread(ShowBottomTabDotEvent dotEvent) {
-        if (dotEvent.isShowDot) {
-            _tabBar.getItemViewAt(dotEvent.position).showRedDot();
-        } else {
-            _tabBar.getItemViewAt(dotEvent.position).hideRedDot();
-        }
     }
 
     private void register() {
