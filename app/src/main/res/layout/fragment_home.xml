@@ -3,7 +3,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!--<ScrollView-->
     <com.snail.pulltorefresh.PullToRefreshScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
@@ -225,6 +224,5 @@
 
         </LinearLayout>
     </com.snail.pulltorefresh.PullToRefreshScrollView>
-    <!--</ScrollView>-->
 
 </LinearLayout>

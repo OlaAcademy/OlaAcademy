@@ -20,7 +20,7 @@
 
     <View
         style="@style/line_horizontal"
-        android:layout_height="10dp" />
+        android:layout_height="@dimen/dp_10" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
@@ -31,7 +31,7 @@
     <RelativeLayout
         android:id="@+id/subject_layout"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="@dimen/dp_44"
         android:background="@color/line_color"
         android:gravity="center">
 
@@ -40,10 +40,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/dp_10"
             android:text="陈剑数学高分指南"
             android:textColor="@color/black_one"
-            android:textSize="17dp" />
+            android:textSize="@dimen/sp_16" />
 
         <ImageView
             android:layout_width="wrap_content"

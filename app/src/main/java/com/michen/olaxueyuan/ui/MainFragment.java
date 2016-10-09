@@ -57,7 +57,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setupActionBar();
+//        setupActionBar();
         register();
         View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
         EventBus.getDefault().register(this);
@@ -100,23 +100,18 @@ public class MainFragment extends Fragment {
     public void switchToPage(int tabIndex) {
         switch (tabIndex) {
             case 0:
-                setActionBarVisible(false);
                 isTeacher(true);
                 break;
             case 1:
-                setActionBarVisible(false);
                 changeFragment(courseFragment, teacherHomeFragment, questionFragment, homeFragment, circleFragment, userFragmentV2);
                 break;
             case 2:
-                setActionBarVisible(false);
                 changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseFragment, circleFragment, userFragmentV2);
                 break;
             case 3:
-                setActionBarVisible(false);
                 changeFragment(circleFragment, teacherHomeFragment, questionFragment, courseFragment, homeFragment, userFragmentV2);
                 break;
             case 4:
-                setActionBarVisible(false);
                 changeFragment(userFragmentV2, teacherHomeFragment, questionFragment, courseFragment, homeFragment, circleFragment);
                 getCheckinStatus(true);
                 break;

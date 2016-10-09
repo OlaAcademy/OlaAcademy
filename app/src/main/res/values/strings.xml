@@ -150,5 +150,8 @@
     <string name="free">免费</string>
     <string name="hot">热门</string>
     <string name="newest">最新</string>
+    <string name="english">英语</string>
+    <string name="logic">逻辑</string>
+    <string name="writing">写作</string>
 
 </resources>

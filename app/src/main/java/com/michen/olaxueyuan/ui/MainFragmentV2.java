@@ -194,27 +194,22 @@ public class MainFragmentV2 extends Fragment {
             case 0:
                 setActionBarVisible(false);
                 _viewPager.setCurrentItem(tabIndex, false);
-                ((MainActivity) mActivity).setTitleText("");
                 break;
             case 1:
                 setActionBarVisible(false);
                 _viewPager.setCurrentItem(tabIndex, false);
-                ((MainActivity) mActivity).setTitleText("数学");
                 break;
             case 2:
                 setActionBarVisible(false);
                 _viewPager.setCurrentItem(tabIndex, false);
-                ((MainActivity) mActivity).setTitleText("数学");
                 break;
             case 3:
                 setActionBarVisible(false);
                 _viewPager.setCurrentItem(tabIndex, false);
-                ((MainActivity) mActivity).setTitleText("欧拉圈");
                 break;
             case 4:
                 setActionBarVisible(false);
                 _viewPager.setCurrentItem(tabIndex, false);
-                ((MainActivity) mActivity).setTitleText("");
                 signIn();
                 break;
             default:
@@ -328,7 +323,7 @@ public class MainFragmentV2 extends Fragment {
     }
 
     /**
-     * {@link UserFragmentV2#getCheckinStatus()}
+     * {@link UserFragmentV2#onEventMainThread(UserLoginNoticeModule)}
      *
      * @param dotEvent
      */
