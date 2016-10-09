@@ -174,7 +174,7 @@ public class MainFragment extends Fragment {
             }
         }
         if (userFragmentV2.isVisible()) {
-            signIn();
+            getCheckinStatus(true);
         } else {
             getCheckinStatus(false);
         }
