@@ -223,7 +223,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         share = new SharePopupWindow(getActivity());
         share.setPlatformActionListener(this);
         ShareModel model = new ShareModel();
-        if (circle.getUserAvatar().indexOf("jpg") != -1) {
+//        if (circle.getUserAvatar().indexOf("jpg") != -1) {
+        if (circle.getUserAvatar().contains(".")) {
             model.setImageUrl("http://api.olaxueyuan.com/upload/" + circle.getUserAvatar());
         } else {
             model.setImageUrl(SEAPP.PIC_BASE_URL + circle.getUserAvatar());

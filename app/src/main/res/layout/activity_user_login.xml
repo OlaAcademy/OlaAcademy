@@ -22,9 +22,12 @@
         android:layout_below="@+id/tv_tip"
         android:layout_margin="10dp"
         android:background="@null"
+        android:text="13552514743"
         android:hint="请输入手机号"
         android:inputType="phone"
         android:textSize="16sp" />
+    <!--android:text="13513519435"-->
+    <!--android:text="13581574738"-->
 
     <ImageView
         android:id="@+id/line_divider_1"
@@ -42,6 +45,7 @@
         android:layout_margin="10dp"
         android:background="@null"
         android:hint="请输入密码"
+        android:text="123456"
         android:inputType="textPassword"
         android:textSize="16sp" />
 

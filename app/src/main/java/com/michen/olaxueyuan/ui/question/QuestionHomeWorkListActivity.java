@@ -24,7 +24,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class QuestionHomeWorkListActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener {
+public class QuestionHomeWorkListActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener2 {
 
     @Bind(R.id.listview)
     PullToRefreshListView listview;
@@ -46,7 +46,7 @@ public class QuestionHomeWorkListActivity extends SEBaseActivity implements Pull
 
     private void initView() {
         setTitleText(getString(R.string.my_homework));
-        listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
         listview.getRefreshableView().setDivider(null);
         adapter = new QuestionHomeWorkListAdapter(context);
@@ -94,9 +94,14 @@ public class QuestionHomeWorkListActivity extends SEBaseActivity implements Pull
     }
 
     @Override
-    public void onRefresh(PullToRefreshBase refreshView) {
+    public void onPullDownToRefresh(PullToRefreshBase refreshView) {
         homeworkId = "";
         mList.clear();
+        fetchData();
+    }
+
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase refreshView) {
         fetchData();
     }
 }

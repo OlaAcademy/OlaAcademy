@@ -1,12 +1,16 @@
 package com.michen.olaxueyuan.ui;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Window;
 
 import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
 import com.baidu.autoupdatesdk.UICheckUpdateCallback;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.StatusBarCompat;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.sriramramani.droid.inspector.server.ViewServer;
 import com.umeng.analytics.MobclickAgent;
@@ -17,7 +21,8 @@ import com.umeng.message.PushAgent;
 
 import cn.sharesdk.framework.ShareSDK;
 
-public class MainActivity extends BaseSearchActivity {
+//public class MainActivity extends BaseSearchActivity {
+public class MainActivity extends Activity {
 
     private ProgressDialog dialog;
     PushAgent mPushAgent;
@@ -25,16 +30,15 @@ public class MainActivity extends BaseSearchActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        SetStatusBarColor();
         setContentView(R.layout.activity_main);
-
         ShareSDK.initSDK(this);
         mPushAgent = PushAgent.getInstance(this);
         mPushAgent.onAppStart();
         mPushAgent.enable(new IUmengRegisterCallback() {
             @Override
             public void onRegistered(String s) {
-                Logger.e("s==" + s);
+//                Logger.e("s==" + s);
                 handler.post(new Runnable() {
 
                     @Override
@@ -56,7 +60,7 @@ public class MainActivity extends BaseSearchActivity {
 
         ViewServer.get(this).addWindow(this);
 
-        setLeftImageInvisibility();
+//        setLeftImageInvisibility();
 
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
@@ -108,6 +112,16 @@ public class MainActivity extends BaseSearchActivity {
         public void onCheckComplete() {
             dialog.dismiss();
         }
+    }
 
+    /**
+     * 着色状态栏（4.4以上系统有效）
+     */
+    public void SetStatusBarColor() {
+        // 无标题
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // 设置竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.common_blue));
     }
 }

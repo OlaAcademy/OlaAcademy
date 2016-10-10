@@ -41,7 +41,6 @@ public class BaseSearchActivity extends SuperActivity {
     public boolean onCreateOptionsMenu(final Menu menu) {
         final SearchView searchView = new SearchView(getActionBar().getThemedContext());
         customizeSearchView(searchView);
-
         IconicFontDrawable searchIconDrawable = new IconicFontDrawable(this);
         searchIconDrawable.setIcon(EntypoIcon.SEARCH);
         searchIconDrawable.setIconColor(SEThemer.getInstance().getActionBarForegroundColor());

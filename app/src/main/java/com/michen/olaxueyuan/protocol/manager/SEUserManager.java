@@ -3,20 +3,22 @@ package com.michen.olaxueyuan.protocol.manager;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.michen.olaxueyuan.protocol.model.SEUser;
-import com.michen.olaxueyuan.protocol.result.SEUserInfoResult;
-import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
-import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
-import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.protocol.SECallBack;
+import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.model.SEUserInfo;
+import com.michen.olaxueyuan.protocol.result.CheckInResult;
+import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
+import com.michen.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.ServiceError;
 import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
+import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
+import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.michen.olaxueyuan.protocol.result.UserKnowledgeResult;
+import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
 import com.michen.olaxueyuan.protocol.service.SEUserService;
 
 import java.io.File;
@@ -85,7 +87,7 @@ public class SEUserManager {
     }
 
     public void regUser(String phone, String code, String pass, final SECallBack callback) {
-        _userService.regUser(phone, code, pass,"2", new Callback<SEUserResult>() {
+        _userService.regUser(phone, code, pass, "2", new Callback<SEUserResult>() {
             @Override
             public void success(SEUserResult result, Response response) {
                 if (result == null) {
@@ -252,11 +254,11 @@ public class SEUserManager {
     /**
      * 查询用户信息
      *
-     * @param  userId
+     * @param userId
      * @param cb
      */
     public void queryUserInfo(String userId, Callback<SEUserResult> cb) {
-        _userService.queryUserInfo(userId,cb);
+        _userService.queryUserInfo(userId, cb);
     }
 
     /**
@@ -312,6 +314,26 @@ public class SEUserManager {
      */
     public void getBuyGoodsList(String userId, Callback<UserBuyGoodsResult> cb) {
         _userService.getBuyGoodsList(userId, cb);
+    }
+
+    /**
+     * 获取今日签到状态
+     *
+     * @param userId
+     * @param cb
+     */
+    public void getCheckinStatus(String userId, Callback<CheckinStatusResult> cb) {
+        _userService.getCheckinStatus(userId, cb);
+    }
+
+    /**
+     * 签到
+     *
+     * @param userId
+     * @param cb
+     */
+    public void checkin(String userId, Callback<CheckInResult> cb) {
+        _userService.checkin(userId, cb);
     }
 }
 

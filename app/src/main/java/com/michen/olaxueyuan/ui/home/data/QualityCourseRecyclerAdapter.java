@@ -44,6 +44,8 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
         TextView tvBrowser;
         @Bind(R.id.tv_is_free)
         TextView tvIsFree;
+        @Bind(R.id.text_tip)
+        TextView textTip;
 
         public QualityCourseItemHolder(View itemView) {
             super(itemView);
@@ -77,8 +79,13 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
             holder.tvIsFree.setText("￥" + course.getPrice());
             holder.tvIsFree.setTextColor(context.getResources().getColor(R.color.red_f44336));
         } else {
-            holder.tvIsFree.setText("免费");
+            holder.tvIsFree.setText(R.string.free);
             holder.tvIsFree.setTextColor(context.getResources().getColor(R.color.title_hint_text_color));
+        }
+        if (position == 0) {
+            holder.textTip.setText(R.string.hot);
+        } else {
+            holder.textTip.setText(R.string.newest);
         }
         holder.tvName.setText(course.getName());
         holder.tvTime.setText(course.getTotaltime() + "分钟");

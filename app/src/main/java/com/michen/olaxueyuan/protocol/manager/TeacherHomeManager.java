@@ -35,10 +35,11 @@ public class TeacherHomeManager {
     /**
      * 创建群
      *
+     * @param type     1、数学2、英语3、逻辑4、写作
      * @param callback
      */
-    public void createGroup(String userId, String name, String avatar, final Callback<CreateGroupResult> callback) {
-        getTeacherHomeService().createGroup(userId, name, avatar, callback);
+    public void createGroup(String userId, String type, String name, String avatar, final Callback<CreateGroupResult> callback) {
+        getTeacherHomeService().createGroup(userId, type, name, avatar, callback);
     }
 
     /**

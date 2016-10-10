@@ -84,7 +84,8 @@
             android:layout_marginRight="15dp"
             android:text="陈建18课时"
             android:textColor="@color/title_hint_text_color"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

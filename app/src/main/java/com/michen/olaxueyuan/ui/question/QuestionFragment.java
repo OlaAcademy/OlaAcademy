@@ -89,7 +89,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     TextView subjectName;
     @Bind(R.id.subject_layout)
     RelativeLayout subjectLayout;
-    @Bind(R.id.listview)
+    @Bind(R.id.listview_question)
     PullToRefreshListView listview;
     private ExpandableListView expandableListView;
     QuestionAdapter adapter;
@@ -111,13 +111,17 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        rootView = inflater.inflate(R.layout.fragment_question, container, false);
-        rootView = View.inflate(getActivity(), R.layout.fragment_question, null);
-        ButterKnife.bind(this, rootView);
-        EventBus.getDefault().register(this);
-        initView();
-        fetchHomeCourseData();
-        getUnReadMessageCount();
-        return rootView;
+        if (container == null) {
+            return null;
+        } else {
+            rootView = View.inflate(getActivity(), R.layout.fragment_question, null);
+            ButterKnife.bind(this, rootView);
+            EventBus.getDefault().register(this);
+            initView();
+            fetchHomeCourseData();
+            getUnReadMessageCount();
+            return rootView;
+        }
     }
 
     private void initView() {
@@ -199,6 +203,9 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
+        if (redDot == null) {
+            return;
+        }
         if (selectType == 0) {
             fetchHomeCourseData();
         } else {
@@ -390,6 +397,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
+        } else {
+            return;
         }
         QuestionCourseManager.getInstance().getUnreadCount(userId, new Callback<MessageUnReadResult>() {
             @Override

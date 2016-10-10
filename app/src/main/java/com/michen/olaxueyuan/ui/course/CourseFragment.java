@@ -3,7 +3,6 @@ package com.michen.olaxueyuan.ui.course;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -16,7 +15,6 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.model.MCSubCourse;
 import com.michen.olaxueyuan.protocol.result.MCCourseListResult;
-import com.michen.olaxueyuan.ui.BaseSearchActivity;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.manager.TitlePopManager;
 import com.snail.pulltorefresh.PullToRefreshBase;
@@ -101,12 +99,6 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
         });
 
         return mMainView;
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.findItem(BaseSearchActivity.MENU_SEARCH).setVisible(false);
     }
 
     private void setupNavBar() {

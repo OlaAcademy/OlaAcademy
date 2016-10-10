@@ -378,6 +378,7 @@
     <color name="red_f01c06">#f01c06</color>
     <color name="title_edge_blue">#b3c9f6</color>
     <color name="blue_4a8af4">#4a8af4</color>
+    <color name="sign_dialog_text_color">#FFFC00</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>

@@ -9,11 +9,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.michen.olaxueyuan.common.NonSwipeableViewPager
-            android:id="@+id/MainPager"
+        <!-- <com.michen.olaxueyuan.common.NonSwipeableViewPager
+             android:id="@+id/MainPager"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="1.0" />-->
+        <FrameLayout
+            android:id="@+id/main_content_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.0" />
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <com.michen.olaxueyuan.common.SETabBar
             android:id="@+id/TabBar"

@@ -20,6 +20,7 @@ public interface TeacherHomeService {
      * 创建群
      *
      * @param userId
+     * @param type   1、数学2、英语3、逻辑4、写作
      * @param name
      * @param avatar
      * @param cb
@@ -28,6 +29,7 @@ public interface TeacherHomeService {
     @POST("/ola/homework/createGroup")
     void createGroup(
             @Field("userId") String userId,
+            @Field("type") String type,
             @Field("name") String name,
             @Field("avatar") String avatar,
             Callback<CreateGroupResult> cb);

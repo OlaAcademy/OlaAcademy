@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui.group.data;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.result.UserGroupListResult;
 import com.squareup.picasso.Picasso;
@@ -28,9 +31,9 @@ public class GroupListAdapter extends BaseAdapter {
     List<UserGroupListResult.ResultEntity> list = new ArrayList<>();
     private int subjectType;
 
-    public GroupListAdapter(Context mContext,int subjectType) {
+    public GroupListAdapter(Context mContext, int subjectType) {
         this.mContext = mContext;
-        this.subjectType=subjectType;
+        this.subjectType = subjectType;
     }
 
     public void updateData(List<UserGroupListResult.ResultEntity> list) {
@@ -77,12 +80,20 @@ public class GroupListAdapter extends BaseAdapter {
                 /**
                  * {@link com.michen.olaxueyuan.ui.group.GroupListFragment#onEventMainThread(JoinGroupEvent)}
                  */
-                EventBus.getDefault().post(new JoinGroupEvent(list.get(position).getIsMember() + 1, true, String.valueOf(list.get(position).getId()),subjectType));
+                EventBus.getDefault().post(new JoinGroupEvent(list.get(position).getIsMember() + 1, true, String.valueOf(list.get(position).getId()), subjectType));
             }
         });
         try {
             holder.avatar.setRectAdius(100);
-            Picasso.with(mContext).load(list.get(position).getAvatar()).config(Bitmap.Config.RGB_565)
+            String avatarUrl = "";
+            if (!TextUtils.isEmpty(list.get(position).getAvatar())) {
+                if (list.get(position).getAvatar().contains(".")) {
+                    avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getAvatar();
+                } else {
+                    avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getAvatar();
+                }
+            }
+            Picasso.with(mContext).load(avatarUrl).config(Bitmap.Config.RGB_565)
                     .placeholder(R.drawable.default_index).error(R.drawable.ic_default_avatar).into(holder.avatar);
         } catch (Exception e) {
             e.printStackTrace();

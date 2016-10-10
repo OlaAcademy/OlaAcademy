@@ -21,7 +21,7 @@
             android:layout_marginLeft="23dp"
             android:text="数学高分指南"
             android:textColor="@color/black_one"
-            android:textSize="17dp" />
+            android:textSize="@dimen/sp_16" />
 
         <ImageView
             android:id="@+id/img_one"
@@ -54,7 +54,7 @@
             android:layout_marginLeft="23dp"
             android:text="陈剑预测卷"
             android:textColor="@color/black_one"
-            android:textSize="17dp" />
+            android:textSize="@dimen/sp_16" />
 
         <ImageView
             android:id="@+id/img_two"
@@ -87,7 +87,7 @@
             android:layout_marginLeft="23dp"
             android:text="真题名家详解"
             android:textColor="@color/black_one"
-            android:textSize="17dp" />
+            android:textSize="@dimen/sp_16" />
 
         <ImageView
             android:id="@+id/img_three"
@@ -117,6 +117,6 @@
         android:paddingTop="3dp"
         android:text="关闭"
         android:textColor="@color/light_title_blue"
-        android:textSize="14dp" />
+        android:textSize="@dimen/sp_14" />
 
 </LinearLayout>
