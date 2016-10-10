@@ -366,4 +366,23 @@
         <item name="android:windowExitAnimation">@anim/slide_out</item>
         <!-- 从上面下滑到底部时的动画 -->
     </style>
+
+    <style name="MenuLabelsStyle">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="MenuButtonsStyle">
+        <item name="fab_showAnimation">@anim/jump_from_down</item>
+        <item name="fab_hideAnimation">@anim/jump_to_down</item>
+        <item name="fab_shadowColor">#444</item>
+        <item name="fab_size">mini</item>
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="fab_colorNormal">#4285f4</item>
+        <item name="fab_colorPressed">#2196f3</item>
+        <item name="fab_colorRipple">#4285f4</item>
+    </style>
 </resources>

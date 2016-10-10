@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.michen.olaxueyuan.common.clansfab.FloatingActionMenu
+        android:id="@+id/menu_view"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="45dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="10dp"
+        android:alpha="0.95"
+        fab:menu_animationDelayPerItem="0"
+        fab:menu_colorNormal="#4285f4"
+        fab:menu_colorPressed="#2196f3"
+        fab:menu_colorRipple="#4285f4"
+        fab:menu_labels_hideAnimation="@anim/jump_to_down"
+        fab:menu_labels_showAnimation="@anim/jump_from_down"
+        fab:menu_labels_style="@style/MenuLabelsStyle"
+        fab:menu_shadowColor="#444">
+
+        <com.michen.olaxueyuan.common.clansfab.FloatingActionButton
+            android:id="@+id/fab_math"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:text="@string/math"
+            android:textColor="@android:color/white" />
+
+        <com.michen.olaxueyuan.common.clansfab.FloatingActionButton
+            android:id="@+id/fab_english"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:text="@string/english"
+            android:textColor="@android:color/white" />
+
+        <com.michen.olaxueyuan.common.clansfab.FloatingActionButton
+            android:id="@+id/fab_logic"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:text="@string/logic"
+            android:textColor="@android:color/white" />
+
+        <com.michen.olaxueyuan.common.clansfab.FloatingActionButton
+            android:id="@+id/fab_write"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:text="@string/writing"
+            android:textColor="@android:color/white" />
+
+    </com.michen.olaxueyuan.common.clansfab.FloatingActionMenu>
+</RelativeLayout>

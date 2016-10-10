@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.clansfab.FloatingActionMenu;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
@@ -38,12 +39,14 @@ import static com.michen.olaxueyuan.R.id.listview;
 /**
  * Created by mingge on 2016/8/31.
  */
-public class TeacherHomeFragment extends SuperFragment implements View.OnClickListener, PullToRefreshBase.OnRefreshListener2 {
+public class TeacherHomeFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener2 {
     View view;
     @Bind(listview)
     PullToRefreshListView mListView;
     @Bind(R.id.right_response)
     ImageView rightResponse;
+    @Bind(R.id.menu_view)
+    FloatingActionMenu menuView;
 
     TitleManager titleManager;
     protected QuestionHomeWorkListAdapter adapter;
@@ -67,6 +70,7 @@ public class TeacherHomeFragment extends SuperFragment implements View.OnClickLi
     }
 
     private void initView() {
+        menuView.setClosedOnTouchOutside(true);
         titleManager = new TitleManager("老师版", this, view, false);
         mListView.setMode(PullToRefreshBase.Mode.BOTH);
         mListView.setOnRefreshListener(this);
@@ -98,7 +102,6 @@ public class TeacherHomeFragment extends SuperFragment implements View.OnClickLi
                         List<HomeworkListResult.ResultBean> list = homeworkListResult.getResult();
                         mList.addAll(list);
                         if (mList.size() > 0) {
-                        } else {
                             homeworkId = mList.get(mList.size() - 1).getId() + "";
                         }
                         adapter.updateData(mList);
@@ -117,7 +120,7 @@ public class TeacherHomeFragment extends SuperFragment implements View.OnClickLi
         });
     }
 
-    @OnClick({R.id.right_response})
+    @OnClick({R.id.right_response, R.id.fab_math, R.id.fab_english, R.id.fab_logic, R.id.fab_write})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_response:
@@ -128,6 +131,18 @@ public class TeacherHomeFragment extends SuperFragment implements View.OnClickLi
                 }
 //                startActivity(new Intent(getActivity(), GroupDetailActivity.class));
                 startActivity(new Intent(getActivity(), CreateGroupActivity.class));
+                break;
+            case R.id.fab_math:
+                menuView.close(true);
+                break;
+            case R.id.fab_english:
+                menuView.close(true);
+                break;
+            case R.id.fab_logic:
+                menuView.close(true);
+                break;
+            case R.id.fab_write:
+                menuView.close(true);
                 break;
         }
     }
