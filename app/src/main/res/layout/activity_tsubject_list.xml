@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.michen.olaxueyuan.ui.group.TSubjectListActivity">
+
+    <WebView
+        android:id="@+id/questionWebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/operationRL"
+        android:layout_below="@+id/tv_article"></WebView>
+
+    <RelativeLayout
+        android:id="@+id/operationRL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f0f0f0" />
+
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:background="@null"
+            android:text="下一步"
+            android:textColor="@color/blue_light" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/deployRL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f0f0f0" />
+
+        <Button
+            android:id="@+id/chooseBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@null"
+            android:text="重新选择"
+            android:textColor="@color/blue_light" />
+
+        <Button
+            android:id="@+id/deployBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:text="去发布"
+            android:textColor="@color/blue_light" />
+    </RelativeLayout>
+
+</RelativeLayout>
