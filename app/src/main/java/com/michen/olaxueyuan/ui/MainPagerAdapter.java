@@ -9,7 +9,7 @@ import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.course.CourseFragment;
 import com.michen.olaxueyuan.ui.examination.ExamFragment;
 import com.michen.olaxueyuan.ui.home.HomeFragment;
-import com.michen.olaxueyuan.ui.home.TeacherHomeFragment;
+import com.michen.olaxueyuan.ui.teacher.TeacherHomeFragment;
 import com.michen.olaxueyuan.ui.me.UserFragment;
 import com.michen.olaxueyuan.ui.me.UserFragmentV2;
 import com.michen.olaxueyuan.ui.question.QuestionFragment;

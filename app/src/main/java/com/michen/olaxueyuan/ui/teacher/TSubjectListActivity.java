@@ -1,4 +1,4 @@
-package com.michen.olaxueyuan.ui.group;
+package com.michen.olaxueyuan.ui.teacher;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
-import com.michen.olaxueyuan.protocol.model.MCQuestion;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 

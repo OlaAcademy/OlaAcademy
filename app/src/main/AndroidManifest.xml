@@ -460,12 +460,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
         <activity
-            android:name=".ui.group.TSubjectListActivity"
+            android:name=".ui.teacher.TSubjectListActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".ui.group.TSubjectDeployActivity"
+            android:name=".ui.teacher.TSubjectDeployActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait"  >
         </activity>

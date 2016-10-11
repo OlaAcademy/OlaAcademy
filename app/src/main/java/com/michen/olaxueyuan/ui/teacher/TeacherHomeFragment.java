@@ -1,4 +1,4 @@
-package com.michen.olaxueyuan.ui.home;
+package com.michen.olaxueyuan.ui.teacher;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,6 @@ import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.QuestionHomeWorkListAdapter;
 import com.michen.olaxueyuan.ui.group.CreateGroupActivity;
-import com.michen.olaxueyuan.ui.group.TSubjectListActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
@@ -135,10 +134,12 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                 break;
             case R.id.fab_math:
                 menuView.close(true);
-                Intent intent = new Intent(getActivity(), TSubjectListActivity.class);
-                intent.putExtra("type",1);
-                intent.putExtra("objectId",104);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), TSubjectListActivity.class);
+//                intent.putExtra("type",1);
+//                intent.putExtra("objectId",104);
+//                startActivity(intent);
+                startActivity(new Intent(getActivity(), TSubjectListActivity.class)
+                        .putExtra("type", 1).putExtra("objectId", 104));
                 break;
             case R.id.fab_english:
                 menuView.close(true);

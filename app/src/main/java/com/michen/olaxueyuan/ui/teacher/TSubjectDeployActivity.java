@@ -1,7 +1,6 @@
-package com.michen.olaxueyuan.ui.group;
+package com.michen.olaxueyuan.ui.teacher;
 
 import android.os.Bundle;
-import android.app.Activity;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
