@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 
 import com.michen.olaxueyuan.R;
@@ -78,6 +79,34 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
         adapter = new QuestionHomeWorkListAdapter(getActivity());
         mListView.setAdapter(adapter);
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int lastIndex = 0;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+                    // 滚动之前,手还在屏幕上 记录滚动前的下标
+                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+                        lastIndex = view.getLastVisiblePosition();
+                        break;
+                    // 滚动停止
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+                        // 记录滚动停止后 记录当前item的位置
+                        int scrolled = view.getLastVisiblePosition();
+                        // 滚动后下标大于滚动前 向下滚动了
+                        if (scrolled > lastIndex) {
+                            menuView.hideMenuButton(true);
+                        } else {// 向上滚动了
+                            menuView.showMenuButton(true);
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
+        });
     }
 
     private void fetchData() {
