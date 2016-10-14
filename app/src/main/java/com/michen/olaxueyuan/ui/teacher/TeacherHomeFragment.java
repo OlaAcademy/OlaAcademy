@@ -162,23 +162,25 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                 startActivity(new Intent(getActivity(), CreateGroupActivity.class));
                 break;
             case R.id.fab_math:
-                menuView.close(true);
-//                Intent intent = new Intent(getActivity(), TSubjectListActivity.class);
-//                intent.putExtra("type",1);
-//                intent.putExtra("objectId",104);
-//                startActivity(intent);
-                startActivity(new Intent(getActivity(), TSubjectListActivity.class)
-                        .putExtra("type", 1).putExtra("objectId", 104));
+                publishSubject("1");
                 break;
             case R.id.fab_english:
-                menuView.close(true);
+                publishSubject("2");
                 break;
             case R.id.fab_logic:
-                menuView.close(true);
+                publishSubject("3");
                 break;
             case R.id.fab_write:
-                menuView.close(true);
+                publishSubject("4");
                 break;
+        }
+    }
+
+    private void publishSubject(String pid) {
+        //pid 1 数学 2 英语 3 逻辑 4 写作
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            startActivity(new Intent(getActivity(), TGetSubjectListActivity.class).putExtra("pid", pid));
+            menuView.close(true);
         }
     }
 
