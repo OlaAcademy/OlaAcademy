@@ -1,8 +1,10 @@
 package com.michen.olaxueyuan.ui.question;
 
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.QuestionAdapter;
 import com.michen.olaxueyuan.ui.adapter.QuestionListViewAdapter;
 import com.michen.olaxueyuan.ui.adapter.QuestionViewPagerAdapter;
+import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshExpandableListView;
@@ -48,7 +51,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class QuestionFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener {
+public class QuestionFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener, QuestionListViewAdapter.SelectBuyCourse {
     @Bind(R.id.title_tv)
     TextView titleTv;
     @Bind(R.id.right_response)
@@ -157,7 +160,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         listview.setOnRefreshListener(this);
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.getRefreshableView().setDivider(null);
-        questionListViewAdapter = new QuestionListViewAdapter(getActivity());
+        questionListViewAdapter = new QuestionListViewAdapter(getActivity(),this);
         listview.setAdapter(questionListViewAdapter);
 
         FragmentManager fragmentManager;
@@ -425,9 +428,41 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     }
 
     @Override
+    public void buyCourse(boolean isBuy) {
+        if (isBuy) {
+            buyVip();
+        }
+    }
+
+    private void buyVip() {
+        if (getActivity() == null) {
+            return;
+        }
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("友情提示")
+                    .setMessage("购买会员后即可拥有")
+                    .setPositiveButton("去购买", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().startActivity(new Intent(getActivity(), BuyVipActivity.class));
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .show();
+        } else {
+            getActivity().startActivity(new Intent(getActivity(), UserLoginActivity.class));
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
     }
+
 }
