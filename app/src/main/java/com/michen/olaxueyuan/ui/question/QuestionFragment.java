@@ -477,7 +477,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                             break;
                     }
                 }
-            }, "兑换该套题将消耗您20欧拉币", "兑换", "");
+            }, getActivity().getString(R.string.pay_twenty_coin), getActivity().getString(R.string.exchange), "");
         }
     }
 
@@ -490,7 +490,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             getActivity().startActivity(new Intent(getActivity(), UserLoginActivity.class));
             return;
         }
-        SVProgressHUD.showInView(getActivity(), "正在获取积分，请稍后", true);
+        SVProgressHUD.showInView(getActivity(), getActivity().getString(R.string.get_coin_ing), true);
         SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
             @Override
             public void success(CheckinStatusResult checkinStatusResult, Response response) {

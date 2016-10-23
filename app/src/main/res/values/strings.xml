@@ -153,5 +153,8 @@
     <string name="english">英语</string>
     <string name="logic">逻辑</string>
     <string name="writing">写作</string>
+    <string name="exchange">兑换</string>
+    <string name="pay_twenty_coin">兑换该套题将消耗您20欧拉币</string>
+    <string name="get_coin_ing">正在获取积分，请稍后</string>
 
 </resources>
