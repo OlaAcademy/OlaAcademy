@@ -8,10 +8,21 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/title_tips"
+        style="@style/title_text_22dp_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="温馨提示" />
+
+    <TextView
         android:id="@+id/content"
         style="@style/normal_text_14dp_style"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:gravity="center"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
@@ -25,7 +36,7 @@
 
         <TextView
             android:id="@+id/no"
-            style="@style/normal_text_14dp_style"
+            style="@style/blue_text_14dp_style"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
@@ -37,7 +48,7 @@
 
         <TextView
             android:id="@+id/yes"
-            style="@style/normal_text_14dp_style"
+            style="@style/blue_text_14dp_style"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"

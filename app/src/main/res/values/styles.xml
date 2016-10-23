@@ -263,6 +263,11 @@
         <item name="android:textSize">@dimen/sp_12</item>
     </style>
 
+    <style name="blue_text_14dp_style">
+        <item name="android:textColor">@color/light_title_blue</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
     <style name="title_text_16dp_style">
         <item name="android:textColor">@color/return_text_color</item>
         <item name="android:textSize">@dimen/sp_16</item>
@@ -274,6 +279,10 @@
     </style>
 
     <style name="title_text_17dp_style">
+        <item name="android:textColor">@color/return_text_color</item>
+        <item name="android:textSize">@dimen/sp_17</item>
+    </style>
+<style name="title_text_22dp_style">
         <item name="android:textColor">@color/return_text_color</item>
         <item name="android:textSize">@dimen/sp_17</item>
     </style>

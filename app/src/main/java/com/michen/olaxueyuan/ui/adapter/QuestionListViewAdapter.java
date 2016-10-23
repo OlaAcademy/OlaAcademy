@@ -89,7 +89,7 @@ public class QuestionListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 if (mDatas.get(position).getIsfree() == 0) {
-                    selectBuyCourse.buyCourse(true);
+                    selectBuyCourse.buyCourse(true,mDatas.get(position).getId(),2);
                 } else {
                     Intent intent = new Intent(mContext, QuestionWebActivity.class);
                     intent.putExtra("objectId", mDatas.get(position).getId());
@@ -120,6 +120,6 @@ public class QuestionListViewAdapter extends BaseAdapter {
     public SelectBuyCourse selectBuyCourse;
 
     public interface SelectBuyCourse {
-        void buyCourse(boolean isBuy);
+        void buyCourse(boolean isBuy,int objectId,int type);
     }
 }
