@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.joanzapata.pdfview.PDFView;
@@ -25,6 +26,7 @@ import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -38,6 +40,11 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
     TextView noPdf;
     @Bind(R.id.loading_text)
     TextView loadingText;
+    @Bind(R.id.pdf_layout)
+    LinearLayout pdfLayout;
+    @Bind(R.id.send_mail_text)
+    TextView sendMailText;
+
     private int pageNumber = 1;
     HttpUtils http = new HttpUtils();
     HttpHandler handler;
@@ -50,6 +57,16 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
         EventBus.getDefault().register(this);
         initView();
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+        ButterKnife.unbind(this);
+        if (handler != null) {
+            handler.cancel();
+        }
     }
 
     private void initView() {
@@ -124,21 +141,19 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
     private void setVisible(boolean loadingTextFlag, boolean noPdfFlag, boolean pdfViewFlag) {
         loadingText.setVisibility(loadingTextFlag ? View.VISIBLE : View.GONE);
         noPdf.setVisibility(noPdfFlag ? View.VISIBLE : View.GONE);
-        pdfView.setVisibility(pdfViewFlag ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-        ButterKnife.unbind(this);
-        if (handler != null) {
-            handler.cancel();
-        }
+        pdfLayout.setVisibility(pdfViewFlag ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onPageChanged(int page, int pageCount) {
         pageNumber = page;
+    }
+
+    @OnClick({R.id.send_mail_text})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.send_mail_text:
+                break;
+        }
     }
 }
