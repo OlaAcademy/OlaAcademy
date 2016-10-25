@@ -1,5 +1,7 @@
 package com.michen.olaxueyuan.ui.course.video;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -78,6 +80,7 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
             pdfView.fromFile(file)
                     .defaultPage(pageNumber)
                     .onPageChange(this)
+                    .swipeVertical(true)
                     .load();
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,6 +93,7 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
     public void onEventMainThread(VideoPdfEvent videoPdf) {
         if (videoPdf.type == 1 && nowPosition != videoPdf.position) {
             nowPosition = videoPdf.position;
+            name = videoPdf.name;
             if (TextUtils.isEmpty(videoPdf.url)) {
                 setVisible(false, true, false);
                 return;
@@ -104,10 +108,11 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
             return;
         }
         String fileName = id + ".pdf";
-        String target = "/sdcard/OlaAcademy/" + fileName;
+        final String target = "/sdcard/OlaAcademy/" + fileName;
         final File file = new File(target);
         if (file.exists()) {
             setVisible(false, false, true);
+            downLoadUrl = target;
             loadPdf(file);
             return;
         }
@@ -129,6 +134,7 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
                     public void onSuccess(ResponseInfo<File> responseInfo) {
                         setVisible(false, false, true);
                         loadPdf(file);
+                        downLoadUrl = target;
                     }
 
                     @Override
@@ -149,10 +155,23 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
         pageNumber = page;
     }
 
+    private String downLoadUrl;
+    private String name;
+
     @OnClick({R.id.send_mail_text})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.send_mail_text:
+                if (TextUtils.isEmpty(downLoadUrl)) {
+                    ToastUtil.showToastShort(getActivity(), "pdf文件正在下载中，请稍后");
+                }
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_SUBJECT, "欧拉学院学习讲义-"+name);
+//                intent.putExtra(Intent.EXTRA_TEXT, name);
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + downLoadUrl));
+                intent.setType("image");
+                intent.setType("message/rfc882");
+                startActivity(Intent.createChooser(intent, "请选择邮件发送文件"));
                 break;
         }
     }

@@ -11,11 +11,13 @@ public class VideoPdfEvent implements Serializable {
     public long id;//pdf文件对应的id
     public int type;//1为下载pdf
     public int position;//位置
+    public String name;
 
-    public VideoPdfEvent(String url, long id, int type, int position) {
+    public VideoPdfEvent(String url, long id, int type, int position, String name) {
         this.url = url;
         this.id = id;
         this.type = type;
         this.position = position;
+        this.name = name;
     }
 }

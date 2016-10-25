@@ -240,7 +240,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
          * {@link com.michen.olaxueyuan.ui.course.video.HandOutVideoFragment#onEventMainThread(VideoPdfEvent)}
          */
         try {
-            EventBus.getDefault().post(new VideoPdfEvent(videoArrayList.get(position).getUrl(),videoArrayList.get(position).getId(), 1,position));
+            EventBus.getDefault().post(new VideoPdfEvent(videoArrayList.get(position).getUrl()
+                    , videoArrayList.get(position).getId(), 1, position, videoArrayList.get(position).getName()));
         } catch (Exception e) {
             e.printStackTrace();
         }
