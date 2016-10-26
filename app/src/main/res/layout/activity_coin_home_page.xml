@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_coin_home_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/common_blue"
+                android:gravity="center_vertical"
+                android:paddingLeft="55dp">
+
+                <TextView
+                    android:id="@+id/coin_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_30" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/coin_text"
+                    android:layout_toRightOf="@+id/coin_text"
+                    android:text="欧拉币"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_15" />
+
+                <TextView
+                    android:id="@+id/today_get_coin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/coin_text"
+                    android:layout_marginTop="4dp"
+                    android:text="今日获得0欧拉币"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_14" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_52"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/ola_coin_detail_Text"
+                    style="@style/normal_text_15dp_style"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_white_item_bg"
+                    android:drawableLeft="@drawable/ola_coin_detail_icon"
+                    android:drawablePadding="@dimen/dp_5"
+                    android:drawableStart="@drawable/ola_coin_detail_icon"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
+                    android:text="欧拉币明细" />
+
+                <View style="@style/line_vertical" />
+
+                <TextView
+                    android:id="@+id/ola_coin_rule_Text"
+                    style="@style/normal_text_15dp_style"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_white_item_bg"
+                    android:drawableLeft="@drawable/ola_coin_rule_icon"
+                    android:drawablePadding="@dimen/dp_5"
+                    android:drawableStart="@drawable/ola_coin_rule_icon"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
+                    android:text="欧拉币规则" />
+            </LinearLayout>
+
+            <View
+                style="@style/line_horizontal"
+                android:layout_height="10dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/daily_task_tip"
+                    style="@style/title_text_17dp_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/daily_task_icon"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:text="每日任务" />
+
+                <TextView
+                    android:id="@+id/sign_tip"
+                    style="@style/normal_text_13dp_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/daily_task_tip"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:text="今日签到" />
+
+                <TextView
+                    style="@style/hint_text_12dp_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sign_tip"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="奖励2欧拉币" />
+
+                <TextView
+                    android:id="@+id/to_sign"
+                    style="@style/hint_text_12dp_style"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/daily_task_tip"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/selector_blue_grey_line_rectangle"
+                    android:gravity="center"
+                    android:text="去签到"
+                    android:textColor="@color/selector_blue_gray" />
+
+                <View
+                    style="@style/line_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/to_sign" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

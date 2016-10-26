@@ -27,11 +27,10 @@ import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.course.CourseFragment;
 import com.michen.olaxueyuan.ui.examination.ExamFragment;
 import com.michen.olaxueyuan.ui.home.HomeFragment;
-import com.michen.olaxueyuan.ui.teacher.TeacherHomeFragment;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.me.UserFragment;
-import com.michen.olaxueyuan.ui.me.UserFragmentV2;
 import com.michen.olaxueyuan.ui.question.QuestionFragment;
+import com.michen.olaxueyuan.ui.teacher.TeacherHomeFragment;
 
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
@@ -103,16 +102,16 @@ public class MainFragment extends Fragment {
                 isTeacher(true);
                 break;
             case 1:
-                changeFragment(courseFragment, teacherHomeFragment, questionFragment, homeFragment, circleFragment, userFragmentV2);
+                changeFragment(courseFragment, teacherHomeFragment, questionFragment, homeFragment, circleFragment, userFragment);
                 break;
             case 2:
-                changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseFragment, circleFragment, userFragmentV2);
+                changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseFragment, circleFragment, userFragment);
                 break;
             case 3:
-                changeFragment(circleFragment, teacherHomeFragment, questionFragment, courseFragment, homeFragment, userFragmentV2);
+                changeFragment(circleFragment, teacherHomeFragment, questionFragment, courseFragment, homeFragment, userFragment);
                 break;
             case 4:
-                changeFragment(userFragmentV2, teacherHomeFragment, questionFragment, courseFragment, homeFragment, circleFragment);
+                changeFragment(userFragment, teacherHomeFragment, questionFragment, courseFragment, homeFragment, circleFragment);
                 getCheckinStatus(true);
                 break;
             default:
@@ -134,9 +133,8 @@ public class MainFragment extends Fragment {
     private CourseFragment courseFragment;
     private CircleFragment circleFragment;
     private HomeFragment homeFragment;
-    private UserFragment userFragment;
     private TeacherHomeFragment teacherHomeFragment;
-    private UserFragmentV2 userFragmentV2;
+    private UserFragment userFragment;
 
     private void addChildFragment() {
         questionFragment = new QuestionFragment();
@@ -146,8 +144,8 @@ public class MainFragment extends Fragment {
         circleFragment = new CircleFragment();
 //        userFragment = new UserFragment();
         teacherHomeFragment = new TeacherHomeFragment();
-        userFragmentV2 = new UserFragmentV2();
-        changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseFragment, circleFragment, userFragmentV2);
+        userFragment = new UserFragment();
+        changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseFragment, circleFragment, userFragment);
     }
 
     private void changeFragment(Fragment targetFragment, Fragment... fragments) {
@@ -166,14 +164,14 @@ public class MainFragment extends Fragment {
         if (SEAuthManager.getInstance() != null && SEAuthManager.getInstance().getAccessUser() != null
                 && SEAuthManager.getInstance().getAccessUser().getIsActive() == 2) {
             if (flag || questionFragment.isVisible()) {
-                changeFragment(teacherHomeFragment, questionFragment, courseFragment, homeFragment, circleFragment, userFragmentV2);
+                changeFragment(teacherHomeFragment, questionFragment, courseFragment, homeFragment, circleFragment, userFragment);
             }
         } else {
             if (flag || teacherHomeFragment.isVisible()) {
-                changeFragment(questionFragment, teacherHomeFragment, courseFragment, homeFragment, circleFragment, userFragmentV2);
+                changeFragment(questionFragment, teacherHomeFragment, courseFragment, homeFragment, circleFragment, userFragment);
             }
         }
-        if (userFragmentV2.isVisible()) {
+        if (userFragment.isVisible()) {
             getCheckinStatus(true);
         } else {
             getCheckinStatus(false);
@@ -215,7 +213,7 @@ public class MainFragment extends Fragment {
                                 _tabBar.getItemViewAt(4).hideRedDot();
                                 if (isShowSignDialog) {
                                     /**
-                                     * {@link UserFragmentV2#onEventMainThread(CheckinStatusResult)}
+                                     * {@link UserFragment#onEventMainThread(CheckinStatusResult)}
                                      */
                                     EventBus.getDefault().post(checkinStatusResult);
                                     isShowSignDialog = false;

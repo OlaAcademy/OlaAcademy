@@ -28,7 +28,6 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.NonSwipeableViewPager;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
-import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
@@ -45,7 +44,6 @@ import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoFragmentManger;
 import com.michen.olaxueyuan.ui.course.video.VideoManager;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
-import com.michen.olaxueyuan.ui.me.subfragment.UserCourseCollectFragment;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.umeng.analytics.MobclickAgent;
 
@@ -548,8 +546,6 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                 if (result.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(CourseVideoActivity.this, result.getMessage(), 2.0f);
                 } else {
-                    UserCourseCollectFragment.isRefreshCourseCollectList = true;//通知我的收藏列表刷新
-                    Logger.e("UserCourseCollectFragment.isRefreshCourseCollectList==" + UserCourseCollectFragment.isRefreshCourseCollectList);
                     ToastUtil.showToastShort(CourseVideoActivity.this, result.getMessage());
                     if (state.equals("1")) {
                         courseVideoResult.getResult().setIsCollect("1");

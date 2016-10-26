@@ -1,4 +1,4 @@
-package com.michen.olaxueyuan.ui.me.subfragment;
+package com.michen.olaxueyuan.common;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

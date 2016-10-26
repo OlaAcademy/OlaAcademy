@@ -289,8 +289,8 @@ public class SEUserManager {
      * @param goodsId
      * @param cb
      */
-    public void getAliOrderInfo(String userId, String type, String goodsId, Callback<UserAlipayResult> cb) {
-        _userService.getAliOrderInfo(userId, type, goodsId, cb);
+    public void getAliOrderInfo(String userId, String type, String goodsId,String coin, Callback<UserAlipayResult> cb) {
+        _userService.getAliOrderInfo(userId, type, goodsId,coin, cb);
     }
 
     /**
@@ -300,10 +300,11 @@ public class SEUserManager {
      * @param userId
      * @param type    type : 1月度会员 2 年度会员 3 整套视频
      * @param goodsId
+     * @param coin
      * @param cb
      */
-    public void getWXPayReq(String userId, String type, String goodsId, Callback<UserWXpayResult> cb) {
-        _userService.getWXPayReq(userId, type, goodsId, cb);
+    public void getWXPayReq(String userId, String type, String goodsId,String coin, Callback<UserWXpayResult> cb) {
+        _userService.getWXPayReq(userId, type, goodsId,coin, cb);
     }
 
     /**

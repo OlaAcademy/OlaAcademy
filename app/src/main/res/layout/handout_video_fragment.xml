@@ -20,7 +20,7 @@
             android:layout_marginRight="@dimen/dp_15"
             android:layout_marginTop="@dimen/dp_10"
             android:drawablePadding="5dp"
-            android:drawableRight="@drawable/icon_share"
+            android:drawableRight="@drawable/icon_pdf_share"
             android:gravity="right"
             android:text="存储为PDF转发到邮箱"
             android:textColor="@color/blue_light" />

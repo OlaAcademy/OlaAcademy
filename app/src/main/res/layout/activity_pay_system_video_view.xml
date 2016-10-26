@@ -108,16 +108,50 @@
                             android:textSize="18dp" />
                     </LinearLayout>
 
-                    <TextView
+                    <View style="@style/line_horizontal" />
+
+                    <RelativeLayout
+                        android:id="@+id/coin_view"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:background="@color/white_light"
-                        android:gravity="top|right"
-                        android:paddingRight="15dp"
-                        android:paddingTop="3dp"
-                        android:text="付款成功后，可在［我的－已购买课程］中学习"
-                        android:textColor="@color/normal_text_color"
-                        android:textSize="10dp" />
+                        android:layout_height="42dp"
+                        android:background="@drawable/selector_white_item_bg"
+                        android:paddingLeft="15dp">
+
+                        <TextView
+                            android:id="@+id/coin_tips"
+                            style="@style/hint_text_12dp_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="您当前共有10欧拉币，可用1欧拉币，抵扣￥0.1元" />
+
+                        <RelativeLayout
+                            android:id="@+id/rl_orignal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:paddingEnd="@dimen/dp_15"
+                            android:paddingRight="@dimen/dp_15">
+
+                            <ImageView
+                                android:id="@+id/iv_switch_open_orignal"
+                                android:layout_width="35dp"
+                                android:layout_height="21dp"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/open_icon"
+                                android:visibility="invisible" />
+
+                            <ImageView
+                                android:id="@+id/iv_switch_close_orignal"
+                                android:layout_width="35dp"
+                                android:layout_height="21dp"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/close_icon"
+                                android:visibility="visible" />
+                        </RelativeLayout>
+                    </RelativeLayout>
 
                     <View style="@style/line_horizontal" />
 

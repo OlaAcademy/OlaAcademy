@@ -153,6 +153,7 @@ public interface SEUserService {
      * @param userId
      * @param type    type : 1月度会员 2 年度会员 3 整套视频
      * @param goodsId
+     * @param coin
      * @param cb
      */
     @FormUrlEncoded
@@ -162,7 +163,7 @@ public interface SEUserService {
             @Field("userId") String userId,
             @Field("type") String type,
             @Field("goodsId") String goodsId,
-//            @Field("body") String body,
+            @Field("coin") String coin,
             Callback<UserAlipayResult> cb);
 
     /**
@@ -180,6 +181,7 @@ public interface SEUserService {
             @Field("userId") String userId,
             @Field("type") String type,
             @Field("goodsId") String goodsId,
+            @Field("coin") String coin,
 //            @Field("body") String body,
             Callback<UserWXpayResult> cb);
 

@@ -139,7 +139,7 @@ public class BuyVipActivity extends SEBaseActivity {
 
     public void payForAlipay() {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        SEUserManager.getInstance().getAliOrderInfo(userId, type, "", new Callback<UserAlipayResult>() {
+        SEUserManager.getInstance().getAliOrderInfo(userId, type, "", "",new Callback<UserAlipayResult>() {
             @Override
             public void success(UserAlipayResult userAlipayResult, Response response) {
                 if (userAlipayResult != null && userAlipayResult.getApicode() == 10000) {
@@ -221,7 +221,7 @@ public class BuyVipActivity extends SEBaseActivity {
 
     public void payForWXRequest() {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        SEUserManager.getInstance().getWXPayReq(userId, type, "", new Callback<UserWXpayResult>() {
+        SEUserManager.getInstance().getWXPayReq(userId, type, "","", new Callback<UserWXpayResult>() {
             @Override
             public void success(UserWXpayResult wxPayModule, Response response) {
                 if (wxPayModule != null && wxPayModule.getApicode() == 10000) {

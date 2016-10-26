@@ -11,7 +11,6 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
-import com.michen.olaxueyuan.ui.me.subfragment.UserVipFragment;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -156,7 +155,6 @@ public class WxPayUtile {
                 Message msg = new Message();
                 msg.obj = result.get("result_code");
                 msg.what = 800;
-                UserVipFragment.handler.sendMessage(msg);
             }
 
         }
