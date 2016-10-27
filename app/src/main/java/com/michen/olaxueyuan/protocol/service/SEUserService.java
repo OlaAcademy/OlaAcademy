@@ -2,11 +2,13 @@ package com.michen.olaxueyuan.protocol.service;
 
 import com.michen.olaxueyuan.protocol.result.CheckInResult;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
+import com.michen.olaxueyuan.protocol.result.CoinHistoryResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
 import com.michen.olaxueyuan.protocol.result.SEPasswordResult;
 import com.michen.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
 import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
@@ -220,5 +222,29 @@ public interface SEUserService {
     void checkin(
             @Field("userId") String userId,
             Callback<CheckInResult> cb);
+
+    /**
+     * 欧拉币获取及消耗明细
+     *
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/coin/getHistoryList")
+    void coinGetHistoryList(
+            @Field("userId") String userId,
+            Callback<CoinHistoryResult> cb);
+
+    /**
+     * 分享
+     *
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/dailyact/share")
+    void share(
+            @Field("userId") String userId,
+            Callback<SimpleResult> cb);
 
 }

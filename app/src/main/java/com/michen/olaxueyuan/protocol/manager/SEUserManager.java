@@ -9,11 +9,13 @@ import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.model.SEUserInfo;
 import com.michen.olaxueyuan.protocol.result.CheckInResult;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
+import com.michen.olaxueyuan.protocol.result.CoinHistoryResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
 import com.michen.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.ServiceError;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
 import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
@@ -289,8 +291,8 @@ public class SEUserManager {
      * @param goodsId
      * @param cb
      */
-    public void getAliOrderInfo(String userId, String type, String goodsId,String coin, Callback<UserAlipayResult> cb) {
-        _userService.getAliOrderInfo(userId, type, goodsId,coin, cb);
+    public void getAliOrderInfo(String userId, String type, String goodsId, String coin, Callback<UserAlipayResult> cb) {
+        _userService.getAliOrderInfo(userId, type, goodsId, coin, cb);
     }
 
     /**
@@ -303,8 +305,8 @@ public class SEUserManager {
      * @param coin
      * @param cb
      */
-    public void getWXPayReq(String userId, String type, String goodsId,String coin, Callback<UserWXpayResult> cb) {
-        _userService.getWXPayReq(userId, type, goodsId,coin, cb);
+    public void getWXPayReq(String userId, String type, String goodsId, String coin, Callback<UserWXpayResult> cb) {
+        _userService.getWXPayReq(userId, type, goodsId, coin, cb);
     }
 
     /**
@@ -335,6 +337,26 @@ public class SEUserManager {
      */
     public void checkin(String userId, Callback<CheckInResult> cb) {
         _userService.checkin(userId, cb);
+    }
+
+    /**
+     * 欧拉币获取及消耗明细
+     *
+     * @param userId
+     * @param cb
+     */
+    public void coinGetHistoryList(String userId, Callback<CoinHistoryResult> cb) {
+        _userService.coinGetHistoryList(userId, cb);
+    }
+
+    /**
+     * 分享
+     *
+     * @param userId
+     * @param cb
+     */
+    public void share(String userId, Callback<SimpleResult> cb) {
+        _userService.share(userId, cb);
     }
 }
 

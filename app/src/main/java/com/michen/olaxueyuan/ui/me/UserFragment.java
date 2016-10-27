@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +15,6 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
-import com.michen.olaxueyuan.common.manager.DialogUtils;
-import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -26,9 +22,6 @@ import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
-import com.michen.olaxueyuan.sharesdk.ShareManager;
-import com.michen.olaxueyuan.sharesdk.ShareModel;
-import com.michen.olaxueyuan.ui.MainFragment;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.CoinHomePageActivity;
@@ -44,14 +37,10 @@ import com.squareup.picasso.Picasso;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.utils.UIHandler;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -61,7 +50,7 @@ import retrofit.client.Response;
  * Created by mingge on 2016/9/21.
  */
 
-public class UserFragment extends SuperFragment implements PlatformActionListener, Handler.Callback {
+public class UserFragment extends SuperFragment {
     View rootView;
     @Bind(R.id.avatar)
     RoundRectImageView avatar;
@@ -120,15 +109,6 @@ public class UserFragment extends SuperFragment implements PlatformActionListene
             fetchUserInfo();
             getSignStatus();
         }
-    }
-
-    /**
-     * {@link MainFragment#getCheckinStatus(boolean)}}
-     *
-     * @param checkinStatusResult
-     */
-    public void onEventMainThread(CheckinStatusResult checkinStatusResult) {
-        showSignDialog("", "", "");
     }
 
     @OnClick({R.id.right_response, R.id.headLL, R.id.wrong_topic_layout, R.id.buy_vip_layout
@@ -270,76 +250,6 @@ public class UserFragment extends SuperFragment implements PlatformActionListene
         remainDays.setText("会员0天");
         signDot.setVisibility(View.INVISIBLE);
         avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
-    }
-
-    private void showSignDialog(String dayNum, String dayScore, String subjectNum) {
-        DialogUtils.showSignDialog(getActivity(), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.close_icon:
-                        break;
-                    case R.id.wechat_sign:
-                        shareFriends(0);
-                        break;
-                    case R.id.wechat_circle_sign:
-                        shareFriends(1);
-                        break;
-                    case R.id.qq_friend_sign:
-                        shareFriends(2);
-                        break;
-                    case R.id.qq_friend_space_sign:
-                        shareFriends(3);
-                        break;
-                    case R.id.sina_sign:
-                        shareFriends(4);
-                        break;
-                }
-            }
-        }, dayNum, dayScore, subjectNum);
-    }
-
-    private void shareFriends(int position) {
-        ShareModel model = new ShareModel();
-        model.setImageUrl(SEConfig.getInstance().getAPIBaseURL() + "/ola/images/icon.png");
-        model.setText("欧拉联考——中国最权威的管理类联考学习平台");
-        model.setTitle("欧拉学院");
-        model.setUrl("http://app.olaxueyuan.com");
-        ShareManager.getInstance().initManager(getActivity(), this, model).share(position);
-    }
-
-    @Override
-    public void onCancel(Platform arg0, int arg1) {
-        Message msg = new Message();
-        msg.what = 0;
-        UIHandler.sendMessage(msg, this);
-    }
-
-    @Override
-    public void onComplete(Platform plat, int action,
-                           HashMap<String, Object> res) {
-        Message msg = new Message();
-        msg.arg1 = 1;
-        msg.arg2 = action;
-        msg.obj = plat;
-        UIHandler.sendMessage(msg, this);
-    }
-
-    @Override
-    public void onError(Platform arg0, int arg1, Throwable arg2) {
-        Message msg = new Message();
-        msg.what = 1;
-        UIHandler.sendMessage(msg, this);
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-        int what = msg.what;
-        if (what == 1) {
-            ToastUtil.showToastShort(getActivity(), "分享失败");
-//            Toast.makeText(this, "分享失败", Toast.LENGTH_SHORT).show();
-        }
-        return false;
     }
 
     private void getSignStatus() {

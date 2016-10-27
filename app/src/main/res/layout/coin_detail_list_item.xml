@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="62dp"
+    android:background="@drawable/selector_white_item_bg">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_30"
+        android:paddingLeft="@dimen/dp_15"
+        android:gravity="bottom"
+        android:text="今日签到"
+        android:textColor="@color/black_51545d"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_30"
+        android:layout_below="@id/title"
+        android:paddingLeft="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_5"
+        android:text="1小时前"
+        android:textColor="@color/black_a4a6a9"
+        android:textSize="@dimen/sp_14" />
+
+    <TextView
+        android:id="@+id/coin_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingEnd="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15"
+        android:text="+5"
+        android:textColor="@color/blue_light"
+        android:textSize="@dimen/sp_22" />
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

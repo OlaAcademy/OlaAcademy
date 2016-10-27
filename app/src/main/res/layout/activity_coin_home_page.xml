@@ -3,6 +3,7 @@
     android:id="@+id/activity_coin_home_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_light"
     android:orientation="vertical">
 
     <ScrollView
@@ -34,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/coin_text"
                     android:layout_toRightOf="@+id/coin_text"
-                    android:text="欧拉币"
+                    android:text="@string/coin"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_15" />
 
@@ -52,6 +53,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_52"
+                android:background="@color/white"
                 android:weightSum="2">
 
                 <TextView
@@ -66,7 +68,7 @@
                     android:drawableStart="@drawable/ola_coin_detail_icon"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
-                    android:text="欧拉币明细" />
+                    android:text="@string/ola_coin_detail" />
 
                 <View style="@style/line_vertical" />
 
@@ -82,7 +84,7 @@
                     android:drawableStart="@drawable/ola_coin_rule_icon"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
-                    android:text="欧拉币规则" />
+                    android:text="@string/ola_coin_rule" />
             </LinearLayout>
 
             <View
@@ -91,7 +93,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="@dimen/dp_10">
 
                 <TextView
                     android:id="@+id/daily_task_tip"
@@ -102,7 +106,7 @@
                     android:background="@drawable/daily_task_icon"
                     android:gravity="center"
                     android:paddingBottom="10dp"
-                    android:text="每日任务" />
+                    android:text="@string/daily_task" />
 
                 <TextView
                     android:id="@+id/sign_tip"
@@ -112,7 +116,7 @@
                     android:layout_below="@+id/daily_task_tip"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="15dp"
-                    android:text="今日签到" />
+                    android:text="@string/today_sign" />
 
                 <TextView
                     style="@style/hint_text_12dp_style"
@@ -121,7 +125,7 @@
                     android:layout_below="@+id/sign_tip"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="奖励2欧拉币" />
+                    android:text="奖励5欧拉币" />
 
                 <TextView
                     android:id="@+id/to_sign"
@@ -136,13 +140,190 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/selector_blue_grey_line_rectangle"
                     android:gravity="center"
-                    android:text="去签到"
+                    android:text="@string/sign"
                     android:textColor="@color/selector_blue_gray" />
 
                 <View
+                    android:id="@+id/line_sign"
                     style="@style/line_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@id/to_sign" />
+                    android:layout_below="@id/to_sign"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:id="@+id/share_tips"
+                    style="@style/normal_text_13dp_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/line_sign"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:text="今日分享" />
+
+                <TextView
+                    style="@style/hint_text_12dp_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/share_tips"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="奖励2(最多10)欧拉币" />
+
+                <TextView
+                    android:id="@+id/to_share"
+                    style="@style/hint_text_12dp_style"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/line_sign"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/selector_blue_grey_line_rectangle"
+                    android:gravity="center"
+                    android:text="@string/share"
+                    android:textColor="@color/selector_blue_gray" />
+            </RelativeLayout>
+
+            <View
+                style="@style/line_horizontal"
+                android:layout_height="10dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/novice_task_tip"
+                    style="@style/title_text_17dp_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/daily_task_icon"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:text="@string/novice_task" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_below="@+id/novice_task_tip"
+                    android:layout_marginTop="@dimen/dp_13"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/coin_daily_task_bg"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dp_20">
+
+                        <TextView
+                            style="@style/normal_text_13dp_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="完善个人资料" />
+
+                        <TextView
+                            style="@style/hint_text_12dp_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_20"
+                            android:text="奖励50欧拉币" />
+
+                        <TextView
+                            android:id="@+id/to_complete"
+                            style="@style/hint_text_12dp_style"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/selector_blue_grey_line_rectangle"
+                            android:gravity="center"
+                            android:text="@string/to_perfect"
+                            android:textColor="@color/selector_blue_gray" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/coin_daily_task_bg"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dp_20">
+
+                        <TextView
+                            style="@style/normal_text_13dp_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="首次购买会员" />
+
+                        <TextView
+                            style="@style/hint_text_12dp_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_20"
+                            android:text="奖励100欧拉币" />
+
+                        <TextView
+                            android:id="@+id/to_set"
+                            style="@style/hint_text_12dp_style"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/selector_blue_grey_line_rectangle"
+                            android:gravity="center"
+                            android:text="@string/to_set"
+                            android:textColor="@color/selector_blue_gray" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/coin_daily_task_bg"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dp_20">
+
+                        <TextView
+                            style="@style/normal_text_13dp_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:gravity="center"
+                            android:text="首次购买一门付费课程" />
+
+                        <TextView
+                            style="@style/hint_text_12dp_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:text="奖励150欧拉币" />
+
+                        <TextView
+                            android:id="@+id/to_buy"
+                            style="@style/hint_text_12dp_style"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/selector_blue_grey_line_rectangle"
+                            android:gravity="center"
+                            android:text="@string/to_buy"
+                            android:textColor="@color/selector_blue_gray" />
+                    </LinearLayout>
+                </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

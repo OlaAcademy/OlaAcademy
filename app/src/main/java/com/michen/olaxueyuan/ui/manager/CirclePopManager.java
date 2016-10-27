@@ -68,7 +68,6 @@ public class CirclePopManager {
             }
         });
         popupWindow.setOnDismissListener(new poponDismissListener());
-        popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.circle_select));
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.showAsDropDown(popLine);

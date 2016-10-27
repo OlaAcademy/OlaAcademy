@@ -157,5 +157,19 @@
     <string name="pay_twenty_coin">兑换该套题将消耗您20欧拉币</string>
     <string name="get_coin_ing">正在获取积分，请稍后</string>
     <string name="ola_homepage">欧拉币首页</string>
+    <string name="today_get_coin">今日获得%s欧拉币</string>
+    <string name="has_sign">已签到</string>
+    <string name="sign">签到</string>
+    <string name="has_complete">已完成</string>
+    <string name="to_perfect">去完善</string>
+    <string name="to_set">去设置</string>
+    <string name="to_buy">去购买</string>
+    <string name="ola_coin_detail">欧拉币明细</string>
+    <string name="coin">欧拉币</string>
+    <string name="daily_task">每日任务</string>
+    <string name="today_sign">今日签到</string>
+    <string name="share">分享</string>
+    <string name="novice_task">新手任务</string>
+    <string name="ola_coin_rule">欧拉币规则</string>
 
 </resources>
