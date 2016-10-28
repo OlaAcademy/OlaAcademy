@@ -3,6 +3,7 @@ package com.michen.olaxueyuan.protocol.service;
 import com.michen.olaxueyuan.protocol.result.AttendGroupResult;
 import com.michen.olaxueyuan.protocol.result.CreateGroupResult;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.SubjectListResult;
 import com.michen.olaxueyuan.protocol.result.TeacherGroupListResult;
 import com.michen.olaxueyuan.protocol.result.UserGroupListResult;
@@ -105,4 +106,20 @@ public interface TeacherHomeService {
             @Field("groupId") String groupId,
             @Field("type") String type,
             Callback<AttendGroupResult> cb);
+
+    /**
+     * 发布作业
+     *
+     * @param name
+     * @param groupIds   群id
+     * @param subjectIds 字符串	题目Id串 逗号分隔
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/homework/deployHomework")
+    void deployHomework(
+            @Field("name") String name,
+            @Field("groupIds") String groupIds,
+            @Field("subjectIds") String subjectIds,
+            Callback<SimpleResult> cb);
 }

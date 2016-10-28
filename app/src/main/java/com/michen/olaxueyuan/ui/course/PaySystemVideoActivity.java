@@ -177,7 +177,7 @@ public class PaySystemVideoActivity extends SuperActivity {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
         double pricess = Double.parseDouble(price) * 100;
         final String prices = new DecimalFormat("###").format(pricess);
-        String maxCoinString = "";
+        String maxCoinString = "0";
         if (isUseCoin) {
             maxCoinString = String.valueOf(maxCoin);
         }
@@ -211,7 +211,7 @@ public class PaySystemVideoActivity extends SuperActivity {
 
     public void payForAlipay() {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        String maxCoinString = "";
+        String maxCoinString = "0";
         if (isUseCoin) {
             maxCoinString = String.valueOf(maxCoin);
         }

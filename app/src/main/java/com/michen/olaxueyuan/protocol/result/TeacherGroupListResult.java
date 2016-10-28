@@ -52,9 +52,19 @@ public class TeacherGroupListResult implements Serializable {
     public static class ResultBean implements Serializable{
         private String avatar;
         private int createUser;
-        private int id;
+        private String id;
         private String name;
         private String time;
+        private boolean isSelected;
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public ResultBean setSelected(boolean selected) {
+            isSelected = selected;
+            return this;
+        }
 
         public String getAvatar() {
             return avatar;
@@ -72,11 +82,11 @@ public class TeacherGroupListResult implements Serializable {
             this.createUser = createUser;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 

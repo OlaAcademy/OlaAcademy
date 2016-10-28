@@ -3,6 +3,7 @@ package com.michen.olaxueyuan.protocol.manager;
 import com.michen.olaxueyuan.protocol.result.AttendGroupResult;
 import com.michen.olaxueyuan.protocol.result.CreateGroupResult;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.SubjectListResult;
 import com.michen.olaxueyuan.protocol.result.TeacherGroupListResult;
 import com.michen.olaxueyuan.protocol.result.UserGroupListResult;
@@ -96,5 +97,17 @@ public class TeacherHomeManager {
      */
     public void attendGroup(String userId, String groupId, String type, final Callback<AttendGroupResult> callback) {
         getTeacherHomeService().attendGroup(userId, groupId, type, callback);
+    }
+
+    /**
+     * 发布作业
+     *
+     * @param name
+     * @param groupIds   群id
+     * @param subjectIds 字符串	题目Id串 逗号分隔
+     * @param cb
+     */
+    public void deployHomework(String name, String groupIds, String subjectIds, final Callback<SimpleResult> callback) {
+        getTeacherHomeService().deployHomework(name, groupIds, subjectIds, callback);
     }
 }
