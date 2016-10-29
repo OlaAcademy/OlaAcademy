@@ -7,16 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.clansfab.FloatingActionMenu;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
+import com.michen.olaxueyuan.protocol.result.TeacherGroupListResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.QuestionHomeWorkListAdapter;
 import com.michen.olaxueyuan.ui.group.CreateGroupActivity;
@@ -31,6 +37,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -48,13 +55,21 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
     ImageView rightResponse;
     @Bind(R.id.menu_view)
     FloatingActionMenu menuView;
+    @Bind(R.id.notice_title_text)
+    TextView noticeTitleText;
+    @Bind(R.id.notice_hint_text)
+    TextView noticeHintText;
+    @Bind(R.id.create_group)
+    Button createGroup;
+    @Bind(R.id.empty_layout)
+    LinearLayout emptyLayout;
 
     TitleManager titleManager;
     protected QuestionHomeWorkListAdapter adapter;
     private static final String PAGE_SIZE = "20";//每次加载20条
     private String homeworkId;
     protected List<HomeworkListResult.ResultBean> mList = new ArrayList<>();
-
+    private boolean isHasGroup;//是否有群，false默认没有
 
     @Nullable
     @Override
@@ -64,8 +79,9 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         } else {
             view = inflater.inflate(R.layout.fragment_teacher_home, container, false);
             ButterKnife.bind(this, view);
+            EventBus.getDefault().register(this);
             initView();
-            fetchData();
+            getTeacherGroupList();//先判断是否有群，有的话再请求作业列表
             return view;
         }
     }
@@ -126,9 +142,18 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                     mListView.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     if (homeworkListResult.getApicode() != 10000) {
-                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), homeworkListResult.getMessage(), 2.0f);
+                        ToastUtil.showToastShort(getActivity(), homeworkListResult.getMessage());
+                        if (isHasGroup) {
+                            showNoHomeWorkView();
+                        }
                     } else {
                         List<HomeworkListResult.ResultBean> list = homeworkListResult.getResult();
+                        if (list.size() == 0) {
+                            if (isHasGroup) {
+                                showNoHomeWorkView();
+                            }
+                            return;
+                        }
                         mList.addAll(list);
                         if (mList.size() > 0) {
                             homeworkId = mList.get(mList.size() - 1).getId() + "";
@@ -141,25 +166,23 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null) {
+                    if (isHasGroup) {
+                        showNoHomeWorkView();
+                    }
                     SVProgressHUD.dismiss(getActivity());
-                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+                    ToastUtil.showToastShort(getActivity(), "获取作业列表失败");
                     mListView.onRefreshComplete();
                 }
             }
         });
     }
 
-    @OnClick({R.id.right_response, R.id.fab_math, R.id.fab_english, R.id.fab_logic, R.id.fab_write})
+    @OnClick({R.id.right_response, R.id.fab_math, R.id.fab_english, R.id.fab_logic
+            , R.id.fab_write, R.id.create_group})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_response:
-                if (!SEAuthManager.getInstance().isAuthenticated()) {
-                    Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
-                    startActivity(loginIntent);
-                    return;
-                }
-//                startActivity(new Intent(getActivity(), GroupDetailActivity.class));
-                startActivity(new Intent(getActivity(), CreateGroupActivity.class));
+                Utils.jumpLoginOrNot(getActivity(), CreateGroupActivity.class);
                 break;
             case R.id.fab_math:
                 publishSubject("1");
@@ -172,6 +195,9 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                 break;
             case R.id.fab_write:
                 publishSubject("4");
+                break;
+            case R.id.create_group:
+                Utils.jumpLoginOrNot(getActivity(), CreateGroupActivity.class);
                 break;
         }
     }
@@ -196,9 +222,71 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         fetchData();
     }
 
+    public void onEventMainThread(PublishHomeWorkSuccessEvent successEvent) {
+        if (successEvent.isSuccess) {
+            onPullDownToRefresh(mListView);
+        }
+    }
+
+    private void getTeacherGroupList() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        } else {
+            startActivity(new Intent(getActivity(), UserLoginActivity.class));
+            return;
+        }
+        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        TeacherHomeManager.getInstance().getTeacherGroupList(userId, new Callback<TeacherGroupListResult>() {
+            @Override
+            public void success(TeacherGroupListResult teacherGroupListResult, Response response) {
+                if (getActivity() != null) {
+                    SVProgressHUD.dismiss(getActivity());
+                    if (teacherGroupListResult.getApicode() != 10000) {
+                        ToastUtil.showToastShort(getActivity(), teacherGroupListResult.getMessage());
+                        showNoGroupView();
+                    } else {
+                        if (teacherGroupListResult.getResult().size() > 0) {
+                            isHasGroup = true;
+                            fetchData();
+                        } else {
+                            showNoGroupView();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (getActivity() != null) {
+                    showNoGroupView();
+                    SVProgressHUD.dismiss(getActivity());
+                    ToastUtil.showToastShort(getActivity(), R.string.request_group_fail);
+                }
+            }
+        });
+    }
+
+    private void showNoGroupView() {
+        emptyLayout.setVisibility(View.VISIBLE);
+        noticeTitleText.setText(R.string.no_create_group);
+        noticeHintText.setText(R.string.no_group_to_create);
+        createGroup.setVisibility(View.VISIBLE);
+        menuView.setVisibility(View.GONE);
+    }
+
+    private void showNoHomeWorkView() {
+        emptyLayout.setVisibility(View.VISIBLE);
+        noticeTitleText.setText(R.string.no_homework);
+        noticeHintText.setText(R.string.watch_library_to_publish_homework);
+        createGroup.setVisibility(View.GONE);
+        menuView.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
         ButterKnife.unbind(this);
     }
 }

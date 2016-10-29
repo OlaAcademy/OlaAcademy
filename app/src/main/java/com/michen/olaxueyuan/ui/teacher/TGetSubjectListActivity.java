@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
@@ -60,6 +61,7 @@ public class TGetSubjectListActivity extends SEBaseActivity implements PullToRef
         setContentView(R.layout.activity_tget_subject_list);
         context = this;
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         initView();
         fetchHomeCourseData();
 
@@ -234,9 +236,16 @@ public class TGetSubjectListActivity extends SEBaseActivity implements PullToRef
         }
     }
 
+    public void onEventMainThread(PublishHomeWorkSuccessEvent successEvent) {
+        if (successEvent.isSuccess) {
+            finish();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 }

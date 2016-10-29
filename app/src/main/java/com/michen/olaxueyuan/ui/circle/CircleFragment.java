@@ -21,7 +21,7 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.michen.olaxueyuan.protocol.eventbusmodule.CircleClickEvent;
+import com.michen.olaxueyuan.protocol.event.CircleClickEvent;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;

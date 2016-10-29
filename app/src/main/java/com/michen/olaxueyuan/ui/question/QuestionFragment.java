@@ -21,7 +21,7 @@ import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.michen.olaxueyuan.protocol.eventbusmodule.MessageReadEvent;
+import com.michen.olaxueyuan.protocol.event.MessageReadEvent;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -477,7 +477,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                             break;
                     }
                 }
-            }, getActivity().getString(R.string.pay_twenty_coin), getActivity().getString(R.string.exchange), "");
+            },"", getActivity().getString(R.string.pay_twenty_coin), getActivity().getString(R.string.exchange), "");
         }
     }
 
@@ -509,7 +509,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                                             break;
                                     }
                                 }
-                            }, "您的欧拉币余额不足，使用其它方式？", "购买会员", "");
+                            },"", "您的欧拉币余额不足，使用其它方式？", "购买会员", "");
                         }
                     }
                 }

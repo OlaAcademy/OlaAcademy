@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class TSubjectListActivity extends SEBaseActivity implements View.OnClickListener {
 
@@ -54,6 +56,7 @@ public class TSubjectListActivity extends SEBaseActivity implements View.OnClick
         setTitleText("题目列表");
 
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
 
         nextBtn.setOnClickListener(this);
         chooseBtn.setOnClickListener(this);
@@ -109,22 +112,22 @@ public class TSubjectListActivity extends SEBaseActivity implements View.OnClick
             switch (msg.what) {
                 case 1:
                     String subjectArray = msg.obj.toString();
-                    if (!TextUtils.isEmpty(subjectArray)&&!subjectArray.equals("[]")) {
-                        Intent intent = new Intent(TSubjectListActivity.this,TSubjectDeployActivity.class);
+                    if (!TextUtils.isEmpty(subjectArray) && !subjectArray.equals("[]")) {
+                        Intent intent = new Intent(TSubjectListActivity.this, TSubjectDeployActivity.class);
                         try {
                             JSONArray jsonArray = new JSONArray(subjectArray);
-                            String subjectIds="";
-                            for (int i=0; i<jsonArray.length();i++){
+                            String subjectIds = "";
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject question = jsonArray.getJSONObject(i);
                                 subjectIds += question.get("id") + ",";
                             }
-                            intent.putExtra("subjectIds",subjectIds);
+                            intent.putExtra("subjectIds", subjectIds);
                             startActivity(intent);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }else {
-                        SVProgressHUD.showInViewWithoutIndicator(TSubjectListActivity.this,"请选择题目",2.0f);
+                    } else {
+                        SVProgressHUD.showInViewWithoutIndicator(TSubjectListActivity.this, "请选择题目", 2.0f);
                     }
 
                     break;
@@ -157,10 +160,17 @@ public class TSubjectListActivity extends SEBaseActivity implements View.OnClick
         }
     }
 
+    public void onEventMainThread(PublishHomeWorkSuccessEvent successEvent) {
+        if (successEvent.isSuccess) {
+            finish();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 }
 

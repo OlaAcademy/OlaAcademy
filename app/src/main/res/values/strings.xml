@@ -171,5 +171,11 @@
     <string name="share">分享</string>
     <string name="novice_task">新手任务</string>
     <string name="ola_coin_rule">欧拉币规则</string>
+    <string name="request_group_fail">请求群列表失败</string>
+    <string name="no_create_group">暂无创建的作业群</string>
+    <string name="no_group_to_create">您还没有创建作业群，去创建一个吧!</string>
+    <string name="no_homework">暂无已布置作业</string>
+    <string name="watch_library_to_publish_homework">看看题库，给学生们布置作业吧！</string>
+    <string name="create_study_group">创建学习群</string>
 
 </resources>

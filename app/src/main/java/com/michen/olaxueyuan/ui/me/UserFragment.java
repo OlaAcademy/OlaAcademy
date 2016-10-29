@@ -15,6 +15,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -117,28 +118,28 @@ public class UserFragment extends SuperFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_response:
-                isLogin(SettingActivity.class);
+                Utils.jumpLoginOrNot(getActivity(), SettingActivity.class);
                 break;
             case R.id.headLL:
                 headViewClick();
                 break;
             case R.id.wrong_topic_layout:
-                isLogin(WrongTopicActivity.class);
+                Utils.jumpLoginOrNot(getActivity(), WrongTopicActivity.class);
                 break;
             case R.id.buy_vip_layout:
-                isLogin(BuyVipActivity.class);
+                Utils.jumpLoginOrNot(getActivity(), BuyVipActivity.class);
                 break;
             case R.id.my_buy_layout:
-                isLogin(MyBuyGoodsActivity.class);
+                Utils.jumpLoginOrNot(getActivity(), MyBuyGoodsActivity.class);
                 break;
             case R.id.my_collect_layout:
-                isLogin(MyCourseCollectActivity.class);
+                Utils.jumpLoginOrNot(getActivity(), MyCourseCollectActivity.class);
                 break;
             case R.id.my_download_layout:
-                isLogin(DownloadListActivity.class);
+                Utils.jumpLoginOrNot(getActivity(), DownloadListActivity.class);
                 break;
             case R.id.my_coin_layout:
-                isLogin(CoinHomePageActivity.class);
+                Utils.jumpLoginOrNot(getActivity(), CoinHomePageActivity.class);
                 break;
             case R.id.service_email_layout:
                 sendEmail();
@@ -156,14 +157,6 @@ public class UserFragment extends SuperFragment {
             data.putExtra(Intent.EXTRA_TEXT, "手机号码：" + SEAuthManager.getInstance().getAccessUser().getPhone());
         }
         startActivity(data);
-    }
-
-    private void isLogin(Class<?> cls) {
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            startActivity(new Intent(getActivity(), cls));
-        } else {
-            startActivity(new Intent(getActivity(), UserLoginActivity.class));
-        }
     }
 
     @Override

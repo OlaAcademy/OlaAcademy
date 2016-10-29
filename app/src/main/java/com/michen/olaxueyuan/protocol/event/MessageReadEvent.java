@@ -1,4 +1,4 @@
-package com.michen.olaxueyuan.protocol.eventbusmodule;
+package com.michen.olaxueyuan.protocol.event;
 
 /**
  * Created by mingge on 16/7/21.

@@ -360,7 +360,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                                                     break;
                                             }
                                         }
-                                    }, getString(R.string.sure_uncollect), getString(R.string.confirm_message)
+                                    },"", getString(R.string.sure_uncollect), getString(R.string.confirm_message)
                                     , getString(R.string.cancel_message));
                         } else {
                             collectVideo(videoId, "1");
@@ -399,7 +399,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                         break;
                 }
             }
-        }, getString(R.string.to_login), "", "");
+        },"", getString(R.string.to_login), "", "");
     }
 
     MediaPlayer.OnInfoListener infoListener = new MediaPlayer.OnInfoListener() {

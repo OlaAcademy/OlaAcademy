@@ -44,7 +44,7 @@ public class DialogUtils {
     @Bind(R.id.close)
     TextView close;
 
-    public static void showDialog(Context context, final View.OnClickListener listener, String content, String sure, String cancle) {
+    public static void showDialog(Context context, final View.OnClickListener listener, String title, String content, String sure, String cancle) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.confirm_collect_dialog, null);
         final Dialog dialog = new AlertDialog.Builder(context).create();
@@ -56,10 +56,14 @@ public class DialogUtils {
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         params.gravity = Gravity.CENTER;
         dialog.getWindow().setAttributes(params);
+        TextView titleText = (TextView) view.findViewById(R.id.title_tips);
         TextView text = (TextView) view.findViewById(R.id.content);
         TextView noView = (TextView) view.findViewById(R.id.no);
         TextView yesView = (TextView) view.findViewById(R.id.yes);
         text.setText(content);
+        if (!TextUtils.isEmpty(title)) {
+            titleText.setText(title);
+        }
         if (!TextUtils.isEmpty(cancle)) {
             noView.setText(cancle);
         }

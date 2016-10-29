@@ -17,7 +17,7 @@ import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.Utils;
-import com.michen.olaxueyuan.protocol.eventbusmodule.CircleClickEvent;
+import com.michen.olaxueyuan.protocol.event.CircleClickEvent;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;

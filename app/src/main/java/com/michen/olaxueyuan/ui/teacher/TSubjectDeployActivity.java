@@ -3,12 +3,15 @@ package com.michen.olaxueyuan.ui.teacher;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
@@ -26,6 +29,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -42,6 +46,7 @@ public class TSubjectDeployActivity extends SEBaseActivity implements PullToRefr
     private String groupIds;//群id	逗号分隔
     private Context context;
     private TGetGroupListViewAdapter adapter;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,16 +131,22 @@ public class TSubjectDeployActivity extends SEBaseActivity implements PullToRefr
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.publish_homework:
-                publishHomeWork();
+                checkPublishHomeWork();
                 break;
         }
     }
 
-    private void publishHomeWork() {
+    private void checkPublishHomeWork() {
+        title = workName.getText().toString().trim();
+        if (TextUtils.isEmpty(title)) {
+            ToastUtil.showToastShort(context, "请填写作业名称");
+            return;
+        }
         if (groupIdList.size() == 0) {
             ToastUtil.showToastShort(context, "请选择要发布的群");
             return;
         }
+        groupIds = "";
         for (int i = 0; i < groupIdList.size(); i++) {
             if (i == groupIdList.size() - 1) {
                 groupIds += groupIdList.get(i);
@@ -143,8 +154,22 @@ public class TSubjectDeployActivity extends SEBaseActivity implements PullToRefr
                 groupIds += groupIdList.get(i) + ",";
             }
         }
+        DialogUtils.showDialog(context, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.yes:
+                        publishHomeWork();
+                        break;
+                }
+
+            }
+        }, "立即发布", "作业将立即发布给学生", "", "");
+    }
+
+    private void publishHomeWork() {
         SVProgressHUD.showInView(context, getString(R.string.request_running), true);
-        TeacherHomeManager.getInstance().deployHomework("名字", groupIds, subjectIds, new Callback<SimpleResult>() {
+        TeacherHomeManager.getInstance().deployHomework(title, groupIds, subjectIds, new Callback<SimpleResult>() {
             @Override
             public void success(SimpleResult simpleResult, Response response) {
                 if (context != null) {
@@ -152,7 +177,9 @@ public class TSubjectDeployActivity extends SEBaseActivity implements PullToRefr
                     if (simpleResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(context, simpleResult.getMessage());
                     } else {
-
+                        ToastUtil.showToastShort(context, "发布成功");
+                        EventBus.getDefault().post(new PublishHomeWorkSuccessEvent(true));
+                        finish();
                     }
                 }
             }
