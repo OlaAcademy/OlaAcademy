@@ -36,6 +36,46 @@
                 android:textColorHint="@color/line_d5d5d5"
                 android:textSize="12dp" />
 
+            <View style="@style/line_horizontal" />
+            <RelativeLayout
+                android:id="@+id/notice_view"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <View style="@style/line_horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="群类型"
+                    android:textColor="@color/black_one"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/notice_hint_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/notice_img"
+                    android:text="请选择群类型"
+                    android:textColor="@color/black_a4a6a9" />
+
+                <ImageView
+                    android:id="@+id/notice_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_next" />
+            </RelativeLayout>
+            <View style="@style/line_horizontal" />
+
             <EditText
                 android:id="@+id/group_intro"
                 android:layout_width="match_parent"

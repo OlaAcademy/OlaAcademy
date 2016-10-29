@@ -247,7 +247,7 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                         showNoGroupView();
                     } else {
                         if (teacherGroupListResult.getResult().size() > 0) {
-                            isHasGroup = true;
+                            isHasGroup = true;//size大于0就是有群
                             fetchData();
                         } else {
                             showNoGroupView();
