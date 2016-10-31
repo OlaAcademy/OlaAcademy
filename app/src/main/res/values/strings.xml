@@ -156,7 +156,6 @@
     <string name="exchange">兑换</string>
     <string name="pay_twenty_coin">兑换该套题将消耗您20欧拉币</string>
     <string name="get_coin_ing">正在获取积分，请稍后</string>
-    <string name="ola_homepage">欧拉币首页</string>
     <string name="today_get_coin">今日获得%s欧拉币</string>
     <string name="has_sign">已签到</string>
     <string name="sign">签到</string>
@@ -177,5 +176,7 @@
     <string name="no_homework">暂无已布置作业</string>
     <string name="watch_library_to_publish_homework">看看题库，给学生们布置作业吧！</string>
     <string name="create_study_group">创建学习群</string>
+    <string name="student_complete_info">学生完成情况</string>
+    <string name="complete_info">完成情况</string>
 
 </resources>

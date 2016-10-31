@@ -26,6 +26,7 @@ import com.michen.olaxueyuan.protocol.result.TeacherGroupListResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.QuestionHomeWorkListAdapter;
 import com.michen.olaxueyuan.ui.group.CreateGroupActivity;
+import com.michen.olaxueyuan.ui.group.TGroupListActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
@@ -93,7 +94,7 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         mListView.setOnRefreshListener(this);
         mListView.getRefreshableView().setDivider(null);
         titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
-        adapter = new QuestionHomeWorkListAdapter(getActivity());
+        adapter = new QuestionHomeWorkListAdapter(getActivity(),2);
         mListView.setAdapter(adapter);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int lastIndex = 0;
@@ -153,6 +154,8 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                                 showNoHomeWorkView();
                             }
                             return;
+                        } else {
+                            emptyLayout.setVisibility(View.GONE);
                         }
                         mList.addAll(list);
                         if (mList.size() > 0) {
@@ -182,7 +185,7 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_response:
-                Utils.jumpLoginOrNot(getActivity(), CreateGroupActivity.class);
+                Utils.jumpLoginOrNot(getActivity(), TGroupListActivity.class);
                 break;
             case R.id.fab_math:
                 publishSubject("1");
@@ -222,9 +225,15 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         fetchData();
     }
 
+    /**
+     * {@link TSubjectDeployActivity#publishHomeWork()}
+     * {@link CreateGroupActivity#saveGroupInfo(String, String)}
+     *
+     * @param successEvent
+     */
     public void onEventMainThread(PublishHomeWorkSuccessEvent successEvent) {
         if (successEvent.isSuccess) {
-            onPullDownToRefresh(mListView);
+            getTeacherGroupList();
         }
     }
 

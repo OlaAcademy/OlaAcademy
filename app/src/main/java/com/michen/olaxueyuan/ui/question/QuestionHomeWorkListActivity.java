@@ -49,7 +49,7 @@ public class QuestionHomeWorkListActivity extends SEBaseActivity implements Pull
         listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
         listview.getRefreshableView().setDivider(null);
-        adapter = new QuestionHomeWorkListAdapter(context);
+        adapter = new QuestionHomeWorkListAdapter(context,1);
         listview.setAdapter(adapter);
     }
 

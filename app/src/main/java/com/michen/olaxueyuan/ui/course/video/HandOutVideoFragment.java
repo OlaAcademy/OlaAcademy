@@ -19,6 +19,7 @@ import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.event.VideoPdfEvent;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
@@ -127,7 +128,10 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
 
                     @Override
                     public void onLoading(long total, long current, boolean isUploading) {
-                        loadingText.setText(getString(R.string.loading_text) + (int) (current / total * 100) + "%");
+                        Logger.e("current==" + current);
+                        Logger.e("(int) (current / total * 100)==" + (int) (current / total * 100));
+//                        loadingText.setText(getString(R.string.loading_text) + (int) (current / total * 100) + "%");
+                        loadingText.setText("下载中..." + (int) (current * 100 / total) + "%");
                     }
 
                     @Override
@@ -166,7 +170,7 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
                     ToastUtil.showToastShort(getActivity(), "pdf文件正在下载中，请稍后");
                 }
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_SUBJECT, "欧拉学院学习讲义-"+name);
+                intent.putExtra(Intent.EXTRA_SUBJECT, "欧拉学院学习讲义-" + name);
 //                intent.putExtra(Intent.EXTRA_TEXT, name);
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + downLoadUrl));
                 intent.setType("image");

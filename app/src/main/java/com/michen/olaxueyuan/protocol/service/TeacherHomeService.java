@@ -3,6 +3,7 @@ package com.michen.olaxueyuan.protocol.service;
 import com.michen.olaxueyuan.protocol.result.AttendGroupResult;
 import com.michen.olaxueyuan.protocol.result.CreateGroupResult;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
+import com.michen.olaxueyuan.protocol.result.HomeworkStatisticsResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.SubjectListResult;
 import com.michen.olaxueyuan.protocol.result.TeacherGroupListResult;
@@ -122,4 +123,22 @@ public interface TeacherHomeService {
             @Field("groupIds") String groupIds,
             @Field("subjectIds") String subjectIds,
             Callback<SimpleResult> cb);
+
+    /**
+     * （老师版）学生作业完成情况
+     *
+     * @param groupId    群id
+     * @param homeworkId 该作业的id
+     * @param pageIndex  起始页 1
+     * @param pageSize
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/homework/getHomeworkStatistics")
+    void getHomeworkStatistics(
+            @Field("groupId") String groupId,
+            @Field("homeworkId") String homeworkId,
+            @Field("pageIndex") int pageIndex,
+            @Field("pageSize") int pageSize,
+            Callback<HomeworkStatisticsResult> cb);
 }

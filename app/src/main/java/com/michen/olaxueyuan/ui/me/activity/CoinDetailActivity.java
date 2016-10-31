@@ -87,4 +87,10 @@ public class CoinDetailActivity extends SEBaseActivity implements PullToRefreshB
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
 }

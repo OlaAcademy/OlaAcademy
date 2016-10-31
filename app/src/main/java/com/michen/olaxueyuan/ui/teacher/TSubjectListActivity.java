@@ -19,6 +19,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
+import com.michen.olaxueyuan.ui.group.CreateGroupActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import org.json.JSONArray;
@@ -160,6 +161,12 @@ public class TSubjectListActivity extends SEBaseActivity implements View.OnClick
         }
     }
 
+    /**
+     * {@link TSubjectDeployActivity#publishHomeWork()}
+     * {@link CreateGroupActivity#saveGroupInfo(String, String)}
+     *
+     * @param successEvent
+     */
     public void onEventMainThread(PublishHomeWorkSuccessEvent successEvent) {
         if (successEvent.isSuccess) {
             finish();

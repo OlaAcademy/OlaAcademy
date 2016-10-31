@@ -72,7 +72,7 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
     }
 
     private void initView() {
-        setTitleText(getString(R.string.ola_homepage));
+        setTitleText(getString(R.string.coin));
     }
 
     @Override

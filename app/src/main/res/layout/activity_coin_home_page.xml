@@ -166,7 +166,7 @@
                     android:layout_below="@+id/share_tips"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="奖励2(最多10)欧拉币" />
+                    android:text="奖励5(最多10)欧拉币" />
 
                 <TextView
                     android:id="@+id/to_share"

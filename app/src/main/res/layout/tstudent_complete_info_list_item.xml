@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="62dp"
+    android:background="@drawable/selector_white_item_bg">
+
+    <com.michen.olaxueyuan.common.RoundRectImageView
+        android:id="@+id/avatar"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:src="@drawable/ic_default_avatar" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/normal_text_14dp_style"
+        android:layout_width="wrap_content"
+        android:layout_height="62dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/avatar"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp_15"
+        android:text="今日签到" />
+
+    <TextView
+        android:id="@+id/finished_text"
+        style="@style/normal_text_14dp_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingEnd="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15"
+        android:text="1小时前" />
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

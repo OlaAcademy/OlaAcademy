@@ -18,6 +18,7 @@ import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.TGetSubjectExpandableListAdapter;
 import com.michen.olaxueyuan.ui.adapter.TGetSubjectListViewAdapter;
+import com.michen.olaxueyuan.ui.group.CreateGroupActivity;
 import com.michen.olaxueyuan.ui.question.QuestionHomeWorkFragment;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshExpandableListView;
@@ -236,6 +237,12 @@ public class TGetSubjectListActivity extends SEBaseActivity implements PullToRef
         }
     }
 
+    /**
+     * {@link TSubjectDeployActivity#publishHomeWork()}
+     * {@link CreateGroupActivity#saveGroupInfo(String, String)}
+     *
+     * @param successEvent
+     */
     public void onEventMainThread(PublishHomeWorkSuccessEvent successEvent) {
         if (successEvent.isSuccess) {
             finish();
