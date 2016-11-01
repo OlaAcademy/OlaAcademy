@@ -251,6 +251,10 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
     public void onEventMainThread(UserLoginNoticeModule module) {
         if (module.isLogin) {
             menuView.setVisibility(View.VISIBLE);
+            List<HomeworkListResult.ResultBean> list = new ArrayList<>();
+            mList.clear();
+            mList.addAll(list);
+            adapter.updateData(mList);
             getTeacherGroupList();
         }
     }
