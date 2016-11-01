@@ -160,7 +160,7 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
                     if(msg.obj==null||TextUtils.isEmpty(msg.obj.toString())){
                         setRightImageInvisibility();
                     }else {
-                        setRightImage(R.drawable.ic_video);
+                        setRightImage(R.drawable.ic_video_blue);
                         final String videoUrl = msg.obj.toString();
                         setRightTextListener(new View.OnClickListener() {
                             @Override

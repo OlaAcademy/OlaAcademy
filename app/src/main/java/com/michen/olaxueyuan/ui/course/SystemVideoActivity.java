@@ -330,7 +330,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
                         break;
                 }
             }
-        }, getString(R.string.to_login), "", "");
+        },"", getString(R.string.to_login), "", "");
     }
 
     MediaPlayer.OnInfoListener infoListener = new MediaPlayer.OnInfoListener() {

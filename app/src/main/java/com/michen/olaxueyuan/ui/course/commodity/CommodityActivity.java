@@ -81,14 +81,16 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
         MCOrgManager.getInstance().getGoodsList(pid, new Callback<SystemCourseResult>() {
             @Override
             public void success(SystemCourseResult systemCourseResult, Response response) {
-                listview.onRefreshComplete();
-                SVProgressHUD.dismiss(CommodityActivity.this);
+                if (!CommodityActivity.this.isFinishing()) {
+                    listview.onRefreshComplete();
+                    SVProgressHUD.dismiss(CommodityActivity.this);
 //                Logger.json(systemCourseResult);
-                if (systemCourseResult.getApicode() != 10000) {
-                    ToastUtil.showToastShort(CommodityActivity.this, systemCourseResult.getMessage());
-                } else {
-                    module = systemCourseResult;
-                    handler.sendEmptyMessage(0);
+                    if (systemCourseResult.getApicode() != 10000) {
+                        ToastUtil.showToastShort(CommodityActivity.this, systemCourseResult.getMessage());
+                    } else {
+                        module = systemCourseResult;
+                        handler.sendEmptyMessage(0);
+                    }
                 }
             }
 

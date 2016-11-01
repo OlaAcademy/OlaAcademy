@@ -13,18 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
-import com.michen.olaxueyuan.common.manager.Logger;
-import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
-import com.michen.olaxueyuan.protocol.manager.SEUserManager;
-import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
-import com.michen.olaxueyuan.ui.activity.SuperActivity;
-import com.michen.olaxueyuan.ui.course.pay.weixin.WxPayUtile;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
 import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
+import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
+import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.ui.course.pay.weixin.MD5;
+import com.michen.olaxueyuan.ui.course.pay.weixin.WxPayUtile;
 import com.michen.olaxueyuan.ui.course.pay.zhifubao.PayResult;
 
 import java.text.DecimalFormat;
@@ -37,6 +37,9 @@ import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static com.michen.olaxueyuan.R.id.iv_switch_close_orignal;
+import static com.michen.olaxueyuan.R.id.iv_switch_open_orignal;
 
 public class PaySystemVideoActivity extends SuperActivity {
     TitleManager titleManager;
@@ -67,15 +70,28 @@ public class PaySystemVideoActivity extends SuperActivity {
     @Bind(R.id.buy_vip)
     Button buyVip;
     SystemCourseResult.ResultEntity resultEntity;
+    @Bind(R.id.coin_tips)
+    TextView coinTips;
+    @Bind(iv_switch_open_orignal)
+    ImageView ivSwitchOpenOrignal;
+    @Bind(iv_switch_close_orignal)
+    ImageView ivSwitchCloseOrignal;
+    @Bind(R.id.rl_orignal)
+    RelativeLayout rlOrignal;
     private String courseId;
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_CHECK_FLAG = 2;
     private static final int PAY_BY_ALIPAY = 101;//使用支付宝支付
     private static final int PAY_BY_WECHAT = 102;//使用微信支付
-    private int payType = PAY_BY_ALIPAY;//最终支付方式,默认支付宝
+    private int payType = PAY_BY_WECHAT;//最终支付方式,默认微信
     private String userId = "126";//测试的userId
     private String price;
     private String type = "3";// 1月度会员 2 年度会员 3 整套视频
+    private boolean isUseCoin = false;
+    private int coin;//总积分
+    private int maxCoin;//最多使用多少欧拉币，最多为总价的1/10,1元=20欧拉币
+    private float coinMoney;//可以抵扣多少钱
+    private DecimalFormat format = new DecimalFormat("0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +99,7 @@ public class PaySystemVideoActivity extends SuperActivity {
         courseId = getIntent().getStringExtra("courseId");
         resultEntity = (SystemCourseResult.ResultEntity) getIntent().getSerializableExtra("ResultEntity");
         setContentView(R.layout.activity_pay_system_video_view);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -90,7 +107,7 @@ public class PaySystemVideoActivity extends SuperActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         titleManager = new TitleManager(this, "支付订单", this, true);
-
+        wechatRadio.setSelected(true);
     }
 
     @Override
@@ -102,9 +119,17 @@ public class PaySystemVideoActivity extends SuperActivity {
             Logger.e("price==" + resultEntity.getPrice());
             priceTv.setText(String.valueOf(resultEntity.getPrice()));
         }
+        coin = SEAuthManager.getInstance().getAccessUser().getCoin();
+        maxCoin = (int) (resultEntity.getPrice() * 0.1 * 20);
+        if (coin < maxCoin) {//如果总欧拉币比最多可使用的欧拉币少，最多可使用的欧拉币就为总的欧拉币
+            maxCoin = coin;
+        }
+        coinMoney = (float) (maxCoin * 0.05);
+        coinTips.setText("您当前共有" + coin + "欧拉币,可用" + maxCoin + "欧拉币,抵扣￥" + format.format(coinMoney) + "元");
     }
 
-    @OnClick({R.id.left_return, R.id.right_response, R.id.alipay_view, R.id.wechat_view, R.id.buy_vip})
+    @OnClick({R.id.left_return, R.id.right_response, R.id.alipay_view, R.id.wechat_view
+            , R.id.buy_vip, R.id.rl_orignal})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_return:
@@ -133,6 +158,17 @@ public class PaySystemVideoActivity extends SuperActivity {
                         break;
                 }
                 break;
+            case R.id.rl_orignal:
+                if (ivSwitchOpenOrignal.getVisibility() == View.VISIBLE) {
+                    ivSwitchOpenOrignal.setVisibility(View.INVISIBLE);
+                    ivSwitchCloseOrignal.setVisibility(View.VISIBLE);
+                    isUseCoin = false;
+                } else {
+                    ivSwitchOpenOrignal.setVisibility(View.VISIBLE);
+                    ivSwitchCloseOrignal.setVisibility(View.INVISIBLE);
+                    isUseCoin = true;
+                }
+                break;
         }
     }
 
@@ -141,7 +177,11 @@ public class PaySystemVideoActivity extends SuperActivity {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
         double pricess = Double.parseDouble(price) * 100;
         final String prices = new DecimalFormat("###").format(pricess);
-        SEUserManager.getInstance().getWXPayReq(userId, type, courseId, new Callback<UserWXpayResult>() {
+        String maxCoinString = "0";
+        if (isUseCoin) {
+            maxCoinString = String.valueOf(maxCoin);
+        }
+        SEUserManager.getInstance().getWXPayReq(userId, type, courseId, maxCoinString, new Callback<UserWXpayResult>() {
             @Override
             public void success(UserWXpayResult wxPayModule, Response response) {
                 if (wxPayModule != null && wxPayModule.getApicode() == 10000) {
@@ -171,7 +211,11 @@ public class PaySystemVideoActivity extends SuperActivity {
 
     public void payForAlipay() {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        SEUserManager.getInstance().getAliOrderInfo(userId, type, courseId, new Callback<UserAlipayResult>() {
+        String maxCoinString = "0";
+        if (isUseCoin) {
+            maxCoinString = String.valueOf(maxCoin);
+        }
+        SEUserManager.getInstance().getAliOrderInfo(userId, type, courseId, maxCoinString, new Callback<UserAlipayResult>() {
             @Override
             public void success(UserAlipayResult userAlipayResult, Response response) {
                 if (userAlipayResult != null && userAlipayResult.getApicode() == 10000) {
@@ -253,7 +297,7 @@ public class PaySystemVideoActivity extends SuperActivity {
 
     // EventBus 微信支付成功通知
     public void onEventMainThread(Boolean payResult) {
-        if (payResult){
+        if (payResult) {
             finish();
         }
     }
@@ -263,5 +307,9 @@ public class PaySystemVideoActivity extends SuperActivity {
         super.onDestroy();
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
+    }
+
+    @OnClick(R.id.rl_orignal)
+    public void onClick() {
     }
 }

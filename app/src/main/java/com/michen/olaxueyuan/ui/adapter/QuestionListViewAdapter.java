@@ -1,8 +1,6 @@
 package com.michen.olaxueyuan.ui.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
-import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
-import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.question.QuestionWebActivity;
 
 import java.util.ArrayList;
@@ -32,8 +27,9 @@ public class QuestionListViewAdapter extends BaseAdapter {
     private List<ExamModule.ResultBean> mDatas = new ArrayList<>();
     private int courseType; // 1 数学 2 英语 3 逻辑 4 写作
 
-    public QuestionListViewAdapter(Context mContext) {
+    public QuestionListViewAdapter(Context mContext, SelectBuyCourse selectBuyCourse) {
         this.mContext = mContext;
+        this.selectBuyCourse = selectBuyCourse;
     }
 
     public void updateData(List<ExamModule.ResultBean> mDatas, int courseType) {
@@ -68,7 +64,7 @@ public class QuestionListViewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.questionName.setText(mDatas.get(position).getName());
-        holder.questionKnowledgeCount.setText("难度"+ mDatas.get(position).getDegree());
+        holder.questionKnowledgeCount.setText("难度" + mDatas.get(position).getDegree());
         try {
             int subAllNum = mDatas.get(position).getCoverpoint();
             int subNum = mDatas.get(position).getProgress();
@@ -86,14 +82,14 @@ public class QuestionListViewAdapter extends BaseAdapter {
         }
         if (mDatas.get(position).getIsfree() == 0) {
             holder.questionIV.setBackgroundResource(R.drawable.ic_question_normal);
-        }else {
+        } else {
             holder.questionIV.setBackgroundResource(R.drawable.ic_question_blue);
         }
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mDatas.get(position).getIsfree() == 0) {
-                    buyVip();
+                    selectBuyCourse.buyCourse(true,mDatas.get(position).getId(),2);
                 } else {
                     Intent intent = new Intent(mContext, QuestionWebActivity.class);
                     intent.putExtra("objectId", mDatas.get(position).getId());
@@ -104,27 +100,6 @@ public class QuestionListViewAdapter extends BaseAdapter {
             }
         });
         return convertView;
-    }
-
-    private void buyVip() {
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            new AlertDialog.Builder(mContext)
-                    .setTitle("友情提示")
-                    .setMessage("购买会员后即可拥有")
-                    .setPositiveButton("去购买", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            mContext.startActivity(new Intent(mContext, BuyVipActivity.class));
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
-                        }
-                    })
-                    .show();
-        } else {
-            mContext.startActivity(new Intent(mContext, UserLoginActivity.class));
-        }
     }
 
     class ViewHolder {
@@ -140,5 +115,11 @@ public class QuestionListViewAdapter extends BaseAdapter {
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+    public SelectBuyCourse selectBuyCourse;
+
+    public interface SelectBuyCourse {
+        void buyCourse(boolean isBuy,int objectId,int type);
     }
 }

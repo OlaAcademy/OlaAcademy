@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.me.adapter.DownloadedAdapter;
 import com.michen.olaxueyuan.ui.me.adapter.DownloadingAdapter;
-import com.michen.olaxueyuan.ui.me.subfragment.NoScrollViewPager;
+import com.michen.olaxueyuan.common.NoScrollViewPager;
 import com.michen.olaxueyuan.R;
 
 import java.lang.reflect.Constructor;

@@ -180,7 +180,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:background="@drawable/blue_button_bg"
+            android:background="@drawable/rectangle_blue_3dp_btn_bg"
             android:text="@string/buy_now"
             android:textColor="@color/white" />
     </RelativeLayout>

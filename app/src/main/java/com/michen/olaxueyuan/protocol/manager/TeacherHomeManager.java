@@ -3,12 +3,16 @@ package com.michen.olaxueyuan.protocol.manager;
 import com.michen.olaxueyuan.protocol.result.AttendGroupResult;
 import com.michen.olaxueyuan.protocol.result.CreateGroupResult;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
+import com.michen.olaxueyuan.protocol.result.HomeworkStatisticsResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.SubjectListResult;
 import com.michen.olaxueyuan.protocol.result.TeacherGroupListResult;
 import com.michen.olaxueyuan.protocol.result.UserGroupListResult;
 import com.michen.olaxueyuan.protocol.service.TeacherHomeService;
 
 import retrofit.Callback;
+
+import static com.michen.olaxueyuan.R.id.avatar;
 
 /**
  * Created by mingge on 16/8/31.
@@ -38,8 +42,8 @@ public class TeacherHomeManager {
      * @param type     1、数学2、英语3、逻辑4、写作
      * @param callback
      */
-    public void createGroup(String userId, String type, String name, String avatar, final Callback<CreateGroupResult> callback) {
-        getTeacherHomeService().createGroup(userId, type, name, avatar, callback);
+    public void createGroup(String userId, String type, String name,String profile, String avatar, final Callback<CreateGroupResult> callback) {
+        getTeacherHomeService().createGroup(userId, type, name,profile, avatar, callback);
     }
 
     /**
@@ -96,5 +100,30 @@ public class TeacherHomeManager {
      */
     public void attendGroup(String userId, String groupId, String type, final Callback<AttendGroupResult> callback) {
         getTeacherHomeService().attendGroup(userId, groupId, type, callback);
+    }
+
+    /**
+     * 发布作业
+     *
+     * @param name
+     * @param groupIds   群id
+     * @param subjectIds 字符串	题目Id串 逗号分隔
+     * @param cb
+     */
+    public void deployHomework(String name, String groupIds, String subjectIds, final Callback<SimpleResult> callback) {
+        getTeacherHomeService().deployHomework(name, groupIds, subjectIds, callback);
+    }
+
+    /**
+     * （老师版）学生作业完成情况
+     *
+     * @param groupId    群id
+     * @param homeworkId 该作业的id
+     * @param pageIndex  起始页 1
+     * @param pageSize
+     * @param cb
+     */
+    public void getHomeworkStatistics(String groupId, String homeworkId, int pageIndex, int pageSize, final Callback<HomeworkStatisticsResult> callback) {
+        getTeacherHomeService().getHomeworkStatistics(groupId, homeworkId, pageIndex, pageSize, callback);
     }
 }

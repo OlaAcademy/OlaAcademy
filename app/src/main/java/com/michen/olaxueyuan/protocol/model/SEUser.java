@@ -8,18 +8,63 @@ import java.io.Serializable;
  */
 public class SEUser implements Serializable {
 
-    private String id;
-    private String phone;
-    private String passwd;
-    private String avator;
-    private String name;
-    private String sign;
-    private String email;
-    private String age;
-    private String sex;
-    private String local;
+    private int coin;//1元=20欧拉币
     private String vipTime;
+    private String realName;
+    private String avator;
+    private String examtype;
+    private String sex;
+    private String id;
+    private String age;
+    private String sign;
+    private String signInDays;
     private int isActive;// 1 学生 2 老师
+    private String phone;
+    private String name;
+    private String passwd;
+    private String email;
+    private String local;
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public SEUser setCoin(int coin) {
+        this.coin = coin;
+        return this;
+    }
+
+    public SEUser setVipTime(String vipTime) {
+        this.vipTime = vipTime;
+        return this;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public SEUser setRealName(String realName) {
+        this.realName = realName;
+        return this;
+    }
+
+    public String getExamtype() {
+        return examtype;
+    }
+
+    public SEUser setExamtype(String examtype) {
+        this.examtype = examtype;
+        return this;
+    }
+
+    public String getSignInDays() {
+        return signInDays;
+    }
+
+    public SEUser setSignInDays(String signInDays) {
+        this.signInDays = signInDays;
+        return this;
+    }
 
     public int getIsActive() {
         return isActive;

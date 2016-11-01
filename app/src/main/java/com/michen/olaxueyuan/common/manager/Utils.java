@@ -3,12 +3,16 @@ package com.michen.olaxueyuan.common.manager;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -260,6 +264,20 @@ public class Utils {
         if (loading != null && loading.isShowing()) {
             loading.dismiss();
             loading.cancel();
+        }
+    }
+
+    /**
+     * 判断没有登录跳转到登录页面，登录了就跳转到cls界面
+     *
+     * @param context
+     * @param cls
+     */
+    public static void jumpLoginOrNot(Context context, Class<?> cls) {
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            context.startActivity(new Intent(context, cls));
+        } else {
+            context.startActivity(new Intent(context, UserLoginActivity.class));
         }
     }
 }

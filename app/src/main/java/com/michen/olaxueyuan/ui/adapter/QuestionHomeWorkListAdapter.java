@@ -15,6 +15,7 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.question.QuestionWebActivity;
+import com.michen.olaxueyuan.ui.teacher.TStudentCompleteInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,11 @@ public class QuestionHomeWorkListAdapter extends BaseAdapter {
     private List<HomeworkListResult.ResultBean> list = new ArrayList<>();
     Context mContext;
     private static final int DEFAULT_INDEX = 6;
+    private int type = 1;//1学生考点adapter，2为老师考点首页adapter
 
-    public QuestionHomeWorkListAdapter(Context mContext) {
+    public QuestionHomeWorkListAdapter(Context mContext, int type) {
         this.mContext = mContext;
+        this.type = type;
     }
 
     public void updateData(List<HomeworkListResult.ResultBean> list) {
@@ -94,17 +97,28 @@ public class QuestionHomeWorkListAdapter extends BaseAdapter {
         holder.timeText.setText(list.get(position).getTime());
         holder.courseNumText.setText(list.get(position).getCount() + "道小题");
         holder.groupNameText.setText(list.get(position).getGroupName());
-        holder.circleProgress.setProgress(list.get(position).getFinishedCount() * 100 / list.get(position).getCount());
+        if (list.get(position).getCount() != 0) {
+            holder.circleProgress.setProgress(Integer.parseInt(list.get(position).getFinishedPercent()));
+        } else {
+            holder.circleProgress.setProgress(0);
+        }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (SEAuthManager.getInstance().isAuthenticated()) {
-                    Intent intent = new Intent(mContext, QuestionWebActivity.class);
-                    intent.putExtra("objectId", list.get(position).getId());
-                    intent.putExtra("type", 3);
-                    intent.putExtra("courseType", 1); //2 英语阅读
-                    mContext.startActivity(intent);
+                    if (type == 1) {
+                        Intent intent = new Intent(mContext, QuestionWebActivity.class);
+                        intent.putExtra("objectId", list.get(position).getId());
+                        intent.putExtra("type", 3);
+                        intent.putExtra("courseType", 1); //2 英语阅读
+                        mContext.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(mContext, TStudentCompleteInfoActivity.class);
+                        intent.putExtra("homeworkId", String.valueOf(list.get(position).getId()));
+                        intent.putExtra("groupId", list.get(position).getGroupId());
+                        mContext.startActivity(intent);
+                    }
                 } else {
                     mContext.startActivity(new Intent(mContext, UserLoginActivity.class));
                 }

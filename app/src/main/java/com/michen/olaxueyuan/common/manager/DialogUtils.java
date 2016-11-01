@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,7 +47,7 @@ public class DialogUtils {
     @Bind(R.id.close)
     TextView close;
 
-    public static void showDialog(Context context, final View.OnClickListener listener, String content, String sure, String cancle) {
+    public static void showDialog(Context context, final View.OnClickListener listener, String title, String content, String sure, String cancle) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.confirm_collect_dialog, null);
         final Dialog dialog = new AlertDialog.Builder(context).create();
@@ -56,10 +59,14 @@ public class DialogUtils {
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         params.gravity = Gravity.CENTER;
         dialog.getWindow().setAttributes(params);
+        TextView titleText = (TextView) view.findViewById(R.id.title_tips);
         TextView text = (TextView) view.findViewById(R.id.content);
         TextView noView = (TextView) view.findViewById(R.id.no);
         TextView yesView = (TextView) view.findViewById(R.id.yes);
         text.setText(content);
+        if (!TextUtils.isEmpty(title)) {
+            titleText.setText(title);
+        }
         if (!TextUtils.isEmpty(cancle)) {
             noView.setText(cancle);
         }
@@ -240,5 +247,100 @@ public class DialogUtils {
                 listener.onClick(view);
             }
         });
+    }
+
+    public static void showSelectListDialog(final Context context, int groupType, final ListView.OnItemClickListener itemClickListener, final String[] selectArray) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.dialog_select_list, null);
+        final Dialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        dialog.getWindow().setContentView(view);
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        int screenWidth = Utils.getScreenMetrics(context).x;
+        params.width = screenWidth - 230;
+//        params.width = Utils.dip2px(context, 260);
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        params.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(params);
+
+        TextView closeView = (TextView) view.findViewById(R.id.close);
+        ListView listview = (ListView) view.findViewById(R.id.listview);
+
+        closeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        final DialogSelectAdapter adapter = new DialogSelectAdapter(context, selectArray);
+        listview.setAdapter(adapter);
+        adapter.updateStatus(groupType);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                itemClickListener.onItemClick(parent, view, position, id);
+                adapter.updateStatus(position);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    static class DialogSelectAdapter extends BaseAdapter {
+        Context context;
+        int selectPosition = 0;
+        String[] selectArray;
+
+        public DialogSelectAdapter(Context context, String[] selectArray) {
+            this.context = context;
+            this.selectArray = selectArray;
+        }
+
+        public void updateStatus(int selectPosition) {
+            this.selectPosition = selectPosition;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return selectArray.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return selectArray[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = View.inflate(context, R.layout.dialog_select_list_item, null);
+                holder.bottomLine = convertView.findViewById(R.id.bottom_line);
+                holder.name = (TextView) convertView.findViewById(R.id.name);
+                holder.selectImg = (ImageView) convertView.findViewById(R.id.select_img);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.name.setText(selectArray[position]);
+            if (selectPosition == position) {
+                holder.selectImg.setVisibility(View.VISIBLE);
+            } else {
+                holder.selectImg.setVisibility(View.GONE);
+            }
+            return convertView;
+        }
+
+        class ViewHolder {
+            TextView name;
+            ImageView selectImg;
+            View bottomLine;
+        }
     }
 }

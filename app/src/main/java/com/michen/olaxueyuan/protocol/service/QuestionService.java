@@ -11,6 +11,7 @@ import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
+import com.michen.olaxueyuan.protocol.result.UnlockSubjectResult;
 
 import retrofit.Callback;
 import retrofit.http.Field;
@@ -63,7 +64,7 @@ public interface QuestionService {
 
     /**
      * 欧拉圈，获取视频观看历史记录列表(老接口)
-     * {@link #getCircleList(String, String, Callback)}
+     * {@link #getCircleList(String, String, String, Callback)}}
      *
      * @param cb
      */
@@ -166,6 +167,22 @@ public interface QuestionService {
     @POST("/ola/circle/queryCircleDetail")
     void queryCircleDetail(@Field("circleId") String circleId,
                            Callback<PostDetailModule> cb);
+
+    /**
+     * 解锁题目
+     *
+     * @param userId
+     * @param objectId 课程ID／模考Id
+     * @param type     1 课程 2 模考
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/exchange/unlockSubject")
+    void unlockSubject(
+            @Field("userId") String userId,
+            @Field("objectId") String objectId,
+            @Field("type") String type,
+            Callback<UnlockSubjectResult> cb);
 
 
 }

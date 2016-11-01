@@ -36,12 +36,21 @@
     <!--长度大小 dp-->
     <dimen name="dp_75">75dp</dimen>
     <dimen name="dp_60">60dp</dimen>
+    <dimen name="dp_52">52dp</dimen>
     <dimen name="dp_48">48dp</dimen>
     <dimen name="dp_45">45dp</dimen>
     <dimen name="dp_44">44dp</dimen>
+    <dimen name="dp_38">38dp</dimen>
     <dimen name="dp_30">30dp</dimen>
     <dimen name="dp_29">29dp</dimen>
     <dimen name="dp_28">28dp</dimen>
+    <dimen name="dp_27">27dp</dimen>
+    <dimen name="dp_26">26dp</dimen>
+    <dimen name="dp_25">25dp</dimen>
+    <dimen name="dp_24">24dp</dimen>
+    <dimen name="dp_23">23dp</dimen>
+    <dimen name="dp_22">22dp</dimen>
+    <dimen name="dp_21">21dp</dimen>
     <dimen name="dp_20">20dp</dimen>
     <dimen name="dp_19">19dp</dimen>
     <dimen name="dp_18">18dp</dimen>

@@ -12,6 +12,7 @@ import com.baidu.autoupdatesdk.UICheckUpdateCallback;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.StatusBarCompat;
 import com.michen.olaxueyuan.common.manager.Logger;
+import com.snail.svprogresshud.SVProgressHUD;
 import com.sriramramani.droid.inspector.server.ViewServer;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.common.message.UmengMessageDeviceConfig;
@@ -92,6 +93,7 @@ public class MainActivity extends Activity {
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+        SVProgressHUD.dismiss(this);
     }
 
     @Override

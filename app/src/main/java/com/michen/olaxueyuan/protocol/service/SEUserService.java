@@ -2,11 +2,13 @@ package com.michen.olaxueyuan.protocol.service;
 
 import com.michen.olaxueyuan.protocol.result.CheckInResult;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
+import com.michen.olaxueyuan.protocol.result.CoinHistoryResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
 import com.michen.olaxueyuan.protocol.result.SEPasswordResult;
 import com.michen.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
 import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
@@ -88,6 +90,7 @@ public interface SEUserService {
     @POST("/ola/user/updateInfo")
     public void updateUser(@Part("id") String uid,
                            @Part("name") String name,
+                           @Part("realName") String realName,
                            @Part("avator") String avator,
                            @Part("local") String local,
                            @Part("sex") String sex,
@@ -153,6 +156,7 @@ public interface SEUserService {
      * @param userId
      * @param type    type : 1月度会员 2 年度会员 3 整套视频
      * @param goodsId
+     * @param coin
      * @param cb
      */
     @FormUrlEncoded
@@ -162,7 +166,7 @@ public interface SEUserService {
             @Field("userId") String userId,
             @Field("type") String type,
             @Field("goodsId") String goodsId,
-//            @Field("body") String body,
+            @Field("coin") String coin,
             Callback<UserAlipayResult> cb);
 
     /**
@@ -180,6 +184,7 @@ public interface SEUserService {
             @Field("userId") String userId,
             @Field("type") String type,
             @Field("goodsId") String goodsId,
+            @Field("coin") String coin,
 //            @Field("body") String body,
             Callback<UserWXpayResult> cb);
 
@@ -218,5 +223,29 @@ public interface SEUserService {
     void checkin(
             @Field("userId") String userId,
             Callback<CheckInResult> cb);
+
+    /**
+     * 欧拉币获取及消耗明细
+     *
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/coin/getHistoryList")
+    void coinGetHistoryList(
+            @Field("userId") String userId,
+            Callback<CoinHistoryResult> cb);
+
+    /**
+     * 分享
+     *
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/dailyact/dailyShare")
+    void share(
+            @Field("userId") String userId,
+            Callback<SimpleResult> cb);
 
 }

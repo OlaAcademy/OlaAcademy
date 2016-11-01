@@ -379,6 +379,11 @@
     <color name="title_edge_blue">#b3c9f6</color>
     <color name="blue_4a8af4">#4a8af4</color>
     <color name="sign_dialog_text_color">#FFFC00</color>
+    <color name="dark_button_blue">#005598</color>
+    <color name="unable_button_blue">#DCDBDB</color>
+    <color name="buy_vip_color">#E0B270</color>
+    <color name="buy_vip_pressed_color">#BE9152</color>
+
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>

@@ -11,6 +11,7 @@ import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
+import com.michen.olaxueyuan.protocol.result.UnlockSubjectResult;
 import com.michen.olaxueyuan.protocol.service.QuestionService;
 
 import retrofit.Callback;
@@ -156,5 +157,17 @@ public class QuestionCourseManager {
      */
     public void queryCircleDetail(String circleId, Callback<PostDetailModule> callback) {
         getQuestionService().queryCircleDetail(circleId, callback);
+    }
+
+    /**
+     * 解锁题目
+     *
+     * @param userId
+     * @param objectId 课程ID／模考Id
+     * @param type     1 课程 2 模考
+     * @param callback
+     */
+    public void unlockSubject(String userId, String objectId, String type, Callback<UnlockSubjectResult> callback) {
+        getQuestionService().unlockSubject(userId, objectId, type, callback);
     }
 }

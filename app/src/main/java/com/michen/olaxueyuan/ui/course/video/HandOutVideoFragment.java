@@ -1,11 +1,14 @@
 package com.michen.olaxueyuan.ui.course.video;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.joanzapata.pdfview.PDFView;
@@ -16,6 +19,7 @@ import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.event.VideoPdfEvent;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
@@ -25,6 +29,7 @@ import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -38,6 +43,11 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
     TextView noPdf;
     @Bind(R.id.loading_text)
     TextView loadingText;
+    @Bind(R.id.pdf_layout)
+    LinearLayout pdfLayout;
+    @Bind(R.id.send_mail_text)
+    TextView sendMailText;
+
     private int pageNumber = 1;
     HttpUtils http = new HttpUtils();
     HttpHandler handler;
@@ -52,6 +62,16 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+        ButterKnife.unbind(this);
+        if (handler != null) {
+            handler.cancel();
+        }
+    }
+
     private void initView() {
 
     }
@@ -61,6 +81,7 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
             pdfView.fromFile(file)
                     .defaultPage(pageNumber)
                     .onPageChange(this)
+                    .swipeVertical(true)
                     .load();
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,6 +94,7 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
     public void onEventMainThread(VideoPdfEvent videoPdf) {
         if (videoPdf.type == 1 && nowPosition != videoPdf.position) {
             nowPosition = videoPdf.position;
+            name = videoPdf.name;
             if (TextUtils.isEmpty(videoPdf.url)) {
                 setVisible(false, true, false);
                 return;
@@ -87,10 +109,11 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
             return;
         }
         String fileName = id + ".pdf";
-        String target = "/sdcard/OlaAcademy/" + fileName;
+        final String target = "/sdcard/OlaAcademy/" + fileName;
         final File file = new File(target);
         if (file.exists()) {
             setVisible(false, false, true);
+            downLoadUrl = target;
             loadPdf(file);
             return;
         }
@@ -105,13 +128,17 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
 
                     @Override
                     public void onLoading(long total, long current, boolean isUploading) {
-                        loadingText.setText(getString(R.string.loading_text) + (int) (current / total * 100) + "%");
+                        Logger.e("current==" + current);
+                        Logger.e("(int) (current / total * 100)==" + (int) (current / total * 100));
+//                        loadingText.setText(getString(R.string.loading_text) + (int) (current / total * 100) + "%");
+                        loadingText.setText("下载中..." + (int) (current * 100 / total) + "%");
                     }
 
                     @Override
                     public void onSuccess(ResponseInfo<File> responseInfo) {
                         setVisible(false, false, true);
                         loadPdf(file);
+                        downLoadUrl = target;
                     }
 
                     @Override
@@ -124,21 +151,32 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
     private void setVisible(boolean loadingTextFlag, boolean noPdfFlag, boolean pdfViewFlag) {
         loadingText.setVisibility(loadingTextFlag ? View.VISIBLE : View.GONE);
         noPdf.setVisibility(noPdfFlag ? View.VISIBLE : View.GONE);
-        pdfView.setVisibility(pdfViewFlag ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-        ButterKnife.unbind(this);
-        if (handler != null) {
-            handler.cancel();
-        }
+        pdfLayout.setVisibility(pdfViewFlag ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onPageChanged(int page, int pageCount) {
         pageNumber = page;
+    }
+
+    private String downLoadUrl;
+    private String name;
+
+    @OnClick({R.id.send_mail_text})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.send_mail_text:
+                if (TextUtils.isEmpty(downLoadUrl)) {
+                    ToastUtil.showToastShort(getActivity(), "pdf文件正在下载中，请稍后");
+                }
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_SUBJECT, "欧拉学院学习讲义-" + name);
+//                intent.putExtra(Intent.EXTRA_TEXT, name);
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + downLoadUrl));
+                intent.setType("image");
+                intent.setType("message/rfc882");
+                startActivity(Intent.createChooser(intent, "请选择邮件发送文件"));
+                break;
+        }
     }
 }

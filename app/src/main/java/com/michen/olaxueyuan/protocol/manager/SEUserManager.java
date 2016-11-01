@@ -9,11 +9,13 @@ import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.model.SEUserInfo;
 import com.michen.olaxueyuan.protocol.result.CheckInResult;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
+import com.michen.olaxueyuan.protocol.result.CoinHistoryResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
 import com.michen.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.ServiceError;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
 import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
@@ -206,7 +208,7 @@ public class SEUserManager {
         });
     }
 
-    public void modifyUserMe(String name, String avator, String local, String sex, String descript,
+    public void modifyUserMe(String name,String realName, String avator, String local, String sex, String descript,
                              final SECallBack callback) {
         SEAuthManager am = SEAuthManager.getInstance();
         if (!am.isAuthenticated()) {
@@ -220,7 +222,7 @@ public class SEUserManager {
             avator = currentUser.getAvator();
         }
 
-        _userService.updateUser(currentUser.getId(), name, avator, local, sex, descript, new Callback<MCCommonResult>() {
+        _userService.updateUser(currentUser.getId(), name,realName, avator, local, sex, descript, new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
                 if (result == null) {
@@ -289,8 +291,8 @@ public class SEUserManager {
      * @param goodsId
      * @param cb
      */
-    public void getAliOrderInfo(String userId, String type, String goodsId, Callback<UserAlipayResult> cb) {
-        _userService.getAliOrderInfo(userId, type, goodsId, cb);
+    public void getAliOrderInfo(String userId, String type, String goodsId, String coin, Callback<UserAlipayResult> cb) {
+        _userService.getAliOrderInfo(userId, type, goodsId, coin, cb);
     }
 
     /**
@@ -300,10 +302,11 @@ public class SEUserManager {
      * @param userId
      * @param type    type : 1月度会员 2 年度会员 3 整套视频
      * @param goodsId
+     * @param coin
      * @param cb
      */
-    public void getWXPayReq(String userId, String type, String goodsId, Callback<UserWXpayResult> cb) {
-        _userService.getWXPayReq(userId, type, goodsId, cb);
+    public void getWXPayReq(String userId, String type, String goodsId, String coin, Callback<UserWXpayResult> cb) {
+        _userService.getWXPayReq(userId, type, goodsId, coin, cb);
     }
 
     /**
@@ -334,6 +337,26 @@ public class SEUserManager {
      */
     public void checkin(String userId, Callback<CheckInResult> cb) {
         _userService.checkin(userId, cb);
+    }
+
+    /**
+     * 欧拉币获取及消耗明细
+     *
+     * @param userId
+     * @param cb
+     */
+    public void coinGetHistoryList(String userId, Callback<CoinHistoryResult> cb) {
+        _userService.coinGetHistoryList(userId, cb);
+    }
+
+    /**
+     * 分享
+     *
+     * @param userId
+     * @param cb
+     */
+    public void share(String userId, Callback<SimpleResult> cb) {
+        _userService.share(userId, cb);
     }
 }
 

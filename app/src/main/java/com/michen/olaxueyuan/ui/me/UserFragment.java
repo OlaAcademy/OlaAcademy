@@ -1,10 +1,9 @@
 package com.michen.olaxueyuan.ui.me;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +15,23 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
+import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
+import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
+import com.michen.olaxueyuan.ui.me.activity.CoinHomePageActivity;
 import com.michen.olaxueyuan.ui.me.activity.DownloadListActivity;
+import com.michen.olaxueyuan.ui.me.activity.MyBuyGoodsActivity;
+import com.michen.olaxueyuan.ui.me.activity.MyCourseCollectActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserUpdateActivity;
-import com.michen.olaxueyuan.ui.me.adapter.UserPageAdapter;
+import com.michen.olaxueyuan.ui.me.activity.WrongTopicActivity;
 import com.michen.olaxueyuan.ui.setting.SettingActivity;
 import com.squareup.picasso.Picasso;
 
@@ -42,44 +48,39 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Created by mingge on 2016/5/20.
+ * Created by mingge on 2016/9/21.
  */
-@Deprecated
+
 public class UserFragment extends SuperFragment {
     View rootView;
-    @Bind(R.id.left_icon)
-    ImageView leftIcon;
-    @Bind(R.id.title_tv)
-    TextView titleTv;
-    @Bind(R.id.right_response)
-    ImageView rightResponse;
     @Bind(R.id.avatar)
     RoundRectImageView avatar;
     @Bind(R.id.name)
     TextView name;
-    @Bind(R.id.is_vip)
-    TextView isVip;
     @Bind(R.id.remain_days)
     TextView remainDays;
-    @Bind(R.id.knowledge_bottom_indicator)
-    ImageView knowledgeBottomIndicator;
-    @Bind(R.id.knowledge_layout)
-    RelativeLayout knowledgeLayout;
-    @Bind(R.id.course_collect_bottom_indicator)
-    ImageView courseCollectBottomIndicator;
-    @Bind(R.id.course_collect_layout)
-    RelativeLayout courseCollectLayout;
-    @Bind(R.id.vip_bottom_indicator)
-    ImageView vipBottomIndicator;
-    @Bind(R.id.vip_layout)
-    RelativeLayout vipLayout;
-    @Bind(R.id.download_bottom_indicator)
-    ImageView downloadBottomIndicator;
-    @Bind(R.id.download_layout)
-    RelativeLayout downloadLayout;
-    @Bind(R.id.view_pager)
-    ViewPager viewPager;
-    private UserPageAdapter userPageAdapter;
+    @Bind(R.id.right_response)
+    ImageView rightResponse;
+    @Bind(R.id.headLL)
+    RelativeLayout headLL;
+    @Bind(R.id.wrong_topic_layout)
+    RelativeLayout wrongTopicLayout;
+    @Bind(R.id.buy_vip_layout)
+    RelativeLayout buyVipLayout;
+    @Bind(R.id.my_buy_layout)
+    RelativeLayout myBuyLayout;
+    @Bind(R.id.my_collect_layout)
+    RelativeLayout myCollectLayout;
+    @Bind(R.id.my_download_layout)
+    RelativeLayout myDownloadLayout;
+    @Bind(R.id.service_email_layout)
+    RelativeLayout serviceEmailLayout;
+    @Bind(R.id.ola_coin)
+    TextView olaCoin;
+    @Bind(R.id.my_coin_text)
+    TextView myCoinText;
+    @Bind(R.id.sign_dot)
+    ImageView signDot;
 
     private final static int EDIT_USER_INFO = 0x1010;
 
@@ -92,73 +93,95 @@ public class UserFragment extends SuperFragment {
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        fetchUserInfo();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     private void initView() {
-        avatar.setRectAdius(300);
-        titleTv.setText(R.string.me);
-        leftIcon.setVisibility(View.VISIBLE);
-        leftIcon.setImageDrawable(getResources().getDrawable(R.drawable.icon_download));
-        rightResponse.setVisibility(View.VISIBLE);
-        FragmentManager fragmentManager;
-        if (android.os.Build.VERSION.SDK_INT >= 17) {
-            fragmentManager = getChildFragmentManager();
-        } else {
-            fragmentManager = getFragmentManager();
-        }
-        userPageAdapter = new UserPageAdapter(fragmentManager);
-        viewPager.setOffscreenPageLimit(4);
-        viewPager.setAdapter(userPageAdapter);
-        viewPager.setOnPageChangeListener(new ViewPagerListener());
-        viewPager.setCurrentItem(0);
+        avatar.setRectAdius(100);
     }
 
-    @OnClick({R.id.left_icon, R.id.right_response, R.id.headLL, R.id.knowledge_layout, R.id.course_collect_layout, R.id.vip_layout, R.id.download_layout})
+
+    // EventBus 回调
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        if (avatar == null) {
+            return;
+        }
+        if (!module.isLogin) {
+            updateHeadView(null);
+            EventBus.getDefault().post(new ShowBottomTabDotEvent(4, false));
+        } else {
+            fetchUserInfo();
+            getSignStatus();
+        }
+    }
+
+    @OnClick({R.id.right_response, R.id.headLL, R.id.wrong_topic_layout, R.id.buy_vip_layout
+            , R.id.my_buy_layout, R.id.my_collect_layout, R.id.my_download_layout
+            , R.id.service_email_layout, R.id.my_coin_layout})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.left_icon:
-                Intent downloadIntent = new Intent(getActivity(), DownloadListActivity.class);
-                startActivity(downloadIntent);
-                break;
             case R.id.right_response:
-                Intent settingIntent = new Intent(getActivity(), SettingActivity.class);
-                startActivity(settingIntent);
+                Utils.jumpLoginOrNot(getActivity(), SettingActivity.class);
                 break;
             case R.id.headLL:
                 headViewClick();
                 break;
-            case R.id.knowledge_layout:
-                viewPager.setCurrentItem(0);
-                changeTitleTab(0);
+            case R.id.wrong_topic_layout:
+                Utils.jumpLoginOrNot(getActivity(), WrongTopicActivity.class);
                 break;
-            case R.id.vip_layout:
-                viewPager.setCurrentItem(1);
-                changeTitleTab(1);
+            case R.id.buy_vip_layout:
+                Utils.jumpLoginOrNot(getActivity(), BuyVipActivity.class);
                 break;
-            case R.id.course_collect_layout:
-                viewPager.setCurrentItem(2);
-                changeTitleTab(2);
+            case R.id.my_buy_layout:
+                Utils.jumpLoginOrNot(getActivity(), MyBuyGoodsActivity.class);
                 break;
-            case R.id.download_layout:
-                viewPager.setCurrentItem(3);
-                changeTitleTab(3);
+            case R.id.my_collect_layout:
+                Utils.jumpLoginOrNot(getActivity(), MyCourseCollectActivity.class);
                 break;
+            case R.id.my_download_layout:
+                Utils.jumpLoginOrNot(getActivity(), DownloadListActivity.class);
+                break;
+            case R.id.my_coin_layout:
+                Utils.jumpLoginOrNot(getActivity(), CoinHomePageActivity.class);
+                break;
+            case R.id.service_email_layout:
+                sendEmail();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void sendEmail() {
+        Intent data = new Intent(Intent.ACTION_SENDTO);
+        data.setData(Uri.parse("mailto:" + getActivity().getString(R.string.service_olaxueyuan_com)));
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            data.putExtra(Intent.EXTRA_SUBJECT, SEAuthManager.getInstance().getAccessUser().getName());
+            data.putExtra(Intent.EXTRA_TEXT, "手机号码：" + SEAuthManager.getInstance().getAccessUser().getPhone());
+        }
+        startActivity(data);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchUserInfo();
+        getSignStatus();
+    }
+
+    private void fetchUserInfo() {
+        SEUser user = SEAuthManager.getInstance().getAccessUser();
+        if (user != null) {
+            SEUserManager um = SEUserManager.getInstance();
+            um.queryUserInfo(user.getId(), new Callback<SEUserResult>() {
+                @Override
+                public void success(SEUserResult result, Response response) {
+                    if (getActivity() != null && !getActivity().isFinishing()) {
+                        updateHeadView(result.data);
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                }
+            });
         }
     }
 
@@ -174,48 +197,16 @@ public class UserFragment extends SuperFragment {
         }
     }
 
-    // EventBus 回调
-    public void onEventMainThread(UserLoginNoticeModule module) {
-        if (!module.isLogin) {
-            updateHeadView(null);
-        } else {
-            fetchUserInfo();
-        }
-    }
-
-    private void fetchUserInfo() {
-        SEUser user = SEAuthManager.getInstance().getAccessUser();
-        if (user != null) {
-            SEUserManager um = SEUserManager.getInstance();
-            um.queryUserInfo(user.getId(), new Callback<SEUserResult>() {
-                @Override
-                public void success(SEUserResult result, Response response) {
-                    if (getActivity() != null) {
-                        updateHeadView(result.data);
-                    }
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-
-                }
-
-            });
-        }
-    }
-
     private void updateHeadView(SEUser userInfo) {
         if (userInfo == null) {
-            name.setText("登录／注册");
-            remainDays.setText("还剩0天");
-            avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
+            setEmptyHeadView();
         } else {
             try {
                 name.setText(userInfo.getName() != null ? userInfo.getName() : "小欧");
-                remainDays.setText("还剩" + userInfo.getVipTime() + "天");
+                remainDays.setText("会员" + userInfo.getVipTime() + "天");
                 if (userInfo.getAvator() != null) {
                     String avatarUrl = "";
-//                    if (userInfo.getAvator().indexOf("jpg") != -1) {
+                    //                if (userInfo.getAvator().contains("jpg")||userInfo.getAvator().contains("gif")) {
                     if (userInfo.getAvator().contains(".")) {
                         avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator();
                     } else {
@@ -231,9 +222,7 @@ public class UserFragment extends SuperFragment {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                name.setText("小欧");
-                remainDays.setText("还剩0天");
-                avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
+                setEmptyHeadView();
             }
 
             try {
@@ -247,43 +236,48 @@ public class UserFragment extends SuperFragment {
         }
     }
 
-    class ViewPagerListener implements ViewPager.OnPageChangeListener {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            changeTitleTab(position);
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-        }
+    private void setEmptyHeadView() {
+        name.setText("登录／注册");
+        myCoinText.setText("");
+        olaCoin.setText("0欧拉币");
+        remainDays.setText("会员0天");
+        signDot.setVisibility(View.INVISIBLE);
+        avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_avatar));
     }
 
-    private void changeTitleTab(int position) {
-        knowledgeBottomIndicator.setVisibility(View.GONE);
-        courseCollectBottomIndicator.setVisibility(View.GONE);
-        vipBottomIndicator.setVisibility(View.GONE);
-        downloadBottomIndicator.setVisibility(View.GONE);
-        switch (position) {
-            case 0:
-                knowledgeBottomIndicator.setVisibility(View.VISIBLE);
-                break;
-            case 1:
-                vipBottomIndicator.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                courseCollectBottomIndicator.setVisibility(View.VISIBLE);
-                break;
-            case 3:
-                downloadBottomIndicator.setVisibility(View.VISIBLE);
-                break;
-            default:
-                knowledgeBottomIndicator.setVisibility(View.VISIBLE);
-                break;
+    private void getSignStatus() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        } else {
+            return;
         }
+        SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
+            @Override
+            public void success(CheckinStatusResult checkinStatusResult, Response response) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    if (checkinStatusResult.getApicode() == 10000) {
+                        olaCoin.setText(checkinStatusResult.getResult().getCoin() + "欧拉币");
+                        myCoinText.setText(String.valueOf(checkinStatusResult.getResult().getCoin()));
+                        if (checkinStatusResult.getResult().getStatus() == 1) {
+                            signDot.setVisibility(View.INVISIBLE);
+                        } else {
+                            signDot.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+            }
+        });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
+    }
 }

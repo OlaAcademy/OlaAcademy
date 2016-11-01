@@ -107,7 +107,7 @@ public class ExamFragment extends SuperFragment implements TitleExamPopManager.E
         QuestionCourseManager.getInstance().getExamList(userId, courseId, courseType, new Callback<ExamModule>() {
             @Override
             public void success(ExamModule examModule, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
 //                Logger.json(examModule);
                     if (examModule.getApicode() != 10000) {
@@ -121,7 +121,7 @@ public class ExamFragment extends SuperFragment implements TitleExamPopManager.E
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }

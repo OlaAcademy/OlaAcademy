@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -19,7 +20,9 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
 import com.michen.olaxueyuan.protocol.result.CreateGroupResult;
@@ -41,6 +44,7 @@ import java.util.concurrent.Executors;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -62,6 +66,10 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
     TextView serviceDeclaration;
     @Bind(R.id.create_group)
     Button createGroup;
+    @Bind(R.id.notice_hint_text)
+    TextView noticeHintText;
+    @Bind(R.id.notice_view)
+    RelativeLayout noticeView;
 
     private View parentView;
     private Button mBt_camera;
@@ -80,7 +88,8 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
 
     private boolean needToUpdate = false;
     private int sex = 1;
-    private String type = "1";// 1 数学 2 英语 3 逻辑 4 协作
+    private String[] selectArray = {};//
+    private int groupType = -1;// 1 数学 2 英语 3 逻辑 4 协作
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +103,7 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
     }
 
     private void initView() {
-        setTitleText(getString(R.string.edit_group_data));
+        setTitleText("创建群");
         addGroupAvatar.setRectAdius(100);
         agreement.setChecked(true);
         agreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -109,6 +118,7 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
         });
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://upload.olaxueyuan.com").build();
         uploadService = restAdapter.create(UploadService.class);
+        selectArray = getResources().getStringArray(R.array.courses);
     }
 
     public void initPop() {
@@ -175,6 +185,10 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
             ToastUtil.showToastShort(context, R.string.group_name_not_null);
             return;
         }
+        if (groupType == -1) {
+            ToastUtil.showToastShort(context, "请选择群类型");
+            return;
+        }
         String userId = "";
         try {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
@@ -184,33 +198,42 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
             return;
 //            userId = "381";
         }
+        String profile = groupIntro.getText().toString().trim();//群简介
+
         if (needToUpdate) {
-            uploadAvatar(userId, name);
+            uploadAvatar(userId, name, profile);
         } else {
-            saveGroupInfo(userId, name);
+            saveGroupInfo(userId, name, profile);
         }
     }
 
-    private void saveGroupInfo(String userId, String name) {
+    private void saveGroupInfo(String userId, String name, String profile) {
         SVProgressHUD.showInView(context, getString(R.string.request_running), true);
-        TeacherHomeManager.getInstance().createGroup(userId, type, name, _imageName, new Callback<CreateGroupResult>() {
+        TeacherHomeManager.getInstance().createGroup(userId, String.valueOf(groupType), name, profile, _imageName, new Callback<CreateGroupResult>() {
             @Override
             public void success(CreateGroupResult createGroupResult, Response response) {
-                if (createGroupResult.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(context, createGroupResult.getMessage(), 2.0f);
-                } else {
-                    startActivity(new Intent(context, GroupDetailActivity.class));
+                if (context != null && !CreateGroupActivity.this.isFinishing()) {
+                    if (createGroupResult.getApicode() != 10000) {
+                        ToastUtil.showToastShort(context, createGroupResult.getMessage());
+                    } else {
+                        ToastUtil.showToastShort(context, "创建群成功");
+//                    startActivity(new Intent(context, GroupDetailActivity.class));
+                        EventBus.getDefault().post(new PublishHomeWorkSuccessEvent(true));
+                        finish();
+                    }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(context);
+                if (context != null && !CreateGroupActivity.this.isFinishing()) {
+                    SVProgressHUD.dismiss(context);
+                }
             }
         });
     }
 
-    @OnClick({R.id.service_declaration, R.id.create_group, R.id.add_group_avatar})
+    @OnClick({R.id.service_declaration, R.id.create_group, R.id.add_group_avatar, R.id.notice_view})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.service_declaration:
@@ -221,7 +244,20 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
             case R.id.add_group_avatar:
                 pop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
                 break;
+            case R.id.notice_view:
+                selectGroupType();
+                break;
         }
+    }
+
+    private void selectGroupType() {
+        DialogUtils.showSelectListDialog(this, groupType - 1, new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                groupType = position + 1;
+                noticeHintText.setText(selectArray[position]);
+            }
+        }, selectArray);
     }
 
     private void chooseImage() {
@@ -302,18 +338,18 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
         }
     }
 
-    private void uploadAvatar(String userId, String name) {
+    private void uploadAvatar(String userId, String name, String profile) {
         // 判断照片是否有旋转
         int degree = PictureUtil.readPictureDegree(_updatedAvatarFilename);
         File imageFile = new File(_updatedAvatarFilename);
-        uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree, userId, name);
+        uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree, userId, name, profile);
         needToUpdate = false;
     }
 
     private ExecutorService service = Executors.newFixedThreadPool(5);
     private UploadService uploadService;
 
-    private void uploadImagesByExecutors(final TypedFile photo, final int angle, final String userId, final String name) {
+    private void uploadImagesByExecutors(final TypedFile photo, final int angle, final String userId, final String name, final String profile) {
         service.submit(new Runnable() {
             @Override
             public void run() {
@@ -321,21 +357,33 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
                 uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
                     @Override
                     public void success(UploadResult result, Response response) {
-                        if (result.code != 1) {
-                            SVProgressHUD.showInViewWithoutIndicator(context, result.message, 2.0f);
-                            return;
+                        if (context != null && !CreateGroupActivity.this.isFinishing()) {
+                            if (result.code != 1) {
+                                SVProgressHUD.showInViewWithoutIndicator(context, result.message, 2.0f);
+                                return;
+                            }
+                            SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_success), 2);
+                            _imageName = result.imgGid;
+                            saveGroupInfo(userId, name, profile);
                         }
-                        SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_success), 2);
-                        _imageName = result.imgGid;
-                        saveGroupInfo(userId, name);
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_fail), 2.0f);
+                        if (context != null && !CreateGroupActivity.this.isFinishing()) {
+                            SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_fail), 2.0f);
+                        }
                     }
                 });
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (context != null && !CreateGroupActivity.this.isFinishing()) {
+            SVProgressHUD.dismiss(context);
+        }
     }
 }

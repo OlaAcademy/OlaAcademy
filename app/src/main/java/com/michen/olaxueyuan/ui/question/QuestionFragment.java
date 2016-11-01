@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,18 +21,23 @@ import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.michen.olaxueyuan.protocol.eventbusmodule.MessageReadEvent;
+import com.michen.olaxueyuan.protocol.event.MessageReadEvent;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.SEUserManager;
+import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
 import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
+import com.michen.olaxueyuan.protocol.result.UnlockSubjectResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.QuestionAdapter;
 import com.michen.olaxueyuan.ui.adapter.QuestionListViewAdapter;
 import com.michen.olaxueyuan.ui.adapter.QuestionViewPagerAdapter;
+import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
+import com.michen.olaxueyuan.ui.question.module.BottomPopWindowManager;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshExpandableListView;
 import com.snail.pulltorefresh.PullToRefreshListView;
@@ -48,7 +54,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class QuestionFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener {
+public class QuestionFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener, QuestionListViewAdapter.SelectBuyCourse {
     @Bind(R.id.title_tv)
     TextView titleTv;
     @Bind(R.id.right_response)
@@ -157,7 +163,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         listview.setOnRefreshListener(this);
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.getRefreshableView().setDivider(null);
-        questionListViewAdapter = new QuestionListViewAdapter(getActivity());
+        questionListViewAdapter = new QuestionListViewAdapter(getActivity(), this);
         listview.setAdapter(questionListViewAdapter);
 
         FragmentManager fragmentManager;
@@ -329,7 +335,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         QuestionCourseManager.getInstance().fetchHomeCourseList(userId, pid, "1", new Callback<QuestionCourseModule>() {
             @Override
             public void success(QuestionCourseModule questionCourseModule, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     expandableListViews.onRefreshComplete();
 //                Logger.json(questionCourseModule);
@@ -349,7 +355,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     expandableListViews.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
@@ -370,7 +376,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         QuestionCourseManager.getInstance().getExamList(userId, pid, String.valueOf(selectType), new Callback<ExamModule>() {
             @Override
             public void success(ExamModule examModule, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     listview.onRefreshComplete();
 //                Logger.json(examModule);
@@ -384,7 +390,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     listview.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
@@ -404,7 +410,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             @Override
             public void success(MessageUnReadResult messageUnReadResult, Response response) {
                 if (messageUnReadResult.getApicode() == 10000) {
-                    if (getActivity() != null) {
+                    if (getActivity() != null && !getActivity().isFinishing()) {
                         unReadMessageCount = messageUnReadResult.getResult();
                         redDot.setText(String.valueOf(unReadMessageCount));
                         if (unReadMessageCount > 0) {
@@ -419,7 +425,130 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
             @Override
             public void failure(RetrofitError error) {
+            }
+        });
+    }
 
+    @Override
+    public void buyCourse(boolean isBuy, final int objectId, final int type) {
+        if (isBuy) {
+            BottomPopWindowManager.getInstance().showBottomPop(getActivity(), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.item_popupwindows_camera:
+                            buyVip();
+                            break;
+                        case R.id.item_popupwindows_Photo:
+                            showExchangeDialog(objectId, type);
+                            break;
+                        case R.id.item_popupwindows_cancel:
+                            break;
+                    }
+                }
+            }, "购买会员", "积分兑换", "").showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        }
+    }
+
+    private void buyVip() {
+        if (getActivity() == null) {
+            return;
+        }
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            getActivity().startActivity(new Intent(getActivity(), BuyVipActivity.class));
+        } else {
+            getActivity().startActivity(new Intent(getActivity(), UserLoginActivity.class));
+        }
+    }
+
+    private void showExchangeDialog(final int objectId, final int type) {
+        if (getActivity() == null) {
+            return;
+        }
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            getActivity().startActivity(new Intent(getActivity(), UserLoginActivity.class));
+        } else {
+            DialogUtils.showDialog(getActivity(), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.yes:
+                            getCheckinStatus(objectId, type);
+                            break;
+                    }
+                }
+            },"", getActivity().getString(R.string.pay_twenty_coin), getActivity().getString(R.string.exchange), "");
+        }
+    }
+
+    String userId = "";
+
+    private void getCheckinStatus(final int objectId, final int type) {
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        } else {
+            getActivity().startActivity(new Intent(getActivity(), UserLoginActivity.class));
+            return;
+        }
+        SVProgressHUD.showInView(getActivity(), getActivity().getString(R.string.get_coin_ing), true);
+        SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
+            @Override
+            public void success(CheckinStatusResult checkinStatusResult, Response response) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    SVProgressHUD.dismiss(getActivity());
+                    if (checkinStatusResult.getApicode() == 10000) {
+                        if (checkinStatusResult.getResult().getCoin() >= 20) {
+                            unlockSubject(userId, objectId, type);
+                        } else {
+                            DialogUtils.showDialog(getActivity(), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    switch (v.getId()) {
+                                        case R.id.yes:
+                                            buyVip();
+                                            break;
+                                    }
+                                }
+                            },"", "您的欧拉币余额不足，使用其它方式？", "购买会员", "");
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    SVProgressHUD.dismiss(getActivity());
+                    ToastUtil.showToastShort(getActivity(), "获取积分失败,请重试");
+                }
+            }
+        });
+    }
+
+    private void unlockSubject(String userId, int objectId, final int type) {
+        SVProgressHUD.showInView(getActivity(), "正在兑换，请稍后", true);
+        QuestionCourseManager.getInstance().unlockSubject(userId, String.valueOf(objectId), String.valueOf(type), new Callback<UnlockSubjectResult>() {
+            @Override
+            public void success(UnlockSubjectResult unlockSubjectResult, Response response) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    SVProgressHUD.dismiss(getActivity());
+                    if (unlockSubjectResult.getApicode() == 10000) {
+                        ToastUtil.showToastShort(getActivity(), "兑换成功");
+                        if (type == 1) {
+                            onRefresh(expandableListViews);
+                        } else {
+                            onRefresh(listview);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    SVProgressHUD.dismiss(getActivity());
+                    ToastUtil.showToastShort(getActivity(), "兑换失败,请重试");
+                }
             }
         });
     }
