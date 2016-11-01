@@ -173,7 +173,7 @@ public class UserFragment extends SuperFragment {
             um.queryUserInfo(user.getId(), new Callback<SEUserResult>() {
                 @Override
                 public void success(SEUserResult result, Response response) {
-                    if (getActivity() != null) {
+                    if (getActivity() != null && !getActivity().isFinishing()) {
                         updateHeadView(result.data);
                     }
                 }
@@ -255,7 +255,7 @@ public class UserFragment extends SuperFragment {
         SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
             @Override
             public void success(CheckinStatusResult checkinStatusResult, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     if (checkinStatusResult.getApicode() == 10000) {
                         olaCoin.setText(checkinStatusResult.getResult().getCoin() + "欧拉币");
                         myCoinText.setText(String.valueOf(checkinStatusResult.getResult().getCoin()));

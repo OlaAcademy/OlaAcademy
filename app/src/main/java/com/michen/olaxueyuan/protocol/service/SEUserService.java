@@ -242,7 +242,7 @@ public interface SEUserService {
      * @param cb
      */
     @FormUrlEncoded
-    @POST("/ola/dailyact/share")
+    @POST("/ola/dailyact/dailyShare")
     void share(
             @Field("userId") String userId,
             Callback<SimpleResult> cb);

@@ -198,31 +198,37 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
             return;
 //            userId = "381";
         }
+        String profile = groupIntro.getText().toString().trim();//群简介
+
         if (needToUpdate) {
-            uploadAvatar(userId, name);
+            uploadAvatar(userId, name, profile);
         } else {
-            saveGroupInfo(userId, name);
+            saveGroupInfo(userId, name, profile);
         }
     }
 
-    private void saveGroupInfo(String userId, String name) {
+    private void saveGroupInfo(String userId, String name, String profile) {
         SVProgressHUD.showInView(context, getString(R.string.request_running), true);
-        TeacherHomeManager.getInstance().createGroup(userId, String.valueOf(groupType), name, _imageName, new Callback<CreateGroupResult>() {
+        TeacherHomeManager.getInstance().createGroup(userId, String.valueOf(groupType), name, profile, _imageName, new Callback<CreateGroupResult>() {
             @Override
             public void success(CreateGroupResult createGroupResult, Response response) {
-                if (createGroupResult.getApicode() != 10000) {
-                    ToastUtil.showToastShort(context, createGroupResult.getMessage());
-                } else {
-                    ToastUtil.showToastShort(context, "创建群成功");
+                if (context != null && !CreateGroupActivity.this.isFinishing()) {
+                    if (createGroupResult.getApicode() != 10000) {
+                        ToastUtil.showToastShort(context, createGroupResult.getMessage());
+                    } else {
+                        ToastUtil.showToastShort(context, "创建群成功");
 //                    startActivity(new Intent(context, GroupDetailActivity.class));
-                    EventBus.getDefault().post(new PublishHomeWorkSuccessEvent(true));
-                    finish();
+                        EventBus.getDefault().post(new PublishHomeWorkSuccessEvent(true));
+                        finish();
+                    }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(context);
+                if (context != null && !CreateGroupActivity.this.isFinishing()) {
+                    SVProgressHUD.dismiss(context);
+                }
             }
         });
     }
@@ -332,18 +338,18 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
         }
     }
 
-    private void uploadAvatar(String userId, String name) {
+    private void uploadAvatar(String userId, String name, String profile) {
         // 判断照片是否有旋转
         int degree = PictureUtil.readPictureDegree(_updatedAvatarFilename);
         File imageFile = new File(_updatedAvatarFilename);
-        uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree, userId, name);
+        uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree, userId, name, profile);
         needToUpdate = false;
     }
 
     private ExecutorService service = Executors.newFixedThreadPool(5);
     private UploadService uploadService;
 
-    private void uploadImagesByExecutors(final TypedFile photo, final int angle, final String userId, final String name) {
+    private void uploadImagesByExecutors(final TypedFile photo, final int angle, final String userId, final String name, final String profile) {
         service.submit(new Runnable() {
             @Override
             public void run() {
@@ -351,21 +357,33 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
                 uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
                     @Override
                     public void success(UploadResult result, Response response) {
-                        if (result.code != 1) {
-                            SVProgressHUD.showInViewWithoutIndicator(context, result.message, 2.0f);
-                            return;
+                        if (context != null && !CreateGroupActivity.this.isFinishing()) {
+                            if (result.code != 1) {
+                                SVProgressHUD.showInViewWithoutIndicator(context, result.message, 2.0f);
+                                return;
+                            }
+                            SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_success), 2);
+                            _imageName = result.imgGid;
+                            saveGroupInfo(userId, name, profile);
                         }
-                        SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_success), 2);
-                        _imageName = result.imgGid;
-                        saveGroupInfo(userId, name);
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_fail), 2.0f);
+                        if (context != null && !CreateGroupActivity.this.isFinishing()) {
+                            SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_fail), 2.0f);
+                        }
                     }
                 });
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (context != null && !CreateGroupActivity.this.isFinishing()) {
+            SVProgressHUD.dismiss(context);
+        }
     }
 }

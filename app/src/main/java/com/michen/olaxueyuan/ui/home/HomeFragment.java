@@ -115,7 +115,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
             @Override
             public void success(HomeModule result, Response response) {
 //                Logger.json(result);
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     scroll.onRefreshComplete();
                     if (result.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.getMessage(), 2.0f);
@@ -127,7 +127,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     scroll.onRefreshComplete();
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }

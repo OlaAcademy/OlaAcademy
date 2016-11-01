@@ -105,7 +105,7 @@ public class CircleFragmentOld extends SuperFragment implements PullToRefreshBas
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     listview.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);

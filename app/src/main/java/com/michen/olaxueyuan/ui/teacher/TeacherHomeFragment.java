@@ -93,8 +93,8 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         mListView.setMode(PullToRefreshBase.Mode.BOTH);
         mListView.setOnRefreshListener(this);
         mListView.getRefreshableView().setDivider(null);
-        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
-        adapter = new QuestionHomeWorkListAdapter(getActivity(),2);
+        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.create_group_icon);
+        adapter = new QuestionHomeWorkListAdapter(getActivity(), 2);
         mListView.setAdapter(adapter);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int lastIndex = 0;
@@ -139,7 +139,7 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
             @Override
             public void success(HomeworkListResult homeworkListResult, Response response) {
                 Logger.json(homeworkListResult);
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     mListView.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     if (homeworkListResult.getApicode() != 10000) {
@@ -168,7 +168,7 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     if (isHasGroup) {
                         showNoHomeWorkView();
                     }
@@ -227,7 +227,7 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
 
     /**
      * {@link TSubjectDeployActivity#publishHomeWork()}
-     * {@link CreateGroupActivity#saveGroupInfo(String, String)}
+     * {@link CreateGroupActivity#saveGroupInfo(String, String, String)}
      *
      * @param successEvent
      */
@@ -249,7 +249,7 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         TeacherHomeManager.getInstance().getTeacherGroupList(userId, new Callback<TeacherGroupListResult>() {
             @Override
             public void success(TeacherGroupListResult teacherGroupListResult, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     if (teacherGroupListResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(getActivity(), teacherGroupListResult.getMessage());
@@ -267,7 +267,7 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     showNoGroupView();
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.request_group_fail);

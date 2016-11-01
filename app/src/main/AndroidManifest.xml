@@ -360,8 +360,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.course.WebViewActivity"
-            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity
             android:name=".ui.course.PaySystemVideoActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
@@ -410,8 +409,7 @@
 
         <activity
             android:name=".ui.question.WebViewActivity"
-            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity
             android:name=".ui.group.GroupListActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"

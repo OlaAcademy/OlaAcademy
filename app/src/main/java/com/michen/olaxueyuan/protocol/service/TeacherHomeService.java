@@ -24,6 +24,7 @@ public interface TeacherHomeService {
      * @param userId
      * @param type   1、数学2、英语3、逻辑4、写作
      * @param name
+     * @param profile
      * @param avatar
      * @param cb
      */
@@ -33,6 +34,7 @@ public interface TeacherHomeService {
             @Field("userId") String userId,
             @Field("type") String type,
             @Field("name") String name,
+            @Field("profile") String profile,
             @Field("avatar") String avatar,
             Callback<CreateGroupResult> cb);
 
