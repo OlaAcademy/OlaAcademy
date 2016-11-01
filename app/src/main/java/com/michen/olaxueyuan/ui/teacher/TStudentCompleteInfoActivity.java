@@ -54,6 +54,7 @@ public class TStudentCompleteInfoActivity extends SEBaseActivity implements Pull
         groupId = getIntent().getStringExtra("groupId");
         listview.setOnRefreshListener(this);
         listview.setMode(PullToRefreshBase.Mode.BOTH);
+        listview.getRefreshableView().setDivider(null);
         adapter = new TStudentCompleteInfoListAdapter(this);
         listview.setAdapter(adapter);
         list = new ArrayList<>();

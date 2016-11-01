@@ -23,6 +23,8 @@ import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
+import com.snail.pulltorefresh.PullToRefreshBase;
+import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.HashMap;
@@ -40,7 +42,7 @@ import retrofit.client.Response;
 /**
  * 积分首页
  */
-public class CoinHomePageActivity extends SEBaseActivity implements PlatformActionListener, Handler.Callback {
+public class CoinHomePageActivity extends SEBaseActivity implements PlatformActionListener, Handler.Callback, PullToRefreshBase.OnRefreshListener {
     @Bind(R.id.coin_text)
     TextView coinText;
     @Bind(R.id.today_get_coin)
@@ -59,6 +61,9 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
     TextView toSet;
     @Bind(R.id.to_buy)
     TextView toBuy;
+    @Bind(R.id.scroll)
+    PullToRefreshScrollView scroll;
+
     private Context context;
     private boolean isShowSignDialog;//是否显示签到对话框
 
@@ -73,6 +78,8 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
 
     private void initView() {
         setTitleText(getString(R.string.coin));
+        scroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        scroll.setOnRefreshListener(this);
     }
 
     @Override
@@ -92,7 +99,8 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
         SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
             @Override
             public void success(CheckinStatusResult checkinStatusResult, Response response) {
-                if (context != null) {
+                if (context != null && !CoinHomePageActivity.this.isFinishing()) {
+                    scroll.onRefreshComplete();
                     SVProgressHUD.dismiss(context);
                     if (checkinStatusResult.getApicode() == 10000) {
                         if (isShowSignDialog) {
@@ -108,7 +116,8 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
 
             @Override
             public void failure(RetrofitError error) {
-                if (context != null) {
+                if (context != null && !CoinHomePageActivity.this.isFinishing()) {
+                    scroll.onRefreshComplete();
                     SVProgressHUD.dismiss(context);
                     ToastUtil.showToastShort(context, R.string.request_failed);
                 }
@@ -187,7 +196,7 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
         SEUserManager.getInstance().checkin(userId, new Callback<CheckInResult>() {
             @Override
             public void success(CheckInResult checkInResult, Response response) {
-                if (context != null) {
+                if (context != null && !CoinHomePageActivity.this.isFinishing()) {
                     if (checkInResult.getApicode() == 10000) {
                         isShowSignDialog = true;
                         getSignStatus();
@@ -281,10 +290,12 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
         SEUserManager.getInstance().share(userId, new Callback<SimpleResult>() {
             @Override
             public void success(SimpleResult simpleResult, Response response) {
-                if (simpleResult.getApicode() == 10000) {
-                    getSignStatus();
-                } else {
-                    ToastUtil.showToastShort(context, simpleResult.getMessage());
+                if (context != null && !CoinHomePageActivity.this.isFinishing()) {
+                    if (simpleResult.getApicode() == 10000) {
+                        getSignStatus();
+                    } else {
+                        ToastUtil.showToastShort(context, simpleResult.getMessage());
+                    }
                 }
             }
 
@@ -315,5 +326,19 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+        getSignStatus();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (context != null && !CoinHomePageActivity.this.isFinishing()) {
+            scroll.onRefreshComplete();
+            SVProgressHUD.dismiss(context);
+        }
     }
 }

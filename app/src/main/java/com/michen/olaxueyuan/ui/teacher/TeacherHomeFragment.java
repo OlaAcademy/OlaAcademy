@@ -149,7 +149,7 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                         }
                     } else {
                         List<HomeworkListResult.ResultBean> list = homeworkListResult.getResult();
-                        if (list.size() == 0) {
+                        if (list.size() == 0 && mList.size() == 0) {
                             if (isHasGroup) {
                                 showNoHomeWorkView();
                             }

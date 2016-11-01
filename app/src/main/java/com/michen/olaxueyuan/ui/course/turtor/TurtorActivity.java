@@ -7,13 +7,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.protocol.manager.MCOrgManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.model.MCOrgInfo;
 import com.michen.olaxueyuan.protocol.result.MCOrgListResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.protocol.manager.MCOrgManager;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -92,25 +92,29 @@ public class TurtorActivity extends SEBaseActivity {
         MCOrgManager orgManager = MCOrgManager.getInstance();
         String userId = "";
         SEAuthManager am = SEAuthManager.getInstance();
-        if (am.isAuthenticated()){
+        if (am.isAuthenticated()) {
             userId = am.getAccessUser().getId();
         }
         orgManager.fetchOrganizationList(userId, new Callback<MCOrgListResult>() {
             @Override
             public void success(MCOrgListResult result, Response response) {
-                if (!result.apicode.equals("10000")) {
-                    SVProgressHUD.showInViewWithoutIndicator(TurtorActivity.this, result.message, 2.0f);
-                } else {
-                    orgArrayList = result.orgList;
-                    adapter = new OrgInfoAdapter(TurtorActivity.this, orgArrayList);
-                    orgListView.setAdapter(adapter);
+                if (!TurtorActivity.this.isFinishing()) {
+                    if (!result.apicode.equals("10000")) {
+                        SVProgressHUD.showInViewWithoutIndicator(TurtorActivity.this, result.message, 2.0f);
+                    } else {
+                        orgArrayList = result.orgList;
+                        adapter = new OrgInfoAdapter(TurtorActivity.this, orgArrayList);
+                        orgListView.setAdapter(adapter);
+                    }
+                    orgListView.onRefreshComplete();
                 }
-                orgListView.onRefreshComplete();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                orgListView.onRefreshComplete();
+                if (!TurtorActivity.this.isFinishing()) {
+                    orgListView.onRefreshComplete();
+                }
             }
         });
     }
@@ -118,7 +122,7 @@ public class TurtorActivity extends SEBaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode== Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             initData();
         }
     }

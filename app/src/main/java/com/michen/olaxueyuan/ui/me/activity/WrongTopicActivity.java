@@ -73,20 +73,22 @@ public class WrongTopicActivity extends SEBaseActivity implements PullToRefreshB
         SEUserManager.getInstance().getStatisticsList("1", SEAuthManager.getInstance().getAccessUser().getId(), new Callback<UserKnowledgeResult>() {
             @Override
             public void success(UserKnowledgeResult userKnowledgeResult, Response response) {
-                SVProgressHUD.dismiss(mContext);
-                expandableListViews.onRefreshComplete();
+                if (mContext != null && !WrongTopicActivity.this.isFinishing()) {
+                    SVProgressHUD.dismiss(mContext);
+                    expandableListViews.onRefreshComplete();
 //                Logger.json(userKnowledgeResult);
-                if (userKnowledgeResult.getApicode() != 10000) {
-                    ToastUtil.showToastShort(mContext, userKnowledgeResult.getMessage());
-                } else {
-                    module = userKnowledgeResult;
-                    handler.sendEmptyMessage(0);
+                    if (userKnowledgeResult.getApicode() != 10000) {
+                        ToastUtil.showToastShort(mContext, userKnowledgeResult.getMessage());
+                    } else {
+                        module = userKnowledgeResult;
+                        handler.sendEmptyMessage(0);
+                    }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                if (mContext != null) {
+                if (mContext != null && !WrongTopicActivity.this.isFinishing()) {
                     expandableListViews.onRefreshComplete();
                     SVProgressHUD.dismiss(mContext);
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);

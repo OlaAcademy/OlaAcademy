@@ -31,7 +31,7 @@ import retrofit.client.Response;
 /**
  * 我的购买
  */
-public class MyBuyGoodsActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener{
+public class MyBuyGoodsActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener {
     @Bind(R.id.listview)
     PullToRefreshListView listview;
     UserBuyGoodsAdapter adapter;
@@ -46,17 +46,19 @@ public class MyBuyGoodsActivity extends SEBaseActivity implements PullToRefreshB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_buy_goods);
-        mContext=this;
+        mContext = this;
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         initView();
     }
+
     private void fetchData() {
         SEUserManager.getInstance().getBuyGoodsList(SEAuthManager.getInstance().getAccessUser().getId(), new Callback<UserBuyGoodsResult>() {
             @Override
             public void success(UserBuyGoodsResult userBuyGoodsResult, Response response) {
-                if (listview!=null)
-                    listview.onRefreshComplete();
+                if (mContext != null && !MyBuyGoodsActivity.this.isFinishing())
+                    if (listview != null)
+                        listview.onRefreshComplete();
                 if (userBuyGoodsResult.getApicode() != 10000) {
                     ToastUtil.showToastShort(mContext, userBuyGoodsResult.getMessage());
                 } else {
@@ -67,7 +69,7 @@ public class MyBuyGoodsActivity extends SEBaseActivity implements PullToRefreshB
 
             @Override
             public void failure(RetrofitError error) {
-                if (mContext != null) {
+                if (mContext != null && !MyBuyGoodsActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
                 }
