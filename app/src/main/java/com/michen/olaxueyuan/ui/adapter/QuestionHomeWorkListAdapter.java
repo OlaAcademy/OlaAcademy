@@ -98,7 +98,7 @@ public class QuestionHomeWorkListAdapter extends BaseAdapter {
         holder.courseNumText.setText(list.get(position).getCount() + "道小题");
         holder.groupNameText.setText(list.get(position).getGroupName());
         if (list.get(position).getCount() != 0) {
-            holder.circleProgress.setProgress(list.get(position).getFinishedCount() * 100 / list.get(position).getCount());
+            holder.circleProgress.setProgress(Integer.parseInt(list.get(position).getFinishedPercent()));
         } else {
             holder.circleProgress.setProgress(0);
         }

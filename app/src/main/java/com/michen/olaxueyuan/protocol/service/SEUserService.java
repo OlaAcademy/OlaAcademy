@@ -90,6 +90,7 @@ public interface SEUserService {
     @POST("/ola/user/updateInfo")
     public void updateUser(@Part("id") String uid,
                            @Part("name") String name,
+                           @Part("realName") String realName,
                            @Part("avator") String avator,
                            @Part("local") String local,
                            @Part("sex") String sex,

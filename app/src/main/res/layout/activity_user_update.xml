@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#EEEEEE"
+        android:paddingBottom="@dimen/dp_30"
         android:orientation="vertical">
 
         <LinearLayout
@@ -62,10 +63,38 @@
                     style="@style/ManualSectionItemButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="真实姓名" />
+                    android:text="昵称" />
 
                 <EditText
                     android:id="@+id/et_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="填写昵称"
+                    android:padding="10dp"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <View
+                style="@style/horizontal_line_1px"
+                android:background="@color/lightgrey" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    style="@style/ManualSectionItemButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="真实姓名" />
+
+                <EditText
+                    android:id="@+id/et_really_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -120,29 +149,24 @@
                 style="@style/horizontal_line_1px"
                 android:background="@color/lightgrey" />
 
-            <RelativeLayout
+
+            <Button
+                style="@style/ManualSectionItemButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="个性签名" />
 
-                <Button
-                    style="@style/ManualSectionItemButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="个性签名" />
+            <View style="@style/line_horizontal" />
 
-                <EditText
-                    android:id="@+id/et_signature"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@null"
-                    android:gravity="right"
-                    android:hint="我很懒，什么都没留下"
-                    android:padding="10dp"
-                    android:textSize="16sp" />
-
-            </RelativeLayout>
+            <EditText
+                android:id="@+id/et_signature"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:gravity="left"
+                android:hint="我很懒，什么都没留下"
+                android:padding="10dp"
+                android:textSize="16sp" />
 
             <View
                 style="@style/horizontal_line_1px"

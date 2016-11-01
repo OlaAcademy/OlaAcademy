@@ -37,7 +37,6 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by mingge on 2016/7/11.
- *
  */
 public class CircleAdapter extends BaseAdapter {
     private Context mContext;
@@ -83,10 +82,10 @@ public class CircleAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
             String avatarUrl = "";
 //            if (list.get(position).getUserAvatar().indexOf("jpg")!=-1){
-            if (list.get(position).getUserAvatar().contains(".")){
-                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+list.get(position).getUserAvatar();
-            }else{
-                avatarUrl = SEAPP.PIC_BASE_URL+list.get(position).getUserAvatar();
+            if (list.get(position).getUserAvatar().contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar();
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();
             }
             Picasso.with(mContext).load(avatarUrl)
                     .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50))
@@ -94,6 +93,22 @@ public class CircleAdapter extends BaseAdapter {
         } else {
             holder.avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
         }
+        holder.avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
+                    String avatarUrl = "";
+                    if (list.get(position).getUserAvatar().contains(".")) {
+                        avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar();
+                    } else {
+                        avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();
+                    }
+                    ArrayList<String> imageUrls = new ArrayList<>();
+                    imageUrls.add(avatarUrl);
+                    imageBrower(0, imageUrls);
+                }
+            }
+        });
         holder.time.setText(formatTime(list.get(position).getTime()));
         holder.studyName.setText(list.get(position).getContent());
         if (!TextUtils.isEmpty(list.get(position).getLocation())) {
@@ -139,7 +154,7 @@ public class CircleAdapter extends BaseAdapter {
                 switch (type) {
                     case 1:
                         intent.setClass(mContext, CourseVideoActivity.class);
-                        intent.putExtra("pid", list.get(position).getCourseId()+"");
+                        intent.putExtra("pid", list.get(position).getCourseId() + "");
                     default:
                         break;
                     case 2:
@@ -193,24 +208,24 @@ public class CircleAdapter extends BaseAdapter {
         mContext.startActivity(intent);
     }
 
-    private String formatTime (String time){
+    private String formatTime(String time) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat df2 = new SimpleDateFormat("MM-dd HH:mm");
         String timeString = time;
         Date now;
         try {
             now = new Date();
-            Date date=df.parse(time);
-            long l=now.getTime()-date.getTime();
-            if (l<=60*1000){
+            Date date = df.parse(time);
+            long l = now.getTime() - date.getTime();
+            if (l <= 60 * 1000) {
                 timeString = "刚刚";
-            }else if(l<60*60*1000){
-                timeString = l/(60*1000)+"分钟前";
-            }else if(l<24*60*60*1000){
-                timeString = l/(60*60*1000)+"小时前";
-            }else if(l<30*24*60*60*1000){
-                timeString = l/(24*60*60*1000)+"天前";
-            }else{
+            } else if (l < 60 * 60 * 1000) {
+                timeString = l / (60 * 1000) + "分钟前";
+            } else if (l < 24 * 60 * 60 * 1000) {
+                timeString = l / (60 * 60 * 1000) + "小时前";
+            } else if (l < 30 * 24 * 60 * 60 * 1000) {
+                timeString = l / (24 * 60 * 60 * 1000) + "天前";
+            } else {
                 timeString = df2.format(date);
             }
         } catch (ParseException e) {

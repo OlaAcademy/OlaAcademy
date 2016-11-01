@@ -208,7 +208,7 @@ public class SEUserManager {
         });
     }
 
-    public void modifyUserMe(String name, String avator, String local, String sex, String descript,
+    public void modifyUserMe(String name,String realName, String avator, String local, String sex, String descript,
                              final SECallBack callback) {
         SEAuthManager am = SEAuthManager.getInstance();
         if (!am.isAuthenticated()) {
@@ -222,7 +222,7 @@ public class SEUserManager {
             avator = currentUser.getAvator();
         }
 
-        _userService.updateUser(currentUser.getId(), name, avator, local, sex, descript, new Callback<MCCommonResult>() {
+        _userService.updateUser(currentUser.getId(), name,realName, avator, local, sex, descript, new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
                 if (result == null) {

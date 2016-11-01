@@ -63,6 +63,16 @@ public class HomeworkListResult implements Serializable {
         private int count;
         private int finishedCount;
         private String time;
+        private String finishedPercent;
+
+        public String getFinishedPercent() {
+            return finishedPercent;
+        }
+
+        public ResultBean setFinishedPercent(String finishedPercent) {
+            this.finishedPercent = finishedPercent;
+            return this;
+        }
 
         public String getAvatar() {
             return avatar;
