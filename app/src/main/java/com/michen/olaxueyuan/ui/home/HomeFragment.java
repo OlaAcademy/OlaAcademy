@@ -22,6 +22,7 @@ import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.circle.DeployPostActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
+import com.michen.olaxueyuan.ui.course.commodity.DataLibraryActivity;
 import com.michen.olaxueyuan.ui.course.turtor.TurtorActivity;
 import com.michen.olaxueyuan.ui.group.GroupListActivity;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
@@ -161,7 +162,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
                 showTurtorView();
                 break;
             case R.id.find_data_layout:
-                showCommodityView();
+//                showCommodityView();
+                startActivity(new Intent(getActivity(), DataLibraryActivity.class));
                 break;
             case R.id.find_data_group:
                 if (!SEAuthManager.getInstance().isAuthenticated()) {
