@@ -20,6 +20,7 @@ import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
+import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.circle.DeployPostActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.michen.olaxueyuan.ui.course.commodity.DataLibraryActivity;
@@ -174,6 +175,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
                 startActivity(new Intent(getActivity(), GroupListActivity.class));
                 break;
             case R.id.show_all_question:
+                CircleFragment.type = "2";
                 chageIndex(3);
                 break;
             case R.id.show_all_direct_broadcast:

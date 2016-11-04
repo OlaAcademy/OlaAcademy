@@ -57,9 +57,9 @@ public class MaterialListResult {
 
     public static class ResultBean {
         private int count;
-        private int id;
+        private String id;
         private String pic;
-        private String price;
+        private int price;
         private String provider;
         private String size;
         private String title;
@@ -67,6 +67,16 @@ public class MaterialListResult {
         private String url;
         private String time;
         private int status;// 0 ;1 已兑换
+        private int courseType;//1 数学 2 英语 3 逻辑 4 写作
+
+        public int getCourseType() {
+            return courseType;
+        }
+
+        public ResultBean setCourseType(int courseType) {
+            this.courseType = courseType;
+            return this;
+        }
 
         public int getCount() {
             return count;
@@ -76,11 +86,11 @@ public class MaterialListResult {
             this.count = count;
         }
 
-        public int getId() {
+        public String  getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -92,11 +102,11 @@ public class MaterialListResult {
             this.pic = pic;
         }
 
-        public String getPrice() {
+        public int getPrice() {
             return price;
         }
 
-        public void setPrice(String price) {
+        public void setPrice(int price) {
             this.price = price;
         }
 

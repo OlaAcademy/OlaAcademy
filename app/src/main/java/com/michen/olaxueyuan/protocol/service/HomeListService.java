@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.protocol.service;
 
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.protocol.result.MaterialListResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 
 import retrofit.Callback;
 import retrofit.http.Field;
@@ -37,4 +38,18 @@ public interface HomeListService {
             @Field("pageSize") String pageSize,
             @Field("type") String type,
             Callback<MaterialListResult> cb);
+
+    /**
+     * 解锁资料
+     *
+     * @param userId
+     * @param materialId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/exchange/unlockMaterial")
+    void unlockMaterial(
+            @Field("userId") String userId,
+            @Field("materialId") String materialId,
+            Callback<SimpleResult> cb);
 }

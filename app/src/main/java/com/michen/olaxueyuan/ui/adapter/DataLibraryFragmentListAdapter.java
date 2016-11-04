@@ -1,19 +1,19 @@
 package com.michen.olaxueyuan.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.app.SEAPP;
-import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.MaterialListResult;
+import com.michen.olaxueyuan.ui.me.activity.PDFViewActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by mingge on 16/9/7.
@@ -28,14 +29,16 @@ import butterknife.ButterKnife;
 public class DataLibraryFragmentListAdapter extends BaseAdapter {
     private Context mContext;
     List<MaterialListResult.ResultBean> list = new ArrayList<>();
-
-    public DataLibraryFragmentListAdapter(Context mContext) {
-        this.mContext = mContext;
-    }
+    private int subjectType;
 
     public void updateData(List<MaterialListResult.ResultBean> list) {
         this.list = list;
         notifyDataSetChanged();
+    }
+
+    public DataLibraryFragmentListAdapter(Context mContext, int subjectType) {
+        this.mContext = mContext;
+        this.subjectType = subjectType;
     }
 
     @Override
@@ -63,48 +66,48 @@ public class DataLibraryFragmentListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.title.setText(list.get(position).getTitle());
-        holder.memberCount.setText(list.get(position).getProvider() + "人");
-        holder.introduceText.setText(list.get(position).getTime());
-        if (list.get(position).getStatus() == 1) {
-            holder.joinGroup.setText("已兑换");
-        } else {
-            holder.joinGroup.setText("未兑换");
+        holder.name.setText(list.get(position).getTitle());
+        holder.avatarCourse.setRectAdius(100);
+        if (!TextUtils.isEmpty(list.get(position).getPic())) {
+            Picasso.with(mContext).load(list.get(position).getPic()).placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar).config(Bitmap.Config.RGB_565)
+                    .resize(Utils.dip2px(mContext, 35), Utils.dip2px(mContext, 35)).into(holder.avatarCourse);
         }
-        try {
-            holder.avatar.setRectAdius(100);
-            String avatarUrl = "";
-            if (!TextUtils.isEmpty(list.get(position).getPic())) {
-                if (list.get(position).getPic().contains(".")) {
-                    avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getPic();
-                } else {
-                    avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getPic();
-                }
-            }
-            Picasso.with(mContext).load(avatarUrl).config(Bitmap.Config.RGB_565)
-                    .placeholder(R.drawable.default_index).error(R.drawable.ic_default_avatar).into(holder.avatar);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        holder.name.setText(list.get(position).getTitle());
+        holder.paynum.setText("文件大小:" + list.get(position).getSize());
+        holder.detail.setText(list.get(position).getProvider());
+        holder.price.setText(String.valueOf(list.get(position).getPrice()));
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (list.get(position).getStatus() == 1 || list.get(position).getPic().equals("0")) {//1、已兑换
+                    Intent intent = new Intent(mContext, PDFViewActivity.class);
+                    intent.putExtra("url", list.get(position).getUrl());
+                    intent.putExtra("title", list.get(position).getTitle());
+                    intent.putExtra("id", list.get(position).getId());
+                    intent.putExtra("name", list.get(position).getTitle());
+                    mContext.startActivity(intent);
+                } else {
+                    list.get(position).setCourseType(subjectType);
+                    EventBus.getDefault().post(list.get(position));
+                }
             }
         });
         return convertView;
     }
 
     class ViewHolder {
-        @Bind(R.id.avatar)
-        RoundRectImageView avatar;
-        @Bind(R.id.title)
-        TextView title;
-        @Bind(R.id.member_count)
-        TextView memberCount;
-        @Bind(R.id.introduce_text)
-        TextView introduceText;
-        @Bind(R.id.join_group)
-        Button joinGroup;
+        @Bind(R.id.name)
+        TextView name;
+        @Bind(R.id.paynum)
+        TextView paynum;
+        @Bind(R.id.avatar_course)
+        RoundRectImageView avatarCourse;
+        @Bind(R.id.detail)
+        TextView detail;
+        @Bind(R.id.price)
+        TextView price;
+        @Bind(R.id.author_course_num)
+        TextView authorCourseNum;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

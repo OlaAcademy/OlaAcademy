@@ -2,9 +2,12 @@ package com.michen.olaxueyuan.protocol.manager;
 
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.protocol.result.MaterialListResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.service.HomeListService;
 
 import retrofit.Callback;
+
+import static com.michen.olaxueyuan.ui.circle.CircleFragment.type;
 
 /**
  * Created by mingge on 16/4/28.
@@ -49,5 +52,16 @@ public class HomeListManager {
     public void getMaterailList(String userId, String materailId, String pageSize,
                                 String type, final Callback<MaterialListResult> callback) {
         getHomeListService().getMaterailList(userId, materailId, pageSize, type, callback);
+    }
+
+    /**
+     * 解锁资料
+     *
+     * @param userId
+     * @param materialId
+     * @param cb
+     */
+    public void unlockMaterial(String userId, String materailId, final Callback<SimpleResult> callback) {
+        getHomeListService().unlockMaterial(userId, materailId, callback);
     }
 }
