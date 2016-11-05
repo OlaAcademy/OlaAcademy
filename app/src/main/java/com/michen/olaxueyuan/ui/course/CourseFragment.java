@@ -114,7 +114,7 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
         courseManager.fetchHomeCourseList(userId, pid, "2", new Callback<MCCourseListResult>() {
             @Override
             public void success(MCCourseListResult result, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     if (!result.apicode.equals("10000")) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.message, 2.0f);
                     } else {
@@ -127,7 +127,7 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     courseListView.onRefreshComplete();
                 }
             }

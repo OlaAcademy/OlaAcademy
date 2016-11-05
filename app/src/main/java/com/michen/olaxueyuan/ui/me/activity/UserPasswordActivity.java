@@ -164,8 +164,10 @@ public class UserPasswordActivity extends SEBaseActivity {
         am.requestSMSAuthCode(phoneET.getText().toString().trim(), new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
-                if (!result.apicode.equals("10000")) {
-                    SVProgressHUD.showInViewWithoutIndicator(UserPasswordActivity.this, result.message, 2.0f);
+                if (!UserPasswordActivity.this.isFinishing()) {
+                    if (!result.apicode.equals("10000")) {
+                        SVProgressHUD.showInViewWithoutIndicator(UserPasswordActivity.this, result.message, 2.0f);
+                    }
                 }
             }
 
@@ -189,22 +191,26 @@ public class UserPasswordActivity extends SEBaseActivity {
         userService.reMakePass(user, code, pass, new Callback<SEPasswordResult>() {
             @Override
             public void success(SEPasswordResult result, Response response) {
-                SVProgressHUD.dismiss(UserPasswordActivity.this);
-                if (result.apicode.equals("10000")) {
-                    Intent intent = getIntent();
-                    intent.putExtra("phone", phoneET.getText().toString().trim());
-                    intent.putExtra("password", passET.getText().toString().trim());
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    SVProgressHUD.showInViewWithoutIndicator(UserPasswordActivity.this, result.message, 2.0f);
+                if (!UserPasswordActivity.this.isFinishing()) {
+                    SVProgressHUD.dismiss(UserPasswordActivity.this);
+                    if (result.apicode.equals("10000")) {
+                        Intent intent = getIntent();
+                        intent.putExtra("phone", phoneET.getText().toString().trim());
+                        intent.putExtra("password", passET.getText().toString().trim());
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else {
+                        SVProgressHUD.showInViewWithoutIndicator(UserPasswordActivity.this, result.message, 2.0f);
+                    }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(UserPasswordActivity.this);
-                SVProgressHUD.showInViewWithoutIndicator(UserPasswordActivity.this, "网络异常", 2.0f);
+                if (!UserPasswordActivity.this.isFinishing()) {
+                    SVProgressHUD.dismiss(UserPasswordActivity.this);
+                    SVProgressHUD.showInViewWithoutIndicator(UserPasswordActivity.this, "网络异常", 2.0f);
+                }
             }
         });
     }

@@ -255,18 +255,20 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         courseManager.fetchCourseSection(courseId, userId, new Callback<CourseVideoResult>() {
             @Override
             public void success(CourseVideoResult result, Response response) {
-                if (result.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(CourseVideoActivity.this, result.getMessage(), 2.0f);
-                } else {
-                    EventBus.getDefault().post(result);
-                    courseVideoResult = result;
-                    videoArrayList = result.getResult().getVideoList();
-                    if (videoArrayList != null && videoArrayList.size() > 0) {
-                        mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
-                        if (result.getResult().getIsCollect().equals("1")) {
-                            videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
-                        } else {
-                            videoCollectBtn.setImageResource(R.drawable.video_collect_icon);
+                if (!CourseVideoActivity.this.isFinishing()) {
+                    if (result.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(CourseVideoActivity.this, result.getMessage(), 2.0f);
+                    } else {
+                        EventBus.getDefault().post(result);
+                        courseVideoResult = result;
+                        videoArrayList = result.getResult().getVideoList();
+                        if (videoArrayList != null && videoArrayList.size() > 0) {
+                            mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
+                            if (result.getResult().getIsCollect().equals("1")) {
+                                videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
+                            } else {
+                                videoCollectBtn.setImageResource(R.drawable.video_collect_icon);
+                            }
                         }
                     }
                 }
@@ -274,7 +276,9 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 
             @Override
             public void failure(RetrofitError error) {
-                ToastUtil.showToastShort(CourseVideoActivity.this, R.string.data_request_fail);
+                if (!CourseVideoActivity.this.isFinishing()) {
+                    ToastUtil.showToastShort(CourseVideoActivity.this, R.string.data_request_fail);
+                }
             }
         });
     }
@@ -360,7 +364,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                                                     break;
                                             }
                                         }
-                                    },"", getString(R.string.sure_uncollect), getString(R.string.confirm_message)
+                                    }, "", getString(R.string.sure_uncollect), getString(R.string.confirm_message)
                                     , getString(R.string.cancel_message));
                         } else {
                             collectVideo(videoId, "1");
@@ -399,7 +403,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                         break;
                 }
             }
-        },"", getString(R.string.to_login), "", "");
+        }, "", getString(R.string.to_login), "", "");
     }
 
     MediaPlayer.OnInfoListener infoListener = new MediaPlayer.OnInfoListener() {
@@ -543,23 +547,27 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         courseManager.collectionVideo(userId, videoId, courseVideoResult.getResult().getPointId(), state, new Callback<CourseCollectResult>() {
             @Override
             public void success(CourseCollectResult result, Response response) {
-                if (result.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(CourseVideoActivity.this, result.getMessage(), 2.0f);
-                } else {
-                    ToastUtil.showToastShort(CourseVideoActivity.this, result.getMessage());
-                    if (state.equals("1")) {
-                        courseVideoResult.getResult().setIsCollect("1");
-                        videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
+                if (!CourseVideoActivity.this.isFinishing()) {
+                    if (result.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(CourseVideoActivity.this, result.getMessage(), 2.0f);
                     } else {
-                        courseVideoResult.getResult().setIsCollect("0");
-                        videoCollectBtn.setImageResource(R.drawable.video_collect_icon);
+                        ToastUtil.showToastShort(CourseVideoActivity.this, result.getMessage());
+                        if (state.equals("1")) {
+                            courseVideoResult.getResult().setIsCollect("1");
+                            videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
+                        } else {
+                            courseVideoResult.getResult().setIsCollect("0");
+                            videoCollectBtn.setImageResource(R.drawable.video_collect_icon);
+                        }
                     }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                ToastUtil.showToastShort(CourseVideoActivity.this, R.string.data_request_fail);
+                if (!CourseVideoActivity.this.isFinishing()) {
+                    ToastUtil.showToastShort(CourseVideoActivity.this, R.string.data_request_fail);
+                }
             }
         });
     }

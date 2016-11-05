@@ -54,6 +54,7 @@ public class TStudentCompleteInfoActivity extends SEBaseActivity implements Pull
         groupId = getIntent().getStringExtra("groupId");
         listview.setOnRefreshListener(this);
         listview.setMode(PullToRefreshBase.Mode.BOTH);
+        listview.getRefreshableView().setDivider(null);
         adapter = new TStudentCompleteInfoListAdapter(this);
         listview.setAdapter(adapter);
         list = new ArrayList<>();
@@ -65,7 +66,7 @@ public class TStudentCompleteInfoActivity extends SEBaseActivity implements Pull
         TeacherHomeManager.getInstance().getHomeworkStatistics(groupId, homeworkId, pageIndex, pageSize, new Callback<HomeworkStatisticsResult>() {
             @Override
             public void success(HomeworkStatisticsResult homeworkStatisticsResult, Response response) {
-                if (context != null) {
+                if (context != null && !TStudentCompleteInfoActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
                     SVProgressHUD.dismiss(context);
                     if (homeworkStatisticsResult.getApicode() != 10000) {
@@ -82,7 +83,7 @@ public class TStudentCompleteInfoActivity extends SEBaseActivity implements Pull
 
             @Override
             public void failure(RetrofitError error) {
-                if (context != null) {
+                if (context != null && !TStudentCompleteInfoActivity.this.isFinishing()) {
                     SVProgressHUD.dismiss(context);
                     ToastUtil.showToastShort(context, R.string.request_group_fail);
                     listview.onRefreshComplete();
@@ -107,7 +108,7 @@ public class TStudentCompleteInfoActivity extends SEBaseActivity implements Pull
     @Override
     protected void onPause() {
         super.onPause();
-        if (context != null) {
+        if (context != null && !TStudentCompleteInfoActivity.this.isFinishing()) {
             SVProgressHUD.dismiss(context);
         }
     }

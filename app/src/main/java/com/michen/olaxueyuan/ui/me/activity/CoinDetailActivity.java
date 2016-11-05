@@ -66,7 +66,7 @@ public class CoinDetailActivity extends SEBaseActivity implements PullToRefreshB
         SEUserManager.getInstance().coinGetHistoryList(userId, new Callback<CoinHistoryResult>() {
             @Override
             public void success(CoinHistoryResult coinHistoryResult, Response response) {
-                if (context != null) {
+                if (context != null && !CoinDetailActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
                     SVProgressHUD.dismiss(context);
                     if (coinHistoryResult.getApicode() == 10000) {
@@ -79,7 +79,7 @@ public class CoinDetailActivity extends SEBaseActivity implements PullToRefreshB
 
             @Override
             public void failure(RetrofitError error) {
-                if (context != null) {
+                if (context != null && !CoinDetailActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
                     SVProgressHUD.dismiss(context);
                     ToastUtil.showToastShort(context, R.string.request_failed);

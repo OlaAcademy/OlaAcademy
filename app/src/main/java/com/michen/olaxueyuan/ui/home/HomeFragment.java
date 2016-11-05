@@ -20,8 +20,10 @@ import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
+import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.circle.DeployPostActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
+import com.michen.olaxueyuan.ui.course.commodity.DataLibraryActivity;
 import com.michen.olaxueyuan.ui.course.turtor.TurtorActivity;
 import com.michen.olaxueyuan.ui.group.GroupListActivity;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
@@ -115,7 +117,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
             @Override
             public void success(HomeModule result, Response response) {
 //                Logger.json(result);
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     scroll.onRefreshComplete();
                     if (result.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.getMessage(), 2.0f);
@@ -127,7 +129,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     scroll.onRefreshComplete();
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
@@ -161,7 +163,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
                 showTurtorView();
                 break;
             case R.id.find_data_layout:
-                showCommodityView();
+//                showCommodityView();
+                startActivity(new Intent(getActivity(), DataLibraryActivity.class));
                 break;
             case R.id.find_data_group:
                 if (!SEAuthManager.getInstance().isAuthenticated()) {
@@ -172,6 +175,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
                 startActivity(new Intent(getActivity(), GroupListActivity.class));
                 break;
             case R.id.show_all_question:
+                CircleFragment.type = "2";
                 chageIndex(3);
                 break;
             case R.id.show_all_direct_broadcast:

@@ -53,7 +53,7 @@ public class TGroupListActivity extends SEBaseActivity implements PullToRefreshB
 
     private void initView() {
         setTitleText("群列表");
-        setRightImage(R.drawable.message_tip_icon);
+        setRightImage(R.drawable.create_group_icon);
         setRightImageListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +84,7 @@ public class TGroupListActivity extends SEBaseActivity implements PullToRefreshB
         TeacherHomeManager.getInstance().getTeacherGroupList(userId, new Callback<TeacherGroupListResult>() {
             @Override
             public void success(TeacherGroupListResult teacherGroupListResult, Response response) {
-                if (context != null) {
+                if (context != null&&!TGroupListActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
                     SVProgressHUD.dismiss(context);
                     if (teacherGroupListResult.getApicode() != 10000) {
@@ -103,7 +103,7 @@ public class TGroupListActivity extends SEBaseActivity implements PullToRefreshB
 
             @Override
             public void failure(RetrofitError error) {
-                if (context != null) {
+                if (context != null&&!TGroupListActivity.this.isFinishing()) {
                     emptyLayout.setVisibility(View.VISIBLE);
                     SVProgressHUD.dismiss(context);
                     ToastUtil.showToastShort(context, R.string.request_group_fail);
@@ -116,7 +116,7 @@ public class TGroupListActivity extends SEBaseActivity implements PullToRefreshB
     @Override
     protected void onPause() {
         super.onPause();
-        if (context != null) {
+        if (context != null&&!TGroupListActivity.this.isFinishing()) {
             SVProgressHUD.dismiss(context);
         }
     }
@@ -137,7 +137,7 @@ public class TGroupListActivity extends SEBaseActivity implements PullToRefreshB
 
     /**
      * {@link TSubjectDeployActivity#publishHomeWork()}
-     * {@link CreateGroupActivity#saveGroupInfo(String, String)}
+     * {@link CreateGroupActivity#saveGroupInfo(String, String,String)}
      *
      * @param successEvent
      */

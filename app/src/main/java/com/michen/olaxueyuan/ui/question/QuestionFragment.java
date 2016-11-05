@@ -335,7 +335,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         QuestionCourseManager.getInstance().fetchHomeCourseList(userId, pid, "1", new Callback<QuestionCourseModule>() {
             @Override
             public void success(QuestionCourseModule questionCourseModule, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     expandableListViews.onRefreshComplete();
 //                Logger.json(questionCourseModule);
@@ -355,7 +355,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     expandableListViews.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
@@ -376,7 +376,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         QuestionCourseManager.getInstance().getExamList(userId, pid, String.valueOf(selectType), new Callback<ExamModule>() {
             @Override
             public void success(ExamModule examModule, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     listview.onRefreshComplete();
 //                Logger.json(examModule);
@@ -390,7 +390,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     listview.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
@@ -410,7 +410,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             @Override
             public void success(MessageUnReadResult messageUnReadResult, Response response) {
                 if (messageUnReadResult.getApicode() == 10000) {
-                    if (getActivity() != null) {
+                    if (getActivity() != null && !getActivity().isFinishing()) {
                         unReadMessageCount = messageUnReadResult.getResult();
                         redDot.setText(String.valueOf(unReadMessageCount));
                         if (unReadMessageCount > 0) {
@@ -494,7 +494,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
             @Override
             public void success(CheckinStatusResult checkinStatusResult, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     if (checkinStatusResult.getApicode() == 10000) {
                         if (checkinStatusResult.getResult().getCoin() >= 20) {
@@ -517,7 +517,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), "获取积分失败,请重试");
                 }
@@ -530,7 +530,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         QuestionCourseManager.getInstance().unlockSubject(userId, String.valueOf(objectId), String.valueOf(type), new Callback<UnlockSubjectResult>() {
             @Override
             public void success(UnlockSubjectResult unlockSubjectResult, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     if (unlockSubjectResult.getApicode() == 10000) {
                         ToastUtil.showToastShort(getActivity(), "兑换成功");
@@ -545,7 +545,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), "兑换失败,请重试");
                 }

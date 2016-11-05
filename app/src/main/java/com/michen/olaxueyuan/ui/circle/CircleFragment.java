@@ -70,7 +70,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     LinearLayout allSearchView;
     @Bind(R.id.pop_line2)
     View popLine;
-    private String type = "";//1 学习记录 2 帖子 "" 全部
+    public static String type = "";//1 学习记录 2 帖子 "" 全部
     private static final String PAGE_SIZE = "20";//每次加载20条
 
     CircleAdapter adapter;
@@ -108,7 +108,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         QuestionCourseManager.getInstance().getCircleList(circleId, pageSize, type, new Callback<OLaCircleModule>() {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     listview.onRefreshComplete();
 //                Logger.json(oLaCircleModule);
@@ -128,7 +128,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     listview.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
@@ -197,7 +197,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         MCCircleManager.getInstance().praiseCirclePost(String.valueOf(list.get(position).getCircleId()), new Callback<PraiseCirclePostResult>() {
             @Override
             public void success(PraiseCirclePostResult mcCommonResult, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     if (mcCommonResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), mcCommonResult.getMessage(), 2.0f);
@@ -210,7 +210,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }

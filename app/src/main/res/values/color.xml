@@ -381,6 +381,8 @@
     <color name="sign_dialog_text_color">#FFFC00</color>
     <color name="dark_button_blue">#005598</color>
     <color name="unable_button_blue">#DCDBDB</color>
+    <color name="buy_vip_color">#E0B270</color>
+    <color name="buy_vip_pressed_color">#BE9152</color>
 
 
     <!--drawable-->

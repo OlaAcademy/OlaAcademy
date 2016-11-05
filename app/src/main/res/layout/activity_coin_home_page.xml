@@ -6,9 +6,12 @@
     android:background="@color/white_light"
     android:orientation="vertical">
 
-    <ScrollView
+    <com.snail.pulltorefresh.PullToRefreshScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -326,5 +329,5 @@
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.snail.pulltorefresh.PullToRefreshScrollView>
 </LinearLayout>

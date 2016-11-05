@@ -93,8 +93,9 @@ public class MyCourseCollectActivity extends SEBaseActivity implements PullToRef
         SEUserManager.getInstance().getCollectionByUserId(SEAuthManager.getInstance().getAccessUser().getId(), new Callback<UserCourseCollectResult>() {
             @Override
             public void success(UserCourseCollectResult userCourseCollectResult, Response response) {
+                if (mContext != null && !MyCourseCollectActivity.this.isFinishing())
 //                Logger.json(userCourseCollectResult);
-                listview.onRefreshComplete();
+                    listview.onRefreshComplete();
                 if (userCourseCollectResult.getApicode() != 10000) {
                     ToastUtil.showToastShort(mContext, userCourseCollectResult.getMessage());
                 } else {
@@ -105,7 +106,7 @@ public class MyCourseCollectActivity extends SEBaseActivity implements PullToRef
 
             @Override
             public void failure(RetrofitError error) {
-                if (mContext != null) {
+                if (mContext != null && !MyCourseCollectActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
                 }

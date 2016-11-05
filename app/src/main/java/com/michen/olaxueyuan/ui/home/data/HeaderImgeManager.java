@@ -97,7 +97,7 @@ public class HeaderImgeManager {
         imgViewpager.setAdapter(new PosterPagerAdapter(context));
         imgViewpager.setCurrentItem(mCurrentPosterIndex);
         imgViewpager.setInterval(DELAY_TIME);
-        imgViewpager.setOnPageChangeListener(new PosterPageChange());
+        imgViewpager.addOnPageChangeListener(new PosterPageChange());
         imgViewpager.setSlideBorderMode(AutoScrollViewPager.SLIDE_BORDER_MODE_CYCLE);
         imgViewpager.setOnTouchListener(new View.OnTouchListener() {
             @Override

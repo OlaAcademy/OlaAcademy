@@ -58,7 +58,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
     private final static int MENU_AVATAR_FROM_GALLERY = 0x456;
 
     private LinearLayout updateLL;
-    private EditText nicknameET, signatureET, emailET;
+    private EditText nicknameET, reallyNameEt, signatureET, emailET;
     private TextView phoneTV, loaclTV;
     private Button _avatarButton;
     private RoundRectImageView avatarImageView;
@@ -107,15 +107,17 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
 
         String signature = signatureET.getText().toString();
         String name = nicknameET.getText().toString();
+        String reallyName = reallyNameEt.getText().toString();
         String local = loaclTV.getText().toString();
         String mail = emailET.getText().toString();
         if (name.equals("")) {
-            SVProgressHUD.showInViewWithoutIndicator(this, "请填写真实姓名", 2);
+            SVProgressHUD.showInViewWithoutIndicator(this, "请填写昵称", 2);
             return;
         }
 
         SEUser currentUser = SEAuthManager.getInstance().getAccessUser();
         currentUser.setName(name);
+        currentUser.setRealName(reallyName);
         currentUser.setLocal(local);
         currentUser.setSex(sex + "");
         currentUser.setSign(signature);
@@ -124,21 +126,25 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         final SEUser modifiedUser = currentUser;
 
         SVProgressHUD.showInView(this, "保存中，请稍候...", true);
-        SEUserManager.getInstance().modifyUserMe(name, _imageName, local, sex + "", signature, new SECallBack() {
+        SEUserManager.getInstance().modifyUserMe(name,reallyName, _imageName, local, sex + "", signature, new SECallBack() {
             @Override
             public void success() {
-                SVProgressHUD.showInViewWithoutIndicator(UserUpdateActivity.this, "更新成功!", 2);
-                Intent intent = getIntent();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("userInfo", modifiedUser);
-                intent.putExtras(bundle);
-                setResult(1, intent);
-                finish();
+                if (!UserUpdateActivity.this.isFinishing()) {
+                    SVProgressHUD.showInViewWithoutIndicator(UserUpdateActivity.this, "更新成功!", 2);
+                    Intent intent = getIntent();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("userInfo", modifiedUser);
+                    intent.putExtras(bundle);
+                    setResult(1, intent);
+                    finish();
+                }
             }
 
             @Override
             public void failure(ServiceError error) {
-                SVProgressHUD.showInViewWithoutIndicator(UserUpdateActivity.this, "保存出错，请检查您的网络。", 2);
+                if (!UserUpdateActivity.this.isFinishing()) {
+                    SVProgressHUD.showInViewWithoutIndicator(UserUpdateActivity.this, "保存出错，请检查您的网络。", 2);
+                }
             }
         });
     }
@@ -154,6 +160,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
 
         nicknameET = (EditText) findViewById(R.id.et_nickname);
         signatureET = (EditText) findViewById(R.id.et_signature);
+        reallyNameEt = (EditText) findViewById(R.id.et_really_name);
         loaclTV = (TextView) findViewById(R.id.tv_local);
         emailET = (EditText) findViewById(R.id.et_email);
         phoneTV = (TextView) findViewById(R.id.tv_phone);
@@ -287,10 +294,11 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         if (_user != null) {
             nicknameET.setText(_user.getName());
             signatureET.setText(_user.getSign());
+            reallyNameEt.setText(_user.getRealName());
             loaclTV.setText(_user.getLocal());
             emailET.setText(_user.getEmail());
             phoneTV.setText(_user.getPhone());
-            if (_user.getSex()!=null&&_user.getSex().equals("1")) {
+            if (_user.getSex() != null && _user.getSex().equals("1")) {
                 iv_switch_man.setVisibility(View.INVISIBLE);
                 iv_switch_woman.setVisibility(View.VISIBLE);
             } else {
@@ -304,10 +312,10 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         String avatarUrl = "";
         if (_user != null) {
 //            if (_user.getAvator().indexOf("jpg")!=-1){
-            if (_user.getAvator().contains(".")){
-                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/"+_user.getAvator();
-            }else{
-                avatarUrl = SEAPP.PIC_BASE_URL+_user.getAvator();
+            if (_user.getAvator().contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + _user.getAvator();
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + _user.getAvator();
             }
         }
 
@@ -418,7 +426,9 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
 
     @Override
     public void onError(String reason) {
-        SVProgressHUD.showInViewWithoutIndicator(this, "无法选择照片，请重试。", 3.f);
+        if (!UserUpdateActivity.this.isFinishing()) {
+            SVProgressHUD.showInViewWithoutIndicator(this, "无法选择照片，请重试。", 3.f);
+        }
     }
 
     /**
@@ -428,8 +438,10 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         SEUserManager.getInstance().uploadAvatar(_updatedAvatarFilename, new SECallBack() {
             @Override
             public void success() {
-                MCUploadResult uploadResult = SEUserManager.getInstance().getUploadResult();
-                _imageName = uploadResult.imageName;
+                if (!UserUpdateActivity.this.isFinishing()) {
+                    MCUploadResult uploadResult = SEUserManager.getInstance().getUploadResult();
+                    _imageName = uploadResult.imageName;
+                }
             }
 
             @Override

@@ -150,10 +150,18 @@ public class DeployPostActivity extends SEBaseActivity {
                 }
 //                Log.e("Test", bdLocation.getAddrStr());
                 try {
-                    mLocation = bdLocation.getCity() + bdLocation.getDistrict();
+                    String city = bdLocation.getCity();
+                    String district = bdLocation.getDistrict();
+                    if (city == null) {
+                        city = "";
+                    }
+                    if (district == null) {
+                        district = "";
+                    }
+                    mLocation = city + district;
                 } catch (Exception e) {
                     e.printStackTrace();
-                    mLocation = "定位失败";
+                    mLocation = "";
                 }
                 mTv_location.setText(mLocation);
             }
@@ -310,12 +318,14 @@ public class DeployPostActivity extends SEBaseActivity {
         circleManager.deployPost(userId, mTitle, msgET.getText().toString(), imageGids, mLocation, "2", new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
-                if (!result.apicode.equals("10000")) {
-                    SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.message, 2.0f);
-                    return;
+                if (!DeployPostActivity.this.isFinishing()) {
+                    if (!result.apicode.equals("10000")) {
+                        SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.message, 2.0f);
+                        return;
+                    }
+                    EventBus.getDefault().post(true);
+                    finish();
                 }
-                EventBus.getDefault().post(true);
-                finish();
             }
 
             @Override

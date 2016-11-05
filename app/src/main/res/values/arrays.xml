@@ -37,5 +37,9 @@
         <item>写作预测八套卷</item>
         <item>历年真题名家详解</item>
     </string-array>
+    <string-array name="save_select">
+        <item>保存</item>
+        <item>取消</item>
+    </string-array>
     <!--结束-->
 </resources>

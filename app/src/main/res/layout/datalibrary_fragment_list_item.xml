@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_white_item_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="bottom"
+        android:text="2016数学真题培训班"
+        android:textColor="@color/black_323232"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/paynum"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:text="购买人数78人"
+        android:textColor="@color/title_hint_text_color"
+        android:textSize="12dp" />
+
+    <View style="@style/line_horizontal_margin_15dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp">
+
+        <com.michen.olaxueyuan.common.RoundRectImageView
+            android:id="@+id/avatar_course"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_default_avatar" />
+
+        <TextView
+            android:id="@+id/detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/rmb"
+            android:layout_toRightOf="@+id/avatar_course"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="由幂学教育出版社出版"
+            android:textColor="@color/black_323232"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/rmb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@+id/price"
+            android:text="@string/rmb_mark"
+            android:textColor="@color/system_course_money_color"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="99"
+            android:textColor="@color/system_course_money_color"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/author_course_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/price"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="陈建18课时"
+            android:textColor="@color/title_hint_text_color"
+            android:textSize="12dp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_height="10dp" />
+</LinearLayout>

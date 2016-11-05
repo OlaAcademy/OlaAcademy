@@ -12,6 +12,8 @@ import com.michen.olaxueyuan.protocol.service.TeacherHomeService;
 
 import retrofit.Callback;
 
+import static com.michen.olaxueyuan.R.id.avatar;
+
 /**
  * Created by mingge on 16/8/31.
  */
@@ -40,8 +42,8 @@ public class TeacherHomeManager {
      * @param type     1、数学2、英语3、逻辑4、写作
      * @param callback
      */
-    public void createGroup(String userId, String type, String name, String avatar, final Callback<CreateGroupResult> callback) {
-        getTeacherHomeService().createGroup(userId, type, name, avatar, callback);
+    public void createGroup(String userId, String type, String name,String profile, String avatar, final Callback<CreateGroupResult> callback) {
+        getTeacherHomeService().createGroup(userId, type, name,profile, avatar, callback);
     }
 
     /**

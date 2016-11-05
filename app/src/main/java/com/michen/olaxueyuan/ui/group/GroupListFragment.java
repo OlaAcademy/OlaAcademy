@@ -63,7 +63,7 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
         TeacherHomeManager.getInstance().getUserGroupList(userId, String.valueOf(type), new Callback<UserGroupListResult>() {
             @Override
             public void success(UserGroupListResult userGroupListResult, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     if (userGroupListResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), userGroupListResult.getMessage(), 2.0f);
                     } else {
@@ -76,7 +76,7 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     listview.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                 }
@@ -103,7 +103,7 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
         TeacherHomeManager.getInstance().attendGroup(userId, groupId, type, new Callback<AttendGroupResult>() {
             @Override
             public void success(AttendGroupResult attendGroupResult, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     if (attendGroupResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), attendGroupResult.getMessage(), 2.0f);
                     } else {
@@ -115,7 +115,7 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                 }
             }

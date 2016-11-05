@@ -4,10 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.StrikethroughSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,16 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
+import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.SEUserManager;
+import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
-import com.michen.olaxueyuan.ui.course.pay.weixin.WxPayUtile;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.michen.olaxueyuan.protocol.manager.SEUserManager;
-import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
 import com.michen.olaxueyuan.ui.course.pay.weixin.MD5;
+import com.michen.olaxueyuan.ui.course.pay.weixin.WxPayUtile;
 import com.michen.olaxueyuan.ui.course.pay.zhifubao.PayResult;
 
 import java.util.Random;
@@ -71,11 +68,18 @@ public class BuyVipActivity extends SEBaseActivity {
     private static final int PAY_BY_ALIPAY = 101;//使用支付宝支付
     private static final int PAY_BY_WECHAT = 102;//使用微信支付
     private static Context context;
-    private int payType = PAY_BY_ALIPAY;//最终支付方式,默认支付宝
+    @Bind(R.id.all_year_current_money)
+    TextView allYearCurrentMoney;
+    @Bind(R.id.all_year_old_money)
+    TextView allYearOldMoney;
+    @Bind(R.id.all_year_icon)
+    ImageView allYearIcon;
+    private int payType = PAY_BY_WECHAT;//最终支付方式,默认支付宝
     public static final String MOTH_VIP = "1";//1月度会员
-    public static final String YEAR_VIP = "2";//2 年度会员
+    public static final String YEAR_VIP = "2";//2 半年会员
     public static final String SUPER_VIP = "3";//3 整套视频
-    private String type = MOTH_VIP;// 1月度会员 2 年度会员 3 整套视频
+    public static final String ALL_YEAR_VIP = "4";//4年度会员
+    private String type = MOTH_VIP;// 1月度会员 2 半年度会员 3 整套视频 4年度会员
     private String userId = "126";//测试的userId
 
     @Override
@@ -91,27 +95,35 @@ public class BuyVipActivity extends SEBaseActivity {
 
     private void initView() {
         monthIcon.setSelected(true);
-        alipayView.setSelected(true);
-        SpannableString spannedMonth = new SpannableString(monthOldMoney.getText().toString().trim());
+        wechatView.setSelected(true);
+       /* SpannableString spannedMonth = new SpannableString(monthOldMoney.getText().toString().trim());
         spannedMonth.setSpan(new StrikethroughSpan(), 0, monthOldMoney.getText().toString().trim().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         monthOldMoney.setText(spannedMonth);
         SpannableString spannedYear = new SpannableString(yearOldMoney.getText().toString().trim());
         spannedYear.setSpan(new StrikethroughSpan(), 0, yearOldMoney.getText().toString().trim().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        yearOldMoney.setText(spannedYear);
+        yearOldMoney.setText(spannedYear);*/
     }
 
-    @OnClick({R.id.month_vip, R.id.year_vip, R.id.alipay_view, R.id.wechat_view, R.id.buy_vip})
+    @OnClick({R.id.month_vip, R.id.year_vip, R.id.alipay_view, R.id.wechat_view, R.id.buy_vip, R.id.all_year_vip})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.month_vip:
                 type = MOTH_VIP;
                 monthIcon.setSelected(true);
                 yearIcon.setSelected(false);
+                allYearIcon.setSelected(false);
                 break;
             case R.id.year_vip:
                 type = YEAR_VIP;
                 monthIcon.setSelected(false);
                 yearIcon.setSelected(true);
+                allYearIcon.setSelected(false);
+                break;
+            case R.id.all_year_vip:
+                type = ALL_YEAR_VIP;
+                monthIcon.setSelected(false);
+                yearIcon.setSelected(false);
+                allYearIcon.setSelected(true);
                 break;
             case R.id.alipay_view:
                 payType = PAY_BY_ALIPAY;
@@ -139,38 +151,42 @@ public class BuyVipActivity extends SEBaseActivity {
 
     public void payForAlipay() {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        SEUserManager.getInstance().getAliOrderInfo(userId, type, "", "0",new Callback<UserAlipayResult>() {
+        SEUserManager.getInstance().getAliOrderInfo(userId, type, "", "0", new Callback<UserAlipayResult>() {
             @Override
             public void success(UserAlipayResult userAlipayResult, Response response) {
-                if (userAlipayResult != null && userAlipayResult.getApicode() == 10000) {
-                    final UserAlipayResult.ResultBean orderInfoBean = userAlipayResult.getResult();
-                    if (orderInfoBean != null) {
-                        Runnable payRunnable = new Runnable() {
+                if (!BuyVipActivity.this.isFinishing()) {
+                    if (userAlipayResult != null && userAlipayResult.getApicode() == 10000) {
+                        final UserAlipayResult.ResultBean orderInfoBean = userAlipayResult.getResult();
+                        if (orderInfoBean != null) {
+                            Runnable payRunnable = new Runnable() {
 
-                            @Override
-                            public void run() {
-                                // 构造PayTask 对象
-                                PayTask alipay = new PayTask(BuyVipActivity.this);
-                                String result = alipay.pay(orderInfoBean.getOrderInfo(), true);
+                                @Override
+                                public void run() {
+                                    // 构造PayTask 对象
+                                    PayTask alipay = new PayTask(BuyVipActivity.this);
+                                    String result = alipay.pay(orderInfoBean.getOrderInfo(), true);
 //                                Logger.e("result==" + result);
-                                Message msg = new Message();
-                                msg.what = SDK_PAY_FLAG;
-                                msg.obj = result;
-                                mHandler.sendMessage(msg);
-                            }
-                        };
-                        // 必须异步调用
-                        Thread payThread = new Thread(payRunnable);
-                        payThread.start();
+                                    Message msg = new Message();
+                                    msg.what = SDK_PAY_FLAG;
+                                    msg.obj = result;
+                                    mHandler.sendMessage(msg);
+                                }
+                            };
+                            // 必须异步调用
+                            Thread payThread = new Thread(payRunnable);
+                            payThread.start();
+                        }
+                    } else {
+                        ToastUtil.showToastShort(BuyVipActivity.this, userAlipayResult.getMessage());
                     }
-                } else {
-                    ToastUtil.showToastShort(BuyVipActivity.this, userAlipayResult.getMessage());
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                ToastUtil.showToastShort(BuyVipActivity.this, R.string.data_request_fail);
+                if (!BuyVipActivity.this.isFinishing()) {
+                    ToastUtil.showToastShort(BuyVipActivity.this, R.string.data_request_fail);
+                }
             }
         });
     }
@@ -221,25 +237,29 @@ public class BuyVipActivity extends SEBaseActivity {
 
     public void payForWXRequest() {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        SEUserManager.getInstance().getWXPayReq(userId, type, "","0", new Callback<UserWXpayResult>() {
+        SEUserManager.getInstance().getWXPayReq(userId, type, "", "0", new Callback<UserWXpayResult>() {
             @Override
             public void success(UserWXpayResult wxPayModule, Response response) {
-                if (wxPayModule != null && wxPayModule.getApicode() == 10000) {
-                    final UserWXpayResult.ResultBean wxpayResult = wxPayModule.getResult();
-                    if (wxpayResult != null) {
-                        //调用微信支付
-                        WxPayUtile.getInstance(BuyVipActivity.this, "100",
-                                "http://121.40.35.3/test", "欧拉会员", wxpayResult,
-                                genOutTradNo()).doPay();
+                if (!BuyVipActivity.this.isFinishing()) {
+                    if (wxPayModule != null && wxPayModule.getApicode() == 10000) {
+                        final UserWXpayResult.ResultBean wxpayResult = wxPayModule.getResult();
+                        if (wxpayResult != null) {
+                            //调用微信支付
+                            WxPayUtile.getInstance(BuyVipActivity.this, "100",
+                                    "http://121.40.35.3/test", "欧拉会员", wxpayResult,
+                                    genOutTradNo()).doPay();
+                        }
+                    } else {
+                        ToastUtil.showToastShort(BuyVipActivity.this, wxPayModule.getMessage());
                     }
-                } else {
-                    ToastUtil.showToastShort(BuyVipActivity.this, wxPayModule.getMessage());
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                ToastUtil.showToastShort(BuyVipActivity.this, R.string.data_request_fail);
+                if (!BuyVipActivity.this.isFinishing()) {
+                    ToastUtil.showToastShort(BuyVipActivity.this, R.string.data_request_fail);
+                }
             }
         });
     }
@@ -250,10 +270,9 @@ public class BuyVipActivity extends SEBaseActivity {
     }
 
 
-
     // EventBus 微信支付成功通知
     public void onEventMainThread(Boolean payResult) {
-        if (payResult){
+        if (payResult) {
             EventBus.getDefault().post(new UserLoginNoticeModule(true)); //刷新
             finish();
         }
@@ -266,4 +285,7 @@ public class BuyVipActivity extends SEBaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @OnClick(R.id.all_year_vip)
+    public void onClick() {
+    }
 }

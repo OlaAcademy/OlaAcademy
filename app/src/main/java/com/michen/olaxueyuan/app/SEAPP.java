@@ -15,6 +15,7 @@ import com.michen.olaxueyuan.common.SEThemer;
 public class SEAPP extends Application {
     private static Context mAppContext;
     public static final String PIC_BASE_URL = "http://upload.olaxueyuan.com/SDpic/common/picSelect?gid=";
+    private String versionNames;
 
     @Override
     public void onCreate() {
@@ -26,7 +27,14 @@ public class SEAPP extends Application {
 
         final String API_BASE_URL = "http://api.olaxueyuan.com";
 //        final String API_BASE_URL = "http://123.59.129.137:8080";
-        SEConfig.getInstance().init(API_BASE_URL, "欧拉联考 v1.2.3", this);
+        try {
+            versionNames = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (Exception e) {
+            e.printStackTrace();
+            versionNames = "v1.2.5";
+
+        }
+        SEConfig.getInstance().init(API_BASE_URL, "欧拉联考 v" + versionNames, this);
 
         /**
          * 开源框架 Image-Loader

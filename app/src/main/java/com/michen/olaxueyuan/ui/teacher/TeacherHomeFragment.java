@@ -23,6 +23,7 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
 import com.michen.olaxueyuan.protocol.result.TeacherGroupListResult;
+import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.QuestionHomeWorkListAdapter;
 import com.michen.olaxueyuan.ui.group.CreateGroupActivity;
@@ -93,8 +94,8 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         mListView.setMode(PullToRefreshBase.Mode.BOTH);
         mListView.setOnRefreshListener(this);
         mListView.getRefreshableView().setDivider(null);
-        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
-        adapter = new QuestionHomeWorkListAdapter(getActivity(),2);
+        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.create_group_icon);
+        adapter = new QuestionHomeWorkListAdapter(getActivity(), 2);
         mListView.setAdapter(adapter);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int lastIndex = 0;
@@ -139,7 +140,7 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
             @Override
             public void success(HomeworkListResult homeworkListResult, Response response) {
                 Logger.json(homeworkListResult);
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     mListView.onRefreshComplete();
                     SVProgressHUD.dismiss(getActivity());
                     if (homeworkListResult.getApicode() != 10000) {
@@ -148,8 +149,14 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                             showNoHomeWorkView();
                         }
                     } else {
+                        mListView.setVisibility(View.VISIBLE);
                         List<HomeworkListResult.ResultBean> list = homeworkListResult.getResult();
-                        if (list.size() == 0) {
+                        mList.addAll(list);
+                        if (mList.size() > 0) {
+                            homeworkId = mList.get(mList.size() - 1).getId() + "";
+                        }
+                        adapter.updateData(mList);
+                        if (list.size() == 0 && mList.size() == 0) {
                             if (isHasGroup) {
                                 showNoHomeWorkView();
                             }
@@ -157,18 +164,13 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                         } else {
                             emptyLayout.setVisibility(View.GONE);
                         }
-                        mList.addAll(list);
-                        if (mList.size() > 0) {
-                            homeworkId = mList.get(mList.size() - 1).getId() + "";
-                        }
-                        adapter.updateData(mList);
                     }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     if (isHasGroup) {
                         showNoHomeWorkView();
                     }
@@ -217,22 +219,42 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
     public void onPullDownToRefresh(PullToRefreshBase refreshView) {
         homeworkId = "";
         mList.clear();
-        fetchData();
+        if (isHasGroup) {
+            fetchData();
+        } else {
+            getTeacherGroupList();
+        }
     }
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-        fetchData();
+        if (isHasGroup) {
+            fetchData();
+        } else {
+            getTeacherGroupList();
+        }
     }
 
     /**
      * {@link TSubjectDeployActivity#publishHomeWork()}
-     * {@link CreateGroupActivity#saveGroupInfo(String, String)}
+     * {@link CreateGroupActivity#saveGroupInfo(String, String, String)}
      *
      * @param successEvent
      */
     public void onEventMainThread(PublishHomeWorkSuccessEvent successEvent) {
         if (successEvent.isSuccess) {
+            getTeacherGroupList();
+        }
+    }
+
+    // EventBus 回调
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        if (module.isLogin) {
+            menuView.setVisibility(View.VISIBLE);
+            List<HomeworkListResult.ResultBean> list = new ArrayList<>();
+            mList.clear();
+            mList.addAll(list);
+            adapter.updateData(mList);
             getTeacherGroupList();
         }
     }
@@ -249,17 +271,20 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         TeacherHomeManager.getInstance().getTeacherGroupList(userId, new Callback<TeacherGroupListResult>() {
             @Override
             public void success(TeacherGroupListResult teacherGroupListResult, Response response) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SVProgressHUD.dismiss(getActivity());
                     if (teacherGroupListResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(getActivity(), teacherGroupListResult.getMessage());
+                        isHasGroup = false;
                         showNoGroupView();
                     } else {
                         if (teacherGroupListResult.getResult().size() > 0) {
+                            mListView.setVisibility(View.VISIBLE);
                             isHasGroup = true;//size大于0就是有群
                             fetchData();
                         } else {
                             showNoGroupView();
+                            isHasGroup = false;
                         }
                     }
                 }
@@ -267,8 +292,9 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
 
             @Override
             public void failure(RetrofitError error) {
-                if (getActivity() != null) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     showNoGroupView();
+                    isHasGroup = false;
                     SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.request_group_fail);
                 }
@@ -282,9 +308,11 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         noticeHintText.setText(R.string.no_group_to_create);
         createGroup.setVisibility(View.VISIBLE);
         menuView.setVisibility(View.GONE);
+        mListView.setVisibility(View.INVISIBLE);
     }
 
     private void showNoHomeWorkView() {
+        mListView.setVisibility(View.INVISIBLE);
         emptyLayout.setVisibility(View.VISIBLE);
         noticeTitleText.setText(R.string.no_homework);
         noticeHintText.setText(R.string.watch_library_to_publish_homework);

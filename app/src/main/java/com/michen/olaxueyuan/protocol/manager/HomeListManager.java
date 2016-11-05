@@ -1,9 +1,13 @@
 package com.michen.olaxueyuan.protocol.manager;
 
 import com.michen.olaxueyuan.protocol.result.HomeModule;
+import com.michen.olaxueyuan.protocol.result.MaterialListResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.service.HomeListService;
 
 import retrofit.Callback;
+
+import static com.michen.olaxueyuan.ui.circle.CircleFragment.type;
 
 /**
  * Created by mingge on 16/4/28.
@@ -34,5 +38,30 @@ public class HomeListManager {
      */
     public void fetchHomeCourseList(final Callback<HomeModule> callback) {
         getHomeListService().getHomeList(callback);
+    }
+
+    /**
+     * 资料列表
+     *
+     * @param userId     字符串
+     * @param materailId 字符串	当前页最后一条的id
+     * @param pageSize   字符串	每页条数
+     * @param type       字符串	1 数学 2 英语 3 逻辑 4 写作
+     * @param cb
+     */
+    public void getMaterailList(String userId, String materailId, String pageSize,
+                                String type, final Callback<MaterialListResult> callback) {
+        getHomeListService().getMaterailList(userId, materailId, pageSize, type, callback);
+    }
+
+    /**
+     * 解锁资料
+     *
+     * @param userId
+     * @param materialId
+     * @param cb
+     */
+    public void unlockMaterial(String userId, String materailId, final Callback<SimpleResult> callback) {
+        getHomeListService().unlockMaterial(userId, materailId, callback);
     }
 }
