@@ -48,6 +48,8 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
     TextView downloadTV;
     @Bind(R.id.downloadRL)
     RelativeLayout downloadRL;
+    @Bind(R.id.clearCacheRL)
+    RelativeLayout clearCacheRL;
     @Bind(R.id.cache_size_text)
     TextView cacheSizeText;
     @Bind(R.id.aboutRL)
@@ -81,7 +83,7 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
         }
     }
 
-    @OnClick({R.id.passRL, R.id.info_setting_layout, R.id.downloadRL, R.id.aboutRL, R.id.rate_layout, R.id.feedback_layout, R.id.shareRL, R.id.btn_logout})
+    @OnClick({R.id.passRL, R.id.info_setting_layout, R.id.downloadRL,R.id.clearCacheRL, R.id.aboutRL, R.id.rate_layout, R.id.feedback_layout, R.id.shareRL, R.id.btn_logout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.passRL:
@@ -91,6 +93,8 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
                 break;
             case R.id.downloadRL:
                 showBottomPopWindow();
+                break;
+            case R.id.clearCacheRL:
                 break;
             case R.id.aboutRL:
                 startActivity(new Intent(SettingActivity.this, AboutActivity.class));

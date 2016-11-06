@@ -4,14 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +23,7 @@ import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.me.activity.VideoPlayActivity;
 import com.michen.olaxueyuan.ui.question.module.QuestionResultNoticeClose;
 import com.snail.svprogresshud.SVProgressHUD;
+import com.tencent.smtt.sdk.WebView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -69,20 +69,20 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         nextBtn.setOnClickListener(this);
 
         int courseType = getIntent().getExtras().getInt("courseType");
-        if (courseType==2){
+        if (courseType == 2) {
             articleTV.setVisibility(View.VISIBLE);
         }
 
         type = getIntent().getExtras().getInt("type");
         if (type == 1) {
             setTitleText("专项练习");
-            MobclickAgent.onEvent(this,"enter_point");
-        } else if(type == 2){
+            MobclickAgent.onEvent(this, "enter_point");
+        } else if (type == 2) {
             setTitleText("模拟考试");
             MobclickAgent.onEvent(this, "enter_exam");
-        }else if(type == 3){
+        } else if (type == 3) {
             setTitleText("欧拉作业");
-        }else if(type == 4){
+        } else if (type == 4) {
             setTitleText("错题集");
         }
         objectId = getIntent().getExtras().getInt("objectId");
@@ -92,14 +92,31 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         //设置本地调用对象及其接口
         contentWebView.addJavascriptInterface(new JsInterface(QuestionWebActivity.this), "AndroidWebView");
 
-        String userId="";
+        String userId = "";
         SEAuthManager am = SEAuthManager.getInstance();
-        if (am.isAuthenticated()){
+        if (am.isAuthenticated()) {
             userId = am.getAccessUser().getId();
         }
 
-        contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/question.html?objectId="+objectId+"&type=" + type + "&userId="+userId);
-        contentWebView.setWebViewClient(new WebViewClient() {
+        contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/question.html?objectId=" + objectId + "&type=" + type + "&userId=" + userId);
+        contentWebView.setWebViewClient(new com.tencent.smtt.sdk.WebViewClient() {
+            @Override
+            public void onPageStarted(WebView webView, String s, Bitmap bitmap) {
+                super.onPageStarted(webView, s, bitmap);
+                if (type == 4) { //错题集直接显示答案
+                    contentWebView.loadUrl("javascript:loadQuestion('1')");
+                } else {
+                    contentWebView.loadUrl("javascript:loadQuestion('0')");
+                }
+            }
+
+            @Override
+            public void onReceivedError(WebView webView, int i, String s, String s1) {
+                super.onReceivedError(webView, i, s, s1);
+                SVProgressHUD.showInViewWithoutIndicator(QuestionWebActivity.this, "加载失败", 2.0f);
+            }
+        });
+       /* contentWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 if (type==4){ //错题集直接显示答案
@@ -115,14 +132,14 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
                 super.onReceivedError(view, errorCode, description, failingUrl);
                 SVProgressHUD.showInViewWithoutIndicator(QuestionWebActivity.this, "加载失败", 2.0f);
             }
-        });
+        });*/
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode== Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             nextBtn.setText("下一题");
             contentWebView.loadUrl("javascript:loadQuestion('1')"); //全部解析
         }
@@ -157,9 +174,9 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
                     nextBtn.setText(msg.obj.toString());
                     break;
                 case 4:
-                    if(msg.obj==null||TextUtils.isEmpty(msg.obj.toString())){
+                    if (msg.obj == null || TextUtils.isEmpty(msg.obj.toString())) {
                         setRightImageInvisibility();
-                    }else {
+                    } else {
                         setRightImage(R.drawable.ic_video_blue);
                         final String videoUrl = msg.obj.toString();
                         setRightTextListener(new View.OnClickListener() {
@@ -177,9 +194,9 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
                     Intent intent = new Intent(QuestionWebActivity.this, QuestionResultActivity.class);
                     intent.putExtra("answerArray", msg.obj.toString());
                     intent.putExtra("objectId", objectId);
-                    intent.putExtra("type",type);
-                    if (type==1){
-                        intent.putExtra("outerURL",getIntent().getStringExtra("outerURL"));
+                    intent.putExtra("type", type);
+                    if (type == 1) {
+                        intent.putExtra("outerURL", getIntent().getStringExtra("outerURL"));
                     }
                     startActivityForResult(intent, 1);
                     break;
@@ -205,6 +222,7 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
             msg.what = 0;
             handler.sendMessage(msg);
         }
+
         @JavascriptInterface
         public void showPreviousButton() {
             handler.sendEmptyMessage(1);
@@ -258,10 +276,11 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-        if (nextBtn!=null){
+        if (nextBtn != null) {
             nextBtn.setEnabled(true);
         }
     }
+
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
@@ -271,5 +290,6 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+
     }
 }
