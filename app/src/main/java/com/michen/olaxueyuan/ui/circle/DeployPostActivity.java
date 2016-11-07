@@ -150,10 +150,18 @@ public class DeployPostActivity extends SEBaseActivity {
                 }
 //                Log.e("Test", bdLocation.getAddrStr());
                 try {
-                    mLocation = bdLocation.getCity() + bdLocation.getDistrict();
+                    String city = bdLocation.getCity();
+                    String district = bdLocation.getDistrict();
+                    if (city == null) {
+                        city = "";
+                    }
+                    if (district == null) {
+                        district = "";
+                    }
+                    mLocation = city + district;
                 } catch (Exception e) {
                     e.printStackTrace();
-                    mLocation = "定位失败";
+                    mLocation = "";
                 }
                 mTv_location.setText(mLocation);
             }

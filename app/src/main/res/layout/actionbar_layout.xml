@@ -39,10 +39,13 @@
     <ImageButton
         android:id="@+id/right_imbt"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@null" />
+        android:background="@null"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_5"
+        android:scaleType="centerInside" />
 
     <TextView
         android:id="@+id/right_text"

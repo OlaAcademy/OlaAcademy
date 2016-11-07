@@ -19,9 +19,9 @@ android {
         // 默认是umeng的渠道
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "OlaAcademy"]
 
-        ndk {
+        /*ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
-        }
+        }*/
     }
     lintOptions {
         checkReleaseBuilds false
@@ -173,4 +173,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.0.0'
     compile 'com.android.support:design:22.2.1'
     compile files('libs/alipaySingle-20160825.jar')
+    compile files('libs/tbs_sdk_thirdapp_v2.4.0.1073_36840.jar')
 }

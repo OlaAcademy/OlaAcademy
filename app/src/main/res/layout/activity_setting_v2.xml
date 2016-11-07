@@ -113,6 +113,7 @@
         <View style="@style/line_horizontal" />
 
         <RelativeLayout
+            android:id="@+id/clearCacheRL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_white_item_bg"

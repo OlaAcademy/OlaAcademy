@@ -70,7 +70,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     LinearLayout allSearchView;
     @Bind(R.id.pop_line2)
     View popLine;
-    private String type = "";//1 学习记录 2 帖子 "" 全部
+    public static String type = "";//1 学习记录 2 帖子 "" 全部
     private static final String PAGE_SIZE = "20";//每次加载20条
 
     CircleAdapter adapter;
