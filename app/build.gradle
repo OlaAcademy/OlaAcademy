@@ -173,4 +173,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.0.0'
     compile 'com.android.support:design:22.2.1'
     compile files('libs/alipaySingle-20160825.jar')
+
 }
