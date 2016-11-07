@@ -8,6 +8,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SEThemer;
+import com.tencent.smtt.sdk.QbSdk;
 
 /**
  * Created by tianxiaopeng on 15-1-7.
@@ -21,6 +22,7 @@ public class SEAPP extends Application {
     public void onCreate() {
         super.onCreate();
         mAppContext = this;
+        QbSdk.initX5Environment(getApplicationContext(), null);//调用 QbSdk 的预加载接口 ,当 App 后续创建 webview 时就可以首次加载 x5 内核了
         SEThemer.getInstance().init(this);
         SEThemer.getInstance().setActionBarBackgroundColor(getResources().getColor(R.color.ActionBarBackgroundColor));
         SEThemer.getInstance().setActionBarForegroundColor(getResources().getColor(R.color.ActionBarForegroundColor));
@@ -31,7 +33,7 @@ public class SEAPP extends Application {
             versionNames = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (Exception e) {
             e.printStackTrace();
-            versionNames = "v1.2.5";
+            versionNames = "";
 
         }
         SEConfig.getInstance().init(API_BASE_URL, "欧拉联考 v" + versionNames, this);

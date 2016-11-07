@@ -108,8 +108,9 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
             ToastUtil.showToastShort(getActivity(), R.string.need_sd);
             return;
         }
-        String fileName = id + ".pdf";
-        final String target = "/sdcard/OlaAcademy/" + fileName;
+        String fileName = "/" + id + ".pdf";
+//        final String target = "/sdcard/OlaAcademy/" + fileName;
+        final String target = getActivity().getExternalCacheDir() + fileName;
         final File file = new File(target);
         if (file.exists()) {
             setVisible(false, false, true);

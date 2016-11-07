@@ -26,6 +26,7 @@ import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
+import com.michen.olaxueyuan.ui.manager.DataCleanManager;
 import com.michen.olaxueyuan.ui.me.activity.UserPasswordActivity;
 
 import java.util.HashMap;
@@ -81,9 +82,15 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
         } else {
             downloadTV.setText("移动数据和WIFI");
         }
+        try {
+            cacheSizeText.setText(DataCleanManager.getTotalCacheSize(this));
+        } catch (Exception e) {
+            e.printStackTrace();
+            cacheSizeText.setText("0k");
+        }
     }
 
-    @OnClick({R.id.passRL, R.id.info_setting_layout, R.id.downloadRL,R.id.clearCacheRL, R.id.aboutRL, R.id.rate_layout, R.id.feedback_layout, R.id.shareRL, R.id.btn_logout})
+    @OnClick({R.id.passRL, R.id.info_setting_layout, R.id.downloadRL, R.id.clearCacheRL, R.id.aboutRL, R.id.rate_layout, R.id.feedback_layout, R.id.shareRL, R.id.btn_logout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.passRL:
@@ -95,6 +102,7 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
                 showBottomPopWindow();
                 break;
             case R.id.clearCacheRL:
+                clearDataCache();
                 break;
             case R.id.aboutRL:
                 startActivity(new Intent(SettingActivity.this, AboutActivity.class));
@@ -112,6 +120,11 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
                 logout();
                 break;
         }
+    }
+
+    private void clearDataCache() {
+        DataCleanManager.clearAllCache(SettingActivity.this);
+        cacheSizeText.setText("0k");
     }
 
     private void shareFriend() {

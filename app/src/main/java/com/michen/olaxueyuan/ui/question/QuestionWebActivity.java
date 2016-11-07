@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +23,7 @@ import com.michen.olaxueyuan.ui.me.activity.VideoPlayActivity;
 import com.michen.olaxueyuan.ui.question.module.QuestionResultNoticeClose;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -99,10 +99,11 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         }
 
         contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/question.html?objectId=" + objectId + "&type=" + type + "&userId=" + userId);
-        contentWebView.setWebViewClient(new com.tencent.smtt.sdk.WebViewClient() {
+
+        contentWebView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageStarted(WebView webView, String s, Bitmap bitmap) {
-                super.onPageStarted(webView, s, bitmap);
+            public void onPageFinished(WebView webView, String s) {
+                super.onPageFinished(webView, s);
                 if (type == 4) { //错题集直接显示答案
                     contentWebView.loadUrl("javascript:loadQuestion('1')");
                 } else {
@@ -116,24 +117,6 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
                 SVProgressHUD.showInViewWithoutIndicator(QuestionWebActivity.this, "加载失败", 2.0f);
             }
         });
-       /* contentWebView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                if (type==4){ //错题集直接显示答案
-                    contentWebView.loadUrl("javascript:loadQuestion('1')");
-                }else {
-                    contentWebView.loadUrl("javascript:loadQuestion('0')");
-                }
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode,
-                                        String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
-                SVProgressHUD.showInViewWithoutIndicator(QuestionWebActivity.this, "加载失败", 2.0f);
-            }
-        });*/
-
     }
 
     @Override

@@ -30,15 +30,17 @@ public class DataLibraryFragmentListAdapter extends BaseAdapter {
     private Context mContext;
     List<MaterialListResult.ResultBean> list = new ArrayList<>();
     private int subjectType;
+    private UpdateBrowseCount updateBrowseCount;
 
     public void updateData(List<MaterialListResult.ResultBean> list) {
         this.list = list;
         notifyDataSetChanged();
     }
 
-    public DataLibraryFragmentListAdapter(Context mContext, int subjectType) {
+    public DataLibraryFragmentListAdapter(Context mContext, int subjectType, UpdateBrowseCount updateBrowseCount) {
         this.mContext = mContext;
         this.subjectType = subjectType;
+        this.updateBrowseCount = updateBrowseCount;
     }
 
     @Override
@@ -73,13 +75,14 @@ public class DataLibraryFragmentListAdapter extends BaseAdapter {
                     .resize(Utils.dip2px(mContext, 35), Utils.dip2px(mContext, 35)).into(holder.avatarCourse);
         }
         holder.name.setText(list.get(position).getTitle());
-        holder.paynum.setText("文件大小:" + list.get(position).getSize());
+        holder.paynum.setText("文件大小:" + list.get(position).getSize() + ";" + list.get(position).getCount() + "人阅读");
         holder.detail.setText(list.get(position).getProvider());
         holder.price.setText(String.valueOf(list.get(position).getPrice()));
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (list.get(position).getStatus() == 1 || list.get(position).getPic().equals("0")) {//1、已兑换
+                    updateBrowseCount.updateCount(true, position, subjectType);
                     Intent intent = new Intent(mContext, PDFViewActivity.class);
                     intent.putExtra("url", list.get(position).getUrl());
                     intent.putExtra("title", list.get(position).getTitle());
@@ -112,5 +115,9 @@ public class DataLibraryFragmentListAdapter extends BaseAdapter {
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+    public interface UpdateBrowseCount {
+        void updateCount(boolean isUpdate, int position, int subjectType);
     }
 }

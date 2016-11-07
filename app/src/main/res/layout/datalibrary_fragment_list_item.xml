@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/paynum"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginLeft="15dp"
         android:gravity="center_vertical"

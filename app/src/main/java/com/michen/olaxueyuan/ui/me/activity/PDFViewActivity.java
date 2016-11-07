@@ -41,7 +41,7 @@ public class PDFViewActivity extends SEBaseActivity implements OnPageChangeListe
 
     private String title;
     private String url;
-    private int id;
+    private String id;
     private String downLoadUrl;
     private String name;
 
@@ -61,7 +61,7 @@ public class PDFViewActivity extends SEBaseActivity implements OnPageChangeListe
         title = getIntent().getStringExtra("title");
         name = getIntent().getStringExtra("name");
         url = getIntent().getStringExtra("url");
-        id = getIntent().getIntExtra("id", 0);
+        id = getIntent().getStringExtra("id");
 
         setTitleText(title);
         downLoadPdf(url, id);
@@ -79,13 +79,14 @@ public class PDFViewActivity extends SEBaseActivity implements OnPageChangeListe
         }
     }
 
-    private void downLoadPdf(String url, long id) {
+    private void downLoadPdf(String url, String id) {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             ToastUtil.showToastShort(PDFViewActivity.this, R.string.need_sd);
             return;
         }
-        String fileName = "find_data_library_" + id + ".pdf";
-        final String target = "/sdcard/OlaAcademy/" + fileName;
+        String fileName = "/find_data_library_" + id + ".pdf";
+//        final String target = "/sdcard/OlaAcademy/" + fileName;
+        final String target = PDFViewActivity.this.getExternalCacheDir() + fileName;
         final File file = new File(target);
         if (file.exists()) {
             setVisible(false, false, true);
