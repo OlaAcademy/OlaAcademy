@@ -14,12 +14,19 @@
         android:textSize="16sp"
         android:visibility="gone" />
 
-    <WebView
+    <com.tencent.smtt.sdk.WebView
         android:id="@+id/questionWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/operationRL"
-        android:layout_below="@+id/tv_article"></WebView>
+        android:layout_below="@+id/tv_article" />
+
+    <!-- <WebView
+         android:id="@+id/questionWebView"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_above="@+id/operationRL"
+         android:layout_below="@+id/tv_article"/>-->
 
     <RelativeLayout
         android:id="@+id/operationRL"
