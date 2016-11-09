@@ -9,7 +9,7 @@ import java.util.List;
 public class OrganizationInfoResult {
     /**
      * message : 成功
-     * result : [{"optionName":"机构","optionList":[{"address":"http://www.mykepu.com:8080/pic/organization/1.jpg","attendCount":951,"checkinCount":39,"id":1,"logo":"http://commodity.ufile.ucloud.com.cn/logo1.jpg","name":"2017年幂学系统班","org":"由幂学教育提供","profile":"","type":1},{"address":"http://www.mykepu.com:8080/pic/organization/2.jpg","attendCount":458,"checkinCount":27,"id":2,"logo":"http://commodity.ufile.ucloud.com.cn/logo1.jpg","name":"2017年幂学私塾班","org":"由幂学教育提供","profile":"","type":1},{"address":"http://www.mykepu.com:8080/pic/organization/3.jpg","attendCount":201,"checkinCount":19,"id":3,"logo":"http://commodity.ufile.ucloud.com.cn/logo2.jpg","name":"2017年京虎系统班","org":"由京虎教育提供","profile":"","type":1},{"address":"http://www.mykepu.com:8080/pic/organization/3.jpg","attendCount":0,"checkinCount":0,"id":4,"logo":"http://commodity.ufile.ucloud.com.cn/logo2.jpg","name":"2017年京虎私塾班","org":"由京虎教育提供","profile":"","type":1}]},{"optionName":"学校","optionList":[]}]
+     * result : [{"optionName":"机构","optionList":[{"address":"http://organization.ufile.ucloud.com.cn/brochure1.pdf","attendCount":951,"checkinCount":39,"id":1,"logo":"http://commodity.ufile.ucloud.com.cn/logo1.jpg","name":"2017年幂学系统班","org":"幂学","profile":"2018年幂学教育MPAcc招生简章","type":1},{"address":"http://organization.ufile.ucloud.com.cn/brochure2.pdf","attendCount":458,"checkinCount":27,"id":2,"logo":"http://commodity.ufile.ucloud.com.cn/logo1.jpg","name":"2017年幂学私塾班","org":"幂学","profile":"2018年MBA复试与面试辅导招生简章","type":1}]},{"optionName":"学校","optionList":[{"address":"http://organization.ufile.ucloud.com.cn/brochure3.pdf","attendCount":201,"checkinCount":19,"id":3,"logo":"http://banner.ufile.ucloud.com.cn/paris.jpg","name":"巴黎第一大学","org":"法国","profile":"法国巴黎一大招生简章","type":2},{"address":"http://organization.ufile.ucloud.com.cn/brochure4.pdf","attendCount":0,"checkinCount":10,"id":4,"logo":"http://banner.ufile.ucloud.com.cn/neo.jpg","name":"诺欧商学院","org":"法国","profile":"法国诺欧商学院-零售管理硕士招生简章","type":2},{"address":"http://organization.ufile.ucloud.com.cn/brochure5.pdf","attendCount":0,"checkinCount":16,"id":6,"logo":"http://banner.ufile.ucloud.com.cn/xiyatu.jpg","name":"西雅图城市大学","org":"美国","profile":"美国西雅图城市大学MBA招生简章","type":2}]}]
      * apicode : 10000
      */
 
@@ -17,7 +17,7 @@ public class OrganizationInfoResult {
     private int apicode;
     /**
      * optionName : 机构
-     * optionList : [{"address":"http://www.mykepu.com:8080/pic/organization/1.jpg","attendCount":951,"checkinCount":39,"id":1,"logo":"http://commodity.ufile.ucloud.com.cn/logo1.jpg","name":"2017年幂学系统班","org":"由幂学教育提供","profile":"","type":1},{"address":"http://www.mykepu.com:8080/pic/organization/2.jpg","attendCount":458,"checkinCount":27,"id":2,"logo":"http://commodity.ufile.ucloud.com.cn/logo1.jpg","name":"2017年幂学私塾班","org":"由幂学教育提供","profile":"","type":1},{"address":"http://www.mykepu.com:8080/pic/organization/3.jpg","attendCount":201,"checkinCount":19,"id":3,"logo":"http://commodity.ufile.ucloud.com.cn/logo2.jpg","name":"2017年京虎系统班","org":"由京虎教育提供","profile":"","type":1},{"address":"http://www.mykepu.com:8080/pic/organization/3.jpg","attendCount":0,"checkinCount":0,"id":4,"logo":"http://commodity.ufile.ucloud.com.cn/logo2.jpg","name":"2017年京虎私塾班","org":"由京虎教育提供","profile":"","type":1}]
+     * optionList : [{"address":"http://organization.ufile.ucloud.com.cn/brochure1.pdf","attendCount":951,"checkinCount":39,"id":1,"logo":"http://commodity.ufile.ucloud.com.cn/logo1.jpg","name":"2017年幂学系统班","org":"幂学","profile":"2018年幂学教育MPAcc招生简章","type":1},{"address":"http://organization.ufile.ucloud.com.cn/brochure2.pdf","attendCount":458,"checkinCount":27,"id":2,"logo":"http://commodity.ufile.ucloud.com.cn/logo1.jpg","name":"2017年幂学私塾班","org":"幂学","profile":"2018年MBA复试与面试辅导招生简章","type":1}]
      */
 
     private List<ResultBean> result;
@@ -49,14 +49,14 @@ public class OrganizationInfoResult {
     public static class ResultBean {
         private String optionName;
         /**
-         * address : http://www.mykepu.com:8080/pic/organization/1.jpg
+         * address : http://organization.ufile.ucloud.com.cn/brochure1.pdf
          * attendCount : 951
          * checkinCount : 39
          * id : 1
          * logo : http://commodity.ufile.ucloud.com.cn/logo1.jpg
          * name : 2017年幂学系统班
-         * org : 由幂学教育提供
-         * profile :
+         * org : 幂学
+         * profile : 2018年幂学教育MPAcc招生简章
          * type : 1
          */
 

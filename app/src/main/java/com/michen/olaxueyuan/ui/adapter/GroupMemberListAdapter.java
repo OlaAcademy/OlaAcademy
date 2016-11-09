@@ -13,7 +13,7 @@ import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.PictureUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
-import com.michen.olaxueyuan.protocol.result.HomeworkStatisticsResult;
+import com.michen.olaxueyuan.protocol.result.GroupMemberResult;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,15 +26,15 @@ import butterknife.ButterKnife;
  * Created by mingge on 2016/10/31.
  */
 
-public class TStudentCompleteInfoListAdapter extends BaseAdapter {
+public class GroupMemberListAdapter extends BaseAdapter {
     Context context;
-    List<HomeworkStatisticsResult.ResultBean.StatisticsListBean> list = new ArrayList<>();
+    List<GroupMemberResult.ResultBean> list = new ArrayList<>();
 
-    public TStudentCompleteInfoListAdapter(Context context) {
+    public GroupMemberListAdapter(Context context) {
         this.context = context;
     }
 
-    public void updateData(List<HomeworkStatisticsResult.ResultBean.StatisticsListBean> list) {
+    public void updateData(List<GroupMemberResult.ResultBean> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -58,21 +58,20 @@ public class TStudentCompleteInfoListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(context, R.layout.tstudent_complete_info_list_item, null);
+            convertView = View.inflate(context, R.layout.group_member_list_item, null);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.title.setText(list.get(position).getUserName());
-        holder.finishedText.setText(list.get(position).getFinished() + "%");
+        holder.title.setText(list.get(position).getName());
         holder.avatar.setRectAdius(100);
-        if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
+        if (!TextUtils.isEmpty(list.get(position).getAvator())) {
             String avatarUrl = "";
-            if (list.get(position).getUserAvatar().contains(".")) {
-                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar();
+            if (list.get(position).getAvator().contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getAvator();
             } else {
-                avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();
+                avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getAvator();
             }
             Picasso.with(context).load(avatarUrl)
                     .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar)
@@ -82,7 +81,7 @@ public class TStudentCompleteInfoListAdapter extends BaseAdapter {
         holder.avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PictureUtil.viewPictures(context, list.get(position).getUserAvatar());
+                PictureUtil.viewPictures(context, list.get(position).getAvator());
             }
         });
         return convertView;

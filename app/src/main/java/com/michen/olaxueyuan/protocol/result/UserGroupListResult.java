@@ -57,7 +57,7 @@ public class UserGroupListResult implements Serializable {
     public static class ResultEntity implements Serializable{
         private String avatar;
         private int createUser;
-        private int id;
+        private String id;
         private String name;
         private String profile;
         private int type;
@@ -73,7 +73,7 @@ public class UserGroupListResult implements Serializable {
             this.createUser = createUser;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -109,7 +109,7 @@ public class UserGroupListResult implements Serializable {
             return createUser;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 

@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.protocol.manager;
 
 import com.michen.olaxueyuan.protocol.result.AttendGroupResult;
 import com.michen.olaxueyuan.protocol.result.CreateGroupResult;
+import com.michen.olaxueyuan.protocol.result.GroupMemberResult;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
 import com.michen.olaxueyuan.protocol.result.HomeworkStatisticsResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
@@ -11,8 +12,6 @@ import com.michen.olaxueyuan.protocol.result.UserGroupListResult;
 import com.michen.olaxueyuan.protocol.service.TeacherHomeService;
 
 import retrofit.Callback;
-
-import static com.michen.olaxueyuan.R.id.avatar;
 
 /**
  * Created by mingge on 16/8/31.
@@ -42,8 +41,8 @@ public class TeacherHomeManager {
      * @param type     1、数学2、英语3、逻辑4、写作
      * @param callback
      */
-    public void createGroup(String userId, String type, String name,String profile, String avatar, final Callback<CreateGroupResult> callback) {
-        getTeacherHomeService().createGroup(userId, type, name,profile, avatar, callback);
+    public void createGroup(String userId, String type, String name, String profile, String avatar, final Callback<CreateGroupResult> callback) {
+        getTeacherHomeService().createGroup(userId, type, name, profile, avatar, callback);
     }
 
     /**
@@ -125,5 +124,17 @@ public class TeacherHomeManager {
      */
     public void getHomeworkStatistics(String groupId, String homeworkId, int pageIndex, int pageSize, final Callback<HomeworkStatisticsResult> callback) {
         getTeacherHomeService().getHomeworkStatistics(groupId, homeworkId, pageIndex, pageSize, callback);
+    }
+
+    /**
+     * 群成员列表
+     *
+     * @param groupId
+     * @param pageIndex
+     * @param pageSize
+     * @param callback
+     */
+    public void queryGroupMember(String groupId, int pageIndex, int pageSize, final Callback<GroupMemberResult> callback) {
+        getTeacherHomeService().queryGroupMember(groupId, pageIndex, pageSize, callback);
     }
 }

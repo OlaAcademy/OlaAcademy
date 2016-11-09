@@ -24,10 +24,12 @@ public class SEBaseActivity extends FragmentActivity {
     private ImageView rightImage;
     private TextView leftText, titleText, rightText;
     ActionBar actionBar;
+    protected Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         PushAgent.getInstance(this).onAppStart();
         // manifest中配置主题为Translucent，因此需要在这儿通过代码设置
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
