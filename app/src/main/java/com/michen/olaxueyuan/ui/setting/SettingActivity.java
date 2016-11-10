@@ -1,7 +1,5 @@
 package com.michen.olaxueyuan.ui.setting;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,6 +19,7 @@ import android.widget.Toast;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
@@ -143,22 +142,18 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
     }
 
     private void logout() {
-        new AlertDialog.Builder(SettingActivity.this)
-                .setTitle("请确认")
-                .setMessage("确认退出当前用户吗？")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+        DialogUtils.showDialog(mContext, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.yes:
                         SEUserManager.getInstance().logout();
                         EventBus.getDefault().post(new UserLoginNoticeModule(false));//发送通知登录
                         finish();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .show();
+                        break;
+                }
+            }
+        }, "", "确认退出当前用户吗？", "", "");
     }
 
 

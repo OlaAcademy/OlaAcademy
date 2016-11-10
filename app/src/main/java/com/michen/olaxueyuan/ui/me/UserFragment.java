@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.PictureUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -114,7 +116,7 @@ public class UserFragment extends SuperFragment {
 
     @OnClick({R.id.right_response, R.id.headLL, R.id.wrong_topic_layout, R.id.buy_vip_layout
             , R.id.my_buy_layout, R.id.my_collect_layout, R.id.my_download_layout
-            , R.id.service_email_layout, R.id.my_coin_layout})
+            , R.id.service_email_layout, R.id.my_coin_layout, R.id.avatar})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_response:
@@ -143,6 +145,11 @@ public class UserFragment extends SuperFragment {
                 break;
             case R.id.service_email_layout:
                 sendEmail();
+                break;
+            case R.id.avatar:
+                if (SEAuthManager.getInstance().getAccessUser() != null && !TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
+                    PictureUtil.viewPictures(getActivity(), SEAuthManager.getInstance().getAccessUser().getAvator());
+                }
                 break;
             default:
                 break;
