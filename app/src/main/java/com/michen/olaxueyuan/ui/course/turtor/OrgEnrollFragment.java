@@ -140,7 +140,7 @@ public class OrgEnrollFragment extends Fragment {
             return;
         }
         MCOrgManager orgManager = MCOrgManager.getInstance();
-        orgManager.enroll(orgInfo.id, phoneET.getText().toString(), "", enrollType + "", dateTV.getText().toString(), new Callback<MCCommonResult>() {
+        orgManager.enroll(orgInfo.id, phoneET.getText().toString(), "",  dateTV.getText().toString(), new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
                 if (result.apicode.equals("10000")) {

@@ -82,7 +82,7 @@ public class OrganizationInfoResult {
             private String address;
             private int attendCount;
             private int checkinCount;
-            private int id;
+            private String id;
             private String logo;
             private String name;
             private String org;
@@ -113,11 +113,11 @@ public class OrganizationInfoResult {
                 this.checkinCount = checkinCount;
             }
 
-            public int getId() {
+            public String getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(String id) {
                 this.id = id;
             }
 

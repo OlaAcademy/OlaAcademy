@@ -115,6 +115,10 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
                     if (oLaCircleModule.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), oLaCircleModule.getMessage(), 2.0f);
                     } else {
+                        if (oLaCircleModule.getResult().size() == 0) {
+                            ToastUtil.showToastShort(getActivity(), R.string.to_end);
+                            return;
+                        }
 //                    Logger.json(oLaCircleModule);
                         if (circleId.equals("")) {
                             list.clear();

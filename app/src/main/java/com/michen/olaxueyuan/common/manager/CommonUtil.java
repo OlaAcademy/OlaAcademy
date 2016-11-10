@@ -343,7 +343,7 @@ public class CommonUtil {
 	}
 
 	public static String formatDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return sdf.format(new Date());
 	}
 

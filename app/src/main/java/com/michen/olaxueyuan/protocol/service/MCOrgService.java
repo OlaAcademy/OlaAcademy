@@ -100,7 +100,6 @@ public interface MCOrgService {
     public void enroll(@Part("orgId") String orgId,
                        @Part("userPhone") String userPhone,
                        @Part("userLocal") String userLocal,
-                       @Part("type") String type,
                        @Part("checkinTime") String checkinTime,
                        Callback<MCCommonResult> cb);
 
