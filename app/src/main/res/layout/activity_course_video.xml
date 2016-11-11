@@ -161,8 +161,8 @@
 
     <View style="@style/line_horizontal" />
 
-    <!--<android.support.v4.view.ViewPager-->
-    <com.michen.olaxueyuan.common.NonSwipeableViewPager
+    <!--<com.michen.olaxueyuan.common.NonSwipeableViewPager-->
+    <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"

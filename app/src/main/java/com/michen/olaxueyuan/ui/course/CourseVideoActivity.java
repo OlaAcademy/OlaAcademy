@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -26,7 +27,6 @@ import android.widget.Toast;
 import com.lidroid.xutils.exception.DbException;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
-import com.michen.olaxueyuan.common.NonSwipeableViewPager;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
@@ -140,7 +140,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     @Bind(R.id.handout_layout)
     RelativeLayout handoutLayout;
     @Bind(R.id.view_pager)
-    public NonSwipeableViewPager mViewPager;
+    public ViewPager mViewPager;
 
     private String courseId;
     private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;

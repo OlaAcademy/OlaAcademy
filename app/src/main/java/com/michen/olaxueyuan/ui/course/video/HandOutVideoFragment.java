@@ -90,6 +90,7 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
 
     /**
      * {@link CourseVideoActivity#setDownloadPdfPosition(int)}
+     * {@link com.michen.olaxueyuan.ui.course.SystemVideoActivity#setDownloadPdfPosition(int)}
      */
     public void onEventMainThread(VideoPdfEvent videoPdf) {
         if (videoPdf.type == 1 && nowPosition != videoPdf.position) {
