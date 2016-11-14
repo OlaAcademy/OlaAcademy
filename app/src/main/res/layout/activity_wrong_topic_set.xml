@@ -1,7 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_wrong_topic_set"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <include
+        android:id="@+id/indicator_view"
+        layout="@layout/fragment_question_indicator" />
 
     <RelativeLayout
         android:id="@+id/subject_layout"
@@ -28,24 +35,11 @@
             android:src="@drawable/subject_pulldown_icon" />
     </RelativeLayout>
 
-    <FrameLayout
+    <com.snail.pulltorefresh.PullToRefreshListView
+        android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.snail.pulltorefresh.PullToRefreshExpandableListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/expandableListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:visibility="visible"
-            ptr:ptrAnimationStyle="flip" />
-
-        <com.snail.pulltorefresh.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/listview_subject"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:visibility="visible"
-            ptr:ptrAnimationStyle="flip" />
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="visible"
+        ptr:ptrAnimationStyle="flip" />
 </LinearLayout>

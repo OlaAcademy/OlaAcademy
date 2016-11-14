@@ -20,4 +20,15 @@ public class VideoPdfEvent implements Serializable {
         this.position = position;
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "VideoPdfEvent{" +
+                "url='" + url + '\'' +
+                ", id=" + id +
+                ", type=" + type +
+                ", position=" + position +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

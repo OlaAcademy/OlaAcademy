@@ -14,39 +14,39 @@
    limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <com.snail.segmented.SegmentedRadioGroup
+        android:id="@+id/segment_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
-        android:orientation="horizontal"
-        android:id="@+id/segment_text"
-        android:checkedButton="@+id/button_all">
+        android:checkedButton="@+id/button_all"
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/button_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="40dip"
-            android:minHeight="33dip"
-            android:text="全部"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:button="@null"
             android:gravity="center"
+            android:minHeight="33dip"
+            android:minWidth="40dip"
+            android:text="全部"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/radio_colors" />
 
         <RadioButton
             android:id="@+id/button_instudy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="40dip"
-            android:minHeight="33dip"
-            android:text="学习中"
             android:button="@null"
             android:gravity="center"
+            android:minHeight="33dip"
+            android:minWidth="40dip"
+            android:text="学习中"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/radio_colors" />
 
@@ -54,11 +54,11 @@
             android:id="@+id/button_never"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="40dip"
-            android:minHeight="33dip"
-            android:text="未学习"
             android:button="@null"
             android:gravity="center"
+            android:minHeight="33dip"
+            android:minWidth="40dip"
+            android:text="未学习"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/radio_colors" />
 
@@ -66,19 +66,20 @@
             android:id="@+id/button_finished"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="40dip"
-            android:minHeight="33dip"
-            android:text="已结束"
             android:button="@null"
             android:gravity="center"
+            android:minHeight="33dip"
+            android:minWidth="40dip"
+            android:text="已结束"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/radio_colors" />
     </com.snail.segmented.SegmentedRadioGroup>
 
-    <com.snail.pulltorefresh.PullToRefreshListView
+    <com.snail.pulltorefresh.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/myCourseListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:cacheColorHint="@android:color/transparent" />
+        android:cacheColorHint="@android:color/transparent"
+        ptr:ptrAnimationStyle="flip" />
 
 </LinearLayout>

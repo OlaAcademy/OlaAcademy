@@ -32,6 +32,8 @@ import retrofit.client.Response;
 
 /**
  * 错题本
+ *
+ * @deprecated {@link WrongTopicSetActivity}
  */
 public class WrongTopicActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener {
     @Bind(R.id.expandableListView)

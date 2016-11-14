@@ -5,6 +5,7 @@
     android:id="@+id/studentListView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:ptrAnimationStyle="flip"
     app:item_margin="8dp"
     app:ptrMode="both"
     android:cacheColorHint="@android:color/transparent"/>

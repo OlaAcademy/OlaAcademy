@@ -514,6 +514,10 @@
             android:name=".ui.group.GroupMemberActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.me.activity.WrongTopicSetActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

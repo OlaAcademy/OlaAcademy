@@ -6,12 +6,13 @@
     android:background="@color/white_light"
     android:orientation="vertical">
 
-    <com.snail.pulltorefresh.PullToRefreshScrollView
+    <com.snail.pulltorefresh.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        ptr:ptrAnimationStyle="flip">
 
         <LinearLayout
             android:layout_width="match_parent"

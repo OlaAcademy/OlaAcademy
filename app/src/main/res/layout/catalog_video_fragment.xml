@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/root"
     android:layout_height="match_parent"
     android:background="@color/white">
 
@@ -19,7 +20,8 @@
         android:layout_height="44dp"
         android:layout_gravity="bottom"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <View style="@style/line_horizontal" />
 
@@ -64,5 +66,36 @@
             android:background="@drawable/rectangle_blue_3dp_btn_bg"
             android:text="@string/buy_now"
             android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_download_view"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View style="@style/line_horizontal" />
+
+        <ImageView
+            android:id="@+id/video_download_btn"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_toLeftOf="@+id/video_share_btn"
+            android:scaleType="centerInside"
+            android:src="@drawable/video_download_icon" />
+
+        <ImageView
+            android:id="@+id/video_share_btn"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="15dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/video_share_icon" />
+
     </RelativeLayout>
 </FrameLayout>

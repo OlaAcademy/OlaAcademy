@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.michen.olaxueyuan.ui.index.com.snailedu.photo.com.snailedu.photo.activity.AuditionActivity">
 
-    <com.snail.pulltorefresh.PullToRefreshListView
+    <com.snail.pulltorefresh.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/examListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:cacheColorHint="@android:color/transparent" />
+        android:cacheColorHint="@android:color/transparent"
+        ptr:ptrAnimationStyle="flip" />
 
 </RelativeLayout>

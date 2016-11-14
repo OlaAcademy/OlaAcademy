@@ -4,10 +4,11 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <com.snail.pulltorefresh.PullToRefreshExpandableListView
+    <com.snail.pulltorefresh.PullToRefreshExpandableListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/expandableListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        ptr:ptrAnimationStyle="flip" />
 
     <LinearLayout
         android:id="@+id/login_view"

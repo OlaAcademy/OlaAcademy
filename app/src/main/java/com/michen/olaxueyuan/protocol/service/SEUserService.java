@@ -14,6 +14,7 @@ import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.michen.olaxueyuan.protocol.result.UserKnowledgeResult;
 import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
+import com.michen.olaxueyuan.protocol.result.WrongListResult;
 
 import retrofit.Callback;
 import retrofit.client.Response;
@@ -138,6 +139,21 @@ public interface SEUserService {
     void getStatisticsList(@Field("type") String type,
                            @Field("userid") String userid,
                            Callback<UserKnowledgeResult> cb);
+
+    /**
+     * 错题集列表
+     *
+     * @param type        1 考点 2 真题 3 模考
+     * @param subjectType 1 数学 2 英语 3 逻辑 4 写作
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/cour/getWrongList")
+    void getWrongList(@Field("type") String type,
+                      @Field("subjectType") String subjectType,
+                      @Field("userId") String userId,
+                      Callback<WrongListResult> cb);
 
     /**
      * 需要userid
