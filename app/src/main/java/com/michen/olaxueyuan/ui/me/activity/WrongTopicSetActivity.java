@@ -117,7 +117,7 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
         if (am.isAuthenticated()) {
             userId = am.getAccessUser().getId();
         }
-        SEUserManager.getInstance().getWrongList(String.valueOf(type+1), subjectType, userId, new Callback<WrongListResult>() {
+        SEUserManager.getInstance().getWrongList(String.valueOf(type + 1), subjectType, userId, new Callback<WrongListResult>() {
             @Override
             public void success(WrongListResult wrongListResult, Response response) {
                 if (mContext != null && !WrongTopicSetActivity.this.isFinishing()) {
@@ -146,6 +146,10 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
     @Override
     protected void onPause() {
         super.onPause();
+        if (mContext != null && !WrongTopicSetActivity.this.isFinishing()) {
+            listview.onRefreshComplete();
+            SVProgressHUD.dismiss(mContext);
+        }
     }
 
     @Override
