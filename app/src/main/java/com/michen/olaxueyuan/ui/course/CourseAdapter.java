@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SEAutoSlidingPagerView;
+import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.model.MCSubCourse;
 import com.michen.olaxueyuan.protocol.result.MCBannerResult;
@@ -139,6 +140,11 @@ public class CourseAdapter extends BaseAdapter {
                 holder.tv_all = (TextView) convertView.findViewById(R.id.allTV);
                 holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
                 holder.horizontalListView = (HorizontalListView) convertView.findViewById(R.id.horizontalListView);
+                int width = Utils.getScreenWidth(context);
+                int height = (width / 2 - 45) * 350 / 750 + Utils.dip2px(context, 55);
+                ViewGroup.LayoutParams layoutParams = holder.horizontalListView.getLayoutParams();
+                layoutParams.height = height;
+                holder.horizontalListView.setLayoutParams(layoutParams);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -224,7 +230,7 @@ public class CourseAdapter extends BaseAdapter {
                 Resources resources = context.getResources();
                 DisplayMetrics dm = resources.getDisplayMetrics();
                 linearParams.width = dm.widthPixels / 2 - 45;
-                linearParams.height = linearParams.width * 17 / 31;
+                linearParams.height = linearParams.width * 350 / 750;
                 if (position % 2 == 0)
                     linearParams.setMargins(30, 0, 15, 0);
                 else
