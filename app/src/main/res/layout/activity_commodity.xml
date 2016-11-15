@@ -10,13 +10,6 @@
 
     <include layout="@layout/title_layout" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_banner_goods" />
-
     <com.snail.pulltorefresh.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/listview"
         android:layout_width="match_parent"

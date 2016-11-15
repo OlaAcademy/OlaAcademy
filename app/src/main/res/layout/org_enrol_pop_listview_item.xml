@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/selector_gray_item_bg">
+    android:background="@drawable/selector_white_item_bg">
 
     <TextView
         android:id="@+id/name"

@@ -84,9 +84,9 @@ public class WrongTopicListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, QuestionWebActivity.class);
-                intent.putExtra("objectId", mDatas.get(position).getId());
-                intent.putExtra("type", 2);
+                intent.putExtra("type", 4);
                 intent.putExtra("courseType", courseType);
+                intent.putExtra("objectId", mDatas.get(position).getId());
                 mContext.startActivity(intent);
             }
         });

@@ -156,6 +156,24 @@ public interface SEUserService {
                       Callback<WrongListResult> cb);
 
     /**
+     * 更新错题集
+     *
+     * @param userId
+     * @param questionType 1 考点 2 模考或真题
+     * @param type         1 增加 2 删除
+     * @param subjectId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/cour/updateWrongSet")
+    void updateWrongSet(
+            @Field("userId") String userId,
+            @Field("questionType") String questionType,
+            @Field("type") String type,
+            @Field("subjectId") String subjectId,
+            Callback<SimpleResult> cb);
+
+    /**
      * 需要userid
      *
      * @param cb

@@ -1,9 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.michen.olaxueyuan.ui.question.QuestionWebActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/left_return"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/ic_back"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="10dp"
+            android:text=""
+            android:textColor="@color/black_51545d"
+            android:textSize="18dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/add_wrong_topic_icon"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="80dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/special_share_icon"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/timer_icon"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/special_share_icon"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/open_video_icon"
+            android:layout_width="33dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_video_blue"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/title_line"
+            style="@style/line_horizontal_line_d5d5d5"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/tv_article"
@@ -14,25 +70,22 @@
         android:textSize="16sp"
         android:visibility="gone" />
 
-    <com.tencent.smtt.sdk.WebView
-        android:id="@+id/questionWebView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/operationRL"
-        android:layout_below="@+id/tv_article" />
-
     <!-- <WebView
          android:id="@+id/questionWebView"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
          android:layout_above="@+id/operationRL"
          android:layout_below="@+id/tv_article"/>-->
+    <com.tencent.smtt.sdk.WebView
+        android:id="@+id/questionWebView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <RelativeLayout
         android:id="@+id/operationRL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="match_parent"
@@ -66,4 +119,5 @@
             android:textColor="@color/blue_light" />
     </RelativeLayout>
 
-</RelativeLayout>
+
+</LinearLayout>

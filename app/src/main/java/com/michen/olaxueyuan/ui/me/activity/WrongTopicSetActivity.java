@@ -69,6 +69,7 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
     }
 
     private void initView() {
+        setTitleText("错题集");
         mathsText.setSelected(true);
         mathsIndicator.setSelected(true);
         selectArray = mContext.getResources().getStringArray(R.array.question_select_maths);

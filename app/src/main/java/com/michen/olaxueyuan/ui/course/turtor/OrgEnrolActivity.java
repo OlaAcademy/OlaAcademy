@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.ui.course.turtor;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.OrganizationInfoResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.manager.OrgEnrolPopManager;
+import com.michen.olaxueyuan.ui.me.activity.PDFViewActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
@@ -45,11 +47,14 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
     EditText phoneEd;
     @Bind(R.id.option_name)
     TextView optionNameText;
+    @Bind(R.id.option_name_pdf)
+    TextView optionNamePdf;
 
     private String optionTypeName;
     private String optionChildName;
 
     private int orgType = 0;//默认机构选择第一个
+    private int childType = 0;//默认子机构选择第一个
     private OrganizationInfoResult organizationInfoResult;
     private String userName;
     private String userPhone;
@@ -69,7 +74,6 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
 
     private void initView() {
         setTitleText("全国最优质的教育报名通道");
-        setRightImage(R.drawable.icon_pdf_share);
         int width = Utils.getScreenWidth(mContext);
         int height = width * 400 / 750;
         ViewGroup.LayoutParams layoutParams = orgEnrolBg.getLayoutParams();
@@ -117,7 +121,7 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
 
     }
 
-    @OnClick({R.id.option_type, R.id.option_name, R.id.enrol_btn})
+    @OnClick({R.id.option_type, R.id.option_name, R.id.enrol_btn, R.id.option_name_pdf})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.option_type:
@@ -127,11 +131,23 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
                 break;
             case R.id.option_name:
                 if (organizationInfoResult != null) {
-                    OrgEnrolPopManager.getInstance().showChildPop(mContext, optionNameText, this, 2, organizationInfoResult.getResult().get(orgType).getOptionList());
+                    OrgEnrolPopManager.getInstance().showChildPop(mContext, optionNameText, this, 2, orgType, organizationInfoResult.getResult().get(orgType).getOptionList());
                 }
                 break;
             case R.id.enrol_btn:
                 enrol();
+                break;
+            case R.id.option_name_pdf:
+                if (!TextUtils.isEmpty(optionNameText.getText().toString().trim())) {
+                    Intent intent = new Intent(mContext, PDFViewActivity.class);
+                    intent.putExtra("url", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getAddress());
+                    intent.putExtra("title", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getProfile());
+                    intent.putExtra("id", "orgEnrol" + organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getId());
+                    intent.putExtra("name", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getProfile());
+                    mContext.startActivity(intent);
+                } else {
+                    ToastUtil.showToastShort(mContext, "你选择您想报名的机构或院校");
+                }
                 break;
         }
     }
@@ -151,14 +167,18 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
     }
 
     @Override
-    public void enrolPosition(int type, int orgType, String name, String id) {
+    public void enrolPosition(int type, int orgType, int childType, String name, String id) {
         if (type == 1) {
             this.orgType = orgType;
             optionTypeName = name;
             optionTypeText.setText(optionTypeName);
+            optionNameText.setText(organizationInfoResult.getResult().get(orgType).getOptionList().get(0).getName());
+            optionNamePdf.setText(organizationInfoResult.getResult().get(orgType).getOptionList().get(0).getProfile());
         } else {
+            this.childType = childType;
             optionChildName = name;
             optionNameText.setText(optionChildName);
+            optionNamePdf.setText(organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getProfile());
             orgId = id;
         }
     }

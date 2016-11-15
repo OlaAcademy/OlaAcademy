@@ -71,7 +71,7 @@ public class OrgEnrolPopManager {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 orgAdapter.notifyDataSetChanged();
-                enrolClickListener.enrolPosition(type, position, menuList.get(position).getOptionName(),"");
+                enrolClickListener.enrolPosition(type, position, 0, menuList.get(position).getOptionName(), "");
                 popupWindow.dismiss();
             }
         });
@@ -121,7 +121,7 @@ public class OrgEnrolPopManager {
     ChildAdapter childAdapter = new ChildAdapter();
 
     public void showChildPop(Context context, View popLine, final EnrolClickListener enrolClickListener
-            , final int type, final List<OrganizationInfoResult.ResultBean.OptionListBean> list) {
+            , final int type, final int orgType, final List<OrganizationInfoResult.ResultBean.OptionListBean> list) {
         this.list = list;
         this.context = context;
         this.enrolClickListener = enrolClickListener;
@@ -149,7 +149,7 @@ public class OrgEnrolPopManager {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 childAdapter.notifyDataSetChanged();
-                enrolClickListener.enrolPosition(type, position, list.get(position).getName(), list.get(position).getId());
+                enrolClickListener.enrolPosition(type, orgType, position, list.get(position).getName(), list.get(position).getId());
                 popupWindow.dismiss();
             }
         });
@@ -196,7 +196,14 @@ public class OrgEnrolPopManager {
     }
 
     public interface EnrolClickListener {
-        void enrolPosition(int type, int orgType, String name,String id);//type:1、第一级机构2、第二级名称
+        /**
+         * @param type      :1、第一级机构2、第二级名称
+         * @param orgType   第一个选项选中的位置
+         * @param childType 第二个选项选中的位置
+         * @param name
+         * @param id
+         */
+        void enrolPosition(int type, int orgType, int childType, String name, String id);
     }
 
 }

@@ -12,13 +12,17 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.MCQuestion;
-import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
+import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.ui.me.activity.VideoPlayActivity;
 import com.michen.olaxueyuan.ui.question.module.QuestionResultNoticeClose;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -29,15 +33,22 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
-public class QuestionWebActivity extends SEBaseActivity implements View.OnClickListener {
+public class QuestionWebActivity extends SuperActivity implements View.OnClickListener {
 
     private WebView contentWebView;
     private Button previousBtn;
     private Button nextBtn;
     private TextView indexTV;
     private EditText articleTV;
+    private TextView leftReturn;
+    private ImageView addWrongTopicIcon;
+    private ImageView timerIcon;
+    private ImageView openVideoIcon;
 
     private ArrayList<MCQuestion> questionList;
     private int currentIndex;
@@ -61,6 +72,14 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
         indexTV = (TextView) findViewById(R.id.tv_index);
         articleTV = (EditText) findViewById(R.id.tv_article);
 
+        leftReturn = (TextView) findViewById(R.id.left_return);
+        addWrongTopicIcon = (ImageView) findViewById(R.id.add_wrong_topic_icon);
+        timerIcon = (ImageView) findViewById(R.id.timer_icon);
+        openVideoIcon = (ImageView) findViewById(R.id.open_video_icon);
+        leftReturn.setOnClickListener(this);
+        addWrongTopicIcon.setOnClickListener(this);
+        timerIcon.setOnClickListener(this);
+
         previousBtn = (Button) findViewById(R.id.previousBtn);
         previousBtn.setVisibility(View.GONE);
         previousBtn.setOnClickListener(this);
@@ -82,8 +101,10 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
             MobclickAgent.onEvent(this, "enter_exam");
         } else if (type == 3) {
             setTitleText("欧拉作业");
+            addWrongTopicIcon.setVisibility(View.GONE);
         } else if (type == 4) {
             setTitleText("错题集");
+            addWrongTopicIcon.setVisibility(View.GONE);
         }
         objectId = getIntent().getExtras().getInt("objectId");
 
@@ -120,6 +141,16 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
     }
 
     @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
@@ -137,7 +168,42 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
             case R.id.nextBtn:
                 contentWebView.loadUrl("javascript:clickNext()");
                 break;
+            case R.id.left_return:
+                finish();
+                break;
+            case R.id.add_wrong_topic_icon:
+                updateWrongSet();
+                break;
+            case R.id.timer_icon:
+                contentWebView.loadUrl("javascript:clickNext()");
+                break;
         }
+    }
+
+    private void updateWrongSet() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        SEUserManager.getInstance().updateWrongSet(userId, String.valueOf(type), "1", String.valueOf(objectId), new Callback<SimpleResult>() {
+            @Override
+            public void success(SimpleResult simpleResult, Response response) {
+                if (mContext != null && !QuestionWebActivity.this.isFinishing()) {
+                    if (simpleResult.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(mContext, simpleResult.getMessage(), 2.0f);
+                    } else {
+                        ToastUtil.showToastShort(mContext, "增加错题集成功");
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (mContext != null && !QuestionWebActivity.this.isFinishing()) {
+                    ToastUtil.showToastShort(mContext, "增加错题集失败");
+                }
+            }
+        });
     }
 
     Handler handler = new Handler() {
@@ -158,13 +224,15 @@ public class QuestionWebActivity extends SEBaseActivity implements View.OnClickL
                     break;
                 case 4:
                     if (msg.obj == null || TextUtils.isEmpty(msg.obj.toString())) {
-                        setRightImageInvisibility();
+//                        setRightImageInvisibility();
+                        openVideoIcon.setVisibility(View.GONE);
                     } else {
-                        setRightImage(R.drawable.ic_video_blue);
+//                        setRightImage(R.drawable.ic_video_blue);
+                        openVideoIcon.setVisibility(View.VISIBLE);
                         final String videoUrl = msg.obj.toString();
-                        setRightTextListener(new View.OnClickListener() {
+                        openVideoIcon.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View view) {
+                            public void onClick(View v) {
                                 Intent intent = new Intent(QuestionWebActivity.this, VideoPlayActivity.class);
                                 intent.putExtra("videoPath", videoUrl);
                                 startActivity(intent);

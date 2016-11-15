@@ -34,6 +34,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
+import static com.michen.olaxueyuan.ui.circle.CircleFragment.type;
+
 /**
  * Created by tianxiaopeng on 15-1-10.
  */
@@ -284,6 +286,19 @@ public class SEUserManager {
      */
     public void getWrongList(String type, String subjectType, String userId, Callback<WrongListResult> cb) {
         _userService.getWrongList(type, subjectType, userId, cb);
+    }
+
+    /**
+     * 更新错题集
+     *
+     * @param userId
+     * @param questionType 1 考点 2 模考或真题
+     * @param type         1 增加 2 删除
+     * @param subjectId
+     * @param cb
+     */
+    public void updateWrongSet(String userId, String questionType, String type, String subjectId, Callback<SimpleResult> cb) {
+        _userService.updateWrongSet(userId, questionType, type, subjectId, cb);
     }
 
     /**
