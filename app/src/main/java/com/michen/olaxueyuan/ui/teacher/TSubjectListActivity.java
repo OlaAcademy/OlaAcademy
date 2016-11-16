@@ -14,11 +14,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
+import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.ui.group.CreateGroupActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 
@@ -30,7 +33,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
-public class TSubjectListActivity extends SEBaseActivity implements View.OnClickListener {
+public class TSubjectListActivity extends SuperActivity implements View.OnClickListener {
 
     @Bind(R.id.questionWebView)
     WebView contentWebView;
@@ -44,6 +47,11 @@ public class TSubjectListActivity extends SEBaseActivity implements View.OnClick
     Button chooseBtn;
     @Bind(R.id.deployBtn)
     Button deployBtn;
+    @Bind(R.id.left_text)
+    TextView leftText;
+    @Bind(R.id.right_texts)
+    TextView rightTexts;
+    TitleManager titleManger;
 
     private int type; // 1课程 2 题库
     private int objectId;
@@ -54,7 +62,7 @@ public class TSubjectListActivity extends SEBaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tsubject_list);
 
-        setTitleText("题目列表");
+//        setTitleText("题目列表");
 
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
@@ -89,6 +97,18 @@ public class TSubjectListActivity extends SEBaseActivity implements View.OnClick
     }
 
     @Override
+    public void initView() {
+        titleManger = new TitleManager(this, "题目列表", this, true);
+        titleManger.changeText(TitleManager.RIGHT_INDEX_TEXT, "全选");
+        titleManger.changeTextColor(this, TitleManager.RIGHT_INDEX_TEXT, R.color.light_title_blue);
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.nextBtn:
@@ -103,6 +123,13 @@ public class TSubjectListActivity extends SEBaseActivity implements View.OnClick
                 break;
             case R.id.deployBtn:
                 contentWebView.loadUrl("javascript:deploy()");
+                break;
+            case R.id.left_text:
+                finish();
+                break;
+            case R.id.right_texts:
+                //Todo 全选和反选按钮
+                titleManger.changeText(TitleManager.RIGHT_INDEX_TEXT, "反选");
                 break;
         }
     }
@@ -163,7 +190,7 @@ public class TSubjectListActivity extends SEBaseActivity implements View.OnClick
 
     /**
      * {@link TSubjectDeployActivity#publishHomeWork()}
-     * {@link CreateGroupActivity#saveGroupInfo(String, String)}
+     * {@link CreateGroupActivity#saveGroupInfo(String, String, String)}
      *
      * @param successEvent
      */
