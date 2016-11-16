@@ -165,19 +165,9 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.previousBtn:
-                if (type == 4 || type == 5) {
-                    addWrongTopicIcon.setSelected(true);
-                } else {
-                    addWrongTopicIcon.setSelected(false);
-                }
                 contentWebView.loadUrl("javascript:clickPrevious()");
                 break;
             case R.id.nextBtn:
-                if (type == 4 || type == 5) {
-                    addWrongTopicIcon.setSelected(true);
-                } else {
-                    addWrongTopicIcon.setSelected(false);
-                }
                 contentWebView.loadUrl("javascript:clickNext()");
                 break;
             case R.id.left_return:
@@ -236,7 +226,6 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
                     } else {
                         if (addOrDelete) {
                             ToastUtil.showToastShort(mContext, "增加错题集成功");
-                            addWrongTopicIcon.setSelected(true);
                         } else {
                             ToastUtil.showToastShort(mContext, "删除错题集成功");
                         }
