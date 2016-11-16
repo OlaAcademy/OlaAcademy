@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -50,6 +51,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
     private ImageView addWrongTopicIcon;
     private ImageView openVideoIcon;
     private TextView tvTitle;
+    private TextView rightText;
 
     private int type; // 1课程 2 题库
     private String currentSubjectId;
@@ -74,8 +76,10 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         addWrongTopicIcon = (ImageView) findViewById(R.id.add_wrong_topic_icon);
         openVideoIcon = (ImageView) findViewById(R.id.open_video_icon);
         tvTitle = (TextView) findViewById(R.id.tv_title);
+        rightText = (TextView) findViewById(R.id.right_text);
         leftReturn.setOnClickListener(this);
         addWrongTopicIcon.setOnClickListener(this);
+        rightText.setOnClickListener(this);
 
         previousBtn = (Button) findViewById(R.id.previousBtn);
         previousBtn.setVisibility(View.GONE);
@@ -99,9 +103,10 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         } else if (type == 3) {
             tvTitle.setText("欧拉作业");
             addWrongTopicIcon.setVisibility(View.GONE);
+            rightText.setVisibility(View.VISIBLE);
         } else if (type == 4 || type == 5) {
             tvTitle.setText("错题集");
-            addWrongTopicIcon.setImageResource(R.drawable.video_collect_icon_selected);
+            addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
         }
         objectId = getIntent().getExtras().getInt("objectId");
 
@@ -161,17 +166,17 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.previousBtn:
                 if (type == 4 || type == 5) {
-                    addWrongTopicIcon.setImageResource(R.drawable.video_collect_icon_selected);
+                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
                 } else {
-                    addWrongTopicIcon.setImageResource(R.drawable.video_collect_icon);
+                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
                 }
                 contentWebView.loadUrl("javascript:clickPrevious()");
                 break;
             case R.id.nextBtn:
                 if (type == 4 || type == 5) {
-                    addWrongTopicIcon.setImageResource(R.drawable.video_collect_icon_selected);
+                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
                 } else {
-                    addWrongTopicIcon.setImageResource(R.drawable.video_collect_icon);
+                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
                 }
                 contentWebView.loadUrl("javascript:clickNext()");
                 break;
@@ -180,12 +185,27 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
                 break;
             case R.id.add_wrong_topic_icon:
                 if (type == 4 || type == 5) {
-                    updateWrongSet(false);
+                    showSetWrongTopic(false, "您是否要把该题从错题集中移除?");
                 } else {
-                    updateWrongSet(true);
+                    showSetWrongTopic(true, "您是否要把该题加入错题集中?");
                 }
                 break;
+            case R.id.right_text:
+                break;
         }
+    }
+
+    private void showSetWrongTopic(final boolean addOrDelete, String content) {
+        DialogUtils.showDialog(mContext, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.yes:
+                        updateWrongSet(addOrDelete);
+                        break;
+                }
+            }
+        }, "", content, "", "");
     }
 
     private void updateWrongSet(final boolean addOrDelete) {
@@ -216,10 +236,10 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
                     } else {
                         if (addOrDelete) {
                             ToastUtil.showToastShort(mContext, "增加错题集成功");
-                            addWrongTopicIcon.setImageResource(R.drawable.video_collect_icon_selected);
+                            addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
                         } else {
                             ToastUtil.showToastShort(mContext, "删除错题集成功");
-                            addWrongTopicIcon.setImageResource(R.drawable.video_collect_icon);
+                            addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
                         }
                     }
                 }
