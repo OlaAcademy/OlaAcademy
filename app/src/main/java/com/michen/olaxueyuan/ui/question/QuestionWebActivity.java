@@ -33,6 +33,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
+import io.vov.vitamio.utils.StringUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -50,11 +51,9 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
     private ImageView timerIcon;
     private ImageView openVideoIcon;
 
-    private ArrayList<MCQuestion> questionList;
-    private int currentIndex;
 
     private int type; // 1课程 2 题库
-    private int showAnswer; // 1 全部解析时显示答案
+    private String currentSubjectId;
     private int hasArticle; // 1 英语类阅读理解
     private int objectId;
 
@@ -102,7 +101,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         } else if (type == 3) {
             setTitleText("欧拉作业");
             addWrongTopicIcon.setVisibility(View.GONE);
-        } else if (type == 4) {
+        } else if (type == 4||type == 5) {
             setTitleText("错题集");
             addWrongTopicIcon.setVisibility(View.GONE);
         }
@@ -125,7 +124,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
             @Override
             public void onPageFinished(WebView webView, String s) {
                 super.onPageFinished(webView, s);
-                if (type == 4) { //错题集直接显示答案
+                if (type == 4||type == 5) { //错题集直接显示答案
                     contentWebView.loadUrl("javascript:loadQuestion('1')");
                 } else {
                     contentWebView.loadUrl("javascript:loadQuestion('0')");
@@ -185,7 +184,11 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
-        SEUserManager.getInstance().updateWrongSet(userId, String.valueOf(type), "1", String.valueOf(objectId), new Callback<SimpleResult>() {
+        if(TextUtils.isEmpty(currentSubjectId)){
+            ToastUtil.showToastShort(mContext, "请选择题目");
+            return;
+        }
+        SEUserManager.getInstance().updateWrongSet(userId, String.valueOf(type), "1", currentSubjectId, new Callback<SimpleResult>() {
             @Override
             public void success(SimpleResult simpleResult, Response response) {
                 if (mContext != null && !QuestionWebActivity.this.isFinishing()) {
@@ -254,6 +257,9 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
                 case 6:
                     articleTV.setText(msg.obj.toString());
                     break;
+                case 7:
+                    currentSubjectId = msg.obj.toString();
+                    break;
             }
         }
     };
@@ -313,6 +319,14 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
             Message msg = Message.obtain();
             msg.obj = article;
             msg.what = 6;
+            handler.sendMessage(msg);
+        }
+
+        @JavascriptInterface
+        public void updateSubjectId(String subjectId) {
+            Message msg = Message.obtain();
+            msg.obj = subjectId;
+            msg.what = 7;
             handler.sendMessage(msg);
         }
     }
