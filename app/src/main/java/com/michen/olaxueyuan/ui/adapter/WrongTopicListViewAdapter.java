@@ -26,14 +26,16 @@ public class WrongTopicListViewAdapter extends BaseAdapter {
     Context mContext;
     private List<WrongListResult.ResultBean> mDatas = new ArrayList<>();
     private int courseType; // 1 数学 2 英语 3 逻辑 4 写作
+    private int setType;//4 考点 5 模考或真题
 
     public WrongTopicListViewAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void updateData(List<WrongListResult.ResultBean> mDatas, int courseType) {
+    public void updateData(List<WrongListResult.ResultBean> mDatas, int courseType, int setType) {
         this.mDatas = mDatas;
         this.courseType = courseType;
+        this.setType = setType;
         notifyDataSetChanged();
     }
 
@@ -84,7 +86,7 @@ public class WrongTopicListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, QuestionWebActivity.class);
-                intent.putExtra("type", 4);
+                intent.putExtra("type", setType);
                 intent.putExtra("courseType", courseType);
                 intent.putExtra("objectId", mDatas.get(position).getId());
                 mContext.startActivity(intent);

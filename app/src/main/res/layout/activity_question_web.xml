@@ -24,25 +24,21 @@
             android:textSize="18dp"
             android:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/add_wrong_topic_icon"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="80dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/special_share_icon"
-            android:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/timer_icon"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/special_share_icon"
-            android:visibility="visible" />
+            android:layout_marginLeft="@dimen/dp_60"
+            android:layout_toLeftOf="@+id/add_wrong_topic_icon"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/black_51545d"
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/open_video_icon"
@@ -52,13 +48,24 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_video_blue"
-            android:visibility="gone" />
+            android:src="@drawable/ic_video_answer"
+            android:visibility="invisible" />
 
         <View
             android:id="@+id/title_line"
             style="@style/line_horizontal_line_d5d5d5"
             android:layout_alignParentBottom="true" />
+
+        <ImageView
+            android:id="@+id/add_wrong_topic_icon"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/open_video_icon"
+            android:layout_toStartOf="@+id/open_video_icon"
+            android:scaleType="centerInside"
+            android:src="@drawable/video_collect_icon"
+            android:visibility="visible" />
     </RelativeLayout>
 
     <EditText

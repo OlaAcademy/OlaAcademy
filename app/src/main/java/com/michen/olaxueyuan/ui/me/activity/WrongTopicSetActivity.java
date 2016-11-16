@@ -59,6 +59,7 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
     private String subjectType = "1";// 1 数学 2 英语 3 逻辑 4 协作
     private String[] selectArray = {};//
     private WrongTopicListViewAdapter adapter;
+    private int setType = 4;//4 考点 5 模考或真题
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,7 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
                     if (wrongListResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(mContext, wrongListResult.getMessage(), 2.0f);
                     } else {
-                        adapter.updateData(wrongListResult.getResult(), Integer.parseInt(subjectType));
+                        adapter.updateData(wrongListResult.getResult(), Integer.parseInt(subjectType), setType);
                     }
                 }
             }
@@ -142,6 +143,12 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getWrongList();
     }
 
     @Override
@@ -181,12 +188,15 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
                         switch (v.getId()) {
                             case R.id.select_one:
                                 type = 0;
+                                setType = 4;
                                 break;
                             case R.id.select_two:
                                 type = 1;
+                                setType = 5;
                                 break;
                             case R.id.select_three:
                                 type = 2;
+                                setType = 5;
                                 break;
                         }
                         getWrongList();
