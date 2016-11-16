@@ -48,7 +48,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginRight="8dp"
             android:scaleType="centerInside"
-            android:src="@drawable/add_wrongtopic_set_icon"
+            android:src="@drawable/selector_wrong_topic"
             android:visibility="visible" />
 
         <ImageView

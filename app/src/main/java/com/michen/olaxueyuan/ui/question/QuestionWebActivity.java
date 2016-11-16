@@ -106,7 +106,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
             rightText.setVisibility(View.VISIBLE);
         } else if (type == 4 || type == 5) {
             tvTitle.setText("错题集");
-            addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+            addWrongTopicIcon.setSelected(true);
         }
         objectId = getIntent().getExtras().getInt("objectId");
 
@@ -166,17 +166,17 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.previousBtn:
                 if (type == 4 || type == 5) {
-                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                    addWrongTopicIcon.setSelected(true);
                 } else {
-                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                    addWrongTopicIcon.setSelected(false);
                 }
                 contentWebView.loadUrl("javascript:clickPrevious()");
                 break;
             case R.id.nextBtn:
                 if (type == 4 || type == 5) {
-                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                    addWrongTopicIcon.setSelected(true);
                 } else {
-                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                    addWrongTopicIcon.setSelected(false);
                 }
                 contentWebView.loadUrl("javascript:clickNext()");
                 break;
@@ -236,10 +236,9 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
                     } else {
                         if (addOrDelete) {
                             ToastUtil.showToastShort(mContext, "增加错题集成功");
-                            addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                            addWrongTopicIcon.setSelected(true);
                         } else {
                             ToastUtil.showToastShort(mContext, "删除错题集成功");
-                            addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
                         }
                     }
                 }
