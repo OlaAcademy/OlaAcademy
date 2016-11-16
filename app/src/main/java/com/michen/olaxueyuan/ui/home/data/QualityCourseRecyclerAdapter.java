@@ -13,9 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
 import com.michen.olaxueyuan.ui.BaseRecyclerAdapter;
 import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -99,10 +101,14 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, SystemVideoActivity.class);
-                intent.putExtra("pid", String.valueOf(list.get(position).getId()));
-                intent.putExtra("ResultEntity", list.get(position));
-                context.startActivity(intent);
+                if (SEAuthManager.getInstance().isAuthenticated()) {
+                    Intent intent = new Intent(context, SystemVideoActivity.class);
+                    intent.putExtra("pid", String.valueOf(list.get(position).getId()));
+                    intent.putExtra("ResultEntity", list.get(position));
+                    context.startActivity(intent);
+                } else {
+                    context.startActivity(new Intent(context, UserLoginActivity.class));
+                }
             }
         });
     }

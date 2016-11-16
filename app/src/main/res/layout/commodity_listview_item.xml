@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/dp_5"
         android:gravity="bottom"
         android:text="2016数学真题培训班"
         android:textColor="@color/black_323232"

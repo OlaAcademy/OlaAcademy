@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.common.manager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,11 +14,14 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.ui.story.activity.ImagePagerActivity;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 /**
  * Created by mingge on 16/5/9.
@@ -251,4 +255,39 @@ public class PictureUtil {
             }
         }
     }
+
+    /**
+     * 多张图片查看器
+     *
+     * @param position
+     * @param urls2
+     */
+    public static void viewPictures(Context mContext, int position, ArrayList<String> urls2) {
+        Intent intent = new Intent(mContext, ImagePagerActivity.class);
+        intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, urls2);
+        intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
+        mContext.startActivity(intent);
+    }
+
+    /**
+     * 单张图片查看器
+     *
+     * @param avatarUrl
+     */
+    public static void viewPictures(Context mContext, String avatarUrl) {
+        if (avatarUrl != null) {
+            if (avatarUrl.contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + avatarUrl;
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + avatarUrl;
+            }
+            ArrayList<String> imageUrls = new ArrayList<>();
+            imageUrls.add(avatarUrl);
+            Intent intent = new Intent(mContext, ImagePagerActivity.class);
+            intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, imageUrls);
+            intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, 0);
+            mContext.startActivity(intent);
+        }
+    }
+
 }

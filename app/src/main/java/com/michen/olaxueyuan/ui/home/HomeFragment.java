@@ -24,7 +24,7 @@ import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.circle.DeployPostActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.michen.olaxueyuan.ui.course.commodity.DataLibraryActivity;
-import com.michen.olaxueyuan.ui.course.turtor.TurtorActivity;
+import com.michen.olaxueyuan.ui.course.turtor.OrgEnrolActivity;
 import com.michen.olaxueyuan.ui.group.GroupListActivity;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.home.data.CourseDatabaseRecyclerAdapter;
@@ -201,7 +201,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     }
 
     private void showTurtorView() {
-        Intent turtorIntent = new Intent(getActivity(), TurtorActivity.class);
+        Intent turtorIntent = new Intent(getActivity(), OrgEnrolActivity.class);
+//        Intent turtorIntent = new Intent(getActivity(), TurtorActivity.class);  //不跳转这个界面了
         startActivity(turtorIntent);
     }
 

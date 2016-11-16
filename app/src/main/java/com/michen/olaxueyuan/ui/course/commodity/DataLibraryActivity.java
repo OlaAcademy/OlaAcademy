@@ -54,7 +54,7 @@ public class DataLibraryActivity extends SEBaseActivity {
 
     private void initView() {
         setTitleText("我找资料");
-        setRightImage(R.drawable.create_group_icon);
+        setRightImage(R.drawable.data_library_icon);
         setRightImageListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

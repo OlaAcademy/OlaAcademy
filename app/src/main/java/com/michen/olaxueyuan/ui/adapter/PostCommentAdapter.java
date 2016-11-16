@@ -17,6 +17,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.PictureUtil;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -100,6 +101,12 @@ public class PostCommentAdapter extends BaseAdapter {
             Picasso.with(mContext).load(avatarUrl).placeholder(R.drawable.ic_default_avatar)
                     .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(holder.itemCommentAvatar);
         }
+        holder.itemCommentAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PictureUtil.viewPictures(mContext, list.get(position).getUserAvatar());
+            }
+        });
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

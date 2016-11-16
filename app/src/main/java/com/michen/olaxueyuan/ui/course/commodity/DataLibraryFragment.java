@@ -35,7 +35,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class DataLibraryFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener2 {
+public class DataLibraryFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener2, DataLibraryFragmentListAdapter.UpdateBrowseCount {
     View view;
     @Bind(R.id.listview)
     PullToRefreshListView listview;
@@ -58,7 +58,7 @@ public class DataLibraryFragment extends SuperFragment implements PullToRefreshB
 
     private void intView() {
         type = getArguments().getInt("type", 1);
-        adapter = new DataLibraryFragmentListAdapter(getActivity(), type);
+        adapter = new DataLibraryFragmentListAdapter(getActivity(), type, this);
         listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
         listview.setAdapter(adapter);
@@ -207,5 +207,26 @@ public class DataLibraryFragment extends SuperFragment implements PullToRefreshB
     @Override
     public void onPullUpToRefresh(PullToRefreshBase refreshView) {
         fetchData();
+    }
+
+    @Override
+    public void updateCount(boolean isUpdate, final int position, int subjectType) {
+        if (subjectType == type && isUpdate) {
+            HomeListManager.getInstance().updateBrowseCount(String.valueOf(list.get(position).getId()), new Callback<SimpleResult>() {
+                @Override
+                public void success(SimpleResult simpleResult, Response response) {
+                    if (getActivity() != null && !getActivity().isFinishing()) {
+                        if (simpleResult.getApicode() == 10000) {
+                            list.get(position).setCount(list.get(position).getCount() + 1);
+                            adapter.updateData(list);
+                        }
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                }
+            });
+        }
     }
 }

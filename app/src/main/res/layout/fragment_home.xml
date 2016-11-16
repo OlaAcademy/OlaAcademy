@@ -4,6 +4,8 @@
     android:background="@color/white">
 
     <com.snail.pulltorefresh.PullToRefreshScrollView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        ptr:ptrAnimationStyle="flip"
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

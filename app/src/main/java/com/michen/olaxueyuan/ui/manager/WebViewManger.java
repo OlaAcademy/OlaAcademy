@@ -12,17 +12,17 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.view.Gravity;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.DownloadListener;
-import android.webkit.GeolocationPermissions;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
+import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallback;
+import com.tencent.smtt.sdk.CookieManager;
+import com.tencent.smtt.sdk.CookieSyncManager;
+import com.tencent.smtt.sdk.DownloadListener;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -122,9 +122,9 @@ public class WebViewManger {
             }
 
             @Override
-            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-                callback.invoke(origin, true, false);
-                super.onGeolocationPermissionsShowPrompt(origin, callback);
+            public void onGeolocationPermissionsShowPrompt(String s, GeolocationPermissionsCallback callback) {
+                callback.invoke(s, true, false);
+                super.onGeolocationPermissionsShowPrompt(s, callback);
             }
 
             @Override

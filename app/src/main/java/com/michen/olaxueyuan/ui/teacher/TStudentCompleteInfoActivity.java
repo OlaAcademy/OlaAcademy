@@ -72,6 +72,10 @@ public class TStudentCompleteInfoActivity extends SEBaseActivity implements Pull
                     if (homeworkStatisticsResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(context, homeworkStatisticsResult.getMessage());
                     } else {
+                        if (homeworkStatisticsResult.getResult().getStatisticsList().size() == 0) {
+                            ToastUtil.showToastShort(mContext, R.string.to_end);
+                            return;
+                        }
                         list.addAll(homeworkStatisticsResult.getResult().getStatisticsList());
                         adapter.updateData(list);
                         correctnessInfo.setText(String.valueOf(homeworkStatisticsResult.getResult().getCorrectness()));

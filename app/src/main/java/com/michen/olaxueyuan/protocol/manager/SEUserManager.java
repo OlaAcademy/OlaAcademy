@@ -21,6 +21,7 @@ import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.michen.olaxueyuan.protocol.result.UserKnowledgeResult;
 import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
+import com.michen.olaxueyuan.protocol.result.WrongListResult;
 import com.michen.olaxueyuan.protocol.service.SEUserService;
 
 import java.io.File;
@@ -32,6 +33,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
+
+import static com.michen.olaxueyuan.ui.circle.CircleFragment.type;
 
 /**
  * Created by tianxiaopeng on 15-1-10.
@@ -208,7 +211,7 @@ public class SEUserManager {
         });
     }
 
-    public void modifyUserMe(String name,String realName, String avator, String local, String sex, String descript,
+    public void modifyUserMe(String name, String realName, String avator, String local, String sex, String descript,
                              final SECallBack callback) {
         SEAuthManager am = SEAuthManager.getInstance();
         if (!am.isAuthenticated()) {
@@ -222,7 +225,7 @@ public class SEUserManager {
             avator = currentUser.getAvator();
         }
 
-        _userService.updateUser(currentUser.getId(), name,realName, avator, local, sex, descript, new Callback<MCCommonResult>() {
+        _userService.updateUser(currentUser.getId(), name, realName, avator, local, sex, descript, new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
                 if (result == null) {
@@ -271,6 +274,31 @@ public class SEUserManager {
      */
     public void getStatisticsList(String type, String userid, Callback<UserKnowledgeResult> cb) {
         _userService.getStatisticsList(type, userid, cb);
+    }
+
+    /**
+     * 错题集列表
+     *
+     * @param type        1 考点 2 真题 3 模考
+     * @param subjectType 1 数学 2 英语 3 逻辑 4 写作
+     * @param userId
+     * @param cb
+     */
+    public void getWrongList(String type, String subjectType, String userId, Callback<WrongListResult> cb) {
+        _userService.getWrongList(type, subjectType, userId, cb);
+    }
+
+    /**
+     * 更新错题集
+     *
+     * @param userId
+     * @param questionType 1 考点 2 模考或真题
+     * @param type         1 增加 2 删除
+     * @param subjectId
+     * @param cb
+     */
+    public void updateWrongSet(String userId, String questionType, String type, String subjectId, Callback<SimpleResult> cb) {
+        _userService.updateWrongSet(userId, questionType, type, subjectId, cb);
     }
 
     /**

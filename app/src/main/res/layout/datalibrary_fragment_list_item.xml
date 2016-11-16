@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/paynum"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginLeft="15dp"
         android:gravity="center_vertical"
@@ -52,27 +52,40 @@
             android:textColor="@color/black_323232"
             android:textSize="13dp" />
 
-        <TextView
-            android:id="@+id/rmb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toLeftOf="@+id/price"
-            android:text="@string/rmb_mark"
-            android:textColor="@color/system_course_money_color"
-            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@+id/ola_coin"
+            android:text="99"
+            android:textColor="@color/system_course_money_color"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/ola_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:text="99"
+            android:text="@string/coin"
             android:textColor="@color/system_course_money_color"
-            android:textSize="18dp" />
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="已兑换"
+            android:textColor="@color/system_course_money_color"
+            android:textSize="@dimen/sp_13"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/author_course_num"

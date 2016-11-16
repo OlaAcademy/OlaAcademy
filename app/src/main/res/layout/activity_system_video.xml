@@ -157,32 +157,14 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <ListView
-        android:id="@+id/listview"
+    <include layout="@layout/activity_system_video_indicator" />
+
+    <View style="@style/line_horizontal" />
+
+    <!--<com.michen.olaxueyuan.common.NonSwipeableViewPager-->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/white"
-        android:divider="@null" />
-
-    <RelativeLayout
-        android:id="@+id/bottom_view"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:orientation="vertical">
-
-        <View style="@style/line_horizontal" />
-
-        <Button
-            android:id="@+id/btn_buy"
-            android:layout_width="120dp"
-            android:layout_height="32dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/rectangle_blue_3dp_btn_bg"
-            android:text="@string/buy_now"
-            android:textColor="@color/white" />
-    </RelativeLayout>
-
+        android:layout_weight="1" />
 </LinearLayout>

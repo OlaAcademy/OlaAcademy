@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.group.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.result.UserGroupListResult;
+import com.michen.olaxueyuan.ui.group.GroupMemberActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -101,6 +103,9 @@ public class GroupListAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mContext.startActivity(
+                        new Intent(mContext, GroupMemberActivity.class)
+                                .putExtra("groupId", list.get(position).getId()));
             }
         });
         return convertView;

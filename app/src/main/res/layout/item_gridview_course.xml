@@ -10,15 +10,15 @@
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="150dp"
+        android:layout_width="155dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/iv_course"
         android:layout_below="@+id/iv_course"
         android:layout_marginTop="5dp"
-        android:textSize="14dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="#646464" />
+        android:textColor="#646464"
+        android:textSize="14dp" />
 
     <ImageView
         android:id="@+id/iv_time"
@@ -27,15 +27,15 @@
         android:layout_alignLeft="@+id/iv_course"
         android:layout_below="@+id/tv_name"
         android:layout_marginTop="8dp"
-        android:src="@drawable/icon_time"/>
+        android:src="@drawable/icon_time" />
 
     <TextView
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_name"
-        android:layout_toRightOf="@+id/iv_time"
         android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/iv_time"
         android:textColor="#909090"
         android:textSize="10sp" />
 
@@ -43,11 +43,11 @@
         android:id="@+id/iv_browse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/tv_time"
         android:layout_below="@+id/tv_name"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/icon_browse"/>
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/tv_time"
+        android:src="@drawable/icon_browse" />
 
     <TextView
         android:id="@+id/tv_browser"

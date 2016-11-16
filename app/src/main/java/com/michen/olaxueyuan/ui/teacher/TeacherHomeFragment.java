@@ -150,6 +150,10 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                         }
                     } else {
                         mListView.setVisibility(View.VISIBLE);
+                        if (homeworkListResult.getResult().size() == 0) {
+                            ToastUtil.showToastShort(getActivity(), R.string.to_end);
+                            return;
+                        }
                         List<HomeworkListResult.ResultBean> list = homeworkListResult.getResult();
                         mList.addAll(list);
                         if (mList.size() > 0) {

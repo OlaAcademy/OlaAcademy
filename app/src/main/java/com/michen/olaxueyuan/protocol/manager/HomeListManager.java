@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.protocol.manager;
 
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.protocol.result.MaterialListResult;
+import com.michen.olaxueyuan.protocol.result.OrganizationInfoResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.service.HomeListService;
 
@@ -63,5 +64,24 @@ public class HomeListManager {
      */
     public void unlockMaterial(String userId, String materailId, final Callback<SimpleResult> callback) {
         getHomeListService().unlockMaterial(userId, materailId, callback);
+    }
+
+    /**
+     * 更新资料的浏览量
+     *
+     * @param materailId
+     * @param callback
+     */
+    public void updateBrowseCount(String materailId, final Callback<SimpleResult> callback) {
+        getHomeListService().updateBrowseCount(materailId, callback);
+    }
+
+    /**
+     * 我要报名 获取机构及学校信息
+     *
+     * @param callback
+     */
+    public void getOrganizationInfo(final Callback<OrganizationInfoResult> callback) {
+        getHomeListService().getOrganizationInfo(callback);
     }
 }

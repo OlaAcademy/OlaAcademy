@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -101,6 +102,7 @@ public class DeployPostActivity extends SEBaseActivity {
     private String mTitle;
 
     private LocationClient mLocationClient;
+    private String phoneInfo;//手机信息
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +135,7 @@ public class DeployPostActivity extends SEBaseActivity {
                                  }
                              }
         );
+        getPhoneInfo();
     }
 
     public void Init() {
@@ -315,7 +318,7 @@ public class DeployPostActivity extends SEBaseActivity {
         String userId = user.getId();
         Log.e("DeployActivity", "imageGids: " + imageGids);
         final MCCircleManager circleManager = MCCircleManager.getInstance();
-        circleManager.deployPost(userId, mTitle, msgET.getText().toString(), imageGids, mLocation, "2", new Callback<MCCommonResult>() {
+        circleManager.deployPost(userId, mTitle, msgET.getText().toString(), imageGids, mLocation, "2", phoneInfo, new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
                 if (!DeployPostActivity.this.isFinishing()) {
@@ -523,6 +526,30 @@ public class DeployPostActivity extends SEBaseActivity {
             }
         });
     }
+
+    private void getPhoneInfo() {
+        String userPhone = "";
+        try {
+            if (SEAuthManager.getInstance().getAccessUser() != null) {
+                userPhone = SEAuthManager.getInstance().getAccessUser().getPhone();
+            }
+            phoneInfo = "安卓手机厂商: " + Build.MANUFACTURER
+                    + ";安卓手机型号: " + android.os.Build.MODEL
+                    + ";安卓sdk版本code:" + android.os.Build.VERSION.SDK_INT
+                    + ";安卓sdk版本名称:" + android.os.Build.VERSION.RELEASE
+                    + ";欧拉MBA版本信息:" + getPackageManager().getPackageInfo(getPackageName(), 0).versionName
+                    + ";欧拉MBA版本code:" + getPackageManager().getPackageInfo(getPackageName(), 0).versionCode
+                    + ";手机号码:" + userPhone;
+            Logger.e(phoneInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            phoneInfo = "安卓手机厂商: " + Build.MANUFACTURER
+                    + "安卓手机型号: " + android.os.Build.MODEL
+                    + ";安卓sdk版本code:" + android.os.Build.VERSION.SDK_INT
+                    + ";安卓sdk版本名称:" + android.os.Build.VERSION.RELEASE;
+        }
+    }
+
 }
 
 

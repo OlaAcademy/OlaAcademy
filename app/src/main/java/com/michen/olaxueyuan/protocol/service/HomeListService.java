@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.protocol.service;
 
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.protocol.result.MaterialListResult;
+import com.michen.olaxueyuan.protocol.result.OrganizationInfoResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
 
 import retrofit.Callback;
@@ -52,4 +53,25 @@ public interface HomeListService {
             @Field("userId") String userId,
             @Field("materialId") String materialId,
             Callback<SimpleResult> cb);
+
+    /**
+     * 更新资料的浏览量
+     *
+     * @param materialId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/material/updateBrowseCount")
+    void updateBrowseCount(
+            @Field("materialId") String materialId,
+            Callback<SimpleResult> cb);
+
+    /**
+     * 我要报名 获取机构及学校信息
+     *
+     * @param cb
+     */
+    @POST("/ola/organization/getOrganizationInfo")
+    void getOrganizationInfo(
+            Callback<OrganizationInfoResult> cb);
 }

@@ -4,6 +4,7 @@
     android:id="@+id/storyListView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:cacheColorHint="@android:color/transparent"
     app:item_margin="8dp"
-    app:ptrMode="both"
-    android:cacheColorHint="@android:color/transparent" />
+    app:ptrAnimationStyle="flip"
+    app:ptrMode="both" />

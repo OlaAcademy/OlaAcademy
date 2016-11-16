@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui.circle;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,6 +28,7 @@ import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.Logger;
+import com.michen.olaxueyuan.common.manager.PictureUtil;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
@@ -152,7 +154,7 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
                 if (postDetailModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(mContext, postDetailModule.getMessage(), 2.0f);
                 } else {
-                    resultBean=postDetailModule.getResult();
+                    resultBean = postDetailModule.getResult();
                     updateDetail(postDetailModule.getResult());
                 }
             }
@@ -178,7 +180,11 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
             Picasso.with(mContext).load(avatarUrl).placeholder(R.drawable.ic_default_avatar)
                     .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(avatar);
         } else {
-            avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar, null));
+            } else {
+                avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
+            }
         }
         time.setText(resultBean.getTime());
         studyName.setText(resultBean.getContent());
@@ -232,7 +238,7 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
         mContext.startActivity(intent);
     }
 
-    @OnClick({R.id.comment_praise, R.id.comment, R.id.share, R.id.bt_send})
+    @OnClick({R.id.comment_praise, R.id.comment, R.id.share, R.id.bt_send, R.id.avatar})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.comment_praise:
@@ -247,6 +253,11 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
                 break;
             case R.id.bt_send:
                 addComment();
+                break;
+            case R.id.avatar:
+                if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
+                    PictureUtil.viewPictures(mContext,resultBean.getUserAvatar());
+                }
                 break;
             default:
                 break;
@@ -360,7 +371,7 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
                     location = bdLocation.getCity() + bdLocation.getDistrict();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    location="定位失败";
+                    location = "定位失败";
                 }
             }
 

@@ -25,6 +25,7 @@ public interface MCCircleService {
                       @Field("imageGids") String imageGids,
                       @Field("location") String location,
                       @Field("type") String type,
+                      @Field("phoneInfo") String phoneInfo,
                       Callback<MCCommonResult> cb);
 
     /**

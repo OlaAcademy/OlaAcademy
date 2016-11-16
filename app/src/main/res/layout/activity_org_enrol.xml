@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray_color"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/org_enrol_bg"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/org_enrol_bg"
+                android:visibility="visible" />
+
+            <TextView
+                style="@style/normal_text_15dp_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="马上填写您的报名需求" />
+
+
+            <TextView
+                android:id="@+id/option_type"
+                style="@style/margin_15_5_15_5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:background="@drawable/shape_gray_rectangle"
+                android:drawableRight="@drawable/ic_bottom_arrow_icon"
+                android:gravity="center_vertical"
+                android:hint="您想学什么"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_15"
+                android:textSize="@dimen/sp_14" />
+
+            <EditText
+                android:id="@+id/name"
+                style="@style/margin_15_5_15_5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:background="@drawable/shape_gray_rectangle"
+                android:hint="您的真实名字"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/dp_10"
+                android:singleLine="true"
+                android:textSize="@dimen/sp_14" />
+
+            <EditText
+                android:id="@+id/phone"
+                style="@style/margin_15_5_15_5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:background="@drawable/shape_gray_rectangle"
+                android:hint="联系方式"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/dp_10"
+                android:singleLine="true"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/option_name"
+                style="@style/margin_15_5_15_5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:background="@drawable/shape_gray_rectangle"
+                android:drawableRight="@drawable/ic_bottom_arrow_icon"
+                android:gravity="center_vertical"
+                android:hint="您想报名的机构或院校"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_15"
+                android:textSize="@dimen/sp_14" />
+
+            <FrameLayout
+                style="@style/margin_15_5_15_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/option_name_pdf"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_40"
+                    android:background="@drawable/org_enrol_academy_icon"
+                    android:gravity="center_vertical"
+                    android:hint="您想报名的机构或院校"
+                    android:paddingLeft="@dimen/dp_30"
+                    android:paddingTop="@dimen/dp_5"
+                    android:textColor="@color/blue_light"
+                    android:textColorHint="@color/blue_light"
+                    android:textSize="@dimen/sp_14" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:paddingTop="@dimen/dp_5"
+                    android:src="@drawable/ziliao_icon" />
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/enrol_btn"
+                style="@style/margin_15_5_15_5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/rectangle_blue_3dp_btn_bg"
+                android:text="立即报名"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="点击报名后，机构/院校招生人员尽快与您取得联系"
+                android:textColor="@color/title_hint_text_color" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

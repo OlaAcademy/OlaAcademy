@@ -1,58 +1,50 @@
 package com.michen.olaxueyuan.ui.course;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.michen.olaxueyuan.common.manager.DialogUtils;
-import com.michen.olaxueyuan.common.manager.Logger;
-import com.michen.olaxueyuan.common.manager.Utils;
-import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
-import com.michen.olaxueyuan.protocol.manager.SECourseManager;
-import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
-import com.michen.olaxueyuan.ui.adapter.SystemVideoListAdapter;
-import com.michen.olaxueyuan.ui.course.video.VideoManager;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.michen.olaxueyuan.protocol.result.GoodsOrderStatusResult;
+import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.event.VideoPdfEvent;
+import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
+import com.michen.olaxueyuan.ui.adapter.SystemVideoListAdapter;
+import com.michen.olaxueyuan.ui.course.video.SystemVideoFragmentManger;
+import com.michen.olaxueyuan.ui.course.video.VideoManager;
 import com.michen.olaxueyuan.ui.course.video.VideoSystemManager;
-import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.Vitamio;
 import io.vov.vitamio.widget.MediaControllerView;
 import io.vov.vitamio.widget.VideoView;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class SystemVideoActivity extends FragmentActivity implements View.OnClickListener
         , VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication {
@@ -107,20 +99,34 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     public TextView geture_tv_progress_time;
     @Bind(R.id.gesture_progress_layout)
     public RelativeLayout gesture_progress_layout;
-    @Bind(R.id.listview)
-    public ListView listview;
     @Bind(R.id.title_layout)
     public LinearLayout titleLayout;
     @Bind(R.id.root)
     public LinearLayout root;
-    @Bind(R.id.bottom_view)
-    public RelativeLayout bottomView;
-    @Bind(R.id.btn_buy)
-    Button btnBuy;
+
+    @Bind(R.id.catalig_text)
+    public TextView cataligText;
+    @Bind(R.id.catalog_indicator)
+    public View catalogIndicator;
+    @Bind(R.id.catalog_layout)
+    public RelativeLayout catalogLayout;
+    @Bind(R.id.detail_text)
+    public TextView detailText;
+    @Bind(R.id.detail_indicator)
+    public View detailIndicator;
+    @Bind(R.id.detail_layout)
+    public RelativeLayout detailLayout;
+    @Bind(R.id.handout_text)
+    public TextView handoutText;
+    @Bind(R.id.handout_indicator)
+    public View handoutIndicator;
+    @Bind(R.id.handout_layout)
+    public RelativeLayout handoutLayout;
+    @Bind(R.id.view_pager)
+    public ViewPager mViewPager;
 
     private String courseId;
     private List<SystemVideoResult.ResultBean> videoArrayList;
-    //    private CourseVideoListAdapter adapter;
     private SystemVideoListAdapter adapter;
 
     public AudioManager mAudioManager;
@@ -134,7 +140,8 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     public long msec = 0;//是否播放过
     private String userId = "";
     SystemCourseResult.ResultEntity resultEntity;
-    private boolean hasBuyGoods = false;//true购买过改套视频，false没有购买过该套视频
+    public int pdfPosition = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +152,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         ButterKnife.bind(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setVideoViewHeight();
-        courseId = getIntent().getExtras().getString("pid");
-        resultEntity = (SystemCourseResult.ResultEntity) getIntent().getSerializableExtra("ResultEntity");
+
         initView();
     }
 
@@ -159,7 +165,6 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        getOrderStatus();
         mDismissHandler.sendEmptyMessage(1);
         mDismissHandler.sendEmptyMessageDelayed(1, 500);
     }
@@ -178,8 +183,11 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     }
 
     public void initView() {
+        courseId = getIntent().getExtras().getString("pid");
+        resultEntity = (SystemCourseResult.ResultEntity) getIntent().getSerializableExtra("ResultEntity");
         new TitleManager(this, getString(R.string.video_detail), this, true);
         mVideoView.setOnClickListener(this);
+        SystemVideoFragmentManger.getInstance().initView(this, courseId, resultEntity);
     }
 
     public void initData() {
@@ -191,64 +199,14 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         mVideoView.setOnInfoListener(infoListener);
         mVideoView.setOnVideoPlayFailListener(this);
 //        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
-        performRefresh();
+//        performRefresh();
     }
 
-    private void initListViewItemClick() {
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (videoArrayList != null && videoArrayList.size() > 0) {
-                    for (int i = 0; i < videoArrayList.size(); i++) {
-                        videoArrayList.get(i).setSelected(false);
-                    }
-                    videoArrayList.get(position).setSelected(true);
-                    if (!SEAuthManager.getInstance().isAuthenticated()) {
-                        loginDialog();
-                    } else {
-                        if (hasBuyGoods) {
-                            mVideoView.setVideoPath(videoArrayList.get(position).getAddress());
-                            adapter.updateData(videoArrayList);
-                        } else {
-                            jumpToPayOrder();
-                        }
-                    }
-                }
-            }
-        });
+    public void playVideo(String address) {
+        mVideoView.setVideoPath(address);
     }
 
     SECourseManager courseManager = SECourseManager.getInstance();
-
-    public void performRefresh() {
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            userId = SEAuthManager.getInstance().getAccessUser().getId();
-        }
-        Logger.e("courseId==" + courseId);
-        courseManager.getVideoList(courseId, userId, new Callback<SystemVideoResult>() {
-            @Override
-            public void success(SystemVideoResult result, Response response) {
-                if (result.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(SystemVideoActivity.this, result.getMessage(), 2.0f);
-                } else {
-                    videoArrayList = result.getResult();
-                    if (videoArrayList != null && videoArrayList.size() > 0) {
-                        videoArrayList.get(0).setSelected(true);
-                        adapter = new SystemVideoListAdapter(SystemVideoActivity.this);
-                        listview.setAdapter(adapter);
-                        initListViewItemClick();
-                        adapter.updateData(videoArrayList);
-                        mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                ToastUtil.showToastShort(SystemVideoActivity.this, R.string.data_request_fail);
-            }
-        });
-    }
 
     void playFunction() {
         controller = new MediaControllerView(SystemVideoActivity.this, SystemVideoActivity.this, rootView, root, false, this);
@@ -282,7 +240,8 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         mVideoView.setLayoutParams(layoutParams);
     }
 
-    @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return, R.id.btn_buy})
+    @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return
+            , R.id.catalog_layout, R.id.detail_layout, R.id.handout_layout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.left_return:
@@ -294,43 +253,24 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
             case R.id.set_full_screen:
                 // 设置横竖屏
                 if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-                    VideoManager.getInstance().setPortrait();
+                    VideoSystemManager.getInstance().setPortrait();
                 } else if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                    VideoManager.getInstance().setLandScape();
+                    VideoSystemManager.getInstance().setLandScape();
                 }
                 break;
-            case R.id.btn_buy:
-                jumpToPayOrder();
+            case R.id.catalog_layout:
+                mViewPager.setCurrentItem(0);
+                break;
+            case R.id.detail_layout:
+                mViewPager.setCurrentItem(1);
+                break;
+            case R.id.handout_layout:
+                mViewPager.setCurrentItem(2);
+                setDownloadPdfPosition(pdfPosition);
                 break;
             default:
                 break;
         }
-    }
-
-    private void jumpToPayOrder() {
-        if (!SEAuthManager.getInstance().isAuthenticated()) {
-            loginDialog();
-        } else {
-            if (resultEntity != null) {
-                Intent intent = new Intent(SystemVideoActivity.this, PayOrderSystemVideoActivity.class);
-                intent.putExtra("courseId", courseId);
-                intent.putExtra("ResultEntity", resultEntity);
-                startActivity(intent);
-            }
-        }
-    }
-
-    private void loginDialog() {
-        DialogUtils.showDialog(SystemVideoActivity.this, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.yes:
-                        startActivity(new Intent(SystemVideoActivity.this, UserLoginActivity.class));
-                        break;
-                }
-            }
-        },"", getString(R.string.to_login), "", "");
     }
 
     MediaPlayer.OnInfoListener infoListener = new MediaPlayer.OnInfoListener() {
@@ -460,29 +400,21 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         }
     }
 
-    public void getOrderStatus() {
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            userId = SEAuthManager.getInstance().getAccessUser().getId();
-        }
-        Logger.e("courseId==" + courseId);
-        courseManager.getOrderStatus(userId, courseId, new Callback<GoodsOrderStatusResult>() {
-            @Override
-            public void success(GoodsOrderStatusResult result, Response response) {
-                Logger.json(result);
-                if (result.getApicode() != 10000) {
-//                    SVProgressHUD.showInViewWithoutIndicator(SystemVideoActivity.this, result.getMessage(), 2.0f);
-                } else {
-                    if (result.getResult()==1){
-                        hasBuyGoods = true;
-                        bottomView.setVisibility(View.GONE);
-                    }
-                }
-            }
+    public void setVieoArrayList(List<SystemVideoResult.ResultBean> videoArrayList) {
+        this.videoArrayList = videoArrayList;
+    }
 
-            @Override
-            public void failure(RetrofitError error) {
-                ToastUtil.showToastShort(SystemVideoActivity.this, R.string.data_request_fail);
-            }
-        });
+    public void setDownloadPdfPosition(int position) {
+        /**
+         * {@link com.michen.olaxueyuan.ui.course.video.HandOutVideoFragment#onEventMainThread(VideoPdfEvent)}
+         */
+        try {
+            VideoPdfEvent videoPdfEvent = new VideoPdfEvent(
+                    null, videoArrayList.get(position).getId(), 1, position, videoArrayList.get(position).getName());
+            EventBus.getDefault().post(videoPdfEvent);
+            Logger.e("videoPdfEvent==" + videoPdfEvent.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

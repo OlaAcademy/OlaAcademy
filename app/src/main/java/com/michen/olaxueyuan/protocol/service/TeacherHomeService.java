@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.protocol.service;
 
 import com.michen.olaxueyuan.protocol.result.AttendGroupResult;
 import com.michen.olaxueyuan.protocol.result.CreateGroupResult;
+import com.michen.olaxueyuan.protocol.result.GroupMemberResult;
 import com.michen.olaxueyuan.protocol.result.HomeworkListResult;
 import com.michen.olaxueyuan.protocol.result.HomeworkStatisticsResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
@@ -22,7 +23,7 @@ public interface TeacherHomeService {
      * 创建群
      *
      * @param userId
-     * @param type   1、数学2、英语3、逻辑4、写作
+     * @param type    1、数学2、英语3、逻辑4、写作
      * @param name
      * @param profile
      * @param avatar
@@ -143,4 +144,20 @@ public interface TeacherHomeService {
             @Field("pageIndex") int pageIndex,
             @Field("pageSize") int pageSize,
             Callback<HomeworkStatisticsResult> cb);
+
+    /**
+     * 群成员列表
+     *
+     * @param groupId
+     * @param pageIndex
+     * @param pageSize
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/homework/queryGroupMember")
+    void queryGroupMember(
+            @Field("groupId") String groupId,
+            @Field("pageIndex") int pageIndex,
+            @Field("pageSize") int pageSize,
+            Callback<GroupMemberResult> cb);
 }

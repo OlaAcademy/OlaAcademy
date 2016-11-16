@@ -1,7 +1,5 @@
 package com.michen.olaxueyuan.ui.setting;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,11 +19,13 @@ import android.widget.Toast;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
+import com.michen.olaxueyuan.ui.manager.DataCleanManager;
 import com.michen.olaxueyuan.ui.me.activity.UserPasswordActivity;
 
 import java.util.HashMap;
@@ -81,9 +81,15 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
         } else {
             downloadTV.setText("移动数据和WIFI");
         }
+        try {
+            cacheSizeText.setText(DataCleanManager.getTotalCacheSize(this));
+        } catch (Exception e) {
+            e.printStackTrace();
+            cacheSizeText.setText("0k");
+        }
     }
 
-    @OnClick({R.id.passRL, R.id.info_setting_layout, R.id.downloadRL,R.id.clearCacheRL, R.id.aboutRL, R.id.rate_layout, R.id.feedback_layout, R.id.shareRL, R.id.btn_logout})
+    @OnClick({R.id.passRL, R.id.info_setting_layout, R.id.downloadRL, R.id.clearCacheRL, R.id.aboutRL, R.id.rate_layout, R.id.feedback_layout, R.id.shareRL, R.id.btn_logout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.passRL:
@@ -95,6 +101,7 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
                 showBottomPopWindow();
                 break;
             case R.id.clearCacheRL:
+                clearDataCache();
                 break;
             case R.id.aboutRL:
                 startActivity(new Intent(SettingActivity.this, AboutActivity.class));
@@ -114,6 +121,11 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
         }
     }
 
+    private void clearDataCache() {
+        DataCleanManager.clearAllCache(SettingActivity.this);
+        cacheSizeText.setText("0k");
+    }
+
     private void shareFriend() {
         share = new SharePopupWindow(SettingActivity.this);
         share.setPlatformActionListener(SettingActivity.this);
@@ -130,22 +142,18 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
     }
 
     private void logout() {
-        new AlertDialog.Builder(SettingActivity.this)
-                .setTitle("请确认")
-                .setMessage("确认退出当前用户吗？")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+        DialogUtils.showDialog(mContext, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.yes:
                         SEUserManager.getInstance().logout();
                         EventBus.getDefault().post(new UserLoginNoticeModule(false));//发送通知登录
                         finish();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .show();
+                        break;
+                }
+            }
+        }, "", "确认退出当前用户吗？", "", "");
     }
 
 

@@ -1,0 +1,12 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_white_item_bg">
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/normal_text_15dp_style"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_38"
+        android:gravity="center" />
+</LinearLayout>

@@ -8,14 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.CircleProgressBar;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.PictureUtil;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.snail.imageviewer.PhotoViewAttacher;
 import com.snail.imageviewer.PhotoViewAttacher.OnPhotoTapListener;
@@ -26,7 +28,7 @@ import com.snail.imageviewer.PhotoViewAttacher.OnPhotoTapListener;
 public class ImageDetailFragment extends Fragment {
     private String mImageUrl;
     private ImageView mImageView;
-    private ProgressBar progressBar;
+    private CircleProgressBar progressBar;
     private PhotoViewAttacher mAttacher;
     private String[] arry;
 
@@ -74,54 +76,64 @@ public class ImageDetailFragment extends Fragment {
                 return false;
             }
         });
-        progressBar = (ProgressBar) v.findViewById(R.id.loading);
+        progressBar = (CircleProgressBar) v.findViewById(R.id.loading);
         return v;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        DisplayImageOptions
+                imageOptions = new DisplayImageOptions.Builder()
+//                .showImageOnLoading(R.drawable.ic_launcher)
+//                .showImageOnFail(R.drawable.ic_launcher)
+//                .showImageForEmptyUri(R.drawable.ic_launcher)
+                .cacheOnDisk(true).cacheInMemory(true)
+                .build();
 
-        ImageLoader.getInstance().displayImage(mImageUrl, mImageView, new SimpleImageLoadingListener() {
+        ImageLoader.getInstance().displayImage(mImageUrl, mImageView, imageOptions, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-                if (getActivity() != null && !getActivity().isFinishing()) {
-                    progressBar.setVisibility(View.VISIBLE);
-                }
+                progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                if (getActivity() != null && !getActivity().isFinishing()) {
-                    String message = null;
-                    switch (failReason.getType()) {
-                        case IO_ERROR:
-                            message = "下载错误";
-                            break;
-                        case DECODING_ERROR:
-                            message = "图片无法显示";
-                            break;
-                        case NETWORK_DENIED:
-                            message = "网络有问题，无法下载";
-                            break;
-                        case OUT_OF_MEMORY:
-                            message = "图片太大无法显示";
-                            break;
-                        case UNKNOWN:
-                            message = "未知的错误";
-                            break;
-                    }
-                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
+                String message = null;
+                switch (failReason.getType()) {
+                    case IO_ERROR:
+                        message = "下载错误";
+                        break;
+                    case DECODING_ERROR:
+                        message = "图片无法显示";
+                        break;
+                    case NETWORK_DENIED:
+                        message = "网络有问题，无法下载";
+                        break;
+                    case OUT_OF_MEMORY:
+                        message = "图片太大无法显示";
+                        break;
+                    case UNKNOWN:
+                    default:
+                        message = "未知的错误";
+                        break;
                 }
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                }
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                if (getActivity() != null && !getActivity().isFinishing()) {
-                    progressBar.setVisibility(View.GONE);
-                    mAttacher.update();
-                }
+                progressBar.setVisibility(View.GONE);
+                mAttacher.update();
+            }
+        }, new ImageLoadingProgressListener() {
+            @Override
+            public void onProgressUpdate(String imageUri, View view, int current, int total) {
+//                Logger.e("100 * current / total=="+(100 * current / total));
+                progressBar.setProgress(100 * current / total);
             }
         });
     }

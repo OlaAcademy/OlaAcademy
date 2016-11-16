@@ -383,6 +383,7 @@
     <color name="unable_button_blue">#DCDBDB</color>
     <color name="buy_vip_color">#E0B270</color>
     <color name="buy_vip_pressed_color">#BE9152</color>
+    <color name="light_gray_color">#F6F7F8</color>
 
 
     <!--drawable-->

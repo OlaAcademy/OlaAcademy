@@ -18,23 +18,27 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.bean.ProvinceBean;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.Logger;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.SECallBack;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
-import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
 import com.michen.olaxueyuan.protocol.result.ServiceError;
+import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.helper.SAXPraserHelper;
 import com.snail.imagechooser.api.ChooserType;
 import com.snail.imagechooser.api.ChosenImage;
 import com.snail.imagechooser.api.ImageChooserListener;
 import com.snail.imagechooser.api.ImageChooserManager;
+import com.snail.photo.upload.UploadResult;
+import com.snail.photo.upload.UploadService;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
@@ -47,10 +51,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 
 public class UserUpdateActivity extends SEBaseActivity implements ImageChooserListener {
 
@@ -80,6 +92,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
 
     private ArrayList<ProvinceBean> options1Items = new ArrayList<ProvinceBean>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<ArrayList<String>>();
+    private UploadService uploadService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +113,8 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
 
         _user = SEAuthManager.getInstance().getAccessUser();
         updateUI();
-
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://upload.olaxueyuan.com").build();
+        uploadService = restAdapter.create(UploadService.class);
     }
 
     public void onSave() {
@@ -126,7 +140,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         final SEUser modifiedUser = currentUser;
 
         SVProgressHUD.showInView(this, "保存中，请稍候...", true);
-        SEUserManager.getInstance().modifyUserMe(name,reallyName, _imageName, local, sex + "", signature, new SECallBack() {
+        SEUserManager.getInstance().modifyUserMe(name, reallyName, _imageName, local, sex + "", signature, new SECallBack() {
             @Override
             public void success() {
                 if (!UserUpdateActivity.this.isFinishing()) {
@@ -411,7 +425,8 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
                     _updatedAvatarFilename = image.getFileThumbnail();
                     updateAvatarImageView();
                     if (needToUpdate) {
-                        updateAvatar();
+                        uploadImagesByExecutors(new TypedFile("application/octet-stream", new File(_updatedAvatarFilename)), 0);
+//                        updateAvatar();
                     }
                 }
             }
@@ -441,14 +456,46 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
                 if (!UserUpdateActivity.this.isFinishing()) {
                     MCUploadResult uploadResult = SEUserManager.getInstance().getUploadResult();
                     _imageName = uploadResult.imageName;
+                    Logger.e("_imageName==" + _imageName);
                 }
             }
 
             @Override
             public void failure(ServiceError error) {
-
+                if (!UserUpdateActivity.this.isFinishing()) {
+                    ToastUtil.showToastShort(mContext, error.getMessage());
+                }
             }
         });
         needToUpdate = false;
+    }
+
+    private ExecutorService service = Executors.newFixedThreadPool(5);
+
+    private void uploadImagesByExecutors(final TypedFile photo, final int angle) {
+        service.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
+                    @Override
+                    public void success(UploadResult result, Response response) {
+                        if (result.code != 1) {
+                            SVProgressHUD.showInViewWithoutIndicator(UserUpdateActivity.this, result.message, 2.0f);
+                            return;
+                        } else {
+                            _imageName = result.imgGid;
+                            Logger.e("_imageName=="+_imageName);
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        SVProgressHUD.showInViewWithoutIndicator(UserUpdateActivity.this, "图片上传失败", 2.0f);
+                    }
+                });
+            }
+
+        });
     }
 }

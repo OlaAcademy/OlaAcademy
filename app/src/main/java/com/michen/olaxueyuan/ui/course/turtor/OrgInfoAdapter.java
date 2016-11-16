@@ -88,21 +88,21 @@ public class OrgInfoAdapter extends BaseAdapter {
                     .resize(Utils.dip2px(context, 35), Utils.dip2px(context, 35)).into(holder.iv_avatar);
         }
         holder.tv_org.setText(orgInfo.org);
-        if (orgInfo.checkedIn==1){
+        if (orgInfo.checkedIn == 1) {
             holder.btn_checkIn.setText("已报名");
-        }else{
+        } else {
             holder.btn_checkIn.setText("立即报名");
         }
         holder.btn_checkIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SEAuthManager am = SEAuthManager.getInstance();
-                if (!am.isAuthenticated()){
+                if (!am.isAuthenticated()) {
                     Intent intent = new Intent(context, UserLoginActivity.class);
-                    ((TurtorActivity)context).startActivityForResult(intent, USER_LOGIN);
+                    ((TurtorActivity) context).startActivityForResult(intent, USER_LOGIN);
                     return;
                 }
-                enroll(orgInfo.id,am.getAccessUser().getPhone());
+                enroll(orgInfo.id, am.getAccessUser().getPhone());
             }
         });
         return convertView;
@@ -110,10 +110,10 @@ public class OrgInfoAdapter extends BaseAdapter {
 
     private void enroll(final String orgId, String userPhone) {
         MCOrgManager orgManager = MCOrgManager.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat    ("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-        SVProgressHUD.showInView(context,"请稍后...",true);
-        orgManager.enroll(orgId, userPhone, "", "1", formatter.format(curDate), new Callback<MCCommonResult>() {
+        SVProgressHUD.showInView(context, "请稍后...", true);
+        orgManager.enroll(orgId, userPhone, "", formatter.format(curDate), new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
                 SVProgressHUD.dismiss(context);
@@ -126,9 +126,9 @@ public class OrgInfoAdapter extends BaseAdapter {
                                 }
                             })
                             .show();
-                    for (int i=0;i<orgList.size();i++){
+                    for (int i = 0; i < orgList.size(); i++) {
                         MCOrgInfo org = orgList.get(i);
-                        if (org.id.equals(orgId)){
+                        if (org.id.equals(orgId)) {
                             org.checkedIn = 1;
                             orgList.set(i, org);
                             notifyDataSetChanged();

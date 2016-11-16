@@ -58,12 +58,13 @@
             android:textColor="@color/black_one"
             android:textSize="@dimen/sp_16" />
 
-        <com.snail.pulltorefresh.PullToRefreshListView
+        <com.snail.pulltorefresh.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/listview_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:visibility="visible" />
+            android:visibility="visible"
+            ptr:ptrAnimationStyle="flip" />
     </LinearLayout>
 
     <Button

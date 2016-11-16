@@ -17,6 +17,7 @@ public class BaseFragment extends Fragment {
     protected View mMainView;
     protected static ArrayList<Map<String, Object>> mlistItems;
     protected Context mContext;
+    public View view;
 
     static {
         mlistItems = new ArrayList<Map<String, Object>>();
@@ -35,7 +36,7 @@ public class BaseFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mContext = activity.getApplicationContext();
+        mContext = getActivity();
     }
 
     @Override

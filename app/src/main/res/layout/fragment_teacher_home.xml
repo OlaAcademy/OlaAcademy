@@ -9,6 +9,8 @@
     <com.snail.pulltorefresh.PullToRefreshListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        ptr:ptrAnimationStyle="flip"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:background="@color/white" />

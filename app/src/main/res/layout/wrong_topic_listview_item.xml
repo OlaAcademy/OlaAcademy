@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_white_item_bg"
+    android:orientation="vertical">
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_marginLeft="20dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/question_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:text="代数"
+            android:textColor="@color/black_one"
+            android:textSize="15dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="60dp"
+            android:layout_height="6dp"
+            android:layout_below="@+id/question_name"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/progressbg" />
+
+        <TextView
+            android:id="@+id/question_knowledge_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/question_name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/progressBar"
+            android:layout_toRightOf="@+id/progressBar"
+            android:text="20/29"
+            android:textColor="@color/title_hint_text_color"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:id="@+id/questionIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_question_blue" />
+    </RelativeLayout>
+
+
+</LinearLayout>

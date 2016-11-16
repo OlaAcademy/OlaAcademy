@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.PictureUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -31,8 +33,10 @@ import com.michen.olaxueyuan.ui.me.activity.MyBuyGoodsActivity;
 import com.michen.olaxueyuan.ui.me.activity.MyCourseCollectActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserUpdateActivity;
-import com.michen.olaxueyuan.ui.me.activity.WrongTopicActivity;
+import com.michen.olaxueyuan.ui.me.activity.WrongTopicSetActivity;
 import com.michen.olaxueyuan.ui.setting.SettingActivity;
+import com.snail.pulltorefresh.PullToRefreshBase;
+import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.squareup.picasso.Picasso;
 
 import java.io.FileOutputStream;
@@ -51,7 +55,7 @@ import retrofit.client.Response;
  * Created by mingge on 2016/9/21.
  */
 
-public class UserFragment extends SuperFragment {
+public class UserFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener {
     View rootView;
     @Bind(R.id.avatar)
     RoundRectImageView avatar;
@@ -81,6 +85,8 @@ public class UserFragment extends SuperFragment {
     TextView myCoinText;
     @Bind(R.id.sign_dot)
     ImageView signDot;
+    @Bind(R.id.root_scroll)
+    PullToRefreshScrollView rootScroll;
 
     private final static int EDIT_USER_INFO = 0x1010;
 
@@ -95,6 +101,8 @@ public class UserFragment extends SuperFragment {
 
     private void initView() {
         avatar.setRectAdius(100);
+        rootScroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        rootScroll.setOnRefreshListener(this);
     }
 
 
@@ -114,7 +122,7 @@ public class UserFragment extends SuperFragment {
 
     @OnClick({R.id.right_response, R.id.headLL, R.id.wrong_topic_layout, R.id.buy_vip_layout
             , R.id.my_buy_layout, R.id.my_collect_layout, R.id.my_download_layout
-            , R.id.service_email_layout, R.id.my_coin_layout})
+            , R.id.service_email_layout, R.id.my_coin_layout, R.id.avatar})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_response:
@@ -124,7 +132,8 @@ public class UserFragment extends SuperFragment {
                 headViewClick();
                 break;
             case R.id.wrong_topic_layout:
-                Utils.jumpLoginOrNot(getActivity(), WrongTopicActivity.class);
+//                Utils.jumpLoginOrNot(getActivity(), WrongTopicActivity.class);
+                Utils.jumpLoginOrNot(getActivity(), WrongTopicSetActivity.class);
                 break;
             case R.id.buy_vip_layout:
                 Utils.jumpLoginOrNot(getActivity(), BuyVipActivity.class);
@@ -143,6 +152,11 @@ public class UserFragment extends SuperFragment {
                 break;
             case R.id.service_email_layout:
                 sendEmail();
+                break;
+            case R.id.avatar:
+                if (SEAuthManager.getInstance().getAccessUser() != null && !TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
+                    PictureUtil.viewPictures(getActivity(), SEAuthManager.getInstance().getAccessUser().getAvator());
+                }
                 break;
             default:
                 break;
@@ -174,12 +188,16 @@ public class UserFragment extends SuperFragment {
                 @Override
                 public void success(SEUserResult result, Response response) {
                     if (getActivity() != null && !getActivity().isFinishing()) {
+                        rootScroll.onRefreshComplete();
                         updateHeadView(result.data);
                     }
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
+                    if (getActivity() != null && !getActivity().isFinishing()) {
+                        rootScroll.onRefreshComplete();
+                    }
                 }
             });
         }
@@ -256,6 +274,7 @@ public class UserFragment extends SuperFragment {
             @Override
             public void success(CheckinStatusResult checkinStatusResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
+                    rootScroll.onRefreshComplete();
                     if (checkinStatusResult.getApicode() == 10000) {
                         olaCoin.setText(checkinStatusResult.getResult().getCoin() + "欧拉币");
                         myCoinText.setText(String.valueOf(checkinStatusResult.getResult().getCoin()));
@@ -270,6 +289,9 @@ public class UserFragment extends SuperFragment {
 
             @Override
             public void failure(RetrofitError error) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    rootScroll.onRefreshComplete();
+                }
             }
         });
     }
@@ -279,5 +301,11 @@ public class UserFragment extends SuperFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+        fetchUserInfo();
+        getSignStatus();
     }
 }

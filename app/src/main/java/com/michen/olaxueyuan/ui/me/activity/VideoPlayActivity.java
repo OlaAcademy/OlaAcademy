@@ -210,9 +210,11 @@ public class VideoPlayActivity extends FragmentActivity implements View.OnClickL
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    mVolumeBrightnessLayout.setVisibility(View.GONE);
-                    GESTURE_FLAG = 0;// 手指离开屏幕后，重置调节音量或进度的标志
-                    gesture_progress_layout.setVisibility(View.GONE);
+                    if (!VideoPlayActivity.this.isFinishing()) {
+                        mVolumeBrightnessLayout.setVisibility(View.GONE);
+                        GESTURE_FLAG = 0;// 手指离开屏幕后，重置调节音量或进度的标志
+                        gesture_progress_layout.setVisibility(View.GONE);
+                    }
                     break;
                 case 101:
                     break;

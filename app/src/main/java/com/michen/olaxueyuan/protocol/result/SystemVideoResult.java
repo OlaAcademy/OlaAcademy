@@ -66,7 +66,7 @@ public class SystemVideoResult extends ServiceResult implements Serializable {
         private Object orgname;
         private Object tname;
         private int isBanner;
-        private Object pic;
+        private String pic;
         private boolean isSelected;
 
         public boolean isSelected() {
@@ -157,11 +157,11 @@ public class SystemVideoResult extends ServiceResult implements Serializable {
             this.isBanner = isBanner;
         }
 
-        public Object getPic() {
+        public String getPic() {
             return pic;
         }
 
-        public void setPic(Object pic) {
+        public void setPic(String pic) {
             this.pic = pic;
         }
     }

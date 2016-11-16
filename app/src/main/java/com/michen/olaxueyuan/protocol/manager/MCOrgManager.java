@@ -200,8 +200,8 @@ public class MCOrgManager {
      *
      * @param callback
      */
-    public void enroll(String orgId, String userPhone, String userLocal, String type, String checkinTime, final Callback<MCCommonResult> callback) {
-        orgService.enroll(orgId, userPhone, userLocal, type, checkinTime, new Callback<MCCommonResult>() {
+    public void enroll(String orgId, String userPhone, String userLocal, String checkinTime, final Callback<MCCommonResult> callback) {
+        orgService.enroll(orgId, userPhone, userLocal, checkinTime, new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
                 if (callback != null) {

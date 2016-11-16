@@ -90,6 +90,7 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
 
     /**
      * {@link CourseVideoActivity#setDownloadPdfPosition(int)}
+     * {@link com.michen.olaxueyuan.ui.course.SystemVideoActivity#setDownloadPdfPosition(int)}
      */
     public void onEventMainThread(VideoPdfEvent videoPdf) {
         if (videoPdf.type == 1 && nowPosition != videoPdf.position) {
@@ -108,8 +109,9 @@ public class HandOutVideoFragment extends BaseFragment implements OnPageChangeLi
             ToastUtil.showToastShort(getActivity(), R.string.need_sd);
             return;
         }
-        String fileName = id + ".pdf";
-        final String target = "/sdcard/OlaAcademy/" + fileName;
+        String fileName = "/" + id + ".pdf";
+//        final String target = "/sdcard/OlaAcademy/" + fileName;
+        final String target = getActivity().getExternalCacheDir() + fileName;
         final File file = new File(target);
         if (file.exists()) {
             setVisible(false, false, true);

@@ -2,18 +2,17 @@ package com.michen.olaxueyuan.ui.question;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.manager.WebViewManger;
 import com.snail.svprogresshud.SVProgressHUD;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -84,9 +83,9 @@ public class WebViewActivity extends SEBaseActivity {
         }
 
         @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+        public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, com.tencent.smtt.export.external.interfaces.SslError sslError) {
             SVProgressHUD.dismiss(mContext);
-            super.onReceivedSslError(view, handler, error);
+            super.onReceivedSslError(webView, sslErrorHandler, sslError);
         }
     }
 

@@ -15,8 +15,9 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_banner_goods" />
 
-    <com.snail.pulltorefresh.PullToRefreshListView
+    <com.snail.pulltorefresh.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/orgListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        ptr:ptrAnimationStyle="flip" />
 </LinearLayout>

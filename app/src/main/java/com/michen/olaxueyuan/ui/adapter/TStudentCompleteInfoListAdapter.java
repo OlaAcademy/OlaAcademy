@@ -11,6 +11,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.PictureUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.HomeworkStatisticsResult;
 import com.squareup.picasso.Picasso;
@@ -78,6 +79,12 @@ public class TStudentCompleteInfoListAdapter extends BaseAdapter {
                     .resize(Utils.dip2px(context, 52), Utils.dip2px(context, 52))
                     .into(holder.avatar);
         }
+        holder.avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PictureUtil.viewPictures(context, list.get(position).getUserAvatar());
+            }
+        });
         return convertView;
     }
 
