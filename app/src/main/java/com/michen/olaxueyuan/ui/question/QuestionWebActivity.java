@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -48,9 +49,9 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
     private EditText articleTV;
     private TextView leftReturn;
     private ImageView addWrongTopicIcon;
-    private ImageView timerIcon;
     private ImageView openVideoIcon;
-
+    private TextView tvTitle;
+    private TextView rightText;
 
     private int type; // 1课程 2 题库
     private String currentSubjectId;
@@ -73,11 +74,12 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
 
         leftReturn = (TextView) findViewById(R.id.left_return);
         addWrongTopicIcon = (ImageView) findViewById(R.id.add_wrong_topic_icon);
-        timerIcon = (ImageView) findViewById(R.id.timer_icon);
         openVideoIcon = (ImageView) findViewById(R.id.open_video_icon);
+        tvTitle = (TextView) findViewById(R.id.tv_title);
+        rightText = (TextView) findViewById(R.id.right_text);
         leftReturn.setOnClickListener(this);
         addWrongTopicIcon.setOnClickListener(this);
-        timerIcon.setOnClickListener(this);
+        rightText.setOnClickListener(this);
 
         previousBtn = (Button) findViewById(R.id.previousBtn);
         previousBtn.setVisibility(View.GONE);
@@ -93,17 +95,18 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
 
         type = getIntent().getExtras().getInt("type");
         if (type == 1) {
-            setTitleText("专项练习");
+            tvTitle.setText("专项练习");
             MobclickAgent.onEvent(this, "enter_point");
         } else if (type == 2) {
-            setTitleText("模拟考试");
+            tvTitle.setText("模拟考试");
             MobclickAgent.onEvent(this, "enter_exam");
         } else if (type == 3) {
-            setTitleText("欧拉作业");
+            tvTitle.setText("欧拉作业");
             addWrongTopicIcon.setVisibility(View.GONE);
-        } else if (type == 4||type == 5) {
-            setTitleText("错题集");
-            addWrongTopicIcon.setVisibility(View.GONE);
+            rightText.setVisibility(View.VISIBLE);
+        } else if (type == 4 || type == 5) {
+            tvTitle.setText("错题集");
+            addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
         }
         objectId = getIntent().getExtras().getInt("objectId");
 
@@ -124,7 +127,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
             @Override
             public void onPageFinished(WebView webView, String s) {
                 super.onPageFinished(webView, s);
-                if (type == 4||type == 5) { //错题集直接显示答案
+                if (type == 4 || type == 5) { //错题集直接显示答案
                     contentWebView.loadUrl("javascript:loadQuestion('1')");
                 } else {
                     contentWebView.loadUrl("javascript:loadQuestion('0')");
@@ -162,40 +165,82 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.previousBtn:
+                if (type == 4 || type == 5) {
+                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                } else {
+                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                }
                 contentWebView.loadUrl("javascript:clickPrevious()");
                 break;
             case R.id.nextBtn:
+                if (type == 4 || type == 5) {
+                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                } else {
+                    addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                }
                 contentWebView.loadUrl("javascript:clickNext()");
                 break;
             case R.id.left_return:
                 finish();
                 break;
             case R.id.add_wrong_topic_icon:
-                updateWrongSet();
+                if (type == 4 || type == 5) {
+                    showSetWrongTopic(false, "您是否要把该题从错题集中移除?");
+                } else {
+                    showSetWrongTopic(true, "您是否要把该题加入错题集中?");
+                }
                 break;
-            case R.id.timer_icon:
-                contentWebView.loadUrl("javascript:clickNext()");
+            case R.id.right_text:
                 break;
         }
     }
 
-    private void updateWrongSet() {
+    private void showSetWrongTopic(final boolean addOrDelete, String content) {
+        DialogUtils.showDialog(mContext, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.yes:
+                        updateWrongSet(addOrDelete);
+                        break;
+                }
+            }
+        }, "", content, "", "");
+    }
+
+    private void updateWrongSet(final boolean addOrDelete) {
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
-        if(TextUtils.isEmpty(currentSubjectId)){
+        if (TextUtils.isEmpty(currentSubjectId)) {
             ToastUtil.showToastShort(mContext, "请选择题目");
             return;
         }
-        SEUserManager.getInstance().updateWrongSet(userId, String.valueOf(type), "1", currentSubjectId, new Callback<SimpleResult>() {
+        String add = "1";//1增加错题，2删除错题
+        if (addOrDelete) {
+            add = "1";
+        } else {
+            add = "2";
+        }
+        int answerType = type;
+        if (type == 4 || type == 5) {
+            answerType = type - 3;
+        }
+        SEUserManager.getInstance().updateWrongSet(userId, String.valueOf(answerType), add, currentSubjectId, new Callback<SimpleResult>() {
             @Override
             public void success(SimpleResult simpleResult, Response response) {
                 if (mContext != null && !QuestionWebActivity.this.isFinishing()) {
                     if (simpleResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(mContext, simpleResult.getMessage(), 2.0f);
                     } else {
-                        ToastUtil.showToastShort(mContext, "增加错题集成功");
+                        if (addOrDelete) {
+                            ToastUtil.showToastShort(mContext, "增加错题集成功");
+                            addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                        } else {
+                            ToastUtil.showToastShort(mContext, "删除错题集成功");
+                            addWrongTopicIcon.setImageResource(R.drawable.add_wrongtopic_set_icon);
+                        }
                     }
                 }
             }
@@ -203,7 +248,11 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
             @Override
             public void failure(RetrofitError error) {
                 if (mContext != null && !QuestionWebActivity.this.isFinishing()) {
-                    ToastUtil.showToastShort(mContext, "增加错题集失败");
+                    if (addOrDelete) {
+                        ToastUtil.showToastShort(mContext, "增加错题集失败");
+                    } else {
+                        ToastUtil.showToastShort(mContext, "删除错题集失败");
+                    }
                 }
             }
         });
@@ -228,7 +277,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
                 case 4:
                     if (msg.obj == null || TextUtils.isEmpty(msg.obj.toString())) {
 //                        setRightImageInvisibility();
-                        openVideoIcon.setVisibility(View.GONE);
+                        openVideoIcon.setVisibility(View.INVISIBLE);
                     } else {
 //                        setRightImage(R.drawable.ic_video_blue);
                         openVideoIcon.setVisibility(View.VISIBLE);

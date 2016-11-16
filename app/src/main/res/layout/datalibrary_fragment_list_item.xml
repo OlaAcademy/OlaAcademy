@@ -69,9 +69,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_alignBottom="@+id/price"
             android:layout_marginRight="15dp"
-            android:text="@string/coin"
+            android:paddingBottom="@dimen/dp_2"
+            android:text="币"
             android:textColor="@color/system_course_money_color"
             android:textSize="@dimen/sp_10" />
 
