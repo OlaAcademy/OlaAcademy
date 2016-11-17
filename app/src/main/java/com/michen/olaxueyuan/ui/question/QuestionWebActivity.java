@@ -24,9 +24,11 @@ import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.MCQuestion;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.ui.activity.SuperActivity;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.me.activity.VideoPlayActivity;
 import com.michen.olaxueyuan.ui.question.module.QuestionResultNoticeClose;
 import com.snail.svprogresshud.SVProgressHUD;
+import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.umeng.analytics.MobclickAgent;
@@ -55,6 +57,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
 
     private int type; // 1课程 2 题库
     private String currentSubjectId;
+    private boolean add_delete;
     private int hasArticle; // 1 英语类阅读理解
     private int objectId;
 
@@ -66,6 +69,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         EventBus.getDefault().register(this);
 
         contentWebView = (WebView) findViewById(R.id.questionWebView);
+        contentWebView.setWebChromeClient(new WebChromeClient());
         // 启用javascript
         contentWebView.getSettings().setJavaScriptEnabled(true);
 
@@ -119,6 +123,9 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         SEAuthManager am = SEAuthManager.getInstance();
         if (am.isAuthenticated()) {
             userId = am.getAccessUser().getId();
+        }else {
+            startActivity(new Intent(QuestionWebActivity.this, UserLoginActivity.class));
+            return;
         }
 
         contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/question.html?objectId=" + objectId + "&type=" + type + "&userId=" + userId);
@@ -191,14 +198,15 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.yes:
-                        updateWrongSet(addOrDelete);
+                        add_delete = addOrDelete;
+                        contentWebView.loadUrl("javascript:getCurrentSubject()");
                         break;
                 }
             }
         }, "", content, "", "");
     }
 
-    private void updateWrongSet(final boolean addOrDelete) {
+    private void updateWrongSet() {
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
@@ -208,7 +216,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
             return;
         }
         String add = "1";//1增加错题，2删除错题
-        if (addOrDelete) {
+        if (add_delete) {
             add = "1";
         } else {
             add = "2";
@@ -224,7 +232,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
                     if (simpleResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(mContext, simpleResult.getMessage(), 2.0f);
                     } else {
-                        if (addOrDelete) {
+                        if (add_delete) {
                             ToastUtil.showToastShort(mContext, "增加错题集成功");
                         } else {
                             ToastUtil.showToastShort(mContext, "删除错题集成功");
@@ -236,7 +244,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
             @Override
             public void failure(RetrofitError error) {
                 if (mContext != null && !QuestionWebActivity.this.isFinishing()) {
-                    if (addOrDelete) {
+                    if (add_delete) {
                         ToastUtil.showToastShort(mContext, "增加错题集失败");
                     } else {
                         ToastUtil.showToastShort(mContext, "删除错题集失败");
@@ -296,6 +304,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
                     break;
                 case 7:
                     currentSubjectId = msg.obj.toString();
+                    updateWrongSet();
                     break;
             }
         }
