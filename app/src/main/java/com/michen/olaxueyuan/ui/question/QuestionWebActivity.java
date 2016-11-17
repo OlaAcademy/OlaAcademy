@@ -236,6 +236,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
                             ToastUtil.showToastShort(mContext, "增加错题集成功");
                         } else {
                             ToastUtil.showToastShort(mContext, "删除错题集成功");
+                            contentWebView.reload();
                         }
                     }
                 }
