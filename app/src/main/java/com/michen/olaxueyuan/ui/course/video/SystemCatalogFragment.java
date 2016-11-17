@@ -88,7 +88,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = View.inflate(getActivity(), R.layout.catalog_video_fragment, null);
+        view = View.inflate(getActivity(), R.layout.catalog_system_video_fragment, null);
         ButterKnife.bind(this, view);
         initView();
         return view;
@@ -200,6 +200,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
                             adapter.updateData(videoArrayList);
                         } else {
                             bottomView.setVisibility(View.VISIBLE);
+//                            bottomView.setVisibility(View.GONE);
                             bottomDownloadView.setVisibility(View.GONE);
                             jumpToPayOrder();
                         }
