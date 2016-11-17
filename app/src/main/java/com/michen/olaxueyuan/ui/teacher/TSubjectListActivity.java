@@ -47,7 +47,7 @@ public class TSubjectListActivity extends SuperActivity implements View.OnClickL
     Button chooseBtn;
     @Bind(R.id.deployBtn)
     Button deployBtn;
-    @Bind(R.id.left_text)
+    @Bind(R.id.left_return)
     TextView leftText;
     @Bind(R.id.right_texts)
     TextView rightTexts;
@@ -55,6 +55,8 @@ public class TSubjectListActivity extends SuperActivity implements View.OnClickL
 
     private int type; // 1课程 2 题库
     private int objectId;
+
+    private boolean isChooseAll;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -112,11 +114,14 @@ public class TSubjectListActivity extends SuperActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.nextBtn:
+                titleManger.changeText(TitleManager.RIGHT_INDEX_TEXT,"");
                 contentWebView.loadUrl("javascript:clickNext()");
                 deployRL.setVisibility(View.VISIBLE);
                 operationRL.setVisibility(View.GONE);
                 break;
             case R.id.chooseBtn:
+                isChooseAll = false;
+                titleManger.changeText(TitleManager.RIGHT_INDEX_TEXT,"全选");
                 contentWebView.loadUrl("javascript:rechoose()");
                 operationRL.setVisibility(View.VISIBLE);
                 deployRL.setVisibility(View.GONE);
@@ -124,12 +129,19 @@ public class TSubjectListActivity extends SuperActivity implements View.OnClickL
             case R.id.deployBtn:
                 contentWebView.loadUrl("javascript:deploy()");
                 break;
-            case R.id.left_text:
+            case R.id.left_return:
                 finish();
                 break;
             case R.id.right_texts:
-                //Todo 全选和反选按钮
-                titleManger.changeText(TitleManager.RIGHT_INDEX_TEXT, "反选");
+                if(!isChooseAll){
+                    isChooseAll = true;
+                    titleManger.changeText(TitleManager.RIGHT_INDEX_TEXT, "不选");
+                    contentWebView.loadUrl("javascript:chooseAll('1')");
+                }else{
+                    isChooseAll = false;
+                    titleManger.changeText(TitleManager.RIGHT_INDEX_TEXT, "全选");
+                    contentWebView.loadUrl("javascript:chooseAll('0')");
+                }
                 break;
         }
     }
