@@ -16,6 +16,7 @@ import com.baidu.location.LocationClientOption;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.CommonUtil;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
@@ -139,12 +140,17 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
                 break;
             case R.id.option_name_pdf:
                 if (!TextUtils.isEmpty(optionNameText.getText().toString().trim())) {
-                    Intent intent = new Intent(mContext, PDFViewActivity.class);
-                    intent.putExtra("url", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getAddress());
-                    intent.putExtra("title", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getProfile());
-                    intent.putExtra("id", "orgEnrol" + organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getId());
-                    intent.putExtra("name", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getProfile());
-                    mContext.startActivity(intent);
+                    try {
+                        Intent intent = new Intent(mContext, PDFViewActivity.class);
+                        intent.putExtra("url", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getAddress());
+                        intent.putExtra("title", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getProfile());
+                        intent.putExtra("id", "orgEnrol_" + organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getId());
+                        intent.putExtra("name", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getProfile());
+                        Logger.e("==="+organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).toString());
+                        mContext.startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     ToastUtil.showToastShort(mContext, "你选择您想报名的机构或院校");
                 }
@@ -174,6 +180,7 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
             optionTypeText.setText(optionTypeName);
             optionNameText.setText(organizationInfoResult.getResult().get(orgType).getOptionList().get(0).getName());
             optionNamePdf.setText(organizationInfoResult.getResult().get(orgType).getOptionList().get(0).getProfile());
+            orgId = organizationInfoResult.getResult().get(orgType).getOptionList().get(0).getId();
         } else {
             this.childType = childType;
             optionChildName = name;

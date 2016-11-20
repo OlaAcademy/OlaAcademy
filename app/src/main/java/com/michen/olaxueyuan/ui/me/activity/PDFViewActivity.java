@@ -62,7 +62,7 @@ public class PDFViewActivity extends SEBaseActivity implements OnPageChangeListe
         name = getIntent().getStringExtra("name");
         url = getIntent().getStringExtra("url");
         id = getIntent().getStringExtra("id");
-
+        Logger.e("title=="+title+";name=="+name+";url=="+url+";id=="+id);
         setTitleText(title);
         downLoadPdf(url, id);
     }

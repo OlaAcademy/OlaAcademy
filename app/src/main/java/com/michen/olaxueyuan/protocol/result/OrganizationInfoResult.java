@@ -15,6 +15,16 @@ public class OrganizationInfoResult {
 
     private String message;
     private int apicode;
+
+    @Override
+    public String toString() {
+        return "OrganizationInfoResult{" +
+                "message='" + message + '\'' +
+                ", apicode=" + apicode +
+                ", result=" + result +
+                '}';
+    }
+
     /**
      * optionName : 机构
      * optionList : [{"address":"http://organization.ufile.ucloud.com.cn/brochure1.pdf","attendCount":951,"checkinCount":39,"id":1,"logo":"http://commodity.ufile.ucloud.com.cn/logo1.jpg","name":"2017年幂学系统班","org":"幂学","profile":"2018年幂学教育MPAcc招生简章","type":1},{"address":"http://organization.ufile.ucloud.com.cn/brochure2.pdf","attendCount":458,"checkinCount":27,"id":2,"logo":"http://commodity.ufile.ucloud.com.cn/logo1.jpg","name":"2017年幂学私塾班","org":"幂学","profile":"2018年MBA复试与面试辅导招生简章","type":1}]
@@ -48,6 +58,15 @@ public class OrganizationInfoResult {
 
     public static class ResultBean {
         private String optionName;
+
+        @Override
+        public String toString() {
+            return "ResultBean{" +
+                    "optionName='" + optionName + '\'' +
+                    ", optionList=" + optionList +
+                    '}';
+        }
+
         /**
          * address : http://organization.ufile.ucloud.com.cn/brochure1.pdf
          * attendCount : 951
@@ -88,6 +107,21 @@ public class OrganizationInfoResult {
             private String org;
             private String profile;
             private int type;
+
+            @Override
+            public String toString() {
+                return "OptionListBean{" +
+                        "address='" + address + '\'' +
+                        ", attendCount=" + attendCount +
+                        ", checkinCount=" + checkinCount +
+                        ", id='" + id + '\'' +
+                        ", logo='" + logo + '\'' +
+                        ", name='" + name + '\'' +
+                        ", org='" + org + '\'' +
+                        ", profile='" + profile + '\'' +
+                        ", type=" + type +
+                        '}';
+            }
 
             public String getAddress() {
                 return address;
