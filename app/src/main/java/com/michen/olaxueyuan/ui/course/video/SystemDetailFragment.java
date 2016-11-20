@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.ui.me.activity.BaseFragment;
 import com.squareup.picasso.Picasso;
 
@@ -36,7 +37,7 @@ public class SystemDetailFragment extends BaseFragment {
     @Bind(R.id.detail)
     TextView detail;
     private String courseId;
-    SystemCourseResult.ResultEntity resultEntity;
+    SystemCourseResultEntity resultEntity;
 
     @Nullable
     @Override
@@ -49,7 +50,7 @@ public class SystemDetailFragment extends BaseFragment {
 
     private void initView() {
         courseId = getArguments().getString("courseId");
-        resultEntity = (SystemCourseResult.ResultEntity) getArguments().getSerializable("resultEntity");
+        resultEntity = (SystemCourseResultEntity) getArguments().getSerializable("resultEntity");
         if (resultEntity == null) {
             return;
         }

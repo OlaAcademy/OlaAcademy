@@ -41,7 +41,7 @@ public class SystemCourseResult extends ServiceResult implements Serializable {
      * videonum : 27
      */
 
-    private List<ResultEntity> result;
+    private List<SystemCourseResultEntity> result;
 
     public void setMessage(String message) {
         this.message = message;
@@ -51,7 +51,7 @@ public class SystemCourseResult extends ServiceResult implements Serializable {
         this.apicode = apicode;
     }
 
-    public void setResult(List<ResultEntity> result) {
+    public void setResult(List<SystemCourseResultEntity> result) {
         this.result = result;
     }
 
@@ -63,11 +63,11 @@ public class SystemCourseResult extends ServiceResult implements Serializable {
         return apicode;
     }
 
-    public List<ResultEntity> getResult() {
+    public List<SystemCourseResultEntity> getResult() {
         return result;
     }
 
-    public static class ResultEntity implements Serializable {
+   /* public static class ResultEntity implements Serializable {
         private int attentionnum;
         private String detail;
         private int id;
@@ -331,5 +331,5 @@ public class SystemCourseResult extends ServiceResult implements Serializable {
                 this.year = year;
             }
         }
-    }
+    }*/
 }

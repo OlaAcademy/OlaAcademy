@@ -14,6 +14,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
 import com.squareup.picasso.Picasso;
 
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
 public class SystemCourseAdapter extends BaseAdapter {
     SystemCourseResult module;
     Context context;
-    List<SystemCourseResult.ResultEntity> list = new ArrayList<>();
+    List<SystemCourseResultEntity> list = new ArrayList<>();
 
     public SystemCourseAdapter(Context context) {
         this.context = context;

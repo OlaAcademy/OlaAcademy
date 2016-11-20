@@ -20,6 +20,7 @@ import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
 import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
 import com.michen.olaxueyuan.ui.activity.SuperActivity;
@@ -69,7 +70,7 @@ public class PaySystemVideoActivity extends SuperActivity {
     RelativeLayout wechatView;
     @Bind(R.id.buy_vip)
     Button buyVip;
-    SystemCourseResult.ResultEntity resultEntity;
+    SystemCourseResultEntity resultEntity;
     @Bind(R.id.coin_tips)
     TextView coinTips;
     @Bind(iv_switch_open_orignal)
@@ -97,7 +98,7 @@ public class PaySystemVideoActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         courseId = getIntent().getStringExtra("courseId");
-        resultEntity = (SystemCourseResult.ResultEntity) getIntent().getSerializableExtra("ResultEntity");
+        resultEntity = (SystemCourseResultEntity) getIntent().getSerializableExtra("ResultEntity");
         setContentView(R.layout.activity_pay_system_video_view);
         ButterKnife.bind(this);
     }

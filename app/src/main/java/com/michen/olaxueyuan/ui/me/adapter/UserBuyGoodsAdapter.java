@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
 public class UserBuyGoodsAdapter extends BaseAdapter {
     UserBuyGoodsResult module;
     Context context;
-    List<UserBuyGoodsResult.ResultEntity> list = new ArrayList<>();
+    List<SystemCourseResultEntity> list = new ArrayList<>();
 
     public UserBuyGoodsAdapter(Context context) {
         this.context = context;
@@ -76,6 +77,7 @@ public class UserBuyGoodsAdapter extends BaseAdapter {
                 //Todo 跳转到播放视频界面
                 Intent intent = new Intent(context, SystemVideoActivity.class);
                 intent.putExtra("pid", String.valueOf(list.get(position).getId()));
+                intent.putExtra("ResultEntity", list.get(position));
                 context.startActivity(intent);
             }
         });

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class SystemVideoFragmentManger {
     private MainPageAdapter adapter;
 
     private String courseId;
-    SystemCourseResult.ResultEntity resultEntity;
+    SystemCourseResultEntity resultEntity;
 
     public static SystemVideoFragmentManger getInstance() {
         if (fragmentManger == null) {
@@ -35,7 +36,7 @@ public class SystemVideoFragmentManger {
 
     SystemVideoActivity activity;
 
-    public void initView(SystemVideoActivity activity, String courseId, SystemCourseResult.ResultEntity resultEntity) {
+    public void initView(SystemVideoActivity activity, String courseId, SystemCourseResultEntity resultEntity) {
         this.activity = activity;
         this.courseId = courseId;
         this.resultEntity = resultEntity;

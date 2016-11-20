@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.ui.BaseRecyclerAdapter;
 import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
 /**
  * Created by mingge on 2016/8/24.
  */
-public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCourseResult.ResultEntity, QualityCourseRecyclerAdapter.QualityCourseItemHolder> {
+public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCourseResultEntity, QualityCourseRecyclerAdapter.QualityCourseItemHolder> {
     public QualityCourseRecyclerAdapter(Context context) {
         super(context);
     }
@@ -76,7 +77,7 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
             linearParams.setMargins(15, 0, 30, 0);
         holder.ivCourse.setLayoutParams(linearParams);
 
-        final SystemCourseResult.ResultEntity course = list.get(position);
+        final SystemCourseResultEntity course = list.get(position);
         if (course.getPrice() > 0) {
             holder.tvIsFree.setText("￥" + course.getPrice());
             holder.tvIsFree.setTextColor(context.getResources().getColor(R.color.red_f44336));

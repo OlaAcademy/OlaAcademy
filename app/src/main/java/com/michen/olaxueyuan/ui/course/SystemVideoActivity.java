@@ -29,6 +29,7 @@ import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.VideoPdfEvent;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
 import com.michen.olaxueyuan.ui.adapter.SystemVideoListAdapter;
 import com.michen.olaxueyuan.ui.course.video.SystemVideoFragmentManger;
@@ -139,7 +140,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     public MediaControllerView controller;
     public long msec = 0;//是否播放过
     private String userId = "";
-    SystemCourseResult.ResultEntity resultEntity;
+    SystemCourseResultEntity resultEntity;
     public int pdfPosition = 0;
 
 
@@ -184,7 +185,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
 
     public void initView() {
         courseId = getIntent().getExtras().getString("pid");
-        resultEntity = (SystemCourseResult.ResultEntity) getIntent().getSerializableExtra("ResultEntity");
+        resultEntity = (SystemCourseResultEntity) getIntent().getSerializableExtra("ResultEntity");
         new TitleManager(this, getString(R.string.video_detail), this, true);
         mVideoView.setOnClickListener(this);
         SystemVideoFragmentManger.getInstance().initView(this, courseId, resultEntity);

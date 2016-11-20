@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.ui.BaseRecyclerAdapter;
 import com.squareup.picasso.Picasso;
 
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * Created by mingge on 2016/8/24.
  */
-public class DirectBroadCastRecyclerAdapter extends BaseRecyclerAdapter<SystemCourseResult.ResultEntity, DirectBroadCastRecyclerAdapter.DirectBroadCastItemHolder> {
+public class DirectBroadCastRecyclerAdapter extends BaseRecyclerAdapter<SystemCourseResultEntity, DirectBroadCastRecyclerAdapter.DirectBroadCastItemHolder> {
     public DirectBroadCastRecyclerAdapter(Context context) {
         super(context);
     }
@@ -67,7 +68,7 @@ public class DirectBroadCastRecyclerAdapter extends BaseRecyclerAdapter<SystemCo
             linearParams.setMargins(15, 0, 30, 0);
         holder.ivCourse.setLayoutParams(linearParams);
 
-        SystemCourseResult.ResultEntity course = list.get(position);
+        SystemCourseResultEntity course = list.get(position);
         holder.tvName.setText(course.getName());
         holder.tvTime.setText(String.valueOf(course.getTotaltime()));
         holder.tvBrowser.setText(context.getString(R.string.num_watch, course.getVideonum()));

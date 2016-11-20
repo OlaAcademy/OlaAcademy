@@ -12,6 +12,7 @@ import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.squareup.picasso.Picasso;
 
@@ -49,7 +50,7 @@ public class PayOrderSystemVideoActivity extends SuperActivity {
     @Bind(R.id.bottom_view)
     RelativeLayout bottomView;
     private String courseId;
-    SystemCourseResult.ResultEntity resultEntity;
+    SystemCourseResultEntity resultEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class PayOrderSystemVideoActivity extends SuperActivity {
         EventBus.getDefault().register(this);
         titleManager = new TitleManager(this, "支付订单", this, true);
         courseId = getIntent().getStringExtra("courseId");
-        resultEntity = (SystemCourseResult.ResultEntity) getIntent().getSerializableExtra("ResultEntity");
+        resultEntity = (SystemCourseResultEntity) getIntent().getSerializableExtra("ResultEntity");
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.result.GoodsOrderStatusResult;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
+import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
@@ -79,7 +80,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
     private String courseId;
     private String userId;
     private List<SystemVideoResult.ResultBean> videoArrayList;
-    SystemCourseResult.ResultEntity resultEntity;
+    SystemCourseResultEntity resultEntity;
     public boolean hasBuyGoods = false;//true购买过改套视频，false没有购买过该套视频
     private DownloadManager downloadManager;
     private SharePopupWindow share;
@@ -96,7 +97,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
 
     private void initView() {
         courseId = getArguments().getString("courseId");
-        resultEntity = (SystemCourseResult.ResultEntity) getArguments().getSerializable("resultEntity");
+        resultEntity = (SystemCourseResultEntity) getArguments().getSerializable("resultEntity");
         adapter = new SystemVideoListAdapter(mContext);
         listview.setAdapter(adapter);
         initData();
