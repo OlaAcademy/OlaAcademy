@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 
 public class FileUtils {
-	
+
 	public static String SDPATH = Environment.getExternalStorageDirectory()
 			+ "/SnialData/";
 
@@ -22,7 +22,7 @@ public class FileUtils {
 				f.delete();
 			}
 			FileOutputStream out = new FileOutputStream(f);
-			bm.compress(Bitmap.CompressFormat.JPEG, 80, out);
+			bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
 			out.flush();
 			out.close();
 		} catch (FileNotFoundException e) {
@@ -49,7 +49,7 @@ public class FileUtils {
 		file.isFile();
 		return file.exists();
 	}
-	
+
 	public static void delFile(String fileName){
 		File file = new File(SDPATH + fileName);
 		if(file.isFile()){
@@ -62,12 +62,12 @@ public class FileUtils {
 		File dir = new File(SDPATH);
 		if (dir == null || !dir.exists() || !dir.isDirectory())
 			return;
-		
+
 		for (File file : dir.listFiles()) {
 			if (file.isFile())
-				file.delete(); 
+				file.delete();
 			else if (file.isDirectory())
-				deleteDir(); 
+				deleteDir();
 		}
 		dir.delete();
 	}

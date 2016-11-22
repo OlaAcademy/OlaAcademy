@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Base64;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -81,7 +82,23 @@ public class PictureUtil {
         BitmapFactory.decodeFile(filePath, options);
 
         // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, 200, 200);
+//        options.inSampleSize = calculateInSampleSize(options, 720, 1280);
+        options.inSampleSize = calculateInSampleSize(options, 576, 1024);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeFile(filePath, options);
+    }
+
+    public static Bitmap getLargerBitmap(String filePath) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, options);
+
+        // Calculate inSampleSize
+//        options.inSampleSize = calculateInSampleSize(options, 720, 1280);
+        options.inSampleSize = calculateInSampleSize(options, 648, 1152);
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
