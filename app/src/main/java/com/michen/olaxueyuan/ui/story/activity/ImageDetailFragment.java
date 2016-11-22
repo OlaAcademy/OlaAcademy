@@ -85,9 +85,9 @@ public class ImageDetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         DisplayImageOptions
                 imageOptions = new DisplayImageOptions.Builder()
-//                .showImageOnLoading(R.drawable.ic_launcher)
-//                .showImageOnFail(R.drawable.ic_launcher)
-//                .showImageForEmptyUri(R.drawable.ic_launcher)
+                .showImageOnLoading(R.drawable.picture_load)
+                .showImageOnFail(R.drawable.picture_load)
+                .showImageForEmptyUri(R.drawable.picture_load)
                 .cacheOnDisk(true).cacheInMemory(true)
                 .build();
 
