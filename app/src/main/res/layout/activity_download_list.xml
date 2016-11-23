@@ -1,14 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_30"
+        android:paddingRight="@dimen/dp_30"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:id="@+id/downloaded_layout"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_48"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/downloaded_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="已下载"
+                android:textColor="@color/black_blue_text_color"
+                android:textSize="@dimen/dp_17" />
+
+            <View
+                android:id="@+id/downloaded_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/indicator_bottom_selector" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/downloading_layout"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_48"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/downloading_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="下载中"
+                android:textColor="@color/black_blue_text_color"
+                android:textSize="@dimen/sp_17" />
+
+            <View
+                android:id="@+id/downloading_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/indicator_bottom_selector" />
+        </RelativeLayout>
+    </LinearLayout>
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/download_list"
-        android:background="#F0F0F0"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"></com.baoyz.swipemenulistview.SwipeMenuListView>
+        android:layout_height="fill_parent"
+        android:background="#F0F0F0" />
 
 </LinearLayout>

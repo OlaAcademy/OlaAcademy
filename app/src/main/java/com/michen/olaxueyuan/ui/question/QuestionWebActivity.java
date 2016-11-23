@@ -21,7 +21,6 @@ import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
-import com.michen.olaxueyuan.protocol.model.MCQuestion;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
@@ -33,10 +32,7 @@ import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.ArrayList;
-
 import de.greenrobot.event.EventBus;
-import io.vov.vitamio.utils.StringUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -129,6 +125,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         }
 
         contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/question.html?objectId=" + objectId + "&type=" + type + "&userId=" + userId);
+//        contentWebView.loadUrl("http://192.168.1.14:8020/olaxueyuan" + "/question.html?objectId=" + objectId + "&type=" + type + "&userId=" + userId);
 
         contentWebView.setWebViewClient(new WebViewClient() {
             @Override

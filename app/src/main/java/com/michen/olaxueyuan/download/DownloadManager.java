@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.download;
 
 import android.content.Context;
 import android.database.Cursor;
+
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.db.converter.ColumnConverter;
@@ -14,6 +15,7 @@ import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.util.LogUtils;
+import com.michen.olaxueyuan.protocol.event.DownloadSuccessEvent;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.io.File;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Author: wyouflf
@@ -54,15 +58,40 @@ public class DownloadManager {
         return downloadInfoList.size();
     }
 
+    public List<DownloadInfo> getDownloadedList() {
+        List<DownloadInfo> downloadedList = null;
+        try {
+            downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "=", HttpHandler.State.SUCCESS));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return downloadedList == null ? new ArrayList<DownloadInfo>() : downloadedList;
+    }
+
+    public List<DownloadInfo> getDownloadingList() {
+        List<DownloadInfo> downloadedList = null;
+        try {
+            downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "<>", HttpHandler.State.SUCCESS));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return downloadedList == null ? new ArrayList<DownloadInfo>() : downloadedList;
+    }
+
     public DownloadInfo getDownloadInfo(int index) {
-        return downloadInfoList.get(index);
+        try {
+            return downloadInfoList.get(index);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return downloadInfoList.get(0);
+        }
     }
 
     public void addNewDownload(String url, String fileName, String pic, String target,
                                boolean autoResume, boolean autoRename,
                                final RequestCallBack<File> callback) throws DbException {
-        if(db.findAll(Selector.from(DownloadInfo.class).where("downloadUrl", "=", url))!=null
-                &&db.findAll(Selector.from(DownloadInfo.class).where("downloadUrl", "=", url)).size()>0){
+        if (db.findAll(Selector.from(DownloadInfo.class).where("downloadUrl", "=", url)) != null
+                && db.findAll(Selector.from(DownloadInfo.class).where("downloadUrl", "=", url)).size() > 0) {
             SVProgressHUD.showInViewWithoutIndicator(mContext, "缓存列表已存在", 2.0f);
             return;
         }
@@ -249,6 +278,7 @@ public class DownloadManager {
             }
             try {
                 db.saveOrUpdate(downloadInfo);
+                EventBus.getDefault().post(new DownloadSuccessEvent(true));
             } catch (DbException e) {
                 LogUtils.e(e.getMessage(), e);
             }
@@ -300,6 +330,7 @@ public class DownloadManager {
 
     private int maxDeleteThread = 3;
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(maxDeleteThread);
+
     /**
      * 删除磁盘文件
      *
