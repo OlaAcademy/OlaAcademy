@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -54,7 +55,8 @@ public class QuestionHomeWorkListActivity extends SEBaseActivity implements Pull
     }
 
     private void fetchData() {
-        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         String userId = null;
         try {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
@@ -68,7 +70,8 @@ public class QuestionHomeWorkListActivity extends SEBaseActivity implements Pull
                 Logger.json(homeworkListResult);
                 if (context != null) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     if (homeworkListResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(context, homeworkListResult.getMessage(), 2.0f);
                     } else {
@@ -85,7 +88,8 @@ public class QuestionHomeWorkListActivity extends SEBaseActivity implements Pull
             @Override
             public void failure(RetrofitError error) {
                 if (context != null) {
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(context, R.string.data_request_fail);
                 }

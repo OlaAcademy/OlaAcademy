@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui.activity;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.StatusBarCompat;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
@@ -34,6 +36,7 @@ public class SEBaseActivity extends FragmentActivity {
         // manifest中配置主题为Translucent，因此需要在这儿通过代码设置
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setTheme(R.style.AppTheme);
+        setStatusBarColor();
         actionBar = getActionBar();
         // 返回箭头（默认不显示）
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -161,6 +164,15 @@ public class SEBaseActivity extends FragmentActivity {
             }
         }
         return false;
+    }
+
+    /**
+     * 着色状态栏（4.4以上系统有效）
+     */
+    public void setStatusBarColor() {
+        if (Build.VERSION.SDK_INT > 19) {
+            StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.common_blue));
+        }
     }
 }
 

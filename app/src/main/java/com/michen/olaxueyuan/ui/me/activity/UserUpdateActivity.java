@@ -139,12 +139,14 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
             currentUser.setAvator(_imageName);
         final SEUser modifiedUser = currentUser;
 
-        SVProgressHUD.showInView(this, "保存中，请稍候...", true);
+//        SVProgressHUD.showInView(this, "保存中，请稍候...", true);
+        SEAPP.showCatDialog(this);
         SEUserManager.getInstance().modifyUserMe(name, reallyName, _imageName, local, sex + "", signature, new SECallBack() {
             @Override
             public void success() {
                 if (!UserUpdateActivity.this.isFinishing()) {
                     SVProgressHUD.showInViewWithoutIndicator(UserUpdateActivity.this, "更新成功!", 2);
+                    SEAPP.dismissAllowingStateLoss();
                     Intent intent = getIntent();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("userInfo", modifiedUser);
@@ -158,6 +160,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
             public void failure(ServiceError error) {
                 if (!UserUpdateActivity.this.isFinishing()) {
                     SVProgressHUD.showInViewWithoutIndicator(UserUpdateActivity.this, "保存出错，请检查您的网络。", 2);
+                    SEAPP.dismissAllowingStateLoss();
                 }
             }
         });

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -13,7 +14,6 @@ import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.me.adapter.CoinDetailListAdapter;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,13 +62,15 @@ public class CoinDetailActivity extends SEBaseActivity implements PullToRefreshB
             startActivity(new Intent(context, UserLoginActivity.class));
             return;
         }
-        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         SEUserManager.getInstance().coinGetHistoryList(userId, new Callback<CoinHistoryResult>() {
             @Override
             public void success(CoinHistoryResult coinHistoryResult, Response response) {
                 if (context != null && !CoinDetailActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     if (coinHistoryResult.getApicode() == 10000) {
                         adapter.updateData(coinHistoryResult);
                     } else {
@@ -81,7 +83,8 @@ public class CoinDetailActivity extends SEBaseActivity implements PullToRefreshB
             public void failure(RetrofitError error) {
                 if (context != null && !CoinDetailActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(context, R.string.request_failed);
                 }
             }

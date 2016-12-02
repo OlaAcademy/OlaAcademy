@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
@@ -77,23 +78,30 @@ public class UserLoginActivity extends SEBaseActivity {
     }
 
     private void login() {
-        SVProgressHUD.showInView(UserLoginActivity.this, "登录中,请稍后...", true);
+//        SVProgressHUD.showInView(UserLoginActivity.this, "登录中,请稍后...", true);
+        SEAPP.showCatDialog(this);
         SEAuthManager am = SEAuthManager.getInstance();
         am.authWithUsernamePassword(phoneET.getText().toString(), passET.getText().toString(), new Callback<SEUserResult>() {
             @Override
             public void success(SEUserResult result, Response response) {
-                if (!result.apicode.equals("10000")) {
-                    SVProgressHUD.showInViewWithoutIndicator(UserLoginActivity.this, result.message, 2.0f);
-                    return;
+                if (!UserLoginActivity.this.isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
+                    if (!result.apicode.equals("10000")) {
+                        SVProgressHUD.showInViewWithoutIndicator(UserLoginActivity.this, result.message, 2.0f);
+                        return;
+                    }
+                    EventBus.getDefault().post(new UserLoginNoticeModule(true));//发送通知登录
+//                    SVProgressHUD.dismiss(UserLoginActivity.this);
+                    finish();
                 }
-                EventBus.getDefault().post(new UserLoginNoticeModule(true));//发送通知登录
-                SVProgressHUD.dismiss(UserLoginActivity.this);
-                finish();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(UserLoginActivity.this);
+                if (!UserLoginActivity.this.isFinishing()) {
+//                    SVProgressHUD.dismiss(UserLoginActivity.this);
+                   SEAPP.dismissAllowingStateLoss();
+                }
             }
         });
     }

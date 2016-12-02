@@ -125,12 +125,14 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
     }
 
     private void getCommentListData() {
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         QuestionCourseManager.getInstance().getCommentList(String.valueOf(circleId), "2", new Callback<CommentModule>() {
             @Override
             public void success(CommentModule commentModule, Response response) {
                 Logger.json(commentModule);
-                SVProgressHUD.dismiss(mContext);
+//                SVProgressHUD.dismiss(mContext);
+                SEAPP.dismissAllowingStateLoss();
                 if (commentModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(mContext, commentModule.getMessage(), 2.0f);
                 } else {
@@ -140,17 +142,20 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(mContext);
+//                SVProgressHUD.dismiss(mContext);
+                SEAPP.dismissAllowingStateLoss();
             }
         });
     }
 
     private void queryCircleDetail(String circleId) {
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         QuestionCourseManager.getInstance().queryCircleDetail(circleId, new Callback<PostDetailModule>() {
             @Override
             public void success(PostDetailModule postDetailModule, Response response) {
-                SVProgressHUD.dismiss(mContext);
+//                SVProgressHUD.dismiss(mContext);
+                SEAPP.dismissAllowingStateLoss();
                 if (postDetailModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(mContext, postDetailModule.getMessage(), 2.0f);
                 } else {
@@ -161,7 +166,8 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(mContext);
+//                SVProgressHUD.dismiss(mContext);
+                SEAPP.dismissAllowingStateLoss();
             }
         });
     }
@@ -256,7 +262,7 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
                 break;
             case R.id.avatar:
                 if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
-                    PictureUtil.viewPictures(mContext,resultBean.getUserAvatar());
+                    PictureUtil.viewPictures(mContext, resultBean.getUserAvatar());
                 }
                 break;
             default:
@@ -265,11 +271,13 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
     }
 
     private void praise() {
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         MCCircleManager.getInstance().praiseCirclePost(String.valueOf(circleId), new Callback<PraiseCirclePostResult>() {
             @Override
             public void success(PraiseCirclePostResult mcCommonResult, Response response) {
-                SVProgressHUD.dismiss(mContext);
+//                SVProgressHUD.dismiss(mContext);
+                SEAPP.dismissAllowingStateLoss();
                 if (mcCommonResult.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(mContext, mcCommonResult.getMessage(), 2.0f);
                 } else {
@@ -280,7 +288,8 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(mContext);
+//                SVProgressHUD.dismiss(mContext);
+                SEAPP.dismissAllowingStateLoss();
                 ToastUtil.showToastShort(mContext, R.string.data_request_fail);
             }
         });
@@ -333,12 +342,14 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
             } else {
                 toUserId = "";
             }
-            SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+//            SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+            SEAPP.showCatDialog(this);
             QuestionCourseManager.getInstance().addComment(user.getId(), postId, toUserId
                     , content, location, "2", new Callback<CommentSucessResult>() {
                         @Override
                         public void success(CommentSucessResult commentSuccess, Response response) {
-                            SVProgressHUD.dismiss(mContext);
+//                            SVProgressHUD.dismiss(mContext);
+                            SEAPP.dismissAllowingStateLoss();
                             etContent.setText("");
                             etContent.clearComposingText();
                             getCommentListData();
@@ -346,7 +357,8 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
 
                         @Override
                         public void failure(RetrofitError error) {
-                            SVProgressHUD.dismiss(mContext);
+//                            SVProgressHUD.dismiss(mContext);
+                            SEAPP.dismissAllowingStateLoss();
                         }
                     });
             this.commentResultBean = null;
@@ -449,5 +461,11 @@ public class PostDetailActivity extends SEBaseActivity implements PlatformAction
             shareView.dismiss();
         }
         return false;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
     }
 }

@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.protocol.manager.SERestManager;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.R;
@@ -186,13 +187,15 @@ public class UserPasswordActivity extends SEBaseActivity {
             SVProgressHUD.showInViewWithoutIndicator(UserPasswordActivity.this, "验证码错误", 2.0f);
             return;
         }
-        SVProgressHUD.showInView(this, "请稍后...", true);
+//        SVProgressHUD.showInView(this, "请稍后...", true);
+        SEAPP.showCatDialog(this);
         SEUserService userService = SERestManager.getInstance().create(SEUserService.class);
         userService.reMakePass(user, code, pass, new Callback<SEPasswordResult>() {
             @Override
             public void success(SEPasswordResult result, Response response) {
                 if (!UserPasswordActivity.this.isFinishing()) {
-                    SVProgressHUD.dismiss(UserPasswordActivity.this);
+//                    SVProgressHUD.dismiss(UserPasswordActivity.this);
+                    SEAPP.dismissAllowingStateLoss();
                     if (result.apicode.equals("10000")) {
                         Intent intent = getIntent();
                         intent.putExtra("phone", phoneET.getText().toString().trim());
@@ -208,7 +211,8 @@ public class UserPasswordActivity extends SEBaseActivity {
             @Override
             public void failure(RetrofitError error) {
                 if (!UserPasswordActivity.this.isFinishing()) {
-                    SVProgressHUD.dismiss(UserPasswordActivity.this);
+//                    SVProgressHUD.dismiss(UserPasswordActivity.this);
+                    SEAPP.dismissAllowingStateLoss();
                     SVProgressHUD.showInViewWithoutIndicator(UserPasswordActivity.this, "网络异常", 2.0f);
                 }
             }

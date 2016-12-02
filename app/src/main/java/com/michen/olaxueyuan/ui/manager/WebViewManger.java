@@ -8,13 +8,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallback;
 import com.tencent.smtt.sdk.CookieManager;
 import com.tencent.smtt.sdk.CookieSyncManager;
@@ -23,13 +25,6 @@ import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,12 +47,12 @@ public class WebViewManger {
         return webViewManger;
     }
 
-    Activity activity;
+    Context activity;
     WebView mWebView;
     String mUrl;
     private final static int FILECHOOSER_RESULTCODE = 1;
 
-    public void initView(Activity activity, WebView mWebView, String mUrl) {
+    public void initView(Context activity, WebView mWebView, String mUrl) {
         this.activity = activity;
         this.mWebView = mWebView;
         this.mUrl = mUrl;
@@ -102,7 +97,9 @@ public class WebViewManger {
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.addCategory(Intent.CATEGORY_OPENABLE);
                 i.setType("image/*");
-                activity.startActivityForResult(Intent.createChooser(i, "File Chooser"), FILECHOOSER_RESULTCODE);
+                if (activity instanceof Activity) {
+                    ((Activity) activity).startActivityForResult(Intent.createChooser(i, "File Chooser"), FILECHOOSER_RESULTCODE);
+                }
             }
 
             // For Android 3.0+
@@ -110,7 +107,9 @@ public class WebViewManger {
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.addCategory(Intent.CATEGORY_OPENABLE);
                 i.setType("*/*");
-                activity.startActivityForResult(Intent.createChooser(i, "File Browser"), FILECHOOSER_RESULTCODE);
+                if (activity instanceof Activity) {
+                    ((Activity) activity).startActivityForResult(Intent.createChooser(i, "File Browser"), FILECHOOSER_RESULTCODE);
+                }
             }
 
             // For Android 4.1
@@ -118,7 +117,9 @@ public class WebViewManger {
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.addCategory(Intent.CATEGORY_OPENABLE);
                 i.setType("image/*");
-                activity.startActivityForResult(Intent.createChooser(i, "File Chooser"), FILECHOOSER_RESULTCODE);
+                if (activity instanceof Activity) {
+                    ((Activity) activity).startActivityForResult(Intent.createChooser(i, "File Chooser"), FILECHOOSER_RESULTCODE);
+                }
             }
 
             @Override
@@ -177,14 +178,24 @@ public class WebViewManger {
                 t.show();
                 return;
             }
+            String fileName = url.substring(url.lastIndexOf("/") + 1);
+            fileName = URLDecoder.decode(fileName);
+            File directory = Environment.getExternalStorageDirectory();
+            File file = new File(directory, fileName);
+            if (file.exists()) {
+                Intent intent = getFileIntent(file);
+                activity.startActivity(intent);
+                return;
+            }
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle("提示！");
             builder.setMessage("确认下载？");
             builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dialog.dismiss();
-                    DownloaderTask task = new DownloaderTask();
-                    task.execute(url);
+                    downLoadFile(url);
+//                    DownloaderTask task = new DownloaderTask();
+//                    task.execute(url);
                 }
             });
             builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -198,6 +209,55 @@ public class WebViewManger {
         }
 
     }
+
+    private void downLoadFile(String url) {
+        String fileName = url.substring(url.lastIndexOf("/") + 1);
+        fileName = URLDecoder.decode(fileName);
+        File directory = Environment.getExternalStorageDirectory();
+        File file = new File(directory, fileName);
+        if (file.exists()) {
+            Intent intent = getFileIntent(file);
+            activity.startActivity(intent);
+            return;
+        }
+        new HttpUtils().download(url, file.getPath(), true, true, new RequestCallBack<File>() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                showProgressDialog();
+            }
+
+            @Override
+            public void onLoading(long total, long current, boolean isUploading) {
+                super.onLoading(total, current, isUploading);
+            }
+
+            @Override
+            public void onSuccess(ResponseInfo<File> responseInfo) {
+                closeProgressDialog();
+                if (responseInfo == null) {
+                    Toast t = Toast.makeText(activity, "连接错误！请稍后再试！", Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.CENTER, 0, 0);
+                    t.show();
+                    return;
+                }
+
+                Toast t = Toast.makeText(activity, "已保存到SD卡。", Toast.LENGTH_LONG);
+                t.setGravity(Gravity.CENTER, 0, 0);
+                t.show();
+                File directory = Environment.getExternalStorageDirectory();
+                File file = new File(directory, responseInfo.result.getName());
+                Intent intent = getFileIntent(file);
+                activity.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(HttpException e, String s) {
+
+            }
+        });
+    }
+/*
 
     // 内部类
     private class DownloaderTask extends AsyncTask<String, Void, String> {
@@ -282,6 +342,7 @@ public class WebViewManger {
         }
 
     }
+*/
 
     public Intent getFileIntent(File file) {
         // Uri uri = Uri.parse("http://m.ql18.com.cn/hpf10/1.pdf");
@@ -387,25 +448,5 @@ public class WebViewManger {
         mWebView.loadUrl("javascript:(function(){" + "var objs = document.getElementsByTagName(\"img\"); " + "var imgs = new Array(objs.length); " + "for(var i=0;i<objs.length;i++)  "
                 + "{" + "    imgs[i] = objs[i].src;" + "    objs[i].onclick=function()  " + "    {  " + "        window.imagelistner.openImage(this.src,imgs);  " + "    }  " + "}"
                 + "})()");
-    }
-
-    /**
-     * @author DingLei
-     * @version 1.0
-     * @Description: 图片点击的JS处理类
-     * @date 2014-5-13
-     */
-    public class ImageJavascriptInterface {
-        private SEBaseActivity context;
-
-        public ImageJavascriptInterface(SEBaseActivity context) {
-            this.context = context;
-        }
-
-        public void openImage(String src, String[] imgs) {
-            if (imgs != null && imgs.length > 0) {
-            }
-        }
-
     }
 }

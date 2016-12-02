@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
 import com.michen.olaxueyuan.protocol.result.AttendGroupResult;
@@ -59,15 +60,17 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         TeacherHomeManager.getInstance().getUserGroupList(userId, String.valueOf(type), new Callback<UserGroupListResult>() {
             @Override
             public void success(UserGroupListResult userGroupListResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
                     if (userGroupListResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), userGroupListResult.getMessage(), 2.0f);
                     } else {
-                        SVProgressHUD.dismiss(getActivity());
+//                        SVProgressHUD.dismiss(getActivity());
                         listview.onRefreshComplete();
                         adapter.updateData(userGroupListResult.getResult());
                     }
@@ -78,7 +81,8 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                 }
             }
         });
@@ -99,15 +103,16 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         TeacherHomeManager.getInstance().attendGroup(userId, groupId, type, new Callback<AttendGroupResult>() {
             @Override
             public void success(AttendGroupResult attendGroupResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
                     if (attendGroupResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), attendGroupResult.getMessage(), 2.0f);
                     } else {
-                        SVProgressHUD.dismiss(getActivity());
                         fetchData();
                     }
                 }
@@ -116,7 +121,8 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                 }
             }
         });
@@ -130,6 +136,12 @@ public class GroupListFragment extends SuperFragment implements PullToRefreshBas
     @Override
     public void onRefresh(PullToRefreshBase refreshView) {
         fetchData();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override

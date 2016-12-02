@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.MCOrgManager;
@@ -17,7 +18,6 @@ import com.michen.olaxueyuan.ui.manager.TitlePopManager;
 import com.michen.olaxueyuan.ui.me.adapter.SystemCourseAdapter;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -77,13 +77,15 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
     }
 
     private void fectData() {
-        SVProgressHUD.showInView(CommodityActivity.this, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(CommodityActivity.this, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         MCOrgManager.getInstance().getGoodsList(pid, new Callback<SystemCourseResult>() {
             @Override
             public void success(SystemCourseResult systemCourseResult, Response response) {
                 if (!CommodityActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(CommodityActivity.this);
+//                    SVProgressHUD.dismiss(CommodityActivity.this);
+                    SEAPP.dismissAllowingStateLoss();
 //                Logger.json(systemCourseResult);
                     if (systemCourseResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(CommodityActivity.this, systemCourseResult.getMessage());
@@ -97,7 +99,8 @@ public class CommodityActivity extends SuperActivity implements TitlePopManager.
             @Override
             public void failure(RetrofitError error) {
                 if (!CommodityActivity.this.isFinishing()) {
-                    SVProgressHUD.dismiss(CommodityActivity.this);
+//                    SVProgressHUD.dismiss(CommodityActivity.this);
+                    SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(CommodityActivity.this, R.string.data_request_fail);
                 }

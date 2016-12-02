@@ -12,15 +12,15 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.MCOrgManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.model.MCOrgInfo;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
-import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -112,11 +112,13 @@ public class OrgInfoAdapter extends BaseAdapter {
         MCOrgManager orgManager = MCOrgManager.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-        SVProgressHUD.showInView(context, "请稍后...", true);
+//        SVProgressHUD.showInView(context, "请稍后...", true);
+        SEAPP.showCatDialog((TurtorActivity)context);
         orgManager.enroll(orgId, userPhone, "", formatter.format(curDate), new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
-                SVProgressHUD.dismiss(context);
+//                SVProgressHUD.dismiss(context);
+                SEAPP.dismissAllowingStateLoss();
                 if (result.apicode.equals("10000")) {
                     new AlertDialog.Builder(context)
                             .setTitle("报名成功")
@@ -140,7 +142,8 @@ public class OrgInfoAdapter extends BaseAdapter {
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(context);
+//                SVProgressHUD.dismiss(context);
+                SEAPP.dismissAllowingStateLoss();
             }
         });
 

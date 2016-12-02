@@ -5,13 +5,13 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.protocol.manager.SERestManager;
+import com.michen.olaxueyuan.protocol.model.SEStudent;
 import com.michen.olaxueyuan.protocol.service.SEStudentService;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.protocol.model.SEStudent;
-import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
@@ -59,11 +59,13 @@ public class StudentInfoActivity extends SEBaseActivity {
     private void initStudentInfo() {
 
         SEStudentService seStudentService = SERestManager.getInstance().create(SEStudentService.class);
-        SVProgressHUD.showInView(this, "正在加载，请稍后...", true);
+//        SVProgressHUD.showInView(this, "正在加载，请稍后...", true);
+        SEAPP.showCatDialog(this);
         seStudentService.fetchStudentInfo(7, new Callback<Response>() {
             @Override
             public void success(Response result, Response response) {
-                SVProgressHUD.dismiss(StudentInfoActivity.this);
+//                SVProgressHUD.dismiss(StudentInfoActivity.this);
+                SEAPP.dismissAllowingStateLoss();
                 TypedInput body = response.getBody();
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(body.in()));
@@ -83,7 +85,8 @@ public class StudentInfoActivity extends SEBaseActivity {
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(StudentInfoActivity.this);
+//                SVProgressHUD.dismiss(StudentInfoActivity.this);
+                SEAPP.dismissAllowingStateLoss();
             }
         });
     }

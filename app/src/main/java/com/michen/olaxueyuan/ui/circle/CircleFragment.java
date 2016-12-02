@@ -104,12 +104,14 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     }
 
     private void fetchData(final String circleId, String pageSize) {
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         QuestionCourseManager.getInstance().getCircleList(circleId, pageSize, type, new Callback<OLaCircleModule>() {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
+//                    SVProgressHUD.dismiss(getActivity());
                     listview.onRefreshComplete();
 //                Logger.json(oLaCircleModule);
                     if (oLaCircleModule.getApicode() != 10000) {
@@ -134,7 +136,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
+//                    SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
             }
@@ -197,12 +200,14 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     }
 
     private void praise(final int position) {
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         MCCircleManager.getInstance().praiseCirclePost(String.valueOf(list.get(position).getCircleId()), new Callback<PraiseCirclePostResult>() {
             @Override
             public void success(PraiseCirclePostResult mcCommonResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     if (mcCommonResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), mcCommonResult.getMessage(), 2.0f);
                     } else {
@@ -215,7 +220,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
             }
@@ -241,6 +247,12 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         // 显示窗口 (设置layout在PopupWindow中显示的位置)
         share.showAtLocation(getActivity().findViewById(R.id.main_circle),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override

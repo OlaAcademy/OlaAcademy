@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
@@ -23,7 +24,6 @@ import com.michen.olaxueyuan.ui.me.activity.CoinHomePageActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,16 +69,22 @@ public class DataLibraryFragment extends SuperFragment implements PullToRefreshB
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         HomeListManager.getInstance().getMaterailList(userId, materailId, PAGE_SIZE, String.valueOf(type), new Callback<MaterialListResult>() {
             @Override
             public void success(MaterialListResult materialListResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
                     if (materialListResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(getActivity(), materialListResult.getMessage());
                     } else {
-                        SVProgressHUD.dismiss(getActivity());
+//                        SVProgressHUD.dismiss(getActivity());
                         listview.onRefreshComplete();
+                        if (materialListResult.getResult().size() == 0) {
+                            ToastUtil.showToastShort(getActivity(), R.string.to_end);
+                            return;
+                        }
                         if (materialListResult.getResult().size() > 0) {
                             materailId = String.valueOf(materialListResult.getResult().get(materialListResult.getResult().size() - 1).getId());
                             list.addAll(materialListResult.getResult());
@@ -93,7 +99,8 @@ public class DataLibraryFragment extends SuperFragment implements PullToRefreshB
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                 }
             }
         });
@@ -127,12 +134,14 @@ public class DataLibraryFragment extends SuperFragment implements PullToRefreshB
             getActivity().startActivity(new Intent(getActivity(), UserLoginActivity.class));
             return;
         }
-        SVProgressHUD.showInView(getActivity(), getActivity().getString(R.string.get_coin_ing), true);
+//        SVProgressHUD.showInView(getActivity(), getActivity().getString(R.string.get_coin_ing), true);
+        SEAPP.showCatDialog(this);
         SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
             @Override
             public void success(CheckinStatusResult checkinStatusResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     if (checkinStatusResult.getApicode() == 10000) {
                         if (checkinStatusResult.getResult().getCoin() >= price) {
                             unlockMaterial(userId, materailId);
@@ -157,7 +166,8 @@ public class DataLibraryFragment extends SuperFragment implements PullToRefreshB
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(getActivity(), "获取积分失败,请重试");
                 }
             }
@@ -165,12 +175,14 @@ public class DataLibraryFragment extends SuperFragment implements PullToRefreshB
     }
 
     private void unlockMaterial(String userId, String materailId) {
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         HomeListManager.getInstance().unlockMaterial(userId, materailId, new Callback<SimpleResult>() {
             @Override
             public void success(SimpleResult simpleResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     if (simpleResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(getActivity(), simpleResult.getMessage());
                     } else {
@@ -183,11 +195,18 @@ public class DataLibraryFragment extends SuperFragment implements PullToRefreshB
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), "兑换失败，请稍后再试");
+                    SEAPP.dismissAllowingStateLoss();
                 }
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override

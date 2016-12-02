@@ -7,13 +7,14 @@ def releaseTime() {
 android {
     compileSdkVersion 22
     buildToolsVersion '22.0.1'
+//    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.michen.olaxueyuan"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 15
-        versionName "1.2.5"
+        versionCode 17
+        versionName "1.2.7"
         // dex突破65535的限制
         multiDexEnabled true
         // 默认是umeng的渠道
@@ -38,16 +39,21 @@ android {
         debug {
             // No debug config
             storeFile file("olaxueyuan.jks")
-            storePassword "72106891"
+            storePassword KEYSTORE_PASSWORD
             keyAlias "olaxueyuan"
-            keyPassword "72106891"
+            keyPassword KEY_PASSWORD
         }
 
         release {
-            storeFile file("olaxueyuan.jks")
-            storePassword "72106891"
-            keyAlias "olaxueyuan"
-            keyPassword "72106891"
+            try {
+                storeFile file("olaxueyuan.jks")
+                storePassword KEYSTORE_PASSWORD
+                keyAlias "olaxueyuan"
+                keyPassword KEY_PASSWORD
+            }
+            catch (ex) {
+                throw new Exception("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
         }
     }
     buildTypes {
@@ -125,7 +131,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':vitamio')
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.squareup.picasso:picasso:2.3.3'
@@ -170,8 +176,13 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile project(':BDUpdateSDK')
     compile project(':PushSDK')
+//    compile 'com.android.support:recyclerview-v7:23.0.0'
     compile 'com.android.support:recyclerview-v7:22.0.0'
+
     compile 'com.android.support:design:22.2.1'
     compile files('libs/alipaySingle-20160825.jar')
     compile files('libs/tbs_sdk_thirdapp_v2.4.0.1073_36840.jar')
+    //    compile 'com.roger.catloadinglibrary:catloadinglibrary:1.0.1'
+//    compile 'com.android.support:design:23.2.1'
+//    compile project(':catloadinglibrary')
 }

@@ -39,6 +39,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -254,7 +255,8 @@ public class DeployPostActivity extends SEBaseActivity {
             Toast.makeText(this, "请输入不少于两个字的帖子内容", Toast.LENGTH_SHORT).show();
             return;
         }
-        SVProgressHUD.showInView(this, "正在发布中，请稍后...", true);
+//        SVProgressHUD.showInView(this, "正在发布中，请稍后...", true);
+        SEAPP.showCatDialog(this);
         if (imageCount == 0) { //没有图片直接上传
             saveInfo("");
         } else {
@@ -361,6 +363,7 @@ public class DeployPostActivity extends SEBaseActivity {
     protected void onStop() {
         super.onStop();
         SVProgressHUD.dismiss(this);
+        SEAPP.dismissAllowingStateLoss();
     }
 
 
@@ -504,7 +507,8 @@ public class DeployPostActivity extends SEBaseActivity {
 
     @Override
     public void onBackPressed() {
-        SVProgressHUD.dismiss(DeployPostActivity.this);
+        SEAPP.dismissAllowingStateLoss();
+//        SVProgressHUD.dismiss(DeployPostActivity.this);
         for (int i = 0; i < PublicWay.activityList.size(); i++) {
             if (null != PublicWay.activityList.get(i)) {
                 PublicWay.activityList.get(i).finish();

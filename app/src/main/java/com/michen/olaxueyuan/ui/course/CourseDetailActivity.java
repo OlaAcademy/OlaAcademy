@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.exception.DbException;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.database.CourseDB;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
@@ -185,18 +186,20 @@ public class CourseDetailActivity extends SEBaseActivity implements OnClickListe
     private void initVideoInfo() {
 
         final SECourseManager courseManager = SECourseManager.getInstance();
-        SVProgressHUD.showInView(this, "正在加载，请稍后...", true);
+//        SVProgressHUD.showInView(this, "正在加载，请稍后...", true);
+        SEAPP.showCatDialog(this);
         courseManager.fetchVideoInfo(pointId, new retrofit.Callback<MCVideoResult>() {
             @Override
             public void success(MCVideoResult result, Response response) {
-                SVProgressHUD.dismiss(CourseDetailActivity.this);
+//                SVProgressHUD.dismiss(CourseDetailActivity.this);
+                SEAPP.dismissAllowingStateLoss();
                 loadVideo(result.videoInfo);
                 fetchCollectionState(result.videoInfo);
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                SEAPP.dismissAllowingStateLoss();
             }
         });
     }

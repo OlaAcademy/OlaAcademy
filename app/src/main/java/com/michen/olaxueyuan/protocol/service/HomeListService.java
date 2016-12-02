@@ -35,7 +35,7 @@ public interface HomeListService {
     @POST("/ola/material/getMaterialList")
     void getMaterailList(
             @Field("userId") String userId,
-            @Field("materailId") String materailId,
+            @Field("materialId") String materialId,
             @Field("pageSize") String pageSize,
             @Field("type") String type,
             Callback<MaterialListResult> cb);

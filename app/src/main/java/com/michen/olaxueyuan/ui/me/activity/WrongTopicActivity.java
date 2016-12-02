@@ -11,6 +11,7 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -20,7 +21,6 @@ import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.UserKnowledgeAdapter;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshExpandableListView;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -71,12 +71,14 @@ public class WrongTopicActivity extends SEBaseActivity implements PullToRefreshB
     }
 
     private void fetchData() {
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         SEUserManager.getInstance().getStatisticsList("1", SEAuthManager.getInstance().getAccessUser().getId(), new Callback<UserKnowledgeResult>() {
             @Override
             public void success(UserKnowledgeResult userKnowledgeResult, Response response) {
                 if (mContext != null && !WrongTopicActivity.this.isFinishing()) {
-                    SVProgressHUD.dismiss(mContext);
+//                    SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
                     expandableListViews.onRefreshComplete();
 //                Logger.json(userKnowledgeResult);
                     if (userKnowledgeResult.getApicode() != 10000) {
@@ -92,7 +94,8 @@ public class WrongTopicActivity extends SEBaseActivity implements PullToRefreshB
             public void failure(RetrofitError error) {
                 if (mContext != null && !WrongTopicActivity.this.isFinishing()) {
                     expandableListViews.onRefreshComplete();
-                    SVProgressHUD.dismiss(mContext);
+//                    SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
                 }
             }

@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.manager.WebViewManger;
-import com.snail.svprogresshud.SVProgressHUD;
 import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
@@ -44,7 +44,8 @@ public class WebViewActivity extends SEBaseActivity {
     public void loadUrl(String url) {
         if (mWebView != null) {
             Logger.e("url==" + url);
-            SVProgressHUD.showInView(mContext, mContext.getResources().getString(R.string.request_running), true);
+//            SVProgressHUD.showInView(mContext, mContext.getResources().getString(R.string.request_running), true);
+            SEAPP.showCatDialog(this);
             mWebView.loadUrl(url);
         }
     }
@@ -52,7 +53,8 @@ public class WebViewActivity extends SEBaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        SVProgressHUD.dismiss(mContext);
+//        SVProgressHUD.dismiss(mContext);
+        SEAPP.dismissAllowingStateLoss();
     }
 
     class WebViewClientExtend extends WebViewClient {
@@ -72,19 +74,22 @@ public class WebViewActivity extends SEBaseActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 //            mSwipeRefreshLayout.setRefreshing(false);
-            SVProgressHUD.dismiss(mContext);
+//            SVProgressHUD.dismiss(mContext);
+            SEAPP.dismissAllowingStateLoss();
             view.loadUrl("javascript:(function() { var videos = document.getElementsByTagName('video'); for(var i=0;i<videos.length;i++){videos[i].play();}})()");
         }
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            SVProgressHUD.dismiss(mContext);
+//            SVProgressHUD.dismiss(mContext);
+            SEAPP.dismissAllowingStateLoss();
             super.onReceivedError(view, errorCode, description, failingUrl);
         }
 
         @Override
         public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, com.tencent.smtt.export.external.interfaces.SslError sslError) {
-            SVProgressHUD.dismiss(mContext);
+//            SVProgressHUD.dismiss(mContext);
+            SEAPP.dismissAllowingStateLoss();
             super.onReceivedSslError(webView, sslErrorHandler, sslError);
         }
     }

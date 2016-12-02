@@ -3,6 +3,7 @@ package com.michen.olaxueyuan.ui.group;
 import android.os.Bundle;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
 import com.michen.olaxueyuan.protocol.result.GroupMemberResult;
@@ -49,13 +50,15 @@ public class GroupMemberActivity extends SEBaseActivity implements PullToRefresh
     }
 
     private void getGroupMember() {
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         TeacherHomeManager.getInstance().queryGroupMember(groupId, PAGE_INDEX, PAGE_SIZE, new Callback<GroupMemberResult>() {
             @Override
             public void success(GroupMemberResult groupMemberResult, Response response) {
                 if (mContext != null && !GroupMemberActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(mContext);
+//                    SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
                     if (groupMemberResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(mContext, groupMemberResult.getMessage());
                     } else {
@@ -74,7 +77,8 @@ public class GroupMemberActivity extends SEBaseActivity implements PullToRefresh
                 if (mContext != null && !GroupMemberActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
-                    SVProgressHUD.dismiss(mContext);
+//                    SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
                 }
             }
         });
@@ -86,6 +90,7 @@ public class GroupMemberActivity extends SEBaseActivity implements PullToRefresh
         if (mContext != null && !GroupMemberActivity.this.isFinishing()) {
             listview.onRefreshComplete();
             SVProgressHUD.dismiss(mContext);
+            SEAPP.dismissAllowingStateLoss();
         }
     }
 

@@ -1,15 +1,17 @@
 package com.michen.olaxueyuan.ui;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
 import com.baidu.autoupdatesdk.UICheckUpdateCallback;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.StatusBarCompat;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -23,7 +25,7 @@ import com.umeng.message.PushAgent;
 import cn.sharesdk.framework.ShareSDK;
 
 //public class MainActivity extends BaseSearchActivity {
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     private ProgressDialog dialog;
     PushAgent mPushAgent;
@@ -54,7 +56,7 @@ public class MainActivity extends Activity {
 //        Logger.e("device_token==" + device_token);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new MainFragment())
                     .commit();
         }
@@ -94,6 +96,7 @@ public class MainActivity extends Activity {
         super.onPause();
         MobclickAgent.onPause(this);
         SVProgressHUD.dismiss(this);
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override
@@ -124,6 +127,8 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 设置竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.common_blue));
+        if (Build.VERSION.SDK_INT >= 20) {
+            StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.common_blue));
+        }
     }
 }
