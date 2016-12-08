@@ -8,10 +8,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -58,7 +56,6 @@ import com.snail.photo.util.Res;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -241,8 +238,6 @@ public class DeployPostActivity extends SEBaseActivity {
         mLocationClient.setLocOption(option);
     }
 
-    private int height;
-    private int width;
 
     public void doUpload() {
         //标题
@@ -264,24 +259,14 @@ public class DeployPostActivity extends SEBaseActivity {
                 int degree = PictureUtil.readPictureDegree(Bimp.tempSelectBitmap.get(i).imagePath);
                 File imageFile;
                 if (isOrignalImage) {  //原图
-//                    imageFile = new File(Bimp.tempSelectBitmap.get(i).getImagePath());
-
-                    Bitmap bitmap = PictureUtil.getLargerBitmap(Bimp.tempSelectBitmap.get(i).imagePath);
-                    tempPath = FileUtils.saveBitmap(bitmap, "snail_temp" + i);
-                    imageFile = new File(tempPath);
-                    width = bitmap.getWidth();
-                    height = bitmap.getHeight();
+                    imageFile = new File(Bimp.tempSelectBitmap.get(i).getImagePath());
                 } else {
                     Bitmap bitmap = PictureUtil.getSmallBitmap(Bimp.tempSelectBitmap.get(i).imagePath);
                     tempPath = FileUtils.saveBitmap(bitmap, "snail_temp" + i);
                     imageFile = new File(tempPath);
-                    width = bitmap.getWidth();
-                    height = bitmap.getHeight();
                 }
                 Logger.e("imageFile==" + imageFile);
-//                uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree);
-//                uploadImagesByExecutors(new TypedFile("image/jpeg", imageFile), degree);
-                uploadImagesByExecutors(new TypedFile("", imageFile), degree);
+                uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree);
             }
         }
     }
@@ -294,12 +279,10 @@ public class DeployPostActivity extends SEBaseActivity {
             @Override
             public void run() {
 
-//                uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
-                uploadService.uploadImage(photo, angle, width, height, "jpg", new Callback<UploadResult>() {
+                uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
                     @Override
                     public void success(UploadResult result, Response response) {
                         uploadNum++;
-                        Logger.e("result.code=="+result.code);
                         if (result.code != 1) {
                             SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.message, 2.0f);
                             return;
@@ -313,10 +296,9 @@ public class DeployPostActivity extends SEBaseActivity {
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Logger.e("failure==");
                         uploadNum++;
                         if (uploadNum == Bimp.tempSelectBitmap.size()) {
-//                            Bimp.tempSelectBitmap.clear();
+                            Bimp.tempSelectBitmap.clear();
                             if (imageGids.equals("")) {
                                 SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, "图片上传失败", 2.0f);
                             } else {
@@ -453,48 +435,22 @@ public class DeployPostActivity extends SEBaseActivity {
     }
 
     private static final int TAKE_PICTURE = 0x000001;
-    Uri imageUri;
-    Uri uri = null;
 
     public void photo() {
         Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri uri = getOutputStringUri();
-        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         startActivityForResult(openCameraIntent, TAKE_PICTURE);
-        imageUri = uri;
-    }
-
-    /**
-     * @return
-     */
-    public static Uri getOutputStringUri() {
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getPath();
-        String fileName = System.currentTimeMillis() + ".jpg";
-        File file = new File(path, fileName);
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Uri uri = Uri.fromFile(file);
-        return uri;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case TAKE_PICTURE:
-                    uri = imageUri;
                     if (Bimp.tempSelectBitmap.size() < 9 && resultCode == RESULT_OK) {
-//                        String fileName = String.valueOf(System.currentTimeMillis());
-//                        Bitmap bm = (Bitmap) data.getExtras().get("data");
+                        String fileName = String.valueOf(System.currentTimeMillis());
+                        Bitmap bm = (Bitmap) data.getExtras().get("data");
                         ImageItem takePhoto = new ImageItem();
-                        takePhoto.setImagePath(uri.getPath());
-//                        takePhoto.setImagePath(FileUtils.saveBitmap(bm, fileName));
-//                        takePhoto.setBitmap(bm);
-                        takePhoto.setBitmap(BitmapFactory.decodeFile(uri.getPath()));
+                        takePhoto.setImagePath(FileUtils.saveBitmap(bm, fileName));
+                        takePhoto.setBitmap(bm);
                         Bimp.tempSelectBitmap.add(takePhoto);
                     }
                     break;
