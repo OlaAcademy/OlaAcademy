@@ -95,31 +95,31 @@ public class RoundProgressBar extends View {
 
 
         TypedArray mTypedArray = context.obtainStyledAttributes(attrs,
-                R.styleable.RoundProgressBar);
+                R.styleable.RoundProgressBar_custom);
 
         //获取自定义属性和默认值，第一个参数是从用户属性中得到的设置，如果用户没有设置，那么就用默认的属性，即：第二个参数
         //圆环的颜色
-        ringColor = mTypedArray.getColor(R.styleable.RoundProgressBar_ringColor,0xff50c0e9);
+        ringColor = mTypedArray.getColor(R.styleable.RoundProgressBar_custom_ringColor_custom,0xff50c0e9);
         //圆环进度条的颜色
-        ringProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_ringProgressColor, 0xffffc641);
+        ringProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_custom_ringProgressColor_custom, 0xffffc641);
         //文字的颜色
-        textColor = mTypedArray.getColor(R.styleable.RoundProgressBar_centerTextColor, 0xffff5f5f);
+        textColor = mTypedArray.getColor(R.styleable.RoundProgressBar_custom_centerTextColor_custom, 0xffff5f5f);
         //文字的大小
-        textSize = mTypedArray.getDimension(R.styleable.RoundProgressBar_textSize, 25);
+        textSize = mTypedArray.getDimension(R.styleable.RoundProgressBar_custom_textSize_custom, 25);
         //圆环的宽度
-        ringWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_ringWidth, 10);
+        ringWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_custom_ringWidth_custom, 10);
         //最大进度
-        max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);
+        max = mTypedArray.getInteger(R.styleable.RoundProgressBar_custom_max_custom, 100);
         //当前进度
-        progress = mTypedArray.getInt(R.styleable.RoundProgressBar_progress, 30);
+        progress = mTypedArray.getInt(R.styleable.RoundProgressBar_custom_progress_custom, 30);
         //是否显示中间的进度
-        textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_textIsDisplayable, true);
+        textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_custom_textIsDisplayable_custom, true);
         //进度的风格，实心或者空心
-        style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, 0);
+        style = mTypedArray.getInt(R.styleable.RoundProgressBar_custom_style_custom, 0);
         //进度开始的角度数
-        startAngle = mTypedArray.getInt(R.styleable.RoundProgressBar_startAngle, -90);
+        startAngle = mTypedArray.getInt(R.styleable.RoundProgressBar_custom_startAngle_custom, -90);
         //圆心的颜色
-        centreColor = mTypedArray.getColor(R.styleable.RoundProgressBar_centreColor, 0);
+        centreColor = mTypedArray.getColor(R.styleable.RoundProgressBar_custom_centreColor_custom, 0);
         //回收资源
         mTypedArray.recycle();
     }

@@ -83,6 +83,7 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
         setupNavBar();
 
         courseListView = (PullToRefreshListView) mMainView.findViewById(R.id.infoListView);
+        courseListView.getRefreshableView().setDivider(null);
         adapter = new CourseAdapter(getActivity());
         courseListView.setAdapter(adapter);
         mathsText.setSelected(true);

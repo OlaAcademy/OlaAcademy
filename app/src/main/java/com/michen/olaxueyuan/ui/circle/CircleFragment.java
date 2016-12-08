@@ -99,6 +99,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
         titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
         adapter = new CircleAdapter(getActivity());
+        listview.getRefreshableView().setDivider(null);
         listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
     }
