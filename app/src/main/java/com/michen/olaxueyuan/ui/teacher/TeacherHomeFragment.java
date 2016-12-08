@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.clansfab.FloatingActionMenu;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
@@ -31,7 +32,6 @@ import com.michen.olaxueyuan.ui.group.TGroupListActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,7 +128,8 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
     }
 
     private void fetchData() {
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         String userId = null;
         try {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
@@ -142,7 +143,8 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                 Logger.json(homeworkListResult);
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     mListView.onRefreshComplete();
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     if (homeworkListResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(getActivity(), homeworkListResult.getMessage());
                         if (isHasGroup) {
@@ -178,7 +180,8 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                     if (isHasGroup) {
                         showNoHomeWorkView();
                     }
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(getActivity(), "获取作业列表失败");
                     mListView.onRefreshComplete();
                 }
@@ -271,12 +274,14 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
             startActivity(new Intent(getActivity(), UserLoginActivity.class));
             return;
         }
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         TeacherHomeManager.getInstance().getTeacherGroupList(userId, new Callback<TeacherGroupListResult>() {
             @Override
             public void success(TeacherGroupListResult teacherGroupListResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     if (teacherGroupListResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(getActivity(), teacherGroupListResult.getMessage());
                         isHasGroup = false;
@@ -299,7 +304,8 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     showNoGroupView();
                     isHasGroup = false;
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(getActivity(), R.string.request_group_fail);
                 }
             }
@@ -322,6 +328,12 @@ public class TeacherHomeFragment extends SuperFragment implements PullToRefreshB
         noticeHintText.setText(R.string.watch_library_to_publish_homework);
         createGroup.setVisibility(View.GONE);
         menuView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override

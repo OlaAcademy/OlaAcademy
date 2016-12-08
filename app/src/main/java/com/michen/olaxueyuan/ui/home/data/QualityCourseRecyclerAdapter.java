@@ -2,10 +2,8 @@ package com.michen.olaxueyuan.ui.home.data;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,8 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
-import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.ui.BaseRecyclerAdapter;
 import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
@@ -67,9 +65,11 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
     public void onBindViewHolder(QualityCourseItemHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
         RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.ivCourse.getLayoutParams();
-        Resources resources = context.getResources();
-        DisplayMetrics dm = resources.getDisplayMetrics();
-        linearParams.width = dm.widthPixels / 2 - 45;
+//        Resources resources = context.getResources();
+//        DisplayMetrics dm = resources.getDisplayMetrics();
+//        linearParams.width = dm.widthPixels / 2 - 45;
+//        linearParams.width = Utils.getScreenWidth(context) / 2 - 45;
+        linearParams.width = Utils.getScreenMetricsPoint(context).x / 2 - 45;
         linearParams.height = linearParams.width * 17 / 31;
         if (position % 2 == 0)
             linearParams.setMargins(30, 0, 15, 0);
@@ -92,7 +92,7 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
         }
         holder.tvName.setText(course.getName());
         holder.tvTime.setText(course.getTotaltime() + "分钟");
-        holder.tvBrowser.setText(context.getString(R.string.num_watch, course.getVideonum()));
+        holder.tvBrowser.setText(context.getString(R.string.num_watch, String.valueOf(course.getVideonum())));
         try {
             Picasso.with(context).load(course.getUrl()).config(Bitmap.Config.RGB_565)
                     .placeholder(R.drawable.default_index).error(R.drawable.default_index).into(holder.ivCourse);

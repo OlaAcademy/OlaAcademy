@@ -6,6 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -113,7 +114,8 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
     }
 
     private void getWrongList() {
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         String userId = "";
         SEAuthManager am = SEAuthManager.getInstance();
         if (am.isAuthenticated()) {
@@ -123,7 +125,8 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
             @Override
             public void success(WrongListResult wrongListResult, Response response) {
                 if (mContext != null && !WrongTopicSetActivity.this.isFinishing()) {
-                    SVProgressHUD.dismiss(mContext);
+//                    SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
 //                Logger.json(examModule);
                     if (wrongListResult.getApicode() != 10000) {
@@ -138,7 +141,8 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
             public void failure(RetrofitError error) {
                 if (mContext != null && !WrongTopicSetActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(mContext);
+//                    SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
                 }
             }
@@ -156,7 +160,8 @@ public class WrongTopicSetActivity extends SEBaseActivity implements PullToRefre
         super.onPause();
         if (mContext != null && !WrongTopicSetActivity.this.isFinishing()) {
             listview.onRefreshComplete();
-            SVProgressHUD.dismiss(mContext);
+//            SVProgressHUD.dismiss(mContext);
+            SEAPP.dismissAllowingStateLoss();
         }
     }
 

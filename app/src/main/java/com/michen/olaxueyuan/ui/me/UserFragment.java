@@ -200,6 +200,8 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
                     }
                 }
             });
+        } else {
+            rootScroll.onRefreshComplete();
         }
     }
 
@@ -268,6 +270,7 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         } else {
+            rootScroll.onRefreshComplete();
             return;
         }
         SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
@@ -294,6 +297,12 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
                 }
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override

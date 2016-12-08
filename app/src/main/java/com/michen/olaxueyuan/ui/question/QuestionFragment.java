@@ -1,11 +1,10 @@
 package com.michen.olaxueyuan.ui.question;
 
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,8 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
-import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.event.MessageReadEvent;
@@ -52,7 +51,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link android.support.v4.app.Fragment} subclass.
  */
 public class QuestionFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener, QuestionListViewAdapter.SelectBuyCourse {
     @Bind(R.id.title_tv)
@@ -124,7 +123,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             ButterKnife.bind(this, rootView);
             EventBus.getDefault().register(this);
             initView();
-            fetchHomeCourseData();
+            fetchHomeCourseData(1);
             getUnReadMessageCount();
             return rootView;
         }
@@ -184,6 +183,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
             @Override
             public void onPageSelected(int position) {
+//                Logger.e("position==" + position);
                 switch (position) {
                     case 0:
                         changeTab(true, false, false, false, false, 0);
@@ -213,7 +213,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             return;
         }
         if (selectType == 0) {
-            fetchHomeCourseData();
+            fetchHomeCourseData(2);
         } else {
             fetchExamListData();
         }
@@ -262,7 +262,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                         switch (v.getId()) {
                             case R.id.select_one:
                                 selectType = 0;
-                                fetchHomeCourseData();
+                                fetchHomeCourseData(3);
                                 break;
                             case R.id.select_two:
                                 selectType = 1;
@@ -310,7 +310,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         subjectName.setText(selectArray[0]);
         this.pid = String.valueOf(position + 1);
         selectType = 0;
-        fetchHomeCourseData();
+//        Logger.e("fetchHomeCourseData(4);====");
+        fetchHomeCourseData(4);
     }
 
     @Override
@@ -319,24 +320,25 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             fetchExamListData();
         }
         if (refreshView == expandableListViews) {
-            fetchHomeCourseData();
+            fetchHomeCourseData(5);
         }
     }
 
 
-    private void fetchHomeCourseData() {
+    private void fetchHomeCourseData(int num) {//num只是为了标记是哪个方法调用的请求网络
+//        Logger.e("fetchHomeCourseData==" + num);
         expandableListViews.setVisibility(View.VISIBLE);
         listview.setVisibility(View.GONE);
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
+        SEAPP.showCatDialog(this);
         QuestionCourseManager.getInstance().fetchHomeCourseList(userId, pid, "1", new Callback<QuestionCourseModule>() {
             @Override
             public void success(QuestionCourseModule questionCourseModule, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     expandableListViews.onRefreshComplete();
 //                Logger.json(questionCourseModule);
                     if (questionCourseModule.getApicode() != 10000) {
@@ -357,7 +359,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     expandableListViews.onRefreshComplete();
-                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
             }
@@ -367,7 +369,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     private void fetchExamListData() {
         expandableListViews.setVisibility(View.GONE);
         listview.setVisibility(View.VISIBLE);
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         String userId = "";
         SEAuthManager am = SEAuthManager.getInstance();
         if (am.isAuthenticated()) {
@@ -377,7 +380,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             @Override
             public void success(ExamModule examModule, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
 //                Logger.json(examModule);
                     if (examModule.getApicode() != 10000) {
@@ -392,7 +396,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
             }
@@ -418,7 +423,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                         } else {
                             redDot.setVisibility(View.GONE);
                         }
-                        Logger.e("unReadMessageCount==" + unReadMessageCount);
+//                        Logger.e("unReadMessageCount==" + unReadMessageCount);
                     }
                 }
             }
@@ -477,7 +482,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                             break;
                     }
                 }
-            },"", getActivity().getString(R.string.pay_twenty_coin), getActivity().getString(R.string.exchange), "");
+            }, "", getActivity().getString(R.string.pay_twenty_coin), getActivity().getString(R.string.exchange), "");
         }
     }
 
@@ -490,12 +495,14 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             getActivity().startActivity(new Intent(getActivity(), UserLoginActivity.class));
             return;
         }
-        SVProgressHUD.showInView(getActivity(), getActivity().getString(R.string.get_coin_ing), true);
+//        SVProgressHUD.showInView(getActivity(), getActivity().getString(R.string.get_coin_ing), true);
+        SEAPP.showCatDialog(this);
         SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
             @Override
             public void success(CheckinStatusResult checkinStatusResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     if (checkinStatusResult.getApicode() == 10000) {
                         if (checkinStatusResult.getResult().getCoin() >= 20) {
                             unlockSubject(userId, objectId, type);
@@ -509,7 +516,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                                             break;
                                     }
                                 }
-                            },"", "您的欧拉币余额不足，使用其它方式？", "购买会员", "");
+                            }, "", "您的欧拉币余额不足，使用其它方式？", "购买会员", "");
                         }
                     }
                 }
@@ -518,7 +525,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(getActivity(), "获取积分失败,请重试");
                 }
             }
@@ -526,12 +534,14 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     }
 
     private void unlockSubject(String userId, int objectId, final int type) {
-        SVProgressHUD.showInView(getActivity(), "正在兑换，请稍后", true);
+//        SVProgressHUD.showInView(getActivity(), "正在兑换，请稍后", true);
+        SEAPP.showCatDialog(this);
         QuestionCourseManager.getInstance().unlockSubject(userId, String.valueOf(objectId), String.valueOf(type), new Callback<UnlockSubjectResult>() {
             @Override
             public void success(UnlockSubjectResult unlockSubjectResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     if (unlockSubjectResult.getApicode() == 10000) {
                         ToastUtil.showToastShort(getActivity(), "兑换成功");
                         if (type == 1) {
@@ -546,11 +556,18 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(getActivity(), "兑换失败,请重试");
                 }
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override

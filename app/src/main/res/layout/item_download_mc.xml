@@ -67,12 +67,12 @@
             android:id="@+id/circle_progress"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:progress="0"
-            app:ringColor="@color/lightgrey"
-            app:ringProgressColor="@color/common_blue"
-            app:ringWidth="3dp"
-            app:startAngle="-90"
-            app:textIsDisplayable="false" />
+            app:progress_custom="0"
+            app:ringColor_custom="@color/lightgrey"
+            app:ringProgressColor_custom="@color/common_blue"
+            app:ringWidth_custom="3dp"
+            app:startAngle_custom="-90"
+            app:textIsDisplayable_custom="false" />
 
     </RelativeLayout>
 

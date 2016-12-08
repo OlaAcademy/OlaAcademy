@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
@@ -21,7 +22,6 @@ import com.michen.olaxueyuan.ui.adapter.TGetGroupListViewAdapter;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,13 +75,15 @@ public class TSubjectDeployActivity extends SEBaseActivity implements PullToRefr
             startActivity(new Intent(context, UserLoginActivity.class));
             return;
         }
-        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         TeacherHomeManager.getInstance().getTeacherGroupList(userId, new Callback<TeacherGroupListResult>() {
             @Override
             public void success(TeacherGroupListResult teacherGroupListResult, Response response) {
-                if (context != null) {
+                if (context != null && TSubjectDeployActivity.this.isFinishing()) {
                     listviewGroup.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     if (teacherGroupListResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(context, teacherGroupListResult.getMessage());
                     } else {
@@ -94,7 +96,8 @@ public class TSubjectDeployActivity extends SEBaseActivity implements PullToRefr
             public void failure(RetrofitError error) {
                 if (context != null) {
                     listviewGroup.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(context, R.string.data_request_fail);
                 }
             }
@@ -105,7 +108,8 @@ public class TSubjectDeployActivity extends SEBaseActivity implements PullToRefr
     protected void onPause() {
         super.onPause();
         if (context != null) {
-            SVProgressHUD.dismiss(context);
+//            SVProgressHUD.dismiss(context);
+            SEAPP.dismissAllowingStateLoss();
         }
     }
 
@@ -168,12 +172,14 @@ public class TSubjectDeployActivity extends SEBaseActivity implements PullToRefr
     }
 
     private void publishHomeWork() {
-        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         TeacherHomeManager.getInstance().deployHomework(title, groupIds, subjectIds, new Callback<SimpleResult>() {
             @Override
             public void success(SimpleResult simpleResult, Response response) {
-                if (context != null) {
-                    SVProgressHUD.dismiss(context);
+                if (context != null && !TSubjectDeployActivity.this.isFinishing()) {
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     if (simpleResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(context, simpleResult.getMessage());
                     } else {
@@ -186,8 +192,9 @@ public class TSubjectDeployActivity extends SEBaseActivity implements PullToRefr
 
             @Override
             public void failure(RetrofitError error) {
-                if (context != null) {
-                    SVProgressHUD.dismiss(context);
+                if (context != null && !TSubjectDeployActivity.this.isFinishing()) {
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(context, R.string.data_request_fail);
                 }
             }

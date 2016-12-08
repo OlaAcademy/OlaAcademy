@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
@@ -208,11 +209,13 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
     }
 
     private void saveGroupInfo(String userId, String name, String profile) {
-        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         TeacherHomeManager.getInstance().createGroup(userId, String.valueOf(groupType), name, profile, _imageName, new Callback<CreateGroupResult>() {
             @Override
             public void success(CreateGroupResult createGroupResult, Response response) {
                 if (context != null && !CreateGroupActivity.this.isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
                     if (createGroupResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(context, createGroupResult.getMessage());
                     } else {
@@ -227,7 +230,7 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
             @Override
             public void failure(RetrofitError error) {
                 if (context != null && !CreateGroupActivity.this.isFinishing()) {
-                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                 }
             }
         });
@@ -384,6 +387,7 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
         super.onPause();
         if (context != null && !CreateGroupActivity.this.isFinishing()) {
             SVProgressHUD.dismiss(context);
+            SEAPP.dismissAllowingStateLoss();
         }
     }
 }

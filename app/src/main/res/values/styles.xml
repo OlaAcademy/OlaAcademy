@@ -1,19 +1,33 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Light">
+    <!-- <style name="AppTheme" parent="android:Theme.Light">
+         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
+         <item name="android:textColorHighlight">#990090ff</item>
+         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+     </style>-->
+
+    <style name="MyAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white_light</item>
+        <item name="colorPrimaryDark">@color/common_blue</item>
+        <item name="colorAccent">@color/common_blue</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
         <item name="android:textColorHighlight">#990090ff</item>
         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="windowActionBar">true</item>
     </style>
 
     <style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/ActionBarBackgroundColor</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleTextStyle</item>
         <item name="android:itemTextAppearance">@style/ActionBarItemTextAppearance</item>
+        <item name="android:actionBarSize">10dp</item>
+        <item name="actionBarSize">10dp</item>
     </style>
 
     <style name="ActionBarTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/ActionBarForegroundColor</item>
     </style>
 
@@ -408,5 +422,16 @@
         <item name="fab_colorNormal">#4285f4</item>
         <item name="fab_colorPressed">#2196f3</item>
         <item name="fab_colorRipple">#4285f4</item>
+    </style>
+
+    <style name="cart_dialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
     </style>
 </resources>

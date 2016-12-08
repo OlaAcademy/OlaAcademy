@@ -14,6 +14,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.CommonUtil;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.Logger;
@@ -27,7 +28,6 @@ import com.michen.olaxueyuan.protocol.result.OrganizationInfoResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.manager.OrgEnrolPopManager;
 import com.michen.olaxueyuan.ui.me.activity.PDFViewActivity;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -93,15 +93,17 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
     }
 
     private void getOrganizationInfo() {
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         HomeListManager.getInstance().getOrganizationInfo(new Callback<OrganizationInfoResult>() {
             @Override
             public void success(OrganizationInfoResult result, Response response) {
                 if (mContext != null && !OrgEnrolActivity.this.isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
                     if (result.getApicode() != 10000) {
                         ToastUtil.showToastShort(mContext, result.getMessage());
                     } else {
-                        SVProgressHUD.dismiss(mContext);
+//                        SVProgressHUD.dismiss(mContext);
                         organizationInfoResult = result;
                         initData();
                     }
@@ -112,7 +114,8 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
             public void failure(RetrofitError error) {
                 if (mContext != null && !OrgEnrolActivity.this.isFinishing()) {
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
-                    SVProgressHUD.dismiss(mContext);
+//                    SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
                 }
             }
         });
@@ -162,7 +165,8 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
     protected void onPause() {
         super.onPause();
         if (mContext != null && !OrgEnrolActivity.this.isFinishing()) {
-            SVProgressHUD.dismiss(mContext);
+//            SVProgressHUD.dismiss(mContext);
+            SEAPP.dismissAllowingStateLoss();
         }
     }
 
@@ -203,12 +207,14 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
             ToastUtil.showToastShort(mContext, "请填写您的联系方式");
             return;
         }
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         MCOrgManager.getInstance().enroll(orgId, userPhone, location, CommonUtil.formatDate(), new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult mcCommonResult, Response response) {
                 if (mContext != null && !OrgEnrolActivity.this.isFinishing()) {
-                    SVProgressHUD.dismiss(mContext);
+//                    SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
                     if (!mcCommonResult.apicode.equals("10000")) {
                         ToastUtil.showToastShort(mContext, mcCommonResult.message);
                     } else {
@@ -226,7 +232,8 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
             public void failure(RetrofitError error) {
                 if (mContext != null && !OrgEnrolActivity.this.isFinishing()) {
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
-                    SVProgressHUD.dismiss(mContext);
+//                    SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
                 }
             }
         });

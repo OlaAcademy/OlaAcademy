@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,7 @@ import android.view.ViewGroup;
 /**
  * Created by mingge on 16/4/22.
  */
-public abstract class SuperFragment extends android.app.Fragment implements View.OnClickListener {
+public abstract class SuperFragment extends Fragment implements View.OnClickListener {
     View view;
 
     @Nullable

@@ -13,20 +13,20 @@
         <attr name="footerTriangleHeight" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="RoundProgressBar">
-        <attr name="max" format="integer"></attr>
-        <attr name="progress" format="integer"></attr>
-        <attr name="startAngle" format="integer"></attr>
-        <attr name="ringColor" format="color" />
-        <attr name="ringProgressColor" format="color" />
-        <attr name="ringWidth" format="dimension"></attr>
-        <attr name="centreColor" format="color" />
-        <attr name="centerTextColor" format="color" />
-        <attr name="textSize" format="dimension" />
-        <attr name="textIsDisplayable" format="boolean"></attr>
-        <attr name="style">
-            <enum name="STROKE" value="0"></enum>
-            <enum name="FILL" value="1"></enum>
+    <declare-styleable name="RoundProgressBar_custom">
+        <attr name="max_custom" format="integer"></attr>
+        <attr name="progress_custom" format="integer"></attr>
+        <attr name="startAngle_custom" format="integer"></attr>
+        <attr name="ringColor_custom" format="color" />
+        <attr name="ringProgressColor_custom" format="color" />
+        <attr name="ringWidth_custom" format="dimension"></attr>
+        <attr name="centreColor_custom" format="color" />
+        <attr name="centerTextColor_custom" format="color" />
+        <attr name="textSize_custom" format="dimension" />
+        <attr name="textIsDisplayable_custom" format="boolean"></attr>
+        <attr name="style_custom">
+            <enum name="STROKE_CUSTOM" value="0"></enum>
+            <enum name="FILL_CUSTOM" value="1"></enum>
         </attr>
     </declare-styleable>
 
@@ -55,7 +55,7 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="FloatingActionButton">
+    <declare-styleable name="FloatingActionButton_custom">
         <attr name="fab_colorNormal" format="color" />
         <attr name="fab_colorPressed" format="color" />
         <attr name="fab_colorDisabled" format="color" />

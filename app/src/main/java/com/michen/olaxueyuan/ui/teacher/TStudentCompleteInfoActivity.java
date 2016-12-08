@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
 import com.michen.olaxueyuan.protocol.result.HomeworkStatisticsResult;
@@ -12,7 +13,6 @@ import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.TStudentCompleteInfoListAdapter;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +62,15 @@ public class TStudentCompleteInfoActivity extends SEBaseActivity implements Pull
     }
 
     private void getHomeworkStatistics() {
-        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         TeacherHomeManager.getInstance().getHomeworkStatistics(groupId, homeworkId, pageIndex, pageSize, new Callback<HomeworkStatisticsResult>() {
             @Override
             public void success(HomeworkStatisticsResult homeworkStatisticsResult, Response response) {
                 if (context != null && !TStudentCompleteInfoActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     if (homeworkStatisticsResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(context, homeworkStatisticsResult.getMessage());
                     } else {
@@ -88,7 +90,8 @@ public class TStudentCompleteInfoActivity extends SEBaseActivity implements Pull
             @Override
             public void failure(RetrofitError error) {
                 if (context != null && !TStudentCompleteInfoActivity.this.isFinishing()) {
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(context, R.string.request_group_fail);
                     listview.onRefreshComplete();
                 }
@@ -113,7 +116,8 @@ public class TStudentCompleteInfoActivity extends SEBaseActivity implements Pull
     protected void onPause() {
         super.onPause();
         if (context != null && !TStudentCompleteInfoActivity.this.isFinishing()) {
-            SVProgressHUD.dismiss(context);
+//            SVProgressHUD.dismiss(context);
+            SEAPP.dismissAllowingStateLoss();
         }
     }
 

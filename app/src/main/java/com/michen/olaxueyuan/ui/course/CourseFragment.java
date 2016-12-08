@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
@@ -82,6 +83,7 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
         setupNavBar();
 
         courseListView = (PullToRefreshListView) mMainView.findViewById(R.id.infoListView);
+        courseListView.getRefreshableView().setDivider(null);
         adapter = new CourseAdapter(getActivity());
         courseListView.setAdapter(adapter);
         mathsText.setSelected(true);
@@ -111,10 +113,12 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
+        SEAPP.showCatDialog(this);
         courseManager.fetchHomeCourseList(userId, pid, "2", new Callback<MCCourseListResult>() {
             @Override
             public void success(MCCourseListResult result, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
                     if (!result.apicode.equals("10000")) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.message, 2.0f);
                     } else {
@@ -129,6 +133,7 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     courseListView.onRefreshComplete();
+                    SEAPP.dismissAllowingStateLoss();
                 }
             }
         });
@@ -171,6 +176,12 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
             this.pid = pid;
             performRefresh();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override

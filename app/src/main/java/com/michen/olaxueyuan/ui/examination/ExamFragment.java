@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.HorizontalScrollViewAdapter;
 import com.michen.olaxueyuan.common.MyHorizontalScrollView;
 import com.michen.olaxueyuan.common.manager.TitleManager;
@@ -98,7 +99,8 @@ public class ExamFragment extends SuperFragment implements TitleExamPopManager.E
     }
 
     private void fetchData() {
-        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         String userId = "";
         SEAuthManager am = SEAuthManager.getInstance();
         if (am.isAuthenticated()) {
@@ -108,7 +110,8 @@ public class ExamFragment extends SuperFragment implements TitleExamPopManager.E
             @Override
             public void success(ExamModule examModule, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
 //                Logger.json(examModule);
                     if (examModule.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), examModule.getMessage(), 2.0f);
@@ -122,7 +125,8 @@ public class ExamFragment extends SuperFragment implements TitleExamPopManager.E
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    SVProgressHUD.dismiss(getActivity());
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
             }
@@ -181,6 +185,12 @@ public class ExamFragment extends SuperFragment implements TitleExamPopManager.E
         super.onDestroyView();
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.event.MessageReadEvent;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
@@ -61,7 +62,8 @@ public class MessageActivity extends SEBaseActivity implements PullToRefreshBase
     }
 
     private void fetchData() {
-        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
@@ -69,24 +71,30 @@ public class MessageActivity extends SEBaseActivity implements PullToRefreshBase
         QuestionCourseManager.getInstance().getMessageList(userId, messageId, pageSize, new Callback<MessageListResult>() {
             @Override
             public void success(MessageListResult messageListResult, Response response) {
-                SVProgressHUD.dismiss(mContext);
-                listview.onRefreshComplete();
-                if (messageListResult.getApicode() != 10000) {
-                    SVProgressHUD.showInViewWithoutIndicator(mContext, messageListResult.getMessage(), 2.0f);
-                } else {
-                    if (TextUtils.isEmpty(messageId)) {
-                        list.clear();
+                if (!MessageActivity.this.isFinishing()) {
+//                SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
+                    listview.onRefreshComplete();
+                    if (messageListResult.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(mContext, messageListResult.getMessage(), 2.0f);
+                    } else {
+                        if (TextUtils.isEmpty(messageId)) {
+                            list.clear();
+                        }
+                        list.addAll(messageListResult.getResult());
+                        adapter.updateData(list);
                     }
-                    list.addAll(messageListResult.getResult());
-                    adapter.updateData(list);
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                SVProgressHUD.dismiss(mContext);
-                listview.onRefreshComplete();
-                ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+                if (!MessageActivity.this.isFinishing()) {
+//                SVProgressHUD.dismiss(mContext);
+                    SEAPP.dismissAllowingStateLoss();
+                    listview.onRefreshComplete();
+                    ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+                }
             }
         });
     }

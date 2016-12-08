@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
@@ -25,7 +26,6 @@ import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshScrollView;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import java.util.HashMap;
 
@@ -95,13 +95,15 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
         } else {
             return;
         }
-        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         SEUserManager.getInstance().getCheckinStatus(userId, new Callback<CheckinStatusResult>() {
             @Override
             public void success(CheckinStatusResult checkinStatusResult, Response response) {
                 if (context != null && !CoinHomePageActivity.this.isFinishing()) {
                     scroll.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     if (checkinStatusResult.getApicode() == 10000) {
                         if (isShowSignDialog) {
                             showSignDialog(checkinStatusResult.getResult().getSignInDays() + "天", "", checkinStatusResult.getResult().getCoin() + "欧");
@@ -118,7 +120,8 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
             public void failure(RetrofitError error) {
                 if (context != null && !CoinHomePageActivity.this.isFinishing()) {
                     scroll.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(context, R.string.request_failed);
                 }
             }
@@ -338,7 +341,8 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
         super.onPause();
         if (context != null && !CoinHomePageActivity.this.isFinishing()) {
             scroll.onRefreshComplete();
-            SVProgressHUD.dismiss(context);
+//            SVProgressHUD.dismiss(context);
+            SEAPP.dismissAllowingStateLoss();
         }
     }
 }

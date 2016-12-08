@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
@@ -155,16 +156,18 @@ public class TGetSubjectListActivity extends SEBaseActivity implements PullToRef
     private void fetchHomeCourseData() {
         expandableListViews.setVisibility(View.VISIBLE);
         listview.setVisibility(View.GONE);
-        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
+        SEAPP.showCatDialog(this);
         QuestionCourseManager.getInstance().fetchHomeCourseList(userId, pid, "1", new Callback<QuestionCourseModule>() {
             @Override
             public void success(QuestionCourseModule questionCourseModule, Response response) {
-                if (context != null) {
-                    SVProgressHUD.dismiss(context);
+                if (context != null && !TGetSubjectListActivity.this.isFinishing()) {
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     expandableListViews.onRefreshComplete();
 //                Logger.json(questionCourseModule);
                     if (questionCourseModule.getApicode() != 10000) {
@@ -183,9 +186,10 @@ public class TGetSubjectListActivity extends SEBaseActivity implements PullToRef
 
             @Override
             public void failure(RetrofitError error) {
-                if (context != null) {
+                if (context != null && !TGetSubjectListActivity.this.isFinishing()) {
                     expandableListViews.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(context, R.string.data_request_fail);
                 }
             }
@@ -195,7 +199,8 @@ public class TGetSubjectListActivity extends SEBaseActivity implements PullToRef
     private void fetchExamListData() {
         expandableListViews.setVisibility(View.GONE);
         listview.setVisibility(View.VISIBLE);
-        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         String userId = "";
         SEAuthManager am = SEAuthManager.getInstance();
         if (am.isAuthenticated()) {
@@ -204,8 +209,9 @@ public class TGetSubjectListActivity extends SEBaseActivity implements PullToRef
         QuestionCourseManager.getInstance().getExamList(userId, pid, String.valueOf(selectType), new Callback<ExamModule>() {
             @Override
             public void success(ExamModule examModule, Response response) {
-                if (context != null) {
-                    SVProgressHUD.dismiss(context);
+                if (context != null && !TGetSubjectListActivity.this.isFinishing()) {
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
 //                Logger.json(examModule);
                     if (examModule.getApicode() != 10000) {
@@ -220,7 +226,8 @@ public class TGetSubjectListActivity extends SEBaseActivity implements PullToRef
             public void failure(RetrofitError error) {
                 if (context != null) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(context, R.string.data_request_fail);
                 }
             }
@@ -247,6 +254,12 @@ public class TGetSubjectListActivity extends SEBaseActivity implements PullToRef
         if (successEvent.isSuccess) {
             finish();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override

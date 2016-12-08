@@ -280,4 +280,18 @@ public class Utils {
             context.startActivity(new Intent(context, UserLoginActivity.class));
         }
     }
+
+    /**
+     * 获取屏幕的宽高
+     *
+     * @param context
+     * @return
+     */
+    public static Point getScreenMetricsPoint(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        int w_screen = dm.widthPixels;
+        int h_screen = dm.heightPixels;
+        return new Point(w_screen, h_screen);
+
+    }
 }

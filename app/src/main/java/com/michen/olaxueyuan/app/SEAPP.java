@@ -2,13 +2,19 @@ package com.michen.olaxueyuan.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 
+import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.SEThemer;
+import com.michen.olaxueyuan.common.catloading.CatLoadingView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.common.SEThemer;
 import com.tencent.smtt.sdk.QbSdk;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tianxiaopeng on 15-1-7.
@@ -17,6 +23,7 @@ public class SEAPP extends Application {
     private static Context mAppContext;
     public static final String PIC_BASE_URL = "http://upload.olaxueyuan.com/SDpic/common/picSelect?gid=";
     private String versionNames;
+    private static CatLoadingView catLoadingView;
 
     @Override
     public void onCreate() {
@@ -62,5 +69,36 @@ public class SEAPP extends Application {
 
     public static Context getAppContext() {
         return mAppContext;
+    }
+
+    private static List<CatLoadingView> catLoadingViewList = new ArrayList<>();
+
+    public static CatLoadingView getCatLoadingView() {
+        if (catLoadingView != null) {
+            catLoadingView.dismissAllowingStateLoss();
+        }
+        catLoadingView = null;
+        catLoadingView = new CatLoadingView();
+        catLoadingView.setText("加载中，请稍后...");
+        catLoadingViewList.add(catLoadingView);
+        return catLoadingView;
+    }
+
+    public static void showCatDialog(FragmentActivity activity) {
+        getCatLoadingView().show(activity.getSupportFragmentManager(), "CatLoadingView");
+    }
+
+    public static void showCatDialog(Fragment fragment) {
+        getCatLoadingView().show(fragment.getChildFragmentManager(), "CatLoadingView");
+    }
+
+    public static void dismissAllowingStateLoss() {
+        getCatLoadingView().dismissAllowingStateLoss();
+        for (int i = 0; i < catLoadingViewList.size(); i++) {
+            if (catLoadingViewList.get(i) != null) {
+                catLoadingViewList.get(i).dismissAllowingStateLoss();
+            }
+        }
+        catLoadingViewList.clear();
     }
 }

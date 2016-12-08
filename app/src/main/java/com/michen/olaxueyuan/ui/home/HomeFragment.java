@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.AutoScrollViewPager;
 import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
@@ -113,11 +114,13 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     }
 
     private void fetchData() {
+        SEAPP.showCatDialog(this);
         HomeListManager.getInstance().getHomeListService().getHomeList(new Callback<HomeModule>() {
             @Override
             public void success(HomeModule result, Response response) {
 //                Logger.json(result);
                 if (getActivity() != null && !getActivity().isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
                     scroll.onRefreshComplete();
                     if (result.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.getMessage(), 2.0f);
@@ -130,6 +133,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
             @Override
             public void failure(RetrofitError error) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
                     scroll.onRefreshComplete();
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
@@ -223,6 +227,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     public void onPause() {
         super.onPause();
         imgViewpagerHome.stopAutoScroll();
+        SEAPP.dismissAllowingStateLoss();
     }
 
     @Override

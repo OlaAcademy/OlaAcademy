@@ -56,7 +56,7 @@
             android:layout_gravity="center"
             android:gravity="center_horizontal"
             android:paddingTop="10dp"
-            android:text="@string/find_teacher"
+            android:text="@string/my_to_enrol"
             android:textColor="@color/normal_text_color"
             android:textSize="12dp" />
     </LinearLayout>

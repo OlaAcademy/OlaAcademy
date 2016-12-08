@@ -61,7 +61,7 @@ public class DataLibraryActivity extends SEBaseActivity {
                 showCommodityView();
             }
         });
-        viewPagerAdapter = new DataLibraryViewPagerAdapter(getFragmentManager());
+        viewPagerAdapter = new DataLibraryViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(4);
         mathsText.setSelected(true);

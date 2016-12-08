@@ -105,12 +105,14 @@ public class SearchFragment extends Fragment {
         courseManager.fetchKeyWordList(new Callback<MCKeywordResult>() {
             @Override
             public void success(MCKeywordResult result, Response response) {
-                if (!result.apicode.equals("10000")) {
-                    SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.message, 2.0f);
-                } else {
-                    keywordArrayList = result.keywordList;
-                    adapter = new SearchWordAdapter(getActivity(), keywordArrayList);
-                    keywordListView.setAdapter(adapter);
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    if (!result.apicode.equals("10000")) {
+                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.message, 2.0f);
+                    } else {
+                        keywordArrayList = result.keywordList;
+                        adapter = new SearchWordAdapter(getActivity(), keywordArrayList);
+                        keywordListView.setAdapter(adapter);
+                    }
                 }
             }
 

@@ -1,12 +1,15 @@
 package com.michen.olaxueyuan.ui.activity;
 
-import android.app.ActionBar;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -14,12 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.StatusBarCompat;
+import com.michen.olaxueyuan.common.manager.Utils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
-public class SEBaseActivity extends FragmentActivity {
-
-
+public class SEBaseActivity extends AppCompatActivity {
     private ImageView leftImage;
     private ImageView rightImage;
     private TextView leftText, titleText, rightText;
@@ -33,18 +36,34 @@ public class SEBaseActivity extends FragmentActivity {
         PushAgent.getInstance(this).onAppStart();
         // manifest中配置主题为Translucent，因此需要在这儿通过代码设置
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
-        setTheme(R.style.AppTheme);
-        actionBar = getActionBar();
+//        setTheme(R.style.AppTheme);
+//        setTheme(R.style.MyAppTheme);
+        setStatusBarColor();
+//        actionBar = getActionBar();
         // 返回箭头（默认不显示）
-        actionBar.setDisplayHomeAsUpEnabled(false);
+//        actionBar.setDisplayHomeAsUpEnabled(false);
         // 左侧图标点击事件使能
-        actionBar.setHomeButtonEnabled(true);
+//        actionBar.setHomeButtonEnabled(true);
         // 使左上角图标(系统)是否显示
-        actionBar.setDisplayShowHomeEnabled(false);
+//        actionBar.setDisplayShowHomeEnabled(false);
         // 显示标题
-        actionBar.setDisplayShowTitleEnabled(false);
+//        actionBar.setDisplayShowTitleEnabled(false);
         //显示自定义视图
-        actionBar.setDisplayShowCustomEnabled(true);
+//        actionBar.setDisplayShowCustomEnabled(true);
+
+        actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // 返回箭头（默认不显示）
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            // 左侧图标点击事件使能
+            actionBar.setHomeButtonEnabled(true);
+            // 使左上角图标(系统)是否显示
+            actionBar.setDisplayShowHomeEnabled(false);
+            // 显示标题
+            actionBar.setDisplayShowTitleEnabled(false);
+            //显示自定义视图
+            actionBar.setDisplayShowCustomEnabled(true);
+        }
         View actionbarLayout = LayoutInflater.from(this).inflate(
                 R.layout.actionbar_layout, null);
         leftImage = (ImageView) actionbarLayout.findViewById(R.id.left_imbt);
@@ -53,13 +72,16 @@ public class SEBaseActivity extends FragmentActivity {
         titleText = (TextView) actionbarLayout.findViewById(R.id.tv_title);
         leftText = (TextView) actionbarLayout.findViewById(R.id.left_text);
         rightText = (TextView) actionbarLayout.findViewById(R.id.right_text);
-        actionBar.setCustomView(actionbarLayout);
-
+        if (actionBar != null) {
+//            actionBar.setCustomView(actionbarLayout, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dip2px(this, 50)));
+            actionBar.setCustomView(actionbarLayout);
+            actionBar.getCustomView().setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dip2px(this, 50)));
+        }
     }
 
     private void initLeft() {
         leftImage.setVisibility(View.VISIBLE);
-        leftImage.setImageResource(R.drawable.ic_back);
+//        leftImage.setImageResource(R.drawable.ic_back);
         leftImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,6 +183,15 @@ public class SEBaseActivity extends FragmentActivity {
             }
         }
         return false;
+    }
+
+    /**
+     * 着色状态栏（4.4以上系统有效）
+     */
+    public void setStatusBarColor() {
+        if (Build.VERSION.SDK_INT > 19) {
+            StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.common_blue));
+        }
     }
 }
 

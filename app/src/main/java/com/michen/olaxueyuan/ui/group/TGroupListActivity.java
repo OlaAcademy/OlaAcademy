@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
@@ -80,13 +81,15 @@ public class TGroupListActivity extends SEBaseActivity implements PullToRefreshB
             startActivity(new Intent(context, UserLoginActivity.class));
             return;
         }
-        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+//        SVProgressHUD.showInView(context, getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
         TeacherHomeManager.getInstance().getTeacherGroupList(userId, new Callback<TeacherGroupListResult>() {
             @Override
             public void success(TeacherGroupListResult teacherGroupListResult, Response response) {
                 if (context != null&&!TGroupListActivity.this.isFinishing()) {
                     listview.onRefreshComplete();
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     if (teacherGroupListResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(context, teacherGroupListResult.getMessage());
                         emptyLayout.setVisibility(View.VISIBLE);
@@ -105,7 +108,8 @@ public class TGroupListActivity extends SEBaseActivity implements PullToRefreshB
             public void failure(RetrofitError error) {
                 if (context != null&&!TGroupListActivity.this.isFinishing()) {
                     emptyLayout.setVisibility(View.VISIBLE);
-                    SVProgressHUD.dismiss(context);
+//                    SVProgressHUD.dismiss(context);
+                    SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(context, R.string.request_group_fail);
                     listview.onRefreshComplete();
                 }
@@ -118,6 +122,7 @@ public class TGroupListActivity extends SEBaseActivity implements PullToRefreshB
         super.onPause();
         if (context != null&&!TGroupListActivity.this.isFinishing()) {
             SVProgressHUD.dismiss(context);
+            SEAPP.dismissAllowingStateLoss();
         }
     }
 
