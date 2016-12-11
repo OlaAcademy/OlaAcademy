@@ -36,8 +36,11 @@ public class MCCircleManager {
      * @param type
      * @param callback
      */
-    public void deployPost(String userId, String title, String content, String imageGids, String location, String type, String phoneInfo, final Callback<MCCommonResult> callback) {
-        getCircleService().addOlaCircle(userId, title, content, imageGids, location, type, phoneInfo, callback);
+    public void deployPost(String userId, String title, String content, String imageGids, String location
+            , String type, String phoneInfo, String assignUser, String isPublic
+            , final Callback<MCCommonResult> callback) {
+        getCircleService().addOlaCircle(userId, title, content, imageGids, location, type
+                , phoneInfo, assignUser, isPublic, callback);
     }
 
     /**

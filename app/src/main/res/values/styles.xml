@@ -1,29 +1,27 @@
 <resources>
 
     <!-- Base application theme. -->
-    <!-- <style name="AppTheme" parent="android:Theme.Light">
-         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
-         <item name="android:textColorHighlight">#990090ff</item>
-         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
-     </style>-->
-
-    <style name="MyAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/white_light</item>
-        <item name="colorPrimaryDark">@color/common_blue</item>
-        <item name="colorAccent">@color/common_blue</item>
+    <style name="MyAppTheme" parent="android:Theme.Light">
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
         <item name="android:textColorHighlight">#990090ff</item>
         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
-        <item name="windowActionBar">true</item>
     </style>
+
+    <!-- <style name="MyAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+         &lt;!&ndash; Customize your theme here. &ndash;&gt;
+         <item name="colorPrimary">@color/white_light</item>
+         <item name="colorPrimaryDark">@color/common_blue</item>
+         <item name="colorAccent">@color/common_blue</item>
+         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
+         <item name="android:textColorHighlight">#990090ff</item>
+         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+         <item name="windowActionBar">true</item>
+     </style>-->
 
     <style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/ActionBarBackgroundColor</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleTextStyle</item>
         <item name="android:itemTextAppearance">@style/ActionBarItemTextAppearance</item>
-        <item name="android:actionBarSize">10dp</item>
-        <item name="actionBarSize">10dp</item>
     </style>
 
     <style name="ActionBarTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
@@ -342,6 +340,11 @@
     <style name="hint_text_10dp_style">
         <item name="android:textSize">@dimen/sp_10</item>
         <item name="android:textColor">@color/special_read_text_color</item>
+    </style>
+
+    <style name="black_one_text_15dp_style">
+        <item name="android:textColor">@color/black_one</item>
+        <item name="android:textSize">@dimen/sp_15</item>
     </style>
 
     <style name="video_bottom_layout_style">
