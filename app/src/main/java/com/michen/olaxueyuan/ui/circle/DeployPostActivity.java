@@ -8,10 +8,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,12 +32,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.common.NoScrollGridView;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -59,10 +55,13 @@ import com.snail.photo.util.Res;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -77,44 +76,69 @@ import retrofit.mime.TypedFile;
  */
 public class DeployPostActivity extends SEBaseActivity {
 
+    @Bind(R.id.question_type_hint_text)
+    TextView questionTypeHintText;
+    @Bind(R.id.question_type_view)
+    RelativeLayout questionTypeView;
+    @Bind(R.id.et_title)
+    EditText mEt_title;
+    @Bind(R.id.et_content)
+    EditText msgET;
+    @Bind(R.id.iv_switch_open_orignal)
+    ImageView iv_switch_open_orignal;
+    @Bind(R.id.iv_switch_close_orignal)
+    ImageView iv_switch_close_orignal;
+    @Bind(R.id.rl_orignal)
+    RelativeLayout rl_switch_orignal;
+    @Bind(R.id.iv_video)
+    ImageView ivVideo;
+    @Bind(R.id.noScrollgridview)
+    NoScrollGridView noScrollgridview;
+    @Bind(R.id.img_switch_open_appoint)
+    ImageView imgSwitchOpenAppoint;
+    @Bind(R.id.iv_switch_close_appoint)
+    ImageView ivSwitchCloseAppoint;
+    @Bind(R.id.appoint_answer_view)
+    RelativeLayout appointAnswerView;
+    @Bind(R.id.invite_hint_text)
+    TextView inviteHintText;
+    @Bind(R.id.invite_answer_view)
+    RelativeLayout inviteAnswerView;
+    @Bind(R.id.is_public_hint_text)
+    TextView isPublicHintText;
+    @Bind(R.id.is_public_view)
+    RelativeLayout isPublicView;
     /****************************************************/
     private Button bt1;
     private Button bt2;
     private Button bt3;
     /****************************************************/
-    private GridView noScrollgridview;
     private GridAdapter adapter;
     private View parentView;
     private PopupWindow pop = null;
     private LinearLayout ll_popup;
 
-    private TextView mTv_location;
-    private String mLocation = "";
-
-    private EditText msgET;
-    private RelativeLayout /*markRL,*/ rl_switch_orignal;
-    //    private TextView markText;
-    private ImageView iv_switch_open_orignal, iv_switch_close_orignal;
-
     private boolean isOrignalImage = false;
-
     private UploadService uploadService;
     private int uploadNum = 0;
     private String imageGids = "";
-
-    private EditText mEt_title;
     private String mTitle;
-
-    private LocationClient mLocationClient;
     private String phoneInfo;//手机信息
+    private OptionsPickerView pvOptions;
+    private ArrayList<String> courses = new ArrayList<>();//类型
+    private ArrayList<String> publics = new ArrayList<>();//是否公开
+    private int optionType = 1;//区分选择器返回的类型；1、类型；2、是否公开
+    private String assignUser;//指定回答者Id
+    private int isPublic = 0;//是否公开
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Res.init(this);
         Bimp.tempSelectBitmap.clear();
         PublicWay.activityList.add(this);
-        parentView = getLayoutInflater().inflate(R.layout.activity_deploy_post, null);
+        parentView = getLayoutInflater().inflate(R.layout.activity_deploy_post_v2, null);
         setContentView(parentView);
+        ButterKnife.bind(this);
 
         Init();
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://upload.olaxueyuan.com").build();
@@ -143,41 +167,8 @@ public class DeployPostActivity extends SEBaseActivity {
     }
 
     public void Init() {
-        mTv_location = (TextView) findViewById(R.id.tv_location);
-        mLocationClient = new LocationClient(this);
-        initLocation();
-        //开始定位 精确到市
-        mLocationClient.registerLocationListener(new BDLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation bdLocation) {
-                mLocationClient.stop();
-                if (bdLocation == null) {
-                    mTv_location.setText("定位失败");
-                    return;
-                }
-//                Log.e("Test", bdLocation.getAddrStr());
-                try {
-                    String city = bdLocation.getCity();
-                    String district = bdLocation.getDistrict();
-                    if (city == null) {
-                        city = "";
-                    }
-                    if (district == null) {
-                        district = "";
-                    }
-                    mLocation = city + district;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    mLocation = "";
-                }
-                mTv_location.setText(mLocation);
-            }
-
-        });
-        mLocationClient.start();
         initPop();
 
-        noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);
         noScrollgridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         adapter = new GridAdapter(this);
         adapter.update();
@@ -196,54 +187,36 @@ public class DeployPostActivity extends SEBaseActivity {
                 }
             }
         });
-
-        msgET = (EditText) findViewById(R.id.et_content);
-
-        rl_switch_orignal = (RelativeLayout) findViewById(R.id.rl_orignal);
-        iv_switch_open_orignal = (ImageView) findViewById(R.id.iv_switch_open_orignal);
-        iv_switch_close_orignal = (ImageView) findViewById(R.id.iv_switch_close_orignal);
-
-        rl_switch_orignal.setOnClickListener(new View.OnClickListener() {
+        //选项选择器
+        pvOptions = new OptionsPickerView(this);
+        String[] coursesArray = getResources().getStringArray(R.array.courses);
+        for (int i = 0; i < coursesArray.length; i++) {
+            courses.add(coursesArray[i]);
+        }
+        String[] publicArray = getResources().getStringArray(R.array.public_select);
+        for (int i = 0; i < publicArray.length; i++) {
+            publics.add(publicArray[i]);
+        }
+        pvOptions.setPicker(courses);
+        pvOptions.setCyclic(false);
+        //监听确定选择按钮
+        pvOptions.setSelectOptions(0);
+        pvOptions.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
-            public void onClick(View view) {
-                if (iv_switch_open_orignal.getVisibility() == View.VISIBLE) {
-                    iv_switch_open_orignal.setVisibility(View.INVISIBLE);
-                    iv_switch_close_orignal.setVisibility(View.VISIBLE);
-                    isOrignalImage = false;
-                } else {
-                    iv_switch_open_orignal.setVisibility(View.VISIBLE);
-                    iv_switch_close_orignal.setVisibility(View.INVISIBLE);
-                    isOrignalImage = true;
+            public void onOptionsSelect(int options1, int option2, int options3) {
+                //返回的分别是三个级别的选中位置
+                switch (optionType) {
+                    case 1:
+                        questionTypeHintText.setText(courses.get(options1));
+                        break;
+                    case 2:
+                        isPublicHintText.setText(publics.get(options1));
+                        isPublic = options1;
+                        break;
                 }
             }
         });
-
-        mEt_title = (EditText) findViewById(R.id.et_title);
     }
-
-    /**
-     * 设置相关参数
-     */
-    private void initLocation() {
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
-        );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-        option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
-        int span = 1000;
-        option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
-        option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
-        option.setOpenGps(true);//可选，默认false,设置是否使用gps
-        option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
-        option.setIsNeedLocationDescribe(false);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-        option.setIsNeedLocationPoiList(false);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
-        option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
-        option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
-        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
-        mLocationClient.setLocOption(option);
-    }
-
-    private int height;
-    private int width;
 
     public void doUpload() {
         //标题
@@ -266,24 +239,14 @@ public class DeployPostActivity extends SEBaseActivity {
                 int degree = PictureUtil.readPictureDegree(Bimp.tempSelectBitmap.get(i).imagePath);
                 File imageFile;
                 if (isOrignalImage) {  //原图
-//                    imageFile = new File(Bimp.tempSelectBitmap.get(i).getImagePath());
-
-                    Bitmap bitmap = PictureUtil.getLargerBitmap(Bimp.tempSelectBitmap.get(i).imagePath);
-                    tempPath = FileUtils.saveBitmap(bitmap, "snail_temp" + i);
-                    imageFile = new File(tempPath);
-                    width = bitmap.getWidth();
-                    height = bitmap.getHeight();
+                    imageFile = new File(Bimp.tempSelectBitmap.get(i).getImagePath());
                 } else {
                     Bitmap bitmap = PictureUtil.getSmallBitmap(Bimp.tempSelectBitmap.get(i).imagePath);
                     tempPath = FileUtils.saveBitmap(bitmap, "snail_temp" + i);
                     imageFile = new File(tempPath);
-                    width = bitmap.getWidth();
-                    height = bitmap.getHeight();
                 }
                 Logger.e("imageFile==" + imageFile);
-//                uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree);
-//                uploadImagesByExecutors(new TypedFile("image/jpeg", imageFile), degree);
-                uploadImagesByExecutors(new TypedFile("", imageFile), degree);
+                uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree);
             }
         }
     }
@@ -296,12 +259,10 @@ public class DeployPostActivity extends SEBaseActivity {
             @Override
             public void run() {
 
-//                uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
-                uploadService.uploadImage(photo, angle, width, height, "jpg", new Callback<UploadResult>() {
+                uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
                     @Override
                     public void success(UploadResult result, Response response) {
                         uploadNum++;
-                        Logger.e("result.code=="+result.code);
                         if (result.code != 1) {
                             SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.message, 2.0f);
                             return;
@@ -315,10 +276,9 @@ public class DeployPostActivity extends SEBaseActivity {
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Logger.e("failure==");
                         uploadNum++;
                         if (uploadNum == Bimp.tempSelectBitmap.size()) {
-//                            Bimp.tempSelectBitmap.clear();
+                            Bimp.tempSelectBitmap.clear();
                             if (imageGids.equals("")) {
                                 SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, "图片上传失败", 2.0f);
                             } else {
@@ -338,24 +298,25 @@ public class DeployPostActivity extends SEBaseActivity {
         String userId = user.getId();
         Log.e("DeployActivity", "imageGids: " + imageGids);
         final MCCircleManager circleManager = MCCircleManager.getInstance();
-        circleManager.deployPost(userId, mTitle, msgET.getText().toString(), imageGids, mLocation, "2", phoneInfo, new Callback<MCCommonResult>() {
-            @Override
-            public void success(MCCommonResult result, Response response) {
-                if (!DeployPostActivity.this.isFinishing()) {
-                    if (!result.apicode.equals("10000")) {
-                        SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.message, 2.0f);
-                        return;
+        circleManager.deployPost(userId, mTitle, msgET.getText().toString(), imageGids, "", "2", phoneInfo
+                , "", String.valueOf(isPublic), new Callback<MCCommonResult>() {
+                    @Override
+                    public void success(MCCommonResult result, Response response) {
+                        if (!DeployPostActivity.this.isFinishing()) {
+                            if (!result.apicode.equals("10000")) {
+                                SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.message, 2.0f);
+                                return;
+                            }
+                            EventBus.getDefault().post(true);
+                            finish();
+                        }
                     }
-                    EventBus.getDefault().post(true);
-                    finish();
-                }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
+                    @Override
+                    public void failure(RetrofitError error) {
 
-            }
-        });
+                    }
+                });
     }
 
 
@@ -364,6 +325,51 @@ public class DeployPostActivity extends SEBaseActivity {
         super.onStop();
         SVProgressHUD.dismiss(this);
         SEAPP.dismissAllowingStateLoss();
+    }
+
+    @OnClick({R.id.question_type_view, R.id.rl_orignal, R.id.appoint_answer_view
+            , R.id.invite_answer_view, R.id.is_public_view})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.question_type_view:
+                optionType = 1;
+                pvOptions.setTitle("选择类型");
+                pvOptions.setPicker(courses);
+                pvOptions.show();
+                break;
+            case R.id.rl_orignal:
+                if (iv_switch_open_orignal.getVisibility() == View.VISIBLE) {
+                    iv_switch_open_orignal.setVisibility(View.INVISIBLE);
+                    iv_switch_close_orignal.setVisibility(View.VISIBLE);
+                    isOrignalImage = false;
+                } else {
+                    iv_switch_open_orignal.setVisibility(View.VISIBLE);
+                    iv_switch_close_orignal.setVisibility(View.INVISIBLE);
+                    isOrignalImage = true;
+                }
+                break;
+            case R.id.appoint_answer_view:
+                if (imgSwitchOpenAppoint.getVisibility() == View.VISIBLE) {
+                    imgSwitchOpenAppoint.setVisibility(View.INVISIBLE);
+                    ivSwitchCloseAppoint.setVisibility(View.VISIBLE);
+                    inviteAnswerView.setVisibility(View.INVISIBLE);
+                    isPublicView.setVisibility(View.INVISIBLE);
+                } else {
+                    imgSwitchOpenAppoint.setVisibility(View.VISIBLE);
+                    ivSwitchCloseAppoint.setVisibility(View.INVISIBLE);
+                    inviteAnswerView.setVisibility(View.VISIBLE);
+                    isPublicView.setVisibility(View.VISIBLE);
+                }
+                break;
+            case R.id.invite_answer_view:
+                break;
+            case R.id.is_public_view:
+                optionType = 2;
+                pvOptions.setTitle("是否公开");
+                pvOptions.setPicker(publics);
+                pvOptions.show();
+                break;
+        }
     }
 
 
@@ -456,48 +462,22 @@ public class DeployPostActivity extends SEBaseActivity {
     }
 
     private static final int TAKE_PICTURE = 0x000001;
-    Uri imageUri;
-    Uri uri = null;
 
     public void photo() {
         Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri uri = getOutputStringUri();
-        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         startActivityForResult(openCameraIntent, TAKE_PICTURE);
-        imageUri = uri;
-    }
-
-    /**
-     * @return
-     */
-    public static Uri getOutputStringUri() {
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getPath();
-        String fileName = System.currentTimeMillis() + ".jpg";
-        File file = new File(path, fileName);
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Uri uri = Uri.fromFile(file);
-        return uri;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case TAKE_PICTURE:
-                    uri = imageUri;
                     if (Bimp.tempSelectBitmap.size() < 9 && resultCode == RESULT_OK) {
-//                        String fileName = String.valueOf(System.currentTimeMillis());
-//                        Bitmap bm = (Bitmap) data.getExtras().get("data");
+                        String fileName = String.valueOf(System.currentTimeMillis());
+                        Bitmap bm = (Bitmap) data.getExtras().get("data");
                         ImageItem takePhoto = new ImageItem();
-                        takePhoto.setImagePath(uri.getPath());
-//                        takePhoto.setImagePath(FileUtils.saveBitmap(bm, fileName));
-//                        takePhoto.setBitmap(bm);
-                        takePhoto.setBitmap(BitmapFactory.decodeFile(uri.getPath()));
+                        takePhoto.setImagePath(FileUtils.saveBitmap(bm, fileName));
+                        takePhoto.setBitmap(bm);
                         Bimp.tempSelectBitmap.add(takePhoto);
                     }
                     break;
@@ -582,9 +562,9 @@ public class DeployPostActivity extends SEBaseActivity {
                 userPhone = SEAuthManager.getInstance().getAccessUser().getPhone();
             }
             phoneInfo = "安卓手机厂商: " + Build.MANUFACTURER
-                    + ";安卓手机型号: " + android.os.Build.MODEL
-                    + ";安卓sdk版本code:" + android.os.Build.VERSION.SDK_INT
-                    + ";安卓sdk版本名称:" + android.os.Build.VERSION.RELEASE
+                    + ";安卓手机型号: " + Build.MODEL
+                    + ";安卓sdk版本code:" + Build.VERSION.SDK_INT
+                    + ";安卓sdk版本名称:" + Build.VERSION.RELEASE
                     + ";欧拉MBA版本信息:" + getPackageManager().getPackageInfo(getPackageName(), 0).versionName
                     + ";欧拉MBA版本code:" + getPackageManager().getPackageInfo(getPackageName(), 0).versionCode
                     + ";手机号码:" + userPhone;
@@ -592,9 +572,9 @@ public class DeployPostActivity extends SEBaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
             phoneInfo = "安卓手机厂商: " + Build.MANUFACTURER
-                    + "安卓手机型号: " + android.os.Build.MODEL
-                    + ";安卓sdk版本code:" + android.os.Build.VERSION.SDK_INT
-                    + ";安卓sdk版本名称:" + android.os.Build.VERSION.RELEASE;
+                    + "安卓手机型号: " + Build.MODEL
+                    + ";安卓sdk版本code:" + Build.VERSION.SDK_INT
+                    + ";安卓sdk版本名称:" + Build.VERSION.RELEASE;
         }
     }
 

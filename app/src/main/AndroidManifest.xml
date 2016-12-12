@@ -371,6 +371,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.circle.DeployPostActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
         <activity

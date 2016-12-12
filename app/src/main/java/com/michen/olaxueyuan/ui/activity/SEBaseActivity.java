@@ -1,15 +1,13 @@
 package com.michen.olaxueyuan.ui.activity;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -18,11 +16,10 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.StatusBarCompat;
-import com.michen.olaxueyuan.common.manager.Utils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
-public class SEBaseActivity extends AppCompatActivity {
+public class SEBaseActivity extends FragmentActivity {
     private ImageView leftImage;
     private ImageView rightImage;
     private TextView leftText, titleText, rightText;
@@ -39,19 +36,7 @@ public class SEBaseActivity extends AppCompatActivity {
 //        setTheme(R.style.AppTheme);
 //        setTheme(R.style.MyAppTheme);
         setStatusBarColor();
-//        actionBar = getActionBar();
-        // 返回箭头（默认不显示）
-//        actionBar.setDisplayHomeAsUpEnabled(false);
-        // 左侧图标点击事件使能
-//        actionBar.setHomeButtonEnabled(true);
-        // 使左上角图标(系统)是否显示
-//        actionBar.setDisplayShowHomeEnabled(false);
-        // 显示标题
-//        actionBar.setDisplayShowTitleEnabled(false);
-        //显示自定义视图
-//        actionBar.setDisplayShowCustomEnabled(true);
-
-        actionBar = getSupportActionBar();
+        actionBar = getActionBar();
         if (actionBar != null) {
             // 返回箭头（默认不显示）
             actionBar.setDisplayHomeAsUpEnabled(false);
@@ -73,9 +58,7 @@ public class SEBaseActivity extends AppCompatActivity {
         leftText = (TextView) actionbarLayout.findViewById(R.id.left_text);
         rightText = (TextView) actionbarLayout.findViewById(R.id.right_text);
         if (actionBar != null) {
-//            actionBar.setCustomView(actionbarLayout, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dip2px(this, 50)));
             actionBar.setCustomView(actionbarLayout);
-            actionBar.getCustomView().setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dip2px(this, 50)));
         }
     }
 

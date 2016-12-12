@@ -13,8 +13,15 @@ import retrofit.http.POST;
  */
 public interface MCCircleService {
     /**
-     * 服务机构列表
-     *
+     * @param userId
+     * @param title
+     * @param content
+     * @param imageGids
+     * @param location
+     * @param type
+     * @param phoneInfo  手机信息
+     * @param assignUser 指定回答者Id
+     * @param isPublic   是否公开
      * @param cb
      */
     @FormUrlEncoded
@@ -26,6 +33,8 @@ public interface MCCircleService {
                       @Field("location") String location,
                       @Field("type") String type,
                       @Field("phoneInfo") String phoneInfo,
+                      @Field("assignUser") String assignUser,
+                      @Field("isPublic") String isPublic,
                       Callback<MCCommonResult> cb);
 
     /**
