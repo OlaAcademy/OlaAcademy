@@ -24,7 +24,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -36,6 +35,7 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.NoScrollGridView;
+import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -128,15 +128,15 @@ public class DeployPostActivity extends SEBaseActivity {
     private ArrayList<String> courses = new ArrayList<>();//类型
     private ArrayList<String> publics = new ArrayList<>();//是否公开
     private int optionType = 1;//区分选择器返回的类型；1、类型；2、是否公开
-    private String assignUser;//指定回答者Id
     private int isPublic = 0;//是否公开
+    private int assignUser;//指定回答者Id
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Res.init(this);
         Bimp.tempSelectBitmap.clear();
         PublicWay.activityList.add(this);
-        parentView = getLayoutInflater().inflate(R.layout.activity_deploy_post_v2, null);
+        parentView = getLayoutInflater().inflate(R.layout.activity_deploy_post, null);
         setContentView(parentView);
         ButterKnife.bind(this);
 
@@ -164,6 +164,18 @@ public class DeployPostActivity extends SEBaseActivity {
                              }
         );
         getPhoneInfo();
+    }
+
+    protected void onRestart() {
+        adapter.update();
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SVProgressHUD.dismiss(this);
+        SEAPP.dismissAllowingStateLoss();
     }
 
     public void Init() {
@@ -299,10 +311,11 @@ public class DeployPostActivity extends SEBaseActivity {
         Log.e("DeployActivity", "imageGids: " + imageGids);
         final MCCircleManager circleManager = MCCircleManager.getInstance();
         circleManager.deployPost(userId, mTitle, msgET.getText().toString(), imageGids, "", "2", phoneInfo
-                , "", String.valueOf(isPublic), new Callback<MCCommonResult>() {
+                , String.valueOf(assignUser), String.valueOf(isPublic), new Callback<MCCommonResult>() {
                     @Override
                     public void success(MCCommonResult result, Response response) {
                         if (!DeployPostActivity.this.isFinishing()) {
+                            SEAPP.dismissAllowingStateLoss();
                             if (!result.apicode.equals("10000")) {
                                 SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.message, 2.0f);
                                 return;
@@ -314,18 +327,13 @@ public class DeployPostActivity extends SEBaseActivity {
 
                     @Override
                     public void failure(RetrofitError error) {
-
+                        if (!DeployPostActivity.this.isFinishing()) {
+                            SEAPP.dismissAllowingStateLoss();
+                        }
                     }
                 });
     }
 
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        SVProgressHUD.dismiss(this);
-        SEAPP.dismissAllowingStateLoss();
-    }
 
     @OnClick({R.id.question_type_view, R.id.rl_orignal, R.id.appoint_answer_view
             , R.id.invite_answer_view, R.id.is_public_view})
@@ -362,6 +370,7 @@ public class DeployPostActivity extends SEBaseActivity {
                 }
                 break;
             case R.id.invite_answer_view:
+                startActivityForResult(new Intent(this, AppointTeacherListActivity.class), CommonConstant.DEPLOY_POST_APPOINT_TEACHER_FOR_RESULT);
                 break;
             case R.id.is_public_view:
                 optionType = 2;
@@ -456,11 +465,6 @@ public class DeployPostActivity extends SEBaseActivity {
         return path;
     }
 
-    protected void onRestart() {
-        adapter.update();
-        super.onRestart();
-    }
-
     private static final int TAKE_PICTURE = 0x000001;
 
     public void photo() {
@@ -472,7 +476,7 @@ public class DeployPostActivity extends SEBaseActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case TAKE_PICTURE:
-                    if (Bimp.tempSelectBitmap.size() < 9 && resultCode == RESULT_OK) {
+                    if (Bimp.tempSelectBitmap.size() < 9) {
                         String fileName = String.valueOf(System.currentTimeMillis());
                         Bitmap bm = (Bitmap) data.getExtras().get("data");
                         ImageItem takePhoto = new ImageItem();
@@ -480,6 +484,11 @@ public class DeployPostActivity extends SEBaseActivity {
                         takePhoto.setBitmap(bm);
                         Bimp.tempSelectBitmap.add(takePhoto);
                     }
+                    break;
+                case CommonConstant.DEPLOY_POST_APPOINT_TEACHER_FOR_RESULT:
+                    assignUser = data.getExtras().getInt("id");
+                    String name = data.getExtras().getString("name");
+                    inviteHintText.setText(name);
                     break;
             }
         }

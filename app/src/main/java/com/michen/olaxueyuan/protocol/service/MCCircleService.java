@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.protocol.service;
 
+import com.michen.olaxueyuan.protocol.result.AppointTeacherListResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 
@@ -48,4 +49,13 @@ public interface MCCircleService {
     void praiseCirclePost(
             @Field("circleId") String circleId,
             Callback<PraiseCirclePostResult> cb);
+
+    /**
+     * 邀请老师回答列表
+     *
+     * @param callback
+     */
+    @POST("/ola/user/getTeacherList")
+    void getTeacherList(
+            Callback<AppointTeacherListResult> callback);
 }

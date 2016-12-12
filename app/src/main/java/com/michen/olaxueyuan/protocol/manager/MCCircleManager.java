@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.protocol.manager;
 
+import com.michen.olaxueyuan.protocol.result.AppointTeacherListResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 import com.michen.olaxueyuan.protocol.service.MCCircleService;
@@ -51,5 +52,14 @@ public class MCCircleManager {
      */
     public void praiseCirclePost(String circleId, Callback<PraiseCirclePostResult> callback) {
         getCircleService().praiseCirclePost(circleId, callback);
+    }
+
+    /**
+     * 邀请老师回答列表
+     *
+     * @param callback
+     */
+    public void getTeacherList(Callback<AppointTeacherListResult> callback) {
+        getCircleService().getTeacherList(callback);
     }
 }
