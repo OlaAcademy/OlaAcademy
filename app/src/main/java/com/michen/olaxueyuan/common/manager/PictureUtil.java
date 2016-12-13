@@ -257,6 +257,26 @@ public class PictureUtil {
     }
 
     /**
+     * 把图片gid转换为图片地址
+     *
+     * @param images
+     * @return
+     */
+    public static ArrayList<String> getListFromString(String images) {
+        ArrayList imageUrlList = new ArrayList();
+        String[] imageUrlArray = images.split(",");
+        for (String imgUrl : imageUrlArray) {
+            if (imgUrl.contains(".")) {
+                imgUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + imgUrl;
+            } else {
+                imgUrl = SEAPP.PIC_BASE_URL + imgUrl;
+            }
+            imageUrlList.add(imgUrl);
+        }
+        return imageUrlList;
+    }
+
+    /**
      * 多张图片查看器
      *
      * @param position

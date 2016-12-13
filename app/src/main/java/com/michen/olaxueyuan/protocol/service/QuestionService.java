@@ -123,7 +123,6 @@ public interface QuestionService {
                     @Field("location") String location,
                     @Field("type") String type,
                     Callback<CommentSucessResult> cb);
-
     /**
      * 消息列表
      *
