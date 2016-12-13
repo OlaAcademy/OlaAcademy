@@ -43,7 +43,7 @@ public class AndroidUtil {
      */
     public static boolean hasAudioPermission() {
         PackageManager pm = SEAPP.getAppContext().getPackageManager();
-        boolean permission = (PackageManager.PERMISSION_GRANTED == pm.checkPermission("android.permission.RECORD_AUDIO", "com.tianhai.app.chatmaster"));
+        boolean permission = (PackageManager.PERMISSION_GRANTED == pm.checkPermission("android.permission.RECORD_AUDIO", "com.michen.olaxueyuan"));
         if (permission) {
             return true;
         } else {
