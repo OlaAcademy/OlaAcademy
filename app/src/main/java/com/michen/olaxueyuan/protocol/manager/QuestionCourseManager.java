@@ -105,15 +105,21 @@ public class QuestionCourseManager {
      * 发表评论
      *
      * @param userId
-     * @param postId   课程Id 或 帖子Id
+     * @param postId    课程Id 或 帖子Id
      * @param toUserId
      * @param content
      * @param location
-     * @param type     1 课程评论 2 帖子评论
+     * @param type      1 课程评论 2 帖子评论
+     * @param imageIds
+     * @param videoUrls
+     * @param videoImgs
+     * @param audioUrls
      * @param callback
      */
-    public void addComment(String userId, String postId, String toUserId, String content, String location, String type, final Callback<CommentSucessResult> callback) {
-        getQuestionService().addComment(userId, postId, toUserId, content, location, type, callback);
+    public void addComment(String userId, String postId, String toUserId, String content, String location, String type
+            , String imageIds, String videoUrls, String videoImgs, String audioUrls
+            , final Callback<CommentSucessResult> callback) {
+        getQuestionService().addComment(userId, postId, toUserId, content, location, type, imageIds, videoUrls, videoImgs, audioUrls, callback);
     }
 
     /**

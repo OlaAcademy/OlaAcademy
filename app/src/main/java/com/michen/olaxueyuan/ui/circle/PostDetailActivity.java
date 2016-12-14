@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -44,11 +45,13 @@ import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.UploadMediaManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
+import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
 import com.michen.olaxueyuan.ui.adapter.PostDetailBottomGridAdapter;
@@ -57,6 +60,7 @@ import com.snail.photo.util.NoScrollGridView;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -66,6 +70,7 @@ import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 
 public class PostDetailActivity extends SEBaseActivity implements MyAudioManager.RecordingListener, MyAudioManager.PlayingListener {
     @Bind(R.id.avatar)
@@ -137,6 +142,10 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private PostDetailModule.ResultBean resultBean;
     private PostDetailBottomGridAdapter bottomGridAdapter;
     Vibrator vibrator;
+    private String imageIds;//上传之后的图片id
+    private String videoUrls;//上传视频之后视频的url
+    private String videoImgs;//上传视频之后获取到的img
+    private String audioUrls;//上传音频
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,7 +165,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private void initView() {
         circleId = getIntent().getIntExtra("circleId", 0);
         queryCircleDetail(String.valueOf(circleId));
-        commentAdapter = new PostCommentAdapter(mContext);
+        commentAdapter = new PostCommentAdapter(this);
         listView.setAdapter(commentAdapter);
         bottomGridAdapter = new PostDetailBottomGridAdapter(this);
         bottomViewGrid.setAdapter(bottomGridAdapter);
@@ -188,7 +197,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 if (commentModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(mContext, commentModule.getMessage(), 2.0f);
                 } else {
-                    commentAdapter.upDateData(commentModule.getResult());
+                    commentAdapter.upDateData(commentModule.getResult().getCommentList());
                 }
             }
 
@@ -270,7 +279,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     }
 
     @OnClick({R.id.comment_praise, R.id.comment, R.id.share, R.id.bt_send, R.id.avatar, R.id.key_voice
-            , R.id.view_more, R.id.voice_record_img, R.id.voice_bg, R.id.voice_again})
+            , R.id.view_more, R.id.voice_bg, R.id.voice_again})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.comment_praise:
@@ -285,7 +294,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                         , resultBean.getUserAvatar(), String.valueOf(resultBean.getId()), resultBean.getContent());
                 break;
             case R.id.bt_send:
-                addComment();
+//                addComment();
+                sendAudio();
                 break;
             case R.id.avatar:
                 if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
@@ -293,20 +303,24 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 }
                 break;
             case R.id.key_voice:
-                bottomViewGrid.setVisibility(View.GONE);
-                bottomView.setVisibility(View.VISIBLE);
-                voiceRecordView.setVisibility(View.VISIBLE);
-                voiceRecordedView.setVisibility(View.GONE);
-
+                if (bottomView.getVisibility() == View.VISIBLE) {
+                    showView(View.GONE, View.GONE, View.VISIBLE, View.GONE, true);
+                } else {
+                    showView(View.GONE, View.VISIBLE, View.VISIBLE, View.GONE, true);
+                }
                 break;
             case R.id.view_more:
-                bottomViewGrid.setVisibility(View.VISIBLE);
-                break;
-            case R.id.voice_record_img:
+                if (bottomViewGrid.getVisibility() == View.VISIBLE) {
+                    showView(View.GONE, View.GONE, View.VISIBLE, View.GONE, true);
+                } else {
+                    showView(View.VISIBLE, View.GONE, View.VISIBLE, View.GONE, true);
+                }
                 break;
             case R.id.voice_bg:
+                handler.sendEmptyMessage(START_PLAY);
                 break;
             case R.id.voice_again:
+                showView(View.GONE, View.VISIBLE, View.VISIBLE, View.GONE, true);
                 break;
             default:
                 break;
@@ -324,6 +338,35 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 } else {
                     resultBean.setPraiseNumber(resultBean.getPraiseNumber() + 1);
                     commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                SEAPP.dismissAllowingStateLoss();
+                ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+            }
+        });
+    }
+
+    private void sendAudio() {
+        uploadAudioVideo(new TypedFile("application/octet-stream", new File(mVoiceFilePath)), "amr");
+    }
+
+    private void uploadAudioVideo(TypedFile typeFile, final String type) {
+        SEAPP.showCatDialog(this, "正在上传文件，请稍后...");
+        UploadMediaManager.getInstance().movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
+            @Override
+            public void success(VideoUploadResult uploadResult, Response response) {
+                SEAPP.dismissAllowingStateLoss();
+                if (uploadResult.getCode() != 1) {
+                    SVProgressHUD.showInViewWithoutIndicator(mContext, uploadResult.getMessage(), 2.0f);
+                } else {
+                    Logger.e("type==" + type);
+                    if (type.equals("amr")) {
+                        audioUrls = uploadResult.getUrl();
+                        addComment();
+                    }
                 }
             }
 
@@ -363,7 +406,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             }
             SEAPP.showCatDialog(this, "发送中请稍后...");
             QuestionCourseManager.getInstance().addComment(user.getId(), postId, toUserId
-                    , content, LocationManager.location, "2", new Callback<CommentSucessResult>() {
+                    , content, LocationManager.location, "2", imageIds, videoUrls, videoImgs, audioUrls, new Callback<CommentSucessResult>() {
                         @Override
                         public void success(CommentSucessResult commentSuccess, Response response) {
                             SEAPP.dismissAllowingStateLoss();
@@ -383,30 +426,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         }
     }
 
-    private void closeIme() {
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(etContent.getWindowToken(), 0);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        AndroidUtil.stopVibrate(vibrator);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharePlatformManager.getInstance().dismissShareView();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SEAPP.dismissAllowingStateLoss();
-    }
-
     private final int RELEASE_CANCEL = 102;//松开取消
     private final int START_RECORD = 103;//开始录音
     private final int STOP_RECORD = 104;//停止录音
@@ -422,6 +441,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private final int VOICE_BUTTON_ENABLE = 108;// voiceButton设置可点击
     private final int HIDE_TIP_SHOW = 109;// tipShowTimeText 设置为gone
     public static final int STOP_VIBRATE = 110;// 停止震动
+    private AnimationDrawable animationDrawable;
+    private boolean isPlaying = false;//是否正在播放
 
     private void initAudio() {
         audioManager = MyAudioManager.getIntance(this, this);
@@ -548,16 +569,36 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
                     if (!cancelRecord && !TextUtils.isEmpty(mVoiceFilePath) && second != 0) {//如果没有取消录音,并且路径存在
                         //Todo 录制成功
+                        showView(View.GONE, View.VISIBLE, View.GONE, View.VISIBLE, true);
+                        voiceTime.setText(second + "'");
                     }
                     break;
                 case START_PLAY://开始播放
+                    if (isPlaying) {
+                        handler.sendEmptyMessage(STOP_PLAY);
+                        return;
+                    }
+                    isPlaying = true;
                     audioManager.startPlayingVoiceByCache(mVoiceFilePath);
+                    if (animationDrawable != null) {
+                        if (animationDrawable.isRunning()) {
+                            animationDrawable.stop();
+                        }
+                        animationDrawable = null;
+                    }
+                    animationDrawable = (AnimationDrawable) voiceState.getDrawable();
+                    animationDrawable.start();
                     break;
                 case STOP_PLAY://停止播放
-                    if (audioManager != null && audioManager.getMediaPlayer() != null
-                            && audioManager.getMediaPlayer().isPlaying()) {
-                        audioManager.stopPlaying();
+                    isPlaying = false;
+                    stopPlayAudio();
+                    if (animationDrawable != null) {
+                        if (animationDrawable.isRunning()) {
+                            animationDrawable.stop();
+                        }
+                        animationDrawable = null;
                     }
+                    voiceState.setImageResource(R.drawable.left_voice_play);
                     break;
                 case VOICE_BUTTON_ENABLE:
                     voiceRecordImg.setPressed(false);
@@ -573,6 +614,13 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         }
     };
 
+    private void stopPlayAudio() {
+        if (audioManager != null && audioManager.getMediaPlayer() != null
+                && audioManager.getMediaPlayer().isPlaying()) {
+            audioManager.stopPlaying();
+        }
+    }
+
     @Override
     public void onLoadingUpdate(MediaPlayer mp, int percent, int position, String dataUrl) {
 
@@ -580,7 +628,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
     @Override
     public void onLoadingError(MediaPlayer mp, int what, int extra, int position, String dataUrl) {
-
+        handler.sendEmptyMessage(STOP_PLAY);
     }
 
     @Override
@@ -595,17 +643,17 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
     @Override
     public void onPlayingComplete(MediaPlayer mp, int duration, int position, String dataUrl) {
-
+        handler.sendEmptyMessage(STOP_PLAY);
     }
 
     @Override
     public void onStopPlaying(int position, String dataUrl) {
-
+        handler.sendEmptyMessage(STOP_PLAY);
     }
 
     @Override
     public void onPlayingFailed(Object e, int position, String dataUrl) {
-
+        handler.sendEmptyMessage(STOP_PLAY);
     }
 
     @Override
@@ -644,4 +692,47 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         mVoiceFilePath = audioManager.getRecordingFilePath();
     }
 
+    /**
+     * 显示底部视图
+     *
+     * @param bottomViewGridV    底部拍照、相册、视频、录屏
+     * @param bottomViewV        语音显示，语音录制、视频显示、录屏显示界面
+     * @param voiceRecordViewV   点击录音界面
+     * @param voiceRecordedViewV 录制完成可点击播放界面
+     * @param closeIme           是否关闭或者开启键盘
+     */
+    private void showView(int bottomViewGridV, int bottomViewV, int voiceRecordViewV, int voiceRecordedViewV, boolean closeIme) {
+        bottomViewGrid.setVisibility(bottomViewGridV);
+        bottomView.setVisibility(bottomViewV);
+        voiceRecordView.setVisibility(voiceRecordViewV);
+        voiceRecordedView.setVisibility(voiceRecordedViewV);
+        if (closeIme) {
+            etContent.clearFocus();
+            closeIme();
+        }
+    }
+
+    private void closeIme() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(etContent.getWindowToken(), 0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        AndroidUtil.stopVibrate(vibrator);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharePlatformManager.getInstance().dismissShareView();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
+    }
 }

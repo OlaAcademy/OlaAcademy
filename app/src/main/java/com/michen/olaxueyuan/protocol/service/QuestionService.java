@@ -107,11 +107,15 @@ public interface QuestionService {
      * 发表评论
      *
      * @param userId
-     * @param postId   课程Id 或 帖子Id
+     * @param postId    课程Id 或 帖子Id
      * @param toUserId
      * @param content
      * @param location
-     * @param type     1 课程评论 2 帖子评论
+     * @param type      1 课程评论 2 帖子评论
+     * @param imageIds
+     * @param videoUrls
+     * @param videoImgs
+     * @param audioUrls
      * @param cb
      */
     @FormUrlEncoded
@@ -122,7 +126,12 @@ public interface QuestionService {
                     @Field("content") String content,
                     @Field("location") String location,
                     @Field("type") String type,
+                    @Field("imageIds") String imageIds,
+                    @Field("videoUrls") String videoUrls,
+                    @Field("videoImgs") String videoImgs,
+                    @Field("audioUrls") String audioUrls,
                     Callback<CommentSucessResult> cb);
+
     /**
      * 消息列表
      *
@@ -182,6 +191,4 @@ public interface QuestionService {
             @Field("objectId") String objectId,
             @Field("type") String type,
             Callback<UnlockSubjectResult> cb);
-
-
 }
