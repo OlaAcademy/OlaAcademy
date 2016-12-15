@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
+import android.os.Environment;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -18,10 +19,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.HttpHandler;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.CommonConstant;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.MyAudioManager;
 import com.michen.olaxueyuan.common.manager.PictureUtil;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
@@ -33,6 +41,7 @@ import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,10 +54,12 @@ import de.greenrobot.event.EventBus;
  */
 public class PostCommentAdapter extends BaseAdapter implements MyAudioManager.PlayingListener {
     private Context mContext;
-    private List<CommentModule.ResultBean.CommentListBean> list = new ArrayList<>();
+    private List<CommentModule.ResultBean> list = new ArrayList<>();
     private MyAudioManager audioManager;
     private MyAudioManager.PlayingListener listener;
     private AnimationDrawable animationDrawable;
+    HttpUtils http = new HttpUtils();
+    HttpHandler handler;
 
     public PostCommentAdapter(Activity context) {
         mContext = context;
@@ -56,7 +67,7 @@ public class PostCommentAdapter extends BaseAdapter implements MyAudioManager.Pl
         listener = this;
     }
 
-    public void upDateData(List<CommentModule.ResultBean.CommentListBean> list) {
+    public void upDateData(List<CommentModule.ResultBean> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -135,7 +146,13 @@ public class PostCommentAdapter extends BaseAdapter implements MyAudioManager.Pl
         holder.voiceBg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioManager.startPlayingVoiceByCache(list.get(position).getAudioUrls(), position);
+                if (list.get(position).getVoiceState() == 2) {//在播放中的点击一次停止播放
+                    if (audioManager != null && audioManager.isPlaying()) {
+                        audioManager.stopPlaying();
+                        return;
+                    }
+                }
+                downloadAudio(list.get(position).getAudioUrls(), position);
             }
         });
         convertView.setOnClickListener(new View.OnClickListener() {
@@ -221,9 +238,71 @@ public class PostCommentAdapter extends BaseAdapter implements MyAudioManager.Pl
         this.notifyDataSetChanged();
     }
 
-    /**
-     * 停止播放语音
-     */
+    private void downloadAudio(String url, final int position) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            ToastUtil.showToastShort(mContext, R.string.need_sd);
+            return;
+        }
+        String outFileDir = CommonConstant.RECORD_PATH;
+        File fileDir = new File(outFileDir);
+        if (!fileDir.exists()) {
+            fileDir.mkdirs();
+        }
+        String[] split = url.split("/");
+        String name = split[split.length - 1];
+        final String mFilePath = outFileDir + "/" + name;
+        Logger.e("mFilePath==" + mFilePath);
+        final File file = new File(mFilePath);
+        if (file.exists()) {
+            stopVoice();
+            list.get(position).setVoiceState(2);
+            audioManager.setPlayingListener(listener);
+            audioManager.startPlayingVoiceByCache(mFilePath, position);
+            notifyDataSetChanged();
+            return;
+        }
+        handler = http.download(SEAPP.MEDIA_BASE_URL + "/" + url, mFilePath,
+                true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
+                true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
+                new RequestCallBack<File>() {
+                    @Override
+                    public void onStart() {
+                        list.get(position).setVoiceState(1);
+                        notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onLoading(long total, long current, boolean isUploading) {
+                        Logger.e("current==" + current + ";(int) (current / total * 100)==" + (int) (current / total * 100));
+                        list.get(position).setVoiceState(1);
+                        notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onSuccess(ResponseInfo<File> responseInfo) {
+                        list.get(position).setVoiceState(2);
+                        stopVoice();
+                        audioManager.setPlayingListener(listener);
+                        audioManager.startPlayingVoiceByCache(mFilePath, position);
+                        notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(HttpException error, String msg) {
+                        list.get(position).setVoiceState(0);
+                        notifyDataSetChanged();
+                    }
+                });
+    }
+
+    public void stopDownload() {
+        if (handler != null) {
+            handler.cancel();
+        }
+    }
 
     public void stopVoice() {
         if (audioManager != null && audioManager.isPlaying()) {

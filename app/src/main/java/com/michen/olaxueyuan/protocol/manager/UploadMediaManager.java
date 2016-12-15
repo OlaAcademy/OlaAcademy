@@ -6,6 +6,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
 import com.michen.olaxueyuan.protocol.service.UploadService;
 
@@ -41,7 +42,7 @@ public class UploadMediaManager {
             }
         };
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://upload.olaxueyuan.com")
+                .setEndpoint(SEAPP.MEDIA_BASE_URL)
                 .setErrorHandler(errorHandler)
                 .setConverter(new GsonConverter(gson))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
