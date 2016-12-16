@@ -61,12 +61,28 @@
         android:textSize="14sp"
         tools:text="这是原文内容。。。。。。。。。。。。。。。。。。。。。。。。。" />
 
+    <LinearLayout
+        android:id="@+id/voice_bg"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_comment_name"
+        android:layout_below="@+id/item_comment_originalContent"
+        android:background="@drawable/kd_info_chat_white_bg"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/voice_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/left_voice_play" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/item_comment_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_comment_name"
-        android:layout_below="@id/item_comment_originalContent"
+        android:layout_below="@id/voice_bg"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="10dp"
         android:ellipsize="end"
@@ -76,9 +92,7 @@
         tools:text="昨天" />
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/item_comment_time"
-        android:background="@color/BackGround" />
+        style="@style/line_horizontal"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

@@ -3,7 +3,9 @@ package com.michen.olaxueyuan.ui.circle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,23 +44,34 @@ import com.michen.olaxueyuan.common.manager.PictureUtil;
 import com.michen.olaxueyuan.common.manager.SharePlatformManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.event.VideoRefreshEvent;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.UploadMediaManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
+import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
 import com.michen.olaxueyuan.ui.adapter.PostDetailBottomGridAdapter;
+import com.michen.olaxueyuan.ui.circle.upload.Video;
+import com.michen.olaxueyuan.ui.circle.upload.VideoThumbnailUtil;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
+import com.snail.photo.util.ImageItem;
 import com.snail.photo.util.NoScrollGridView;
+import com.snail.photo.util.PicInfo;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -66,6 +80,11 @@ import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedFile;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.snail.photo.util.Bimp.tempSelectBitmap;
 
 public class PostDetailActivity extends SEBaseActivity implements MyAudioManager.RecordingListener, MyAudioManager.PlayingListener {
     @Bind(R.id.avatar)
@@ -137,6 +156,10 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private PostDetailModule.ResultBean resultBean;
     private PostDetailBottomGridAdapter bottomGridAdapter;
     Vibrator vibrator;
+    private String imageIds;//上传之后的图片id
+    private String videoUrls;//上传视频之后视频的url
+    private String videoImgs;//上传视频之后获取到的img
+    private String audioUrls;//上传音频
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,7 +179,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private void initView() {
         circleId = getIntent().getIntExtra("circleId", 0);
         queryCircleDetail(String.valueOf(circleId));
-        commentAdapter = new PostCommentAdapter(mContext);
+        commentAdapter = new PostCommentAdapter(this);
         listView.setAdapter(commentAdapter);
         bottomGridAdapter = new PostDetailBottomGridAdapter(this);
         bottomViewGrid.setAdapter(bottomGridAdapter);
@@ -172,6 +195,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     case PostDetailBottomGridAdapter.VIDEO://视频
                         break;
                     case PostDetailBottomGridAdapter.VIDEO_RECORD://录屏
+                        startActivity(new Intent(PostDetailActivity.this, MultiSelectVideoListActivity.class));
                         break;
                 }
             }
@@ -183,7 +207,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         QuestionCourseManager.getInstance().getCommentList(String.valueOf(circleId), "2", new Callback<CommentModule>() {
             @Override
             public void success(CommentModule commentModule, Response response) {
-                Logger.json(commentModule);
+//                Logger.json(commentModule);
                 SEAPP.dismissAllowingStateLoss();
                 if (commentModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(mContext, commentModule.getMessage(), 2.0f);
@@ -265,12 +289,12 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 }
             });
         } else {
-            gridview.setVisibility(View.GONE);
+            gridview.setVisibility(GONE);
         }
     }
 
     @OnClick({R.id.comment_praise, R.id.comment, R.id.share, R.id.bt_send, R.id.avatar, R.id.key_voice
-            , R.id.view_more, R.id.voice_record_img, R.id.voice_bg, R.id.voice_again})
+            , R.id.view_more, R.id.voice_bg, R.id.voice_again})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.comment_praise:
@@ -285,7 +309,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                         , resultBean.getUserAvatar(), String.valueOf(resultBean.getId()), resultBean.getContent());
                 break;
             case R.id.bt_send:
-                addComment();
+//                addComment();
+                sendAudio();
                 break;
             case R.id.avatar:
                 if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
@@ -293,20 +318,24 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 }
                 break;
             case R.id.key_voice:
-                bottomViewGrid.setVisibility(View.GONE);
-                bottomView.setVisibility(View.VISIBLE);
-                voiceRecordView.setVisibility(View.VISIBLE);
-                voiceRecordedView.setVisibility(View.GONE);
-
+                if (bottomView.getVisibility() == VISIBLE) {
+                    showView(GONE, GONE, VISIBLE, GONE, true);
+                } else {
+                    showView(GONE, VISIBLE, VISIBLE, GONE, true);
+                }
                 break;
             case R.id.view_more:
-                bottomViewGrid.setVisibility(View.VISIBLE);
-                break;
-            case R.id.voice_record_img:
+                if (bottomViewGrid.getVisibility() == VISIBLE) {
+                    showView(GONE, GONE, VISIBLE, GONE, true);
+                } else {
+                    showView(VISIBLE, GONE, VISIBLE, GONE, true);
+                }
                 break;
             case R.id.voice_bg:
+                handler.sendEmptyMessage(START_PLAY);
                 break;
             case R.id.voice_again:
+                showView(GONE, VISIBLE, VISIBLE, GONE, true);
                 break;
             default:
                 break;
@@ -324,6 +353,35 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 } else {
                     resultBean.setPraiseNumber(resultBean.getPraiseNumber() + 1);
                     commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                SEAPP.dismissAllowingStateLoss();
+                ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+            }
+        });
+    }
+
+    private void sendAudio() {
+        uploadAudioVideo(new TypedFile("application/octet-stream", new File(mVoiceFilePath)), "amr");
+    }
+
+    private void uploadAudioVideo(TypedFile typeFile, final String type) {
+        SEAPP.showCatDialog(this, "正在上传文件，请稍后...");
+        UploadMediaManager.getInstance().movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
+            @Override
+            public void success(VideoUploadResult uploadResult, Response response) {
+                SEAPP.dismissAllowingStateLoss();
+                if (uploadResult.getCode() != 1) {
+                    SVProgressHUD.showInViewWithoutIndicator(mContext, uploadResult.getMessage(), 2.0f);
+                } else {
+                    Logger.e("type==" + type);
+                    if (type.equals("amr")) {
+                        audioUrls = uploadResult.getUrl();
+                        addComment();
+                    }
                 }
             }
 
@@ -363,12 +421,13 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             }
             SEAPP.showCatDialog(this, "发送中请稍后...");
             QuestionCourseManager.getInstance().addComment(user.getId(), postId, toUserId
-                    , content, LocationManager.location, "2", new Callback<CommentSucessResult>() {
+                    , content, LocationManager.location, "2", imageIds, videoUrls, videoImgs, audioUrls, new Callback<CommentSucessResult>() {
                         @Override
                         public void success(CommentSucessResult commentSuccess, Response response) {
                             SEAPP.dismissAllowingStateLoss();
                             etContent.setText("");
                             etContent.clearComposingText();
+                            showView(GONE, GONE, GONE, GONE, true);
                             getCommentListData();
                         }
 
@@ -383,30 +442,9 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         }
     }
 
-    private void closeIme() {
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(etContent.getWindowToken(), 0);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        AndroidUtil.stopVibrate(vibrator);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharePlatformManager.getInstance().dismissShareView();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SEAPP.dismissAllowingStateLoss();
-    }
-
+    /**
+     * 音频操作
+     */
     private final int RELEASE_CANCEL = 102;//松开取消
     private final int START_RECORD = 103;//开始录音
     private final int STOP_RECORD = 104;//停止录音
@@ -419,9 +457,11 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private int second = 0;
     private MyAudioManager audioManager;
     boolean isRecording = false;
-    private final int VOICE_BUTTON_ENABLE = 108;// voiceButton设置可点击
+    private final int VOICE_BUTTON_ENABLE = 108;// voiceRecordImg设置可点击
     private final int HIDE_TIP_SHOW = 109;// tipShowTimeText 设置为gone
     public static final int STOP_VIBRATE = 110;// 停止震动
+    private AnimationDrawable animationDrawable;
+    private boolean isPlaying = false;//是否正在播放
 
     private void initAudio() {
         audioManager = MyAudioManager.getIntance(this, this);
@@ -430,7 +470,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         }
         audioManager.setRecordingListener(this);
         voiceRecordImg.setOnTouchListener(new RecordListener());
-        tipLayout.setVisibility(View.GONE);
+        tipLayout.setVisibility(GONE);
     }
 
     /**
@@ -440,12 +480,12 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
      */
     private void setScrollTips(boolean gone, int imageId, String text) {
         if (gone) {
-            tipLayout.setVisibility(View.GONE);
+            tipLayout.setVisibility(GONE);
         } else {
-            tipLayout.setVisibility(View.VISIBLE);
+            tipLayout.setVisibility(VISIBLE);
         }
         tipShowImg.setBackgroundResource(imageId);
-        tipShowTimeText.setVisibility(View.VISIBLE);
+        tipShowTimeText.setVisibility(VISIBLE);
         tipShowText.setText(text);
     }
 
@@ -530,7 +570,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                         }
                     }
                     break;
-                case TIME_SHORT_TIPS:
+                case TIME_SHORT_TIPS://录音时间太短提示
                     setScrollTips(false, R.drawable.kd_info_chat_voice_exclamation, getString(R.string.time_too_short));
                     tipShowTimeText.setVisibility(View.INVISIBLE);
                     handler.sendEmptyMessageDelayed(STOP_RECORD, 300);
@@ -547,31 +587,63 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     }
 
                     if (!cancelRecord && !TextUtils.isEmpty(mVoiceFilePath) && second != 0) {//如果没有取消录音,并且路径存在
-                        //Todo 录制成功
+                        showView(GONE, VISIBLE, GONE, VISIBLE, true);
+                        voiceTime.setText(second + "'");
                     }
                     break;
-                case START_PLAY://开始播放
+                case START_PLAY://开始播放音频
+                    if (isPlaying) {
+                        handler.sendEmptyMessage(STOP_PLAY);
+                        return;
+                    }
+                    isPlaying = true;
                     audioManager.startPlayingVoiceByCache(mVoiceFilePath);
-                    break;
-                case STOP_PLAY://停止播放
-                    if (audioManager != null && audioManager.getMediaPlayer() != null
-                            && audioManager.getMediaPlayer().isPlaying()) {
-                        audioManager.stopPlaying();
+                    if (animationDrawable != null) {
+                        if (animationDrawable.isRunning()) {
+                            animationDrawable.stop();
+                        }
+                        animationDrawable = null;
                     }
+                    animationDrawable = (AnimationDrawable) voiceState.getDrawable();
+                    animationDrawable.start();
                     break;
-                case VOICE_BUTTON_ENABLE:
+                case STOP_PLAY://停止播放音频
+                    isPlaying = false;
+                    stopPlayAudio();
+                    if (animationDrawable != null) {
+                        if (animationDrawable.isRunning()) {
+                            animationDrawable.stop();
+                        }
+                        animationDrawable = null;
+                    }
+                    voiceState.setImageResource(R.drawable.left_voice_play);
+                    break;
+                case VOICE_BUTTON_ENABLE:// voiceRecordImg设置可点击
                     voiceRecordImg.setPressed(false);
                     voiceRecordImg.setEnabled(true);
                     break;
-                case HIDE_TIP_SHOW:
+                case HIDE_TIP_SHOW:// tipShowTimeText 设置为gone
                     setScrollTips(true, R.drawable.kd_info_chat_voice_ing, getString(R.string.scroll_up_cancel_send));
                     break;
-                case STOP_VIBRATE:
+                case STOP_VIBRATE:// 停止震动
                     AndroidUtil.stopVibrate(vibrator);
+                    break;
+                case GENERATE_ING_THUMBNAIL:// 正在生成缩略图
+                    ToastUtil.showToastShort(mContext, "正在生成缩略图请稍后");
+                    break;
+                case GENERATED_THUMBNAIL:// 生成一张视频的缩略图，通知刷新
+//                    adapter.update();
                     break;
             }
         }
     };
+
+    private void stopPlayAudio() {
+        if (audioManager != null && audioManager.getMediaPlayer() != null
+                && audioManager.getMediaPlayer().isPlaying()) {
+            audioManager.stopPlaying();
+        }
+    }
 
     @Override
     public void onLoadingUpdate(MediaPlayer mp, int percent, int position, String dataUrl) {
@@ -580,7 +652,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
     @Override
     public void onLoadingError(MediaPlayer mp, int what, int extra, int position, String dataUrl) {
-
+        handler.sendEmptyMessage(STOP_PLAY);
     }
 
     @Override
@@ -595,17 +667,17 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
     @Override
     public void onPlayingComplete(MediaPlayer mp, int duration, int position, String dataUrl) {
-
+        handler.sendEmptyMessage(STOP_PLAY);
     }
 
     @Override
     public void onStopPlaying(int position, String dataUrl) {
-
+        handler.sendEmptyMessage(STOP_PLAY);
     }
 
     @Override
     public void onPlayingFailed(Object e, int position, String dataUrl) {
-
+        handler.sendEmptyMessage(STOP_PLAY);
     }
 
     @Override
@@ -644,4 +716,94 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         mVoiceFilePath = audioManager.getRecordingFilePath();
     }
 
+    /**
+     * 视频操作
+     */
+    public static final int GENERATE_ING_THUMBNAIL = 116;// 正在生成缩略图
+    public static final int GENERATED_THUMBNAIL = 117;// 生成一张视频的缩略图，通知刷新
+    public static List<Video> selectedVideoList = new ArrayList<>();
+    private ExecutorService mFixedExecutor = Executors.newFixedThreadPool(6);
+
+    public void onEventMainThread(VideoRefreshEvent videoRefreshEvent) {
+        if (videoRefreshEvent.type != 1) {
+            return;
+        }
+        ArrayList<ImageItem> localTempSelectBitmap = new ArrayList<>();
+        for (int i = 0; i < tempSelectBitmap.size(); i++) {
+            if (tempSelectBitmap.get(i).tag.type.equals("3")) {
+                localTempSelectBitmap.add(tempSelectBitmap.get(i));
+            }
+        }
+        for (int i = 0; i < localTempSelectBitmap.size(); i++) {
+            tempSelectBitmap.remove(localTempSelectBitmap.get(i));
+        }
+        if (selectedVideoList.size() > 0) {
+            handler.sendEmptyMessage(0);
+        }
+        for (final Video video : selectedVideoList) {
+            mFixedExecutor.submit(new Runnable() {
+                @Override
+                public void run() {
+                    Bitmap bitmap = VideoThumbnailUtil.getVideoThumbnail(video.getPath(), 200, 200, MediaStore.Images.Thumbnails.MICRO_KIND);
+                    video.setThumbnailBitmap(bitmap);
+                    PicInfo pi = new PicInfo();
+                    pi.type = "3";
+                    pi.isNew = true;
+                    pi.path = video.getPath();
+                    ImageItem imageItem = new ImageItem();
+                    imageItem.setBitmap(video.getThumbnailBitmap());
+                    imageItem.tag = pi;
+                    tempSelectBitmap.add(imageItem);
+                    handler.sendEmptyMessage(1);
+                }
+            });
+        }
+    }
+
+    /**
+     * 显示底部视图
+     *
+     * @param bottomViewGridV    底部拍照、相册、视频、录屏
+     * @param bottomViewV        语音显示，语音录制、视频显示、录屏显示界面
+     * @param voiceRecordViewV   点击录音界面
+     * @param voiceRecordedViewV 录制完成可点击播放界面
+     * @param closeIme           是否关闭或者开启键盘
+     */
+    private void showView(int bottomViewGridV, int bottomViewV, int voiceRecordViewV, int voiceRecordedViewV, boolean closeIme) {
+        bottomViewGrid.setVisibility(bottomViewGridV);
+        bottomView.setVisibility(bottomViewV);
+        voiceRecordView.setVisibility(voiceRecordViewV);
+        voiceRecordedView.setVisibility(voiceRecordedViewV);
+        if (closeIme) {
+            etContent.clearFocus();
+            closeIme();
+        }
+    }
+
+    private void closeIme() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(etContent.getWindowToken(), 0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        commentAdapter.stopVoice();
+        commentAdapter.stopDownload();
+        AndroidUtil.stopVibrate(vibrator);
+        selectedVideoList.clear();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharePlatformManager.getInstance().dismissShareView();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SEAPP.dismissAllowingStateLoss();
+    }
 }

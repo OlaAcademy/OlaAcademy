@@ -22,6 +22,7 @@ import java.util.List;
 public class SEAPP extends Application {
     private static Context mAppContext;
     public static final String PIC_BASE_URL = "http://upload.olaxueyuan.com/SDpic/common/picSelect?gid=";
+    public static final String MEDIA_BASE_URL = "http://upload.olaxueyuan.com";
     private String versionNames;
     private static CatLoadingView catLoadingView;
 
