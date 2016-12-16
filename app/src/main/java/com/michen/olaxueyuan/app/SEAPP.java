@@ -34,8 +34,8 @@ public class SEAPP extends Application {
         SEThemer.getInstance().setActionBarBackgroundColor(getResources().getColor(R.color.ActionBarBackgroundColor));
         SEThemer.getInstance().setActionBarForegroundColor(getResources().getColor(R.color.ActionBarForegroundColor));
 
-        final String API_BASE_URL = "http://api.olaxueyuan.com";
-//        final String API_BASE_URL = "http://123.59.129.137:8080";
+//        final String API_BASE_URL = "http://api.olaxueyuan.com";
+        final String API_BASE_URL = "http://123.59.129.137:8080";
         try {
             versionNames = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (Exception e) {
@@ -84,12 +84,31 @@ public class SEAPP extends Application {
         return catLoadingView;
     }
 
+    public static CatLoadingView getCatLoadingView(String title) {
+        if (catLoadingView != null) {
+            catLoadingView.dismissAllowingStateLoss();
+        }
+        catLoadingView = null;
+        catLoadingView = new CatLoadingView();
+        catLoadingView.setText(title);
+        catLoadingViewList.add(catLoadingView);
+        return catLoadingView;
+    }
+
     public static void showCatDialog(FragmentActivity activity) {
         getCatLoadingView().show(activity.getSupportFragmentManager(), "CatLoadingView");
     }
 
     public static void showCatDialog(Fragment fragment) {
         getCatLoadingView().show(fragment.getChildFragmentManager(), "CatLoadingView");
+    }
+
+    public static void showCatDialog(FragmentActivity activity, String title) {
+        getCatLoadingView(title).show(activity.getSupportFragmentManager(), "CatLoadingView");
+    }
+
+    public static void showCatDialog(Fragment fragment, String title) {
+        getCatLoadingView(title).show(fragment.getChildFragmentManager(), "CatLoadingView");
     }
 
     public static void dismissAllowingStateLoss() {
