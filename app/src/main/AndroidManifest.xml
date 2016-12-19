@@ -535,6 +535,7 @@
             android:name=".ui.circle.MultiSelectVideoListActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.circle.ReviewMultimediaActivity"></activity>
     </application>
 
 </manifest>

@@ -58,6 +58,7 @@ import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
 import com.michen.olaxueyuan.ui.adapter.PostDetailBottomGridAdapter;
+import com.michen.olaxueyuan.ui.adapter.PostDetailVideoGridAdapter;
 import com.michen.olaxueyuan.ui.circle.upload.Video;
 import com.michen.olaxueyuan.ui.circle.upload.VideoThumbnailUtil;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
@@ -149,13 +150,16 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     LinearLayout tipLayout;
     @Bind(R.id.bottom_view)
     FrameLayout bottomView;
+    @Bind(R.id.bottom_video_img_grid)
+    NoScrollGridView bottomVideoImgGrid;
 
     private Context mContext;
     private CommentModule.ResultBean commentResultBean;
-    private int circleId;
     private PostDetailModule.ResultBean resultBean;
     private PostDetailBottomGridAdapter bottomGridAdapter;
+    private PostDetailVideoGridAdapter videoGridAdapter;
     Vibrator vibrator;
+    private int circleId;
     private String imageIds;//上传之后的图片id
     private String videoUrls;//上传视频之后视频的url
     private String videoImgs;//上传视频之后获取到的img
@@ -181,6 +185,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         queryCircleDetail(String.valueOf(circleId));
         commentAdapter = new PostCommentAdapter(this);
         listView.setAdapter(commentAdapter);
+        videoGridAdapter = new PostDetailVideoGridAdapter(this);
+        bottomVideoImgGrid.setAdapter(videoGridAdapter);
         bottomGridAdapter = new PostDetailBottomGridAdapter(this);
         bottomViewGrid.setAdapter(bottomGridAdapter);
         bottomViewGrid.setSelector(new ColorDrawable(Color.TRANSPARENT));//取消GridView中Item选中时默认的背景色
@@ -319,23 +325,23 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 break;
             case R.id.key_voice:
                 if (bottomView.getVisibility() == VISIBLE) {
-                    showView(GONE, GONE, VISIBLE, GONE, true);
+                    showView(GONE, GONE, VISIBLE, GONE, GONE, true);
                 } else {
-                    showView(GONE, VISIBLE, VISIBLE, GONE, true);
+                    showView(GONE, VISIBLE, VISIBLE, GONE, GONE, true);
                 }
                 break;
             case R.id.view_more:
                 if (bottomViewGrid.getVisibility() == VISIBLE) {
-                    showView(GONE, GONE, VISIBLE, GONE, true);
+                    showView(GONE, GONE, VISIBLE, GONE, GONE, true);
                 } else {
-                    showView(VISIBLE, GONE, VISIBLE, GONE, true);
+                    showView(VISIBLE, GONE, VISIBLE, GONE, GONE, true);
                 }
                 break;
             case R.id.voice_bg:
                 handler.sendEmptyMessage(START_PLAY);
                 break;
             case R.id.voice_again:
-                showView(GONE, VISIBLE, VISIBLE, GONE, true);
+                showView(GONE, VISIBLE, VISIBLE, GONE, GONE, true);
                 break;
             default:
                 break;
@@ -427,7 +433,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                             SEAPP.dismissAllowingStateLoss();
                             etContent.setText("");
                             etContent.clearComposingText();
-                            showView(GONE, GONE, GONE, GONE, true);
+                            showView(GONE, GONE, GONE, GONE, GONE, true);
                             getCommentListData();
                         }
 
@@ -587,7 +593,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     }
 
                     if (!cancelRecord && !TextUtils.isEmpty(mVoiceFilePath) && second != 0) {//如果没有取消录音,并且路径存在
-                        showView(GONE, VISIBLE, GONE, VISIBLE, true);
+                        showView(GONE, VISIBLE, GONE, VISIBLE, GONE, true);
                         voiceTime.setText(second + "'");
                     }
                     break;
@@ -632,7 +638,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     ToastUtil.showToastShort(mContext, "正在生成缩略图请稍后");
                     break;
                 case GENERATED_THUMBNAIL:// 生成一张视频的缩略图，通知刷新
-//                    adapter.update();
+                    showView(GONE, VISIBLE, GONE, GONE, VISIBLE, true);
+                    videoGridAdapter.update();
                     break;
             }
         }
@@ -738,7 +745,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             tempSelectBitmap.remove(localTempSelectBitmap.get(i));
         }
         if (selectedVideoList.size() > 0) {
-            handler.sendEmptyMessage(0);
+            handler.sendEmptyMessage(GENERATE_ING_THUMBNAIL);
+            showView(GONE, VISIBLE, GONE, GONE, VISIBLE, true);
         }
         for (final Video video : selectedVideoList) {
             mFixedExecutor.submit(new Runnable() {
@@ -754,7 +762,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     imageItem.setBitmap(video.getThumbnailBitmap());
                     imageItem.tag = pi;
                     tempSelectBitmap.add(imageItem);
-                    handler.sendEmptyMessage(1);
+                    handler.sendEmptyMessage(GENERATED_THUMBNAIL);
                 }
             });
         }
@@ -769,11 +777,12 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
      * @param voiceRecordedViewV 录制完成可点击播放界面
      * @param closeIme           是否关闭或者开启键盘
      */
-    private void showView(int bottomViewGridV, int bottomViewV, int voiceRecordViewV, int voiceRecordedViewV, boolean closeIme) {
+    private void showView(int bottomViewGridV, int bottomViewV, int voiceRecordViewV, int voiceRecordedViewV, int bottomVideoImgGridV, boolean closeIme) {
         bottomViewGrid.setVisibility(bottomViewGridV);
         bottomView.setVisibility(bottomViewV);
         voiceRecordView.setVisibility(voiceRecordViewV);
         voiceRecordedView.setVisibility(voiceRecordedViewV);
+        bottomVideoImgGrid.setVisibility(bottomVideoImgGridV);
         if (closeIme) {
             etContent.clearFocus();
             closeIme();

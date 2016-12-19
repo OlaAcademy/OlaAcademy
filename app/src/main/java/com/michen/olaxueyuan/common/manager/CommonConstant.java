@@ -20,4 +20,5 @@ public class CommonConstant {
     public static final String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
 
     public static String RECORD_PATH = ROOTPATH + "/.audio";
+    public static final String EXTRA_INDEX_REVIEW = "extra_index_review";
 }
