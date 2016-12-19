@@ -752,7 +752,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             mFixedExecutor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    Bitmap bitmap = VideoThumbnailUtil.getVideoThumbnail(video.getPath(), 200, 200, MediaStore.Images.Thumbnails.MICRO_KIND);
+                    Bitmap bitmap = VideoThumbnailUtil.getVideoThumbnail(video.getPath(), 400, 400, MediaStore.Images.Thumbnails.MICRO_KIND);
                     video.setThumbnailBitmap(bitmap);
                     PicInfo pi = new PicInfo();
                     pi.type = "3";

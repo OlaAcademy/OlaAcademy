@@ -7,6 +7,7 @@ import com.michen.olaxueyuan.protocol.result.MCQuestionListResult;
 import com.michen.olaxueyuan.protocol.result.MessageListResult;
 import com.michen.olaxueyuan.protocol.result.MessageRecordResult;
 import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
+import com.michen.olaxueyuan.protocol.result.MessageUnreadTotalCountResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
@@ -175,5 +176,15 @@ public class QuestionCourseManager {
      */
     public void unlockSubject(String userId, String objectId, String type, Callback<UnlockSubjectResult> callback) {
         getQuestionService().unlockSubject(userId, objectId, type, callback);
+    }
+
+    /**
+     * 消息列表(新)
+     *
+     * @param userId
+     * @param cb
+     */
+    public void getUnreadTotalCount(String userId, Callback<MessageUnreadTotalCountResult> callback) {
+        getQuestionService().getUnreadTotalCount(userId, callback);
     }
 }

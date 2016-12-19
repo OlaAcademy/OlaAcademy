@@ -7,6 +7,7 @@ import com.michen.olaxueyuan.protocol.result.MCQuestionListResult;
 import com.michen.olaxueyuan.protocol.result.MessageListResult;
 import com.michen.olaxueyuan.protocol.result.MessageRecordResult;
 import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
+import com.michen.olaxueyuan.protocol.result.MessageUnreadTotalCountResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
@@ -191,4 +192,15 @@ public interface QuestionService {
             @Field("objectId") String objectId,
             @Field("type") String type,
             Callback<UnlockSubjectResult> cb);
+
+    /**
+     * 消息列表(新)
+     *
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/message/getUnreadTotalCount")
+    void getUnreadTotalCount(@Field("userId") String userId,
+                             Callback<MessageUnreadTotalCountResult> cb);
 }

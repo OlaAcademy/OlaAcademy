@@ -241,7 +241,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                     startActivity(loginIntent);
                     return;
                 }
-                startActivity(new Intent(getActivity(), MessageActivity.class));
+//                startActivity(new Intent(getActivity(), MessageActivity.class));
+                startActivity(new Intent(getActivity(), InformationListActivity.class));
                 break;
             case R.id.maths_layout:
                 changeTab(true, false, false, false, true, 0);

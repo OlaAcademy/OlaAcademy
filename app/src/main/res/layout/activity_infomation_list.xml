@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/answer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/selector_white_item_bg"
+        android:paddingLeft="@dimen/dp_15">
+
+        <ImageView
+            android:id="@+id/answer_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/info_answer_icon" />
+
+        <TextView
+            android:id="@+id/answer_unread_dot"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/ret_dot_shape"
+            android:gravity="center"
+            android:padding="@dimen/dp_3"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:id="@+id/answer_title"
+            style="@style/title_text_15dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/answer_icon"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_toRightOf="@+id/answer_icon"
+            android:text="评论" />
+
+        <TextView
+            android:id="@+id/answer_content"
+            style="@style/normal_text_14dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/answer_icon"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_toRightOf="@+id/answer_icon"
+            android:text="0条待处理评论" />
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/praise_layout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/selector_white_item_bg"
+        android:paddingLeft="@dimen/dp_15">
+
+        <ImageView
+            android:id="@+id/praise_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/info_praise_icon" />
+
+        <TextView
+            android:id="@+id/praise_unread_dot"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/ret_dot_shape"
+            android:gravity="center"
+            android:padding="@dimen/dp_3"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:id="@+id/praise_title"
+            style="@style/title_text_15dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/praise_icon"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_toRightOf="@+id/praise_icon"
+            android:text="赞" />
+
+        <TextView
+            android:id="@+id/praise_content"
+            style="@style/normal_text_14dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/praise_icon"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_toRightOf="@+id/praise_icon"
+            android:text="0个赞" />
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_alignParentBottom="true" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/system_layout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/selector_white_item_bg"
+        android:paddingLeft="@dimen/dp_15">
+
+        <ImageView
+            android:id="@+id/system_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/info_system_icon" />
+
+        <TextView
+            android:id="@+id/system_unread_dot"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/ret_dot_shape"
+            android:gravity="center"
+            android:padding="@dimen/dp_3"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:id="@+id/system_title"
+            style="@style/title_text_15dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/system_icon"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_toRightOf="@+id/system_icon"
+            android:text="系统消息" />
+
+        <TextView
+            android:id="@+id/system_content"
+            style="@style/normal_text_14dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/system_icon"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_toRightOf="@+id/system_icon"
+            android:text="0条待处理系统消息" />
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+</LinearLayout>
