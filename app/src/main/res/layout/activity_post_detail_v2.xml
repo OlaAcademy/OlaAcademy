@@ -241,8 +241,8 @@
                     android:background="@color/white_light"
                     android:gravity="center"
                     android:numColumns="4"
-                    android:paddingBottom="20dp"
                     android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
                     android:paddingRight="20dp"
                     android:visibility="gone" />
             </FrameLayout>

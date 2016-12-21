@@ -9,6 +9,7 @@ import com.google.gson.internal.bind.DateTypeAdapter;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
 import com.michen.olaxueyuan.protocol.service.UploadService;
+import com.snail.photo.upload.UploadResult;
 
 import java.util.Date;
 
@@ -72,4 +73,17 @@ public class UploadMediaManager {
         getUploadService().movieUpload(movData, movType, cb);
     }
 
+    /**
+     * 上传图片
+     *
+     * @param imgData
+     * @param imgAngle
+     * @param width
+     * @param height
+     * @param picType
+     * @param callback
+     */
+    public void uploadImage(TypedFile imgData, int imgAngle, int width, int height, String picType, Callback<UploadResult> callback) {
+        getUploadService().uploadImage(imgData, imgAngle, width, height, picType, callback);
+    }
 }

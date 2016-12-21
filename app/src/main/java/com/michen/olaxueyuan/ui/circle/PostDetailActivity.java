@@ -62,6 +62,8 @@ import com.michen.olaxueyuan.ui.adapter.PostDetailVideoGridAdapter;
 import com.michen.olaxueyuan.ui.circle.upload.Video;
 import com.michen.olaxueyuan.ui.circle.upload.VideoThumbnailUtil;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
+import com.snail.photo.upload.UploadResult;
+import com.snail.photo.util.Bimp;
 import com.snail.photo.util.ImageItem;
 import com.snail.photo.util.NoScrollGridView;
 import com.snail.photo.util.PicInfo;
@@ -164,6 +166,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private String videoUrls;//上传视频之后视频的url
     private String videoImgs;//上传视频之后获取到的img
     private String audioUrls;//上传音频
+    private int uploadNum = 0;//图片张数
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -374,6 +377,18 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         uploadAudioVideo(new TypedFile("application/octet-stream", new File(mVoiceFilePath)), "amr");
     }
 
+    private void sendVideo() {
+        for (int i = 0; i < tempSelectBitmap.size(); i++) {
+            if (tempSelectBitmap.get(i).tag.type.equals("3")) {
+                String videoPath = tempSelectBitmap.get(0).tag.path;
+                uploadAudioVideo(new TypedFile("application/octet-stream", new File(videoPath)), "mp4");
+                String thumbnailPath = tempSelectBitmap.get(0).getThumbnailPath();
+                int degree = com.snail.photo.util.PictureUtil.readPictureDegree(thumbnailPath);
+                uploadImagesByExecutors(new TypedFile("application/octet-stream", new File(thumbnailPath)), degree, 1);
+            }
+        }
+    }
+
     private void uploadAudioVideo(TypedFile typeFile, final String type) {
         SEAPP.showCatDialog(this, "正在上传文件，请稍后...");
         UploadMediaManager.getInstance().movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
@@ -387,6 +402,9 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     if (type.equals("amr")) {
                         audioUrls = uploadResult.getUrl();
                         addComment();
+                    } else if (type.equals("mp4")) {
+                        videoUrls = uploadResult.getUrl();
+                        handler.sendEmptyMessage(VIDEO_SEND_SUCCESS);
                     }
                 }
             }
@@ -399,6 +417,64 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         });
     }
 
+    private ExecutorService service = Executors.newFixedThreadPool(5);
+
+    private void uploadImagesByExecutors(final TypedFile photo, final int angle, final int type) {
+        service.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                UploadMediaManager.getInstance().uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
+                    @Override
+                    public void success(UploadResult result, Response response) {
+                        uploadNum++;
+                        if (result.code != 1) {
+                            SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, result.message, 2.0f);
+                            return;
+                        }
+                        videoImgs = videoImgs + result.imgGid + ",";
+                        switch (type) {
+                            case 1:
+                                handler.sendEmptyMessage(VIDEO_SEND_SUCCESS);
+                                break;
+                            case 2:
+                                int imageNum = 0;
+                                for (int i = 0; i < tempSelectBitmap.size(); i++) {
+                                    if (tempSelectBitmap.get(i).tag.type.equals("1")) {
+                                        imageNum++;
+                                    }
+                                }
+                                if (uploadNum == imageNum) {
+                                    //Todo 普通图片上传成功
+                                }
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        uploadNum++;
+                        if (uploadNum == Bimp.tempSelectBitmap.size()) {
+                            Bimp.tempSelectBitmap.clear();
+                            if (videoImgs.equals("")) {
+                                SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, "图片上传失败", 2.0f);
+                            } else {
+                                //Todo 图片上传失败
+                                switch (type) {
+                                    case 1:
+                                        //Todo 视频只有一个，视频的图片上传成功
+                                        break;
+                                    case 2:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+        });
+    }
 
     /**
      * {@link PostCommentAdapter#getView(int, View, ViewGroup)}
@@ -635,11 +711,19 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     AndroidUtil.stopVibrate(vibrator);
                     break;
                 case GENERATE_ING_THUMBNAIL:// 正在生成缩略图
-                    ToastUtil.showToastShort(mContext, "正在生成缩略图请稍后");
+                    SEAPP.showCatDialog(PostDetailActivity.this, "正在生成缩略图...");
                     break;
                 case GENERATED_THUMBNAIL:// 生成一张视频的缩略图，通知刷新
+                    SEAPP.dismissAllowingStateLoss();
                     showView(GONE, VISIBLE, GONE, GONE, VISIBLE, true);
                     videoGridAdapter.update();
+                    break;
+                case VIDEO_SEND_SUCCESS:
+                    if (!TextUtils.isEmpty(videoUrls) && !TextUtils.isEmpty(videoUrls)) {
+
+                    }
+                    break;
+                case IMAGE_SEND_SUCCESS:
                     break;
             }
         }
@@ -728,6 +812,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
      */
     public static final int GENERATE_ING_THUMBNAIL = 116;// 正在生成缩略图
     public static final int GENERATED_THUMBNAIL = 117;// 生成一张视频的缩略图，通知刷新
+    public static final int VIDEO_SEND_SUCCESS = 118;// 视频上传成功
+    public static final int IMAGE_SEND_SUCCESS = 119;// 图片上传成功
     public static List<Video> selectedVideoList = new ArrayList<>();
     private ExecutorService mFixedExecutor = Executors.newFixedThreadPool(6);
 
@@ -795,18 +881,12 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        commentAdapter.stopVoice();
-        commentAdapter.stopDownload();
-        AndroidUtil.stopVibrate(vibrator);
-        selectedVideoList.clear();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
+        if (tempSelectBitmap.size() == 0) {
+            videoGridAdapter.update();
+            showView(GONE, GONE, GONE, GONE, GONE, true);
+        }
         SharePlatformManager.getInstance().dismissShareView();
     }
 
@@ -814,5 +894,15 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     protected void onPause() {
         super.onPause();
         SEAPP.dismissAllowingStateLoss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        commentAdapter.stopVoice();
+        commentAdapter.stopDownload();
+        AndroidUtil.stopVibrate(vibrator);
+        selectedVideoList.clear();
     }
 }
