@@ -12,6 +12,7 @@ import com.michen.olaxueyuan.protocol.result.MessageUnreadTotalCountResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
+import com.michen.olaxueyuan.protocol.result.PraiseListResult;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.UnlockSubjectResult;
 
@@ -226,4 +227,20 @@ public interface QuestionService {
             @Field("pageSize") String pageSize,
             @Field("type") String type,
             Callback<CircleMessageListResult> cb);
+
+    /**
+     * 点赞列表
+     *
+     * @param userId   (必填)
+     * @param praiseId
+     * @param pageSize
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/circle/getPraiseList")
+    void getPraiseList(
+            @Field("userId") String userId,
+            @Field("praiseId") String praiseId,
+            @Field("pageSize") String pageSize,
+            Callback<PraiseListResult> cb);
 }

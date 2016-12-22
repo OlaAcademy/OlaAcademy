@@ -74,6 +74,13 @@ public class CommentListAdapter extends BaseAdapter {
             holder.time.setText(list.get(position).getTime().substring(0, 10));
         }
         holder.content.setText(list.get(position).getContent());
+        holder.praiseNum.setText(list.get(position).getPraiseNumber() + "");
+        holder.replyNum.setText("回复   " + list.get(position).getPraiseNumber());
+        if (list.get(position).getIsRead() == 1) {
+            holder.bulletIV.setVisibility(View.GONE);
+        } else {
+            holder.bulletIV.setVisibility(View.VISIBLE);
+        }
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,12 +95,18 @@ public class CommentListAdapter extends BaseAdapter {
         RoundRectImageView avatar;
         @Bind(R.id.title)
         TextView title;
-        @Bind(R.id.time)
-        TextView time;
         @Bind(R.id.content)
         TextView content;
+        @Bind(R.id.praise_icon)
+        ImageView praiseIcon;
+        @Bind(R.id.praise_num)
+        TextView praiseNum;
+        @Bind(R.id.reply_num)
+        TextView replyNum;
         @Bind(R.id.bulletIV)
         ImageView bulletIV;
+        @Bind(R.id.time)
+        TextView time;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

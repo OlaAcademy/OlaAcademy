@@ -114,6 +114,7 @@ public class InformationListActivity extends SEBaseActivity {
                 startActivity(new Intent(this, CommentListActivity.class));
                 break;
             case R.id.praise_layout:
+                startActivity(new Intent(this, PraiseListActivity.class));
                 break;
             case R.id.system_layout:
                 startActivity(new Intent(this, MessageActivity.class));

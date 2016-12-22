@@ -12,6 +12,7 @@ import com.michen.olaxueyuan.protocol.result.MessageUnreadTotalCountResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.OLaCircleOldModule;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
+import com.michen.olaxueyuan.protocol.result.PraiseListResult;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.UnlockSubjectResult;
 import com.michen.olaxueyuan.protocol.service.QuestionService;
@@ -200,5 +201,17 @@ public class QuestionCourseManager {
      */
     public void getCircleMessageList(String userId, String commentId, String pageSize, String type, Callback<CircleMessageListResult> callback) {
         getQuestionService().getCircleMessageList(userId, commentId, pageSize, type, callback);
+    }
+
+    /**
+     * 点赞列表
+     *
+     * @param userId   (必填)
+     * @param praiseId
+     * @param pageSize
+     * @param cb
+     */
+    public void getPraiseList(String userId, String praiseId, String pageSize, Callback<PraiseListResult> callback) {
+        getQuestionService().getPraiseList(userId, praiseId, pageSize, callback);
     }
 }

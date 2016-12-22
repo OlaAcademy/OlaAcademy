@@ -8,9 +8,9 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
-import com.michen.olaxueyuan.protocol.result.CircleMessageListResult;
+import com.michen.olaxueyuan.protocol.result.PraiseListResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
-import com.michen.olaxueyuan.ui.adapter.CommentListAdapter;
+import com.michen.olaxueyuan.ui.adapter.PraiseListAdapter;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -24,15 +24,14 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CommentListActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener2 {
+public class PraiseListActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener2 {
 
     @Bind(R.id.listview)
     PullToRefreshListView listview;
+    private String praiseId;
     private static final String pageSize = "20";
-    private String commentId;
-    private String type = "2";//发帖的固定传2
-    private CommentListAdapter adapter;
-    private List<CircleMessageListResult.ResultBean> list = new ArrayList<>();
+    private List<PraiseListResult.ResultBean> list = new ArrayList<>();
+    private PraiseListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,29 +42,37 @@ public class CommentListActivity extends SEBaseActivity implements PullToRefresh
         fetchData();
     }
 
+    private void initView() {
+        setTitleText("赞了");
+        listview.setMode(PullToRefreshBase.Mode.BOTH);
+        listview.setOnRefreshListener(this);
+        adapter = new PraiseListAdapter(this);
+        listview.setAdapter(adapter);
+    }
+
     private void fetchData() {
         SEAPP.showCatDialog(this);
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
-        QuestionCourseManager.getInstance().getCircleMessageList(userId, commentId, pageSize, type, new Callback<CircleMessageListResult>() {
+        QuestionCourseManager.getInstance().getPraiseList(userId, praiseId, pageSize, new Callback<PraiseListResult>() {
             @Override
-            public void success(CircleMessageListResult circleMessageListResult, Response response) {
-                if (!CommentListActivity.this.isFinishing()) {
+            public void success(PraiseListResult praiseListResult, Response response) {
+                if (!PraiseListActivity.this.isFinishing()) {
                     SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
-                    if (circleMessageListResult.getApicode() != 10000) {
-                        SVProgressHUD.showInViewWithoutIndicator(mContext, circleMessageListResult.getMessage(), 2.0f);
+                    if (praiseListResult.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(mContext, praiseListResult.getMessage(), 2.0f);
                     } else {
-                        if (circleMessageListResult.getResult().size() == 0) {
+                        if (praiseListResult.getResult().size() == 0) {
                             ToastUtil.showToastShort(mContext, R.string.to_end);
                             return;
                         }
-                        if (TextUtils.isEmpty(commentId)) {
+                        if (TextUtils.isEmpty(praiseId)) {
                             list.clear();
                         }
-                        list.addAll(circleMessageListResult.getResult());
+                        list.addAll(praiseListResult.getResult());
                         adapter.updateData(list);
                     }
                 }
@@ -73,7 +80,7 @@ public class CommentListActivity extends SEBaseActivity implements PullToRefresh
 
             @Override
             public void failure(RetrofitError error) {
-                if (!CommentListActivity.this.isFinishing()) {
+                if (!PraiseListActivity.this.isFinishing()) {
                     SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
@@ -82,34 +89,16 @@ public class CommentListActivity extends SEBaseActivity implements PullToRefresh
         });
     }
 
-    private void initView() {
-        setTitleText("评论列表");
-        listview.setMode(PullToRefreshBase.Mode.BOTH);
-        listview.setOnRefreshListener(this);
-        adapter = new CommentListAdapter(this);
-        listview.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     @Override
     public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-        commentId = "";
+        praiseId = "";
         fetchData();
     }
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase refreshView) {
         if (list.size() > 0) {
-            commentId = list.get(list.size() - 1).getCommentId() + "";
+            praiseId = list.get(list.size() - 1).getPraiseId() + "";
             fetchData();
         }
     }

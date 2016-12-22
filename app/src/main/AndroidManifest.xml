@@ -543,7 +543,8 @@
             android:name=".ui.question.InformationListActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.question.CommentListActivity"></activity>
+        <activity android:name=".ui.question.CommentListActivity" />
+        <activity android:name=".ui.question.PraiseListActivity"></activity>
     </application>
 
 </manifest>
