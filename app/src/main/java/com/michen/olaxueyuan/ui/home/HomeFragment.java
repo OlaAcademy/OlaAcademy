@@ -19,6 +19,7 @@ import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
@@ -115,7 +116,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
 
     private void fetchData() {
         SEAPP.showCatDialog(this);
-        HomeListManager.getInstance().getHomeListService().getHomeList(new Callback<HomeModule>() {
+        HomeListManager.getInstance().fetchHomeCourseList(SEUserManager.getInstance().getUserId(), new Callback<HomeModule>() {
             @Override
             public void success(HomeModule result, Response response) {
 //                Logger.json(result);

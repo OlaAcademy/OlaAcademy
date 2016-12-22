@@ -50,8 +50,8 @@ public class MCCircleManager {
      * @param circleId
      * @param callback
      */
-    public void praiseCirclePost(String circleId, Callback<PraiseCirclePostResult> callback) {
-        getCircleService().praiseCirclePost(circleId, callback);
+    public void praiseCirclePost(String userId,String circleId, Callback<PraiseCirclePostResult> callback) {
+        getCircleService().praiseCirclePost(userId,circleId, callback);
     }
 
     /**

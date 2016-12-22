@@ -78,6 +78,14 @@ public class SEUserManager {
         return uploadResult;
     }
 
+    public String getUserId() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
+        return userId;
+    }
+
     public void logout() {
         SEAuthManager.getInstance().clearAccessUser();
         try {

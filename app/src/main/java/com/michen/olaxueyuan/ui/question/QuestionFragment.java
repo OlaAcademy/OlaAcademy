@@ -20,6 +20,7 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.MessageReadEvent;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -236,13 +237,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
         switch (view.getId()) {
             case R.id.right_response:
             case R.id.red_dot:
-                if (!SEAuthManager.getInstance().isAuthenticated()) {
-                    Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
-                    startActivity(loginIntent);
-                    return;
-                }
-//                startActivity(new Intent(getActivity(), MessageActivity.class));
-                startActivity(new Intent(getActivity(), InformationListActivity.class));
+//                Utils.jumpLoginOrNot(getActivity(),MessageActivity.class);
+                Utils.jumpLoginOrNot(getActivity(),InformationListActivity.class);
                 break;
             case R.id.maths_layout:
                 changeTab(true, false, false, false, true, 0);

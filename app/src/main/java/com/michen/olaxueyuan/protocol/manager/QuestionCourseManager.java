@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.protocol.manager;
 
+import com.michen.olaxueyuan.protocol.result.CircleMessageListResult;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
@@ -87,8 +88,8 @@ public class QuestionCourseManager {
      * @param pageSize
      * @param callback
      */
-    public void getCircleList(String circleId, String pageSize, String type, final Callback<OLaCircleModule> callback) {
-        getQuestionService().getCircleList(circleId, pageSize, type, callback);
+    public void getCircleList(String userId, String circleId, String pageSize, String type, final Callback<OLaCircleModule> callback) {
+        getQuestionService().getCircleList(userId, circleId, pageSize, type, callback);
     }
 
     /**
@@ -162,8 +163,8 @@ public class QuestionCourseManager {
      * @param circleId
      * @param callback
      */
-    public void queryCircleDetail(String circleId, Callback<PostDetailModule> callback) {
-        getQuestionService().queryCircleDetail(circleId, callback);
+    public void queryCircleDetail(String userId, String circleId, Callback<PostDetailModule> callback) {
+        getQuestionService().queryCircleDetail(userId, circleId, callback);
     }
 
     /**
@@ -186,5 +187,18 @@ public class QuestionCourseManager {
      */
     public void getUnreadTotalCount(String userId, Callback<MessageUnreadTotalCountResult> callback) {
         getQuestionService().getUnreadTotalCount(userId, callback);
+    }
+
+    /**
+     * 评论消息列表
+     *
+     * @param userId    (必填)
+     * @param commentId 最后一条ID，用户翻页
+     * @param pageSize
+     * @param type      1 观看记录 2 发帖 ，固定传2
+     * @param callback
+     */
+    public void getCircleMessageList(String userId, String commentId, String pageSize, String type, Callback<CircleMessageListResult> callback) {
+        getQuestionService().getCircleMessageList(userId, commentId, pageSize, type, callback);
     }
 }

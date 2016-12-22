@@ -19,8 +19,11 @@ public interface HomeListService {
      *
      * @param cb
      */
+    @FormUrlEncoded
     @POST("/ola/home/getHomeList")
-    void getHomeList(Callback<HomeModule> cb);
+    void getHomeList(
+            @Field("userId") String userId,
+            Callback<HomeModule> cb);
 
     /**
      * 资料列表

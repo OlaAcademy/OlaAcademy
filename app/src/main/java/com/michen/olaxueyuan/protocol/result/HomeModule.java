@@ -131,7 +131,7 @@ public class HomeModule implements Serializable {
         public static class BannerListBean implements Serializable{
             private int id;
             private String name;
-            private int objectId;
+            private String objectId;
             private String pic;
             private int type;
             private String url;
@@ -152,11 +152,11 @@ public class HomeModule implements Serializable {
                 this.name = name;
             }
 
-            public int getObjectId() {
+            public String getObjectId() {
                 return objectId;
             }
 
-            public void setObjectId(int objectId) {
+            public void setObjectId(String objectId) {
                 this.objectId = objectId;
             }
 

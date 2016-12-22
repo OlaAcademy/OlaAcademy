@@ -25,7 +25,7 @@ public class MsgActivity extends SEBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_msg);
+        setContentView(R.layout.common_refresh_listview);
         setTitleText("消息中心");
 
         this.setDataRetriver(new SEDataRetriever() {
@@ -48,7 +48,7 @@ public class MsgActivity extends SEBaseActivity {
             }
         });
 
-        msgListView = (PullToRefreshListView) findViewById(R.id.msgListView);
+        msgListView = (PullToRefreshListView) findViewById(R.id.listview);
         msgListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {

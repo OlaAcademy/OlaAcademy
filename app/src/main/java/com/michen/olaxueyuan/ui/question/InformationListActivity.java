@@ -60,6 +60,9 @@ public class InformationListActivity extends SEBaseActivity {
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
+        } else {
+            ToastUtil.showToastShort(this, "您还没有登录，请先登录");
+            return;
         }
         QuestionCourseManager.getInstance().getUnreadTotalCount(userId, new Callback<MessageUnreadTotalCountResult>() {
             @Override
@@ -108,6 +111,7 @@ public class InformationListActivity extends SEBaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.answer_layout:
+                startActivity(new Intent(this, CommentListActivity.class));
                 break;
             case R.id.praise_layout:
                 break;

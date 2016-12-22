@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.protocol.service;
 
+import com.michen.olaxueyuan.protocol.result.CircleMessageListResult;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
@@ -86,10 +87,12 @@ public interface QuestionService {
      */
     @FormUrlEncoded
     @POST("/ola/circle/getCircleList")
-    void getCircleList(@Field("circleId") String circleId,
-                       @Field("pageSize") String pageSize,
-                       @Field("type") String type,
-                       Callback<OLaCircleModule> cb);
+    void getCircleList(
+            @Field("userId") String userId,
+            @Field("circleId") String circleId,
+            @Field("pageSize") String pageSize,
+            @Field("type") String type,
+            Callback<OLaCircleModule> cb);
 
     /**
      * 评论列表
@@ -174,8 +177,10 @@ public interface QuestionService {
 
     @FormUrlEncoded
     @POST("/ola/circle/queryCircleDetail")
-    void queryCircleDetail(@Field("circleId") String circleId,
-                           Callback<PostDetailModule> cb);
+    void queryCircleDetail(
+            @Field("userId") String userId,
+            @Field("circleId") String circleId,
+            Callback<PostDetailModule> cb);
 
     /**
      * 解锁题目
@@ -203,4 +208,22 @@ public interface QuestionService {
     @POST("/ola/message/getUnreadTotalCount")
     void getUnreadTotalCount(@Field("userId") String userId,
                              Callback<MessageUnreadTotalCountResult> cb);
+
+    /**
+     * 评论消息列表
+     *
+     * @param userId    (必填)
+     * @param commentId 最后一条ID，用户翻页
+     * @param pageSize
+     * @param type      1 观看记录 2 发帖 ，固定传2
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/comment/getCircleMessageList")
+    void getCircleMessageList(
+            @Field("userId") String userId,
+            @Field("commentId") String commentId,
+            @Field("pageSize") String pageSize,
+            @Field("type") String type,
+            Callback<CircleMessageListResult> cb);
 }

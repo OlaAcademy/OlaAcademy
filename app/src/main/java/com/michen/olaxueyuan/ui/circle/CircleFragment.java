@@ -2,7 +2,6 @@ package com.michen.olaxueyuan.ui.circle;
 
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,10 +20,11 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.CircleClickEvent;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
-import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
@@ -33,7 +33,6 @@ import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.CircleAdapter;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.manager.CirclePopManager;
-import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -107,7 +106,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     private void fetchData(final String circleId, String pageSize) {
 //        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
         SEAPP.showCatDialog(this);
-        QuestionCourseManager.getInstance().getCircleList(circleId, pageSize, type, new Callback<OLaCircleModule>() {
+        QuestionCourseManager.getInstance().getCircleList(SEUserManager.getInstance().getUserId(), circleId, pageSize, type, new Callback<OLaCircleModule>() {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
@@ -149,13 +148,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.right_response:
-                if (!SEAuthManager.getInstance().isAuthenticated()) {
-                    Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
-                    startActivity(loginIntent);
-                    return;
-                }
-                Intent intent = new Intent(getActivity(), DeployPostActivity.class);
-                startActivity(intent);
+                Utils.jumpLoginOrNot(getActivity(),DeployPostActivity.class);
                 break;
             case R.id.title_tv:
                 CirclePopManager.getInstance().showMarkPop(getActivity(), popLine, this, allSearchView);
@@ -203,7 +196,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     private void praise(final int position) {
 //        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
         SEAPP.showCatDialog(this);
-        MCCircleManager.getInstance().praiseCirclePost(String.valueOf(list.get(position).getCircleId()), new Callback<PraiseCirclePostResult>() {
+        MCCircleManager.getInstance().praiseCirclePost(SEUserManager.getInstance().getUserId(),String.valueOf(list.get(position).getCircleId()), new Callback<PraiseCirclePostResult>() {
             @Override
             public void success(PraiseCirclePostResult mcCommonResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {

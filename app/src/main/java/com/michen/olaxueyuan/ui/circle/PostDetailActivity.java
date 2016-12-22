@@ -48,6 +48,7 @@ import com.michen.olaxueyuan.protocol.event.VideoRefreshEvent;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.manager.UploadMediaManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
@@ -55,6 +56,7 @@ import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
+import com.michen.olaxueyuan.protocol.service.UploadService;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
 import com.michen.olaxueyuan.ui.adapter.PostDetailBottomGridAdapter;
@@ -81,6 +83,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
+import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
@@ -164,9 +167,10 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private int circleId;
     private String imageIds;//上传之后的图片id
     private String videoUrls;//上传视频之后视频的url
-    private String videoImgs;//上传视频之后获取到的img
+    private String videoImages;//上传视频之后获取到的img
     private String audioUrls;//上传音频
     private int uploadNum = 0;//图片张数
+    private UploadService uploadService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +181,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         mContext = this;
         etContent.clearFocus();
         setTitleText("欧拉分享");
+        RestAdapter restAdapter=new RestAdapter.Builder().setEndpoint("http://upload.olaxueyuan.com").build();
+        uploadService=restAdapter.create(UploadService.class);
         initView();
         initAudio();//初始化播放录音的操作
         LocationManager.getInstance().locations(this);
@@ -234,7 +240,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
     private void queryCircleDetail(String circleId) {
         SEAPP.showCatDialog(this);
-        QuestionCourseManager.getInstance().queryCircleDetail(circleId, new Callback<PostDetailModule>() {
+        QuestionCourseManager.getInstance().queryCircleDetail(SEUserManager.getInstance().getUserId(), circleId, new Callback<PostDetailModule>() {
             @Override
             public void success(PostDetailModule postDetailModule, Response response) {
                 SEAPP.dismissAllowingStateLoss();
@@ -318,8 +324,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                         , resultBean.getUserAvatar(), String.valueOf(resultBean.getId()), resultBean.getContent());
                 break;
             case R.id.bt_send:
-//                addComment();
-                sendAudio();
+//                sendAudio();
+                sendVideo();
                 break;
             case R.id.avatar:
                 if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
@@ -352,8 +358,13 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     }
 
     private void praise() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            Intent loginIntent = new Intent(PostDetailActivity.this, UserLoginActivity.class);
+            startActivity(loginIntent);
+            return;
+        }
         SEAPP.showCatDialog(this);
-        MCCircleManager.getInstance().praiseCirclePost(String.valueOf(circleId), new Callback<PraiseCirclePostResult>() {
+        MCCircleManager.getInstance().praiseCirclePost(SEUserManager.getInstance().getUserId(), String.valueOf(circleId), new Callback<PraiseCirclePostResult>() {
             @Override
             public void success(PraiseCirclePostResult mcCommonResult, Response response) {
                 SEAPP.dismissAllowingStateLoss();
@@ -382,43 +393,52 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             if (tempSelectBitmap.get(i).tag.type.equals("3")) {
                 String videoPath = tempSelectBitmap.get(0).tag.path;
                 uploadAudioVideo(new TypedFile("application/octet-stream", new File(videoPath)), "mp4");
-                String thumbnailPath = tempSelectBitmap.get(0).getThumbnailPath();
+                String thumbnailPath = tempSelectBitmap.get(0).tag.pic;
                 int degree = com.snail.photo.util.PictureUtil.readPictureDegree(thumbnailPath);
                 uploadImagesByExecutors(new TypedFile("application/octet-stream", new File(thumbnailPath)), degree, 1);
             }
         }
     }
 
-    private void uploadAudioVideo(TypedFile typeFile, final String type) {
+    private void uploadAudioVideo(final TypedFile typeFile, final String type) {
         SEAPP.showCatDialog(this, "正在上传文件，请稍后...");
-        UploadMediaManager.getInstance().movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
+        service.submit(new Runnable() {
             @Override
-            public void success(VideoUploadResult uploadResult, Response response) {
-                SEAPP.dismissAllowingStateLoss();
-                if (uploadResult.getCode() != 1) {
-                    SVProgressHUD.showInViewWithoutIndicator(mContext, uploadResult.getMessage(), 2.0f);
-                } else {
-                    Logger.e("type==" + type);
-                    if (type.equals("amr")) {
-                        audioUrls = uploadResult.getUrl();
-                        addComment();
-                    } else if (type.equals("mp4")) {
-                        videoUrls = uploadResult.getUrl();
-                        handler.sendEmptyMessage(VIDEO_SEND_SUCCESS);
+            public void run() {
+//                UploadMediaManager.getInstance().movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
+                uploadService.movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
+                    @Override
+                    public void success(VideoUploadResult uploadResult, Response response) {
+                        if (uploadResult.getCode() != 1) {
+                            SEAPP.dismissAllowingStateLoss();
+                            SVProgressHUD.showInViewWithoutIndicator(mContext, uploadResult.getMessage(), 2.0f);
+                        } else {
+                            Logger.e("type==" + type);
+                            if (type.equals("amr")) {
+                                audioUrls = uploadResult.getUrl();
+                                addComment();
+                            } else if (type.equals("mp4")) {
+                                videoUrls = uploadResult.getUrl();
+                                handler.sendEmptyMessage(VIDEO_SEND_SUCCESS);
+                            }
+                        }
                     }
-                }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                SEAPP.dismissAllowingStateLoss();
-                ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+                    @Override
+                    public void failure(RetrofitError error) {
+                        SEAPP.dismissAllowingStateLoss();
+                        SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, "文件上传失败，请检查网络之后重试", 2.0f);
+                    }
+                });
             }
         });
     }
 
     private ExecutorService service = Executors.newFixedThreadPool(5);
 
+    /**
+     * @param type 1、视频图片；2、普通图片
+     */
     private void uploadImagesByExecutors(final TypedFile photo, final int angle, final int type) {
         service.submit(new Runnable() {
 
@@ -432,12 +452,13 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                             SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, result.message, 2.0f);
                             return;
                         }
-                        videoImgs = videoImgs + result.imgGid + ",";
                         switch (type) {
                             case 1:
+                                videoImages = result.imgGid;
                                 handler.sendEmptyMessage(VIDEO_SEND_SUCCESS);
                                 break;
                             case 2:
+                                imageIds = imageIds + result.imgGid + ",";
                                 int imageNum = 0;
                                 for (int i = 0; i < tempSelectBitmap.size(); i++) {
                                     if (tempSelectBitmap.get(i).tag.type.equals("1")) {
@@ -456,17 +477,19 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                         uploadNum++;
                         if (uploadNum == Bimp.tempSelectBitmap.size()) {
                             Bimp.tempSelectBitmap.clear();
-                            if (videoImgs.equals("")) {
-                                SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, "图片上传失败", 2.0f);
-                            } else {
-                                //Todo 图片上传失败
-                                switch (type) {
-                                    case 1:
-                                        //Todo 视频只有一个，视频的图片上传成功
-                                        break;
-                                    case 2:
-                                        break;
-                                }
+                            //Todo 图片上传失败
+                            switch (type) {
+                                case 1:
+                                    //Todo 视频只有一个，视频的图片上传成功
+                                    if (videoImages.equals("")) {
+                                        SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, "视频图片上传失败", 2.0f);
+                                    }
+                                    break;
+                                case 2:
+                                    if (imageIds.equals("")) {
+                                        SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, "图片上传失败", 2.0f);
+                                    }
+                                    break;
                             }
                         }
                     }
@@ -501,9 +524,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             } else {
                 toUserId = "";
             }
-            SEAPP.showCatDialog(this, "发送中请稍后...");
             QuestionCourseManager.getInstance().addComment(user.getId(), postId, toUserId
-                    , content, LocationManager.location, "2", imageIds, videoUrls, videoImgs, audioUrls, new Callback<CommentSucessResult>() {
+                    , content, LocationManager.location, "2", imageIds, videoUrls, videoImages, audioUrls, new Callback<CommentSucessResult>() {
                         @Override
                         public void success(CommentSucessResult commentSuccess, Response response) {
                             SEAPP.dismissAllowingStateLoss();
@@ -719,8 +741,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     videoGridAdapter.update();
                     break;
                 case VIDEO_SEND_SUCCESS:
-                    if (!TextUtils.isEmpty(videoUrls) && !TextUtils.isEmpty(videoUrls)) {
-
+                    if (!TextUtils.isEmpty(videoUrls) && !TextUtils.isEmpty(videoImages)) {
+                        addComment();
                     }
                     break;
                 case IMAGE_SEND_SUCCESS:
@@ -839,11 +861,13 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 @Override
                 public void run() {
                     Bitmap bitmap = VideoThumbnailUtil.getVideoThumbnail(video.getPath(), 400, 400, MediaStore.Images.Thumbnails.MICRO_KIND);
+                    String saveImage = PictureUtil.saveImage(bitmap);
                     video.setThumbnailBitmap(bitmap);
                     PicInfo pi = new PicInfo();
                     pi.type = "3";
                     pi.isNew = true;
                     pi.path = video.getPath();
+                    pi.pic = saveImage;
                     ImageItem imageItem = new ImageItem();
                     imageItem.setBitmap(video.getThumbnailBitmap());
                     imageItem.tag = pi;

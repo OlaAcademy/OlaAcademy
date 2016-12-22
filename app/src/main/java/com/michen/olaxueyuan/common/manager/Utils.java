@@ -267,19 +267,6 @@ public class Utils {
         }
     }
 
-    /**
-     * 判断没有登录跳转到登录页面，登录了就跳转到cls界面
-     *
-     * @param context
-     * @param cls
-     */
-    public static void jumpLoginOrNot(Context context, Class<?> cls) {
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            context.startActivity(new Intent(context, cls));
-        } else {
-            context.startActivity(new Intent(context, UserLoginActivity.class));
-        }
-    }
 
     /**
      * 获取屏幕的宽高
@@ -292,6 +279,19 @@ public class Utils {
         int w_screen = dm.widthPixels;
         int h_screen = dm.heightPixels;
         return new Point(w_screen, h_screen);
+    }
 
+    /**
+     * 判断没有登录跳转到登录页面，登录了就跳转到cls界面
+     *
+     * @param context
+     * @param cls
+     */
+    public static void jumpLoginOrNot(Context context, Class<?> cls) {
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            context.startActivity(new Intent(context, cls));
+        } else {
+            context.startActivity(new Intent(context, UserLoginActivity.class));
+        }
     }
 }

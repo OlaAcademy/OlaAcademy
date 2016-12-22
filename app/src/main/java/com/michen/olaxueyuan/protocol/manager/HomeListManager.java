@@ -37,8 +37,8 @@ public class HomeListManager {
      *
      * @param callback
      */
-    public void fetchHomeCourseList(final Callback<HomeModule> callback) {
-        getHomeListService().getHomeList(callback);
+    public void fetchHomeCourseList(String userId,final Callback<HomeModule> callback) {
+        getHomeListService().getHomeList(userId,callback);
     }
 
     /**

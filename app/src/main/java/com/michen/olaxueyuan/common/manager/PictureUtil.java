@@ -235,6 +235,32 @@ public class PictureUtil {
         return true;
     }
 
+    public static String saveImage(Bitmap bitmap) {
+        String path = "";
+        try {
+            if (bitmap == null) {
+                Logger.e("bitmap is null:" + bitmap);
+                return null;
+            }
+            String name = System.currentTimeMillis() + ".jpg";
+            final String urlContent = MediaStore.Images.Media.insertImage(SEAPP.getAppContext().getContentResolver(),
+                    bitmap, name, "");
+            Uri uria = Uri.parse(urlContent);
+            path = getRealPathFromUri(uria);
+            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri uri = Uri.fromFile(new File(path));
+            intent.setData(uri);
+            SEAPP.getAppContext().sendBroadcast(intent);
+//            if (bitmap != null) {
+//                bitmap.recycle();
+//            }
+//            ToastUtil.showToastShort(SEAPP.getAppContext(), "保存到" + path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return path;
+    }
+
     /**
      * 获取真实路径
      *

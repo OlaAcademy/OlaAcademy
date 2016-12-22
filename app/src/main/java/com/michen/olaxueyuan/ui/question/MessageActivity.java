@@ -45,7 +45,7 @@ public class MessageActivity extends SEBaseActivity implements PullToRefreshBase
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message);
+        setContentView(R.layout.common_refresh_listview);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         mContext = this;

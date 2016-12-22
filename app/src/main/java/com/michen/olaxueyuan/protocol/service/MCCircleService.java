@@ -27,26 +27,29 @@ public interface MCCircleService {
      */
     @FormUrlEncoded
     @POST("/ola/circle/addOlaCircle")
-    void addOlaCircle(@Field("userId") String userId,
-                      @Field("title") String title,
-                      @Field("content") String content,
-                      @Field("imageGids") String imageGids,
-                      @Field("location") String location,
-                      @Field("type") String type,
-                      @Field("phoneInfo") String phoneInfo,
-                      @Field("assignUser") String assignUser,
-                      @Field("isPublic") String isPublic,
-                      Callback<MCCommonResult> cb);
+    void addOlaCircle(
+            @Field("userId") String userId,
+            @Field("title") String title,
+            @Field("content") String content,
+            @Field("imageGids") String imageGids,
+            @Field("location") String location,
+            @Field("type") String type,
+            @Field("phoneInfo") String phoneInfo,
+            @Field("assignUser") String assignUser,
+            @Field("isPublic") String isPublic,
+            Callback<MCCommonResult> cb);
 
     /**
      * 帖子点赞
      *
+     * @param userId  (必填)
      * @param circleId
      * @param cb
      */
     @FormUrlEncoded
     @POST("/ola/circle/praiseCirclePost")
     void praiseCirclePost(
+            @Field("userId") String userId,
             @Field("circleId") String circleId,
             Callback<PraiseCirclePostResult> cb);
 
