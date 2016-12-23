@@ -8,10 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.PraiseListResult;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +58,8 @@ public class PraiseListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.title.setText(list.get(position).getUserName()+" 赞了回答：");
-        holder.content.setText(list.get(position).getPraiseId());
+        holder.title.setText(list.get(position).getUserName() + " 赞了回答：");
+        holder.content.setText(String.valueOf(list.get(position).getPraiseId()));
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

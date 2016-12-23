@@ -9,7 +9,7 @@ import java.util.List;
 public class PraiseListResult {
     /**
      * message : 成功
-     * result : [{"praiseId":3,"postId":"13616","userId":"754","userName":"微何","userAvatar":"1c84834c-1d69-47fb-a009-f426c6ec6d83","time":"2016-12-19 12:05:50","isRead":1}]
+     * result : [{"praiseId":3,"postId":"13616","title":"测试","userId":"754","userName":"微何","userAvatar":"1c84834c-1d69-47fb-a009-f426c6ec6d83","time":"2016-12-19 12:05:50","isRead":1},{"praiseId":2,"postId":"13614","title":"测试","userId":"754","userName":"微何","userAvatar":"1c84834c-1d69-47fb-a009-f426c6ec6d83","time":"2016-12-19 11:07:06","isRead":1}]
      * apicode : 10000
      */
 
@@ -45,6 +45,7 @@ public class PraiseListResult {
         /**
          * praiseId : 3
          * postId : 13616
+         * title : 测试
          * userId : 754
          * userName : 微何
          * userAvatar : 1c84834c-1d69-47fb-a009-f426c6ec6d83
@@ -53,7 +54,8 @@ public class PraiseListResult {
          */
 
         private int praiseId;
-        private String postId;
+        private int postId;
+        private String title;
         private String userId;
         private String userName;
         private String userAvatar;
@@ -68,12 +70,20 @@ public class PraiseListResult {
             this.praiseId = praiseId;
         }
 
-        public String getPostId() {
+        public int getPostId() {
             return postId;
         }
 
-        public void setPostId(String postId) {
+        public void setPostId(int postId) {
             this.postId = postId;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
         }
 
         public String getUserId() {

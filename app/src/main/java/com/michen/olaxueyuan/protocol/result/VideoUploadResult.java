@@ -16,6 +16,15 @@ public class VideoUploadResult {
     private String message;
     private String url;
     private String gid;
+    private String pic;
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
 
     public int getCode() {
         return code;

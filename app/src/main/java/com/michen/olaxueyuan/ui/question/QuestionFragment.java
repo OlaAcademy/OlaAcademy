@@ -222,7 +222,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     }
 
     /**
-     * {@link MessageActivity#onEventMainThread(MessageReadEvent)}*
+     * {@link SystemMessageFragment#onEventMainThread(MessageReadEvent)}*
      */
     public void onEventMainThread(MessageReadEvent event) {
         if (event.isRefresh) {

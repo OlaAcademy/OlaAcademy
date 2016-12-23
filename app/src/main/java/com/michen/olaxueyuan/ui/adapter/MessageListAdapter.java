@@ -92,7 +92,7 @@ public class MessageListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 /**
-                 * {@link com.michen.olaxueyuan.ui.question.MessageActivity#onEventMainThread(MessageReadEvent)}
+                 * {@link com.michen.olaxueyuan.ui.question.SystemMessageFragment#onEventMainThread(MessageReadEvent)}
                  */
                 EventBus.getDefault().post(new MessageReadEvent(position, false, list.get(position).getId() + "", list.get(position).getType()));
             }

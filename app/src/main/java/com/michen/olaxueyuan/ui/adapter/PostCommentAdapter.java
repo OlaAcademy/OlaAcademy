@@ -31,7 +31,7 @@ import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.MyAudioManager;
-import com.michen.olaxueyuan.common.manager.PictureUtil;
+import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -140,7 +140,7 @@ public class PostCommentAdapter extends BaseAdapter implements MyAudioManager.Pl
         holder.itemCommentAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PictureUtil.viewPictures(mContext, list.get(position).getUserAvatar());
+                PictureUtils.viewPictures(mContext, list.get(position).getUserAvatar());
             }
         });
         holder.voiceBg.setOnClickListener(new View.OnClickListener() {

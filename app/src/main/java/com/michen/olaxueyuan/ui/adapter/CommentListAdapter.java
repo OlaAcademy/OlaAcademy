@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.DateUtils;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.CircleMessageListResult;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
@@ -64,15 +68,22 @@ public class CommentListAdapter extends BaseAdapter {
         }
         holder.avatar.setRectAdius(100);
         holder.title.setText(list.get(position).getTitle());
-        String avatarUrl = list.get(position).getUserAvatar();
-        Picasso.with(mContext).load(avatarUrl)
-                .placeholder(R.drawable.ic_default_avatar)
-                .error(R.drawable.ic_default_avatar)
-                .resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50))
-                .into(holder.avatar);
-        if (list.get(position).getTime().length() > 10) {
-            holder.time.setText(list.get(position).getTime().substring(0, 10));
+
+        if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
+            String avatarUrl = "";
+//            if (list.get(position).getUserAvatar().indexOf("jpg")!=-1){
+            if (list.get(position).getUserAvatar().contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar();
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();
+            }
+            Picasso.with(mContext).load(avatarUrl)
+                    .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50))
+                    .into(holder.avatar);
+        } else {
+            holder.avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
         }
+        holder.time.setText(DateUtils.formatTime(list.get(position).getTime()));
         holder.content.setText(list.get(position).getContent());
         holder.praiseNum.setText(list.get(position).getPraiseNumber() + "");
         holder.replyNum.setText("回复   " + list.get(position).getPraiseNumber());
@@ -84,7 +95,9 @@ public class CommentListAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                list.get(position).setIsRead(1);
                 mContext.startActivity(new Intent(mContext, PostDetailActivity.class).putExtra("circleId", list.get(position).getPostId()));
+                notifyDataSetChanged();
             }
         });
         return convertView;

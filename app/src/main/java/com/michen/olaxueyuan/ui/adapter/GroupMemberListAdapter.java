@@ -11,7 +11,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
-import com.michen.olaxueyuan.common.manager.PictureUtil;
+import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.GroupMemberResult;
 import com.squareup.picasso.Picasso;
@@ -81,7 +81,7 @@ public class GroupMemberListAdapter extends BaseAdapter {
         holder.avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PictureUtil.viewPictures(context, list.get(position).getAvator());
+                PictureUtils.viewPictures(context, list.get(position).getAvator());
             }
         });
         return convertView;

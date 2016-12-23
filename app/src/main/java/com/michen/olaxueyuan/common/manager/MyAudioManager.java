@@ -475,7 +475,9 @@ public class MyAudioManager implements AudioManager.OnAudioFocusChangeListener {
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         mMediaRecorder.setOutputFile(mFilePath);
-
+//        mMediaRecorder.setAudioEncodingBitRate(16);
+//        mMediaRecorder.setAudioChannels(2);
+//        mMediaRecorder.setAudioSamplingRate(44100);
         try {
             mAudioStartTime = System.currentTimeMillis();
             if (mRecordingListener != null) {

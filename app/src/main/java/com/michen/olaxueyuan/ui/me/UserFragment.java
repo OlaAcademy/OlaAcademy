@@ -16,7 +16,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
-import com.michen.olaxueyuan.common.manager.PictureUtil;
+import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -34,6 +34,7 @@ import com.michen.olaxueyuan.ui.me.activity.MyCourseCollectActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserUpdateActivity;
 import com.michen.olaxueyuan.ui.me.activity.WrongTopicSetActivity;
+import com.michen.olaxueyuan.ui.question.InformationListActivity;
 import com.michen.olaxueyuan.ui.setting.SettingActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshScrollView;
@@ -151,11 +152,13 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
                 Utils.jumpLoginOrNot(getActivity(), CoinHomePageActivity.class);
                 break;
             case R.id.service_email_layout:
-                sendEmail();
+                //Todo 暂时代替
+                Utils.jumpLoginOrNot(getActivity(),InformationListActivity.class);
+//                sendEmail();
                 break;
             case R.id.avatar:
                 if (SEAuthManager.getInstance().getAccessUser() != null && !TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
-                    PictureUtil.viewPictures(getActivity(), SEAuthManager.getInstance().getAccessUser().getAvator());
+                    PictureUtils.viewPictures(getActivity(), SEAuthManager.getInstance().getAccessUser().getAvator());
                 }
                 break;
             default:

@@ -21,4 +21,7 @@ public class CommonConstant {
 
     public static String RECORD_PATH = ROOTPATH + "/.audio";
     public static final String EXTRA_INDEX_REVIEW = "extra_index_review";
+
+    public static final int CODE_REQUEST_VIDEO_RECORD = 10001;
+    public static final int TAKE_PICTURE = 10002;
 }

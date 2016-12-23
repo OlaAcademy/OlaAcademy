@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by LIJIAN on 2015/8/12.
@@ -178,5 +180,30 @@ public class DateUtils {
         return dateList;
     }
 
+    public static String formatTime(String time) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        SimpleDateFormat df2 = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
+        String timeString = time;
+        Date now;
+        try {
+            now = new Date();
+            Date date = df.parse(time);
+            long l = now.getTime() - date.getTime();
+            if (l <= 60 * 1000) {
+                timeString = "刚刚";
+            } else if (l < 60 * 60 * 1000) {
+                timeString = l / (60 * 1000) + "分钟前";
+            } else if (l < 24 * 60 * 60 * 1000) {
+                timeString = l / (60 * 60 * 1000) + "小时前";
+            } else if (l < 30 * 24 * 60 * 60 * 1000) {
+                timeString = l / (24 * 60 * 60 * 1000) + "天前";
+            } else {
+                timeString = df2.format(date);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return timeString;
+    }
 
 }

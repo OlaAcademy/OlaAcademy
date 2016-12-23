@@ -14,6 +14,8 @@ import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.MessageUnreadTotalCountResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
+import com.snail.pulltorefresh.PullToRefreshBase;
+import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import butterknife.Bind;
@@ -26,7 +28,7 @@ import retrofit.client.Response;
 /**
  * 消息列表
  */
-public class InformationListActivity extends SEBaseActivity {
+public class InformationListActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener {
     @Bind(R.id.answer_layout)
     RelativeLayout answerLayout;
     @Bind(R.id.praise_layout)
@@ -45,6 +47,8 @@ public class InformationListActivity extends SEBaseActivity {
     TextView praiseContent;
     @Bind(R.id.system_content)
     TextView systemContent;
+    @Bind(R.id.root_scroll)
+    PullToRefreshScrollView rootScroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,11 @@ public class InformationListActivity extends SEBaseActivity {
         setContentView(R.layout.activity_infomation_list);
         ButterKnife.bind(this);
         setTitleText("消息");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         fetchData();
     }
 
@@ -111,14 +120,19 @@ public class InformationListActivity extends SEBaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.answer_layout:
-                startActivity(new Intent(this, CommentListActivity.class));
+                startActivity(new Intent(this, CommonMessageActivity.class).putExtra("type", 1));
                 break;
             case R.id.praise_layout:
-                startActivity(new Intent(this, PraiseListActivity.class));
+                startActivity(new Intent(this, CommonMessageActivity.class).putExtra("type", 2));
                 break;
             case R.id.system_layout:
-                startActivity(new Intent(this, MessageActivity.class));
+                startActivity(new Intent(this, CommonMessageActivity.class).putExtra("type", 3));
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+        fetchData();
     }
 }

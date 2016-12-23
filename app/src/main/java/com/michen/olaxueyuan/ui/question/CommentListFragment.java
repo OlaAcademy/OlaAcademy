@@ -2,6 +2,9 @@ package com.michen.olaxueyuan.ui.question;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
@@ -9,8 +12,8 @@ import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.CircleMessageListResult;
-import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.CommentListAdapter;
+import com.michen.olaxueyuan.ui.me.activity.BaseFragment;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -24,8 +27,11 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CommentListActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener2 {
+/**
+ * Created by mingge on 2016/12/23.
+ */
 
+public class CommentListFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener2 {
     @Bind(R.id.listview)
     PullToRefreshListView listview;
     private static final String pageSize = "20";
@@ -33,14 +39,15 @@ public class CommentListActivity extends SEBaseActivity implements PullToRefresh
     private String type = "2";//发帖的固定传2
     private CommentListAdapter adapter;
     private List<CircleMessageListResult.ResultBean> list = new ArrayList<>();
+    private View view;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.common_refresh_listview);
-        ButterKnife.bind(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = View.inflate(getActivity(), R.layout.common_refresh_listview, null);
+        ButterKnife.bind(this, view);
         initView();
         fetchData();
+        return view;
     }
 
     private void fetchData() {
@@ -52,7 +59,7 @@ public class CommentListActivity extends SEBaseActivity implements PullToRefresh
         QuestionCourseManager.getInstance().getCircleMessageList(userId, commentId, pageSize, type, new Callback<CircleMessageListResult>() {
             @Override
             public void success(CircleMessageListResult circleMessageListResult, Response response) {
-                if (!CommentListActivity.this.isFinishing()) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
                     if (circleMessageListResult.getApicode() != 10000) {
@@ -73,7 +80,7 @@ public class CommentListActivity extends SEBaseActivity implements PullToRefresh
 
             @Override
             public void failure(RetrofitError error) {
-                if (!CommentListActivity.this.isFinishing()) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
@@ -83,21 +90,10 @@ public class CommentListActivity extends SEBaseActivity implements PullToRefresh
     }
 
     private void initView() {
-        setTitleText("评论列表");
         listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
-        adapter = new CommentListAdapter(this);
+        adapter = new CommentListAdapter(getActivity());
         listview.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -113,4 +109,5 @@ public class CommentListActivity extends SEBaseActivity implements PullToRefresh
             fetchData();
         }
     }
+
 }

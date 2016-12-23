@@ -2,6 +2,9 @@ package com.michen.olaxueyuan.ui.question;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
@@ -9,8 +12,8 @@ import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.PraiseListResult;
-import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PraiseListAdapter;
+import com.michen.olaxueyuan.ui.me.activity.BaseFragment;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -24,8 +27,11 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class PraiseListActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener2 {
+/**
+ * Created by mingge on 2016/12/23.
+ */
 
+public class PraiseListFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener2 {
     @Bind(R.id.listview)
     PullToRefreshListView listview;
     private String praiseId;
@@ -33,20 +39,21 @@ public class PraiseListActivity extends SEBaseActivity implements PullToRefreshB
     private List<PraiseListResult.ResultBean> list = new ArrayList<>();
     private PraiseListAdapter adapter;
 
+    private View view;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.common_refresh_listview);
-        ButterKnife.bind(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = View.inflate(getActivity(), R.layout.common_refresh_listview, null);
+        ButterKnife.bind(this, view);
         initView();
         fetchData();
+        return view;
     }
 
     private void initView() {
-        setTitleText("赞了");
         listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
-        adapter = new PraiseListAdapter(this);
+        adapter = new PraiseListAdapter(getActivity());
         listview.setAdapter(adapter);
     }
 
@@ -59,7 +66,7 @@ public class PraiseListActivity extends SEBaseActivity implements PullToRefreshB
         QuestionCourseManager.getInstance().getPraiseList(userId, praiseId, pageSize, new Callback<PraiseListResult>() {
             @Override
             public void success(PraiseListResult praiseListResult, Response response) {
-                if (!PraiseListActivity.this.isFinishing()) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
                     if (praiseListResult.getApicode() != 10000) {
@@ -80,7 +87,7 @@ public class PraiseListActivity extends SEBaseActivity implements PullToRefreshB
 
             @Override
             public void failure(RetrofitError error) {
-                if (!PraiseListActivity.this.isFinishing()) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
@@ -102,4 +109,5 @@ public class PraiseListActivity extends SEBaseActivity implements PullToRefreshB
             fetchData();
         }
     }
+
 }

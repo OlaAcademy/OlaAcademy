@@ -26,7 +26,7 @@ import java.util.ArrayList;
 /**
  * Created by mingge on 16/5/9.
  */
-public class PictureUtil {
+public class PictureUtils {
     public static int calculateInSampleSize(BitmapFactory.Options options,
                                             int reqWidth, int reqHeight) {
         // Raw height and width of image

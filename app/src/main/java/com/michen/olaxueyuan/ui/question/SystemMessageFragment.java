@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,9 +16,9 @@ import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.MessageListResult;
 import com.michen.olaxueyuan.protocol.result.MessageRecordResult;
-import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.MessageListAdapter;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
+import com.michen.olaxueyuan.ui.me.activity.BaseFragment;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -32,8 +33,11 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MessageActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener2 {
+/**
+ * Created by mingge on 2016/12/23.
+ */
 
+public class SystemMessageFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener2 {
     @Bind(R.id.listview)
     PullToRefreshListView listview;
     Context mContext;
@@ -42,19 +46,20 @@ public class MessageActivity extends SEBaseActivity implements PullToRefreshBase
     private List<MessageListResult.ResultEntity> list = new ArrayList<>();
     private MessageListAdapter adapter;
 
+    private View view;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.common_refresh_listview);
-        ButterKnife.bind(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = View.inflate(getActivity(), R.layout.common_refresh_listview, null);
+        ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
-        mContext = this;
+        mContext = getActivity();
         initView();
         fetchData();
+        return view;
     }
 
     private void initView() {
-        setTitleText("消息中心");
         listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
         adapter = new MessageListAdapter(mContext);
@@ -62,7 +67,6 @@ public class MessageActivity extends SEBaseActivity implements PullToRefreshBase
     }
 
     private void fetchData() {
-//        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
         SEAPP.showCatDialog(this);
         String userId = "";
         if (SEAuthManager.getInstance().isAuthenticated()) {
@@ -71,13 +75,16 @@ public class MessageActivity extends SEBaseActivity implements PullToRefreshBase
         QuestionCourseManager.getInstance().getMessageList(userId, messageId, pageSize, new Callback<MessageListResult>() {
             @Override
             public void success(MessageListResult messageListResult, Response response) {
-                if (!MessageActivity.this.isFinishing()) {
-//                SVProgressHUD.dismiss(mContext);
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
                     if (messageListResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(mContext, messageListResult.getMessage(), 2.0f);
                     } else {
+                        if (messageListResult.getResult().size() == 0) {
+                            ToastUtil.showToastShort(mContext, R.string.to_end);
+                            return;
+                        }
                         if (TextUtils.isEmpty(messageId)) {
                             list.clear();
                         }
@@ -89,8 +96,7 @@ public class MessageActivity extends SEBaseActivity implements PullToRefreshBase
 
             @Override
             public void failure(RetrofitError error) {
-                if (!MessageActivity.this.isFinishing()) {
-//                SVProgressHUD.dismiss(mContext);
+                if (getActivity() != null && !getActivity().isFinishing()) {
                     SEAPP.dismissAllowingStateLoss();
                     listview.onRefreshComplete();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
@@ -157,8 +163,8 @@ public class MessageActivity extends SEBaseActivity implements PullToRefreshBase
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         EventBus.getDefault().unregister(this);
     }
 }

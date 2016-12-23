@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.CircleProgressBar;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
-import com.michen.olaxueyuan.common.manager.PictureUtil;
+import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -69,7 +69,7 @@ public class ImageDetailFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         if (position == 0) {
-                            PictureUtil.saveImageToLocal(PictureUtil.drawable2Bitmap(mImageView.getDrawable()));
+                            PictureUtils.saveImageToLocal(PictureUtils.drawable2Bitmap(mImageView.getDrawable()));
                         }
                     }
                 }, arry);

@@ -3,11 +3,13 @@ package com.michen.olaxueyuan.ui.circle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,10 +39,11 @@ import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.AndUtil;
 import com.michen.olaxueyuan.common.manager.AndroidUtil;
+import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.LocationManager;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.MyAudioManager;
-import com.michen.olaxueyuan.common.manager.PictureUtil;
+import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.SharePlatformManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
@@ -61,14 +64,17 @@ import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
 import com.michen.olaxueyuan.ui.adapter.PostDetailBottomGridAdapter;
 import com.michen.olaxueyuan.ui.adapter.PostDetailVideoGridAdapter;
+import com.michen.olaxueyuan.ui.circle.upload.AlbumActivity;
 import com.michen.olaxueyuan.ui.circle.upload.Video;
 import com.michen.olaxueyuan.ui.circle.upload.VideoThumbnailUtil;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.photo.upload.UploadResult;
 import com.snail.photo.util.Bimp;
+import com.snail.photo.util.FileUtils;
 import com.snail.photo.util.ImageItem;
 import com.snail.photo.util.NoScrollGridView;
 import com.snail.photo.util.PicInfo;
+import com.snail.photo.util.PictureUtil;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
@@ -90,6 +96,7 @@ import retrofit.mime.TypedFile;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.michen.olaxueyuan.common.manager.CommonConstant.TAKE_PICTURE;
 import static com.snail.photo.util.Bimp.tempSelectBitmap;
 
 public class PostDetailActivity extends SEBaseActivity implements MyAudioManager.RecordingListener, MyAudioManager.PlayingListener {
@@ -181,8 +188,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         mContext = this;
         etContent.clearFocus();
         setTitleText("欧拉分享");
-        RestAdapter restAdapter=new RestAdapter.Builder().setEndpoint("http://upload.olaxueyuan.com").build();
-        uploadService=restAdapter.create(UploadService.class);
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://upload.olaxueyuan.com").build();
+        uploadService = restAdapter.create(UploadService.class);
         initView();
         initAudio();//初始化播放录音的操作
         LocationManager.getInstance().locations(this);
@@ -204,13 +211,21 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (bottomGridAdapter.listBeans.get(position).getPosition()) {
                     case PostDetailBottomGridAdapter.CAMERA://拍照
+                        Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(openCameraIntent, CommonConstant.TAKE_PICTURE);
                         break;
                     case PostDetailBottomGridAdapter.PICTURE://相册
+                        Intent intent = new Intent(PostDetailActivity.this, AlbumActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.activity_translate_in, R.anim.activity_translate_out);
                         break;
                     case PostDetailBottomGridAdapter.VIDEO://视频
+                        startActivity(new Intent(PostDetailActivity.this, MultiSelectVideoListActivity.class));
                         break;
                     case PostDetailBottomGridAdapter.VIDEO_RECORD://录屏
-                        startActivity(new Intent(PostDetailActivity.this, MultiSelectVideoListActivity.class));
+                        Intent recordIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                        recordIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                        startActivityForResult(recordIntent, CommonConstant.CODE_REQUEST_VIDEO_RECORD);
                         break;
                 }
             }
@@ -288,7 +303,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             address.setText("");
         }
         if (!TextUtils.isEmpty(resultBean.getImageGids())) {
-            ArrayList<String> imageUrls = PictureUtil.getListFromString(resultBean.getImageGids());
+            ArrayList<String> imageUrls = PictureUtils.getListFromString(resultBean.getImageGids());
             final ArrayList<String> imageList = imageUrls;
             if (imageUrls.size() == 1) {
                 gridview.setNumColumns(1);
@@ -300,7 +315,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    PictureUtil.viewPictures(mContext, position, imageList);
+                    PictureUtils.viewPictures(mContext, position, imageList);
                 }
             });
         } else {
@@ -324,12 +339,11 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                         , resultBean.getUserAvatar(), String.valueOf(resultBean.getId()), resultBean.getContent());
                 break;
             case R.id.bt_send:
-//                sendAudio();
-                sendVideo();
+                sendMedia();
                 break;
             case R.id.avatar:
                 if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
-                    PictureUtil.viewPictures(mContext, resultBean.getUserAvatar());
+                    PictureUtils.viewPictures(mContext, resultBean.getUserAvatar());
                 }
                 break;
             case R.id.key_voice:
@@ -384,18 +398,23 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         });
     }
 
-    private void sendAudio() {
-        uploadAudioVideo(new TypedFile("application/octet-stream", new File(mVoiceFilePath)), "amr");
-    }
-
-    private void sendVideo() {
+    private void sendMedia() {
+        //音频限制一个
+        if (!TextUtils.isEmpty(mVoiceFilePath)) {
+            uploadAudioVideo(new TypedFile("application/octet-stream", new File(mVoiceFilePath)), "amr");
+        }
+        //视频限制一个
         for (int i = 0; i < tempSelectBitmap.size(); i++) {
             if (tempSelectBitmap.get(i).tag.type.equals("3")) {
                 String videoPath = tempSelectBitmap.get(0).tag.path;
                 uploadAudioVideo(new TypedFile("application/octet-stream", new File(videoPath)), "mp4");
-                String thumbnailPath = tempSelectBitmap.get(0).tag.pic;
-                int degree = com.snail.photo.util.PictureUtil.readPictureDegree(thumbnailPath);
-                uploadImagesByExecutors(new TypedFile("application/octet-stream", new File(thumbnailPath)), degree, 1);
+            }
+        }  //图片限制三个
+        for (int i = 0; i < tempSelectBitmap.size(); i++) {
+            if (tempSelectBitmap.get(i).tag.type.equals("1")) {
+                int degree = PictureUtil.readPictureDegree(tempSelectBitmap.get(i).imagePath);
+                final File imageFile = new File(Bimp.tempSelectBitmap.get(i).getImagePath());
+                uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree);
             }
         }
     }
@@ -405,8 +424,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         service.submit(new Runnable() {
             @Override
             public void run() {
-//                UploadMediaManager.getInstance().movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
-                uploadService.movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
+                UploadMediaManager.getInstance().movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
+                    //                uploadService.movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
                     @Override
                     public void success(VideoUploadResult uploadResult, Response response) {
                         if (uploadResult.getCode() != 1) {
@@ -415,10 +434,12 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                         } else {
                             Logger.e("type==" + type);
                             if (type.equals("amr")) {
+                                mVoiceFilePath = "";
                                 audioUrls = uploadResult.getUrl();
                                 addComment();
                             } else if (type.equals("mp4")) {
                                 videoUrls = uploadResult.getUrl();
+                                videoImages = uploadResult.getPic();
                                 handler.sendEmptyMessage(VIDEO_SEND_SUCCESS);
                             }
                         }
@@ -436,10 +457,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
     private ExecutorService service = Executors.newFixedThreadPool(5);
 
-    /**
-     * @param type 1、视频图片；2、普通图片
-     */
-    private void uploadImagesByExecutors(final TypedFile photo, final int angle, final int type) {
+    private void uploadImagesByExecutors(final TypedFile photo, final int angle) {
         service.submit(new Runnable() {
 
             @Override
@@ -452,23 +470,15 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                             SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, result.message, 2.0f);
                             return;
                         }
-                        switch (type) {
-                            case 1:
-                                videoImages = result.imgGid;
-                                handler.sendEmptyMessage(VIDEO_SEND_SUCCESS);
-                                break;
-                            case 2:
-                                imageIds = imageIds + result.imgGid + ",";
-                                int imageNum = 0;
-                                for (int i = 0; i < tempSelectBitmap.size(); i++) {
-                                    if (tempSelectBitmap.get(i).tag.type.equals("1")) {
-                                        imageNum++;
-                                    }
-                                }
-                                if (uploadNum == imageNum) {
-                                    //Todo 普通图片上传成功
-                                }
-                                break;
+                        imageIds = imageIds + result.imgGid + ",";
+                        int imageNum = 0;
+                        for (int i = 0; i < tempSelectBitmap.size(); i++) {
+                            if (tempSelectBitmap.get(i).tag.type.equals("1")) {
+                                imageNum++;
+                            }
+                        }
+                        if (uploadNum == imageNum) {
+                            addComment();
                         }
                     }
 
@@ -477,19 +487,17 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                         uploadNum++;
                         if (uploadNum == Bimp.tempSelectBitmap.size()) {
                             Bimp.tempSelectBitmap.clear();
-                            //Todo 图片上传失败
-                            switch (type) {
-                                case 1:
-                                    //Todo 视频只有一个，视频的图片上传成功
-                                    if (videoImages.equals("")) {
-                                        SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, "视频图片上传失败", 2.0f);
+                            if (imageIds.equals("")) {
+                                SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, "图片上传失败", 2.0f);
+                                int imageNum = 0;
+                                for (int i = 0; i < tempSelectBitmap.size(); i++) {
+                                    if (tempSelectBitmap.get(i).tag.type.equals("1")) {
+                                        imageNum++;
                                     }
-                                    break;
-                                case 2:
-                                    if (imageIds.equals("")) {
-                                        SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, "图片上传失败", 2.0f);
-                                    }
-                                    break;
+                                }
+                                if (uploadNum == imageNum) {
+                                    addComment();
+                                }
                             }
                         }
                     }
@@ -531,6 +539,10 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                             SEAPP.dismissAllowingStateLoss();
                             etContent.setText("");
                             etContent.clearComposingText();
+                            imageIds = "";
+                            videoUrls = "";
+                            videoImages = "";
+                            audioUrls = "";
                             showView(GONE, GONE, GONE, GONE, GONE, true);
                             getCommentListData();
                         }
@@ -742,10 +754,15 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     break;
                 case VIDEO_SEND_SUCCESS:
                     if (!TextUtils.isEmpty(videoUrls) && !TextUtils.isEmpty(videoImages)) {
+                        tempSelectBitmap.clear();
                         addComment();
                     }
                     break;
                 case IMAGE_SEND_SUCCESS:
+                    break;
+                case NATIVE_IMAGE_LOAD_SUCCESS:
+                    showView(GONE, VISIBLE, GONE, GONE, VISIBLE, true);
+                    videoGridAdapter.update();
                     break;
             }
         }
@@ -827,6 +844,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     public void onRecordingComplete(String filePath, long duration) {
         isRecording = false;
         mVoiceFilePath = audioManager.getRecordingFilePath();
+        tempSelectBitmap.clear();
     }
 
     /**
@@ -836,6 +854,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     public static final int GENERATED_THUMBNAIL = 117;// 生成一张视频的缩略图，通知刷新
     public static final int VIDEO_SEND_SUCCESS = 118;// 视频上传成功
     public static final int IMAGE_SEND_SUCCESS = 119;// 图片上传成功
+    public static final int NATIVE_IMAGE_LOAD_SUCCESS = 120;// 本地图片加载成功
     public static List<Video> selectedVideoList = new ArrayList<>();
     private ExecutorService mFixedExecutor = Executors.newFixedThreadPool(6);
 
@@ -860,22 +879,73 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             mFixedExecutor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    Bitmap bitmap = VideoThumbnailUtil.getVideoThumbnail(video.getPath(), 400, 400, MediaStore.Images.Thumbnails.MICRO_KIND);
-                    String saveImage = PictureUtil.saveImage(bitmap);
+                    Bitmap bitmap = VideoThumbnailUtil.getVideoThumbnail(video.getPath(), 100, 100, MediaStore.Images.Thumbnails.MICRO_KIND);
                     video.setThumbnailBitmap(bitmap);
                     PicInfo pi = new PicInfo();
                     pi.type = "3";
                     pi.isNew = true;
                     pi.path = video.getPath();
-                    pi.pic = saveImage;
                     ImageItem imageItem = new ImageItem();
                     imageItem.setBitmap(video.getThumbnailBitmap());
                     imageItem.tag = pi;
                     tempSelectBitmap.add(imageItem);
                     handler.sendEmptyMessage(GENERATED_THUMBNAIL);
+                    mVoiceFilePath = "";
                 }
             });
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case TAKE_PICTURE:
+                    String fileName = String.valueOf(System.currentTimeMillis());
+                    Bitmap bm = (Bitmap) data.getExtras().get("data");
+                    ImageItem takePhoto = new ImageItem();
+                    String path = FileUtils.saveBitmap(bm, fileName);
+                    takePhoto.setImagePath(path);
+                    takePhoto.setBitmap(bm);
+                    PicInfo pi = new PicInfo();
+                    pi.path = path;
+                    pi.type = "1";
+                    takePhoto.tag = pi;
+                    tempSelectBitmap.add(takePhoto);
+                    handler.sendEmptyMessage(NATIVE_IMAGE_LOAD_SUCCESS);
+                    mVoiceFilePath = "";
+                    break;
+                case CommonConstant.CODE_REQUEST_VIDEO_RECORD:
+                    Uri uri = data.getData();
+                    ImageItem imageItem = createImageItem(uri);
+                    if (TextUtils.isEmpty(imageItem.tag.path)) {
+                        ToastUtil.showToastShort(mContext, "视频录制失败");
+                        break;
+                    }
+                    tempSelectBitmap.add(imageItem);
+                    handler.sendEmptyMessage(GENERATED_THUMBNAIL);
+                    mVoiceFilePath = "";
+                    break;
+            }
+        }
+    }
+
+    private ImageItem createImageItem(Uri uri) {
+        Cursor cursor = this.getContentResolver().query(uri, null, null, null, null);
+        ImageItem imageItem = new ImageItem();
+        if (cursor != null && cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.VideoColumns._ID));
+            String filePath = cursor.getString(cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA));
+            Bitmap bitmap = MediaStore.Video.Thumbnails.getThumbnail(getContentResolver(), id, MediaStore.Video.Thumbnails.MICRO_KIND, null);
+            cursor.close();
+            imageItem.setBitmap(bitmap);
+            PicInfo pi = new PicInfo();
+            pi.path = filePath;
+            pi.type = "3";
+            imageItem.tag = pi;
+        }
+        return imageItem;
     }
 
     /**
