@@ -24,13 +24,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.snail.pulltorefresh.PullToRefreshListView
-                xmlns:ptr="http://schemas.android.com/apk/res-auto"
-                ptr:ptrAnimationStyle="flip"
+            <com.snail.pulltorefresh.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/listview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white" />
+                android:background="@color/white"
+                ptr:ptrAnimationStyle="flip" />
 
             <LinearLayout
                 android:id="@+id/all_search_view"
@@ -43,4 +42,14 @@
         </FrameLayout>
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/deploy_post_icon"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="@dimen/dp_45"
+        android:layout_marginEnd="@dimen/dp_25"
+        android:layout_marginRight="@dimen/dp_25"
+        android:scaleType="fitXY"
+        android:src="@drawable/deploy_post_icon" />
 </FrameLayout>

@@ -32,9 +32,6 @@ public class PostDetailVideoGridAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        if (Bimp.tempSelectBitmap.size() == 9) {
-            return 9;
-        }
         return Bimp.tempSelectBitmap.size();
     }
 

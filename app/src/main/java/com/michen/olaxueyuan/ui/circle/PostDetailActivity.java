@@ -137,7 +137,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     @Bind(R.id.bottom_view_grid)
     GridView bottomViewGrid;
 
-    PostCommentAdapter commentAdapter;
     @Bind(R.id.voice_record_img)
     ImageView voiceRecordImg;
     @Bind(R.id.voice_record_view)
@@ -165,6 +164,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     @Bind(R.id.bottom_video_img_grid)
     NoScrollGridView bottomVideoImgGrid;
 
+    PostCommentAdapter commentAdapter;
     private Context mContext;
     private CommentModule.ResultBean commentResultBean;
     private PostDetailModule.ResultBean resultBean;
@@ -172,7 +172,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private PostDetailVideoGridAdapter videoGridAdapter;
     Vibrator vibrator;
     private int circleId;
-    private String imageIds;//上传之后的图片id
+    private String imageIds = "";//上传之后的图片id
     private String videoUrls;//上传视频之后视频的url
     private String videoImages;//上传视频之后获取到的img
     private String audioUrls;//上传音频
@@ -209,6 +209,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         bottomViewGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                tempSelectBitmap.clear();
                 switch (bottomGridAdapter.listBeans.get(position).getPosition()) {
                     case PostDetailBottomGridAdapter.CAMERA://拍照
                         Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -217,7 +218,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     case PostDetailBottomGridAdapter.PICTURE://相册
                         Intent intent = new Intent(PostDetailActivity.this, AlbumActivity.class);
                         startActivity(intent);
-                        overridePendingTransition(R.anim.activity_translate_in, R.anim.activity_translate_out);
                         break;
                     case PostDetailBottomGridAdapter.VIDEO://视频
                         startActivity(new Intent(PostDetailActivity.this, MultiSelectVideoListActivity.class));
@@ -978,9 +978,11 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     protected void onResume() {
         super.onResume();
         if (tempSelectBitmap.size() == 0) {
-            videoGridAdapter.update();
             showView(GONE, GONE, GONE, GONE, GONE, true);
+        } else {
+            showView(GONE, VISIBLE, GONE, GONE, VISIBLE, true);
         }
+        videoGridAdapter.update();
         SharePlatformManager.getInstance().dismissShareView();
     }
 

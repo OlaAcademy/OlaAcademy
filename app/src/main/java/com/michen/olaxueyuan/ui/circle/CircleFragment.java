@@ -24,15 +24,20 @@ import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.CircleClickEvent;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
+import com.michen.olaxueyuan.protocol.result.MessageUnreadTotalCountResult;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
+import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.CircleAdapter;
+import com.michen.olaxueyuan.ui.home.HomeFragment;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.manager.CirclePopManager;
+import com.michen.olaxueyuan.ui.question.InformationListActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -73,6 +78,10 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     private static final String PAGE_SIZE = "20";//每次加载20条
 
     CircleAdapter adapter;
+    @Bind(R.id.deploy_post_icon)
+    ImageView deployPostIcon;
+    @Bind(R.id.red_dot)
+    TextView redDot;
 
     private SharePopupWindow share;
 
@@ -93,7 +102,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
     private void initView() {
         titleManager = new TitleManager(R.string.ola_circle, this, rootView, false);
-        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.ic_circle_add);
+//        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.ic_circle_add);
+        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
         Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
         drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
         titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
@@ -144,14 +154,18 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         });
     }
 
-    @OnClick({R.id.right_response, R.id.title_tv})
+    @OnClick({R.id.right_response, R.id.title_tv, R.id.deploy_post_icon, R.id.red_dot})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.right_response:
-                Utils.jumpLoginOrNot(getActivity(),DeployPostActivity.class);
+            case R.id.red_dot:
+                Utils.jumpLoginOrNot(getActivity(), InformationListActivity.class);
                 break;
             case R.id.title_tv:
                 CirclePopManager.getInstance().showMarkPop(getActivity(), popLine, this, allSearchView);
+                break;
+            case R.id.deploy_post_icon:
+                Utils.jumpLoginOrNot(getActivity(), DeployPostActivity.class);
                 break;
         }
     }
@@ -164,7 +178,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     }
 
     /**
-     * {@link com.michen.olaxueyuan.ui.home.HomeFragment#chageIndex(int)}
+     * {@link HomeFragment#chageIndex(int)}
      */
     public void onEventMainThread(ChangeIndexEvent changeIndexEvent) {
         if (changeIndexEvent.isChange) {
@@ -172,6 +186,14 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
             titleTv.setText(getActivity().getResources().getStringArray(R.array.circle_select)[2]);
             fetchData("", PAGE_SIZE);
         }
+    }
+
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        if (redDot == null) {
+            return;
+        }
+        fetchData("", PAGE_SIZE);
+        getUnReadMessageCount();
     }
 
     /**
@@ -193,10 +215,42 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         }
     }
 
+    private void getUnReadMessageCount() {
+        SEAPP.showCatDialog(this);
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+        } else {
+            return;
+        }
+        QuestionCourseManager.getInstance().getUnreadTotalCount(userId, new Callback<MessageUnreadTotalCountResult>() {
+            @Override
+            public void success(MessageUnreadTotalCountResult messageUnreadTotalCountResult, Response response) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
+                    if (messageUnreadTotalCountResult.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), messageUnreadTotalCountResult.getMessage(), 2.0f);
+                    } else {
+//                        refreshData(messageUnreadTotalCountResult.getResult());
+
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
+                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+                }
+            }
+        });
+    }
+
     private void praise(final int position) {
 //        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
         SEAPP.showCatDialog(this);
-        MCCircleManager.getInstance().praiseCirclePost(SEUserManager.getInstance().getUserId(),String.valueOf(list.get(position).getCircleId()), new Callback<PraiseCirclePostResult>() {
+        MCCircleManager.getInstance().praiseCirclePost(SEUserManager.getInstance().getUserId(), String.valueOf(list.get(position).getCircleId()), new Callback<PraiseCirclePostResult>() {
             @Override
             public void success(PraiseCirclePostResult mcCommonResult, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {

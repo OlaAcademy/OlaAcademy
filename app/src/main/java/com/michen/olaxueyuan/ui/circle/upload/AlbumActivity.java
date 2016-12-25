@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.photo.adapter.AlbumGridViewAdapter;
 import com.snail.photo.upload.Constants;
@@ -53,12 +54,14 @@ public class AlbumActivity extends SEBaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Res.getLayoutID("plugin_camera_album"));
+//        setContentView(Res.getLayoutID("plugin_camera_album"));
+        setContentView(R.layout.plugin_camera_album);
         setTitleText("选取图片");
         PublicWay.activityList.add(this);
         mContext = this;
         register();
-        bitmap = BitmapFactory.decodeResource(getResources(), Res.getDrawableID("plugin_camera_no_pictures"));
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plugin_camera_no_pictures);
+//        bitmap = BitmapFactory.decodeResource(getResources(), Res.getDrawableID("plugin_camera_no_pictures"));
         init();
         initListener();
         //这个函数主要用来控制预览和完成按钮的状态
@@ -132,18 +135,21 @@ public class AlbumActivity extends SEBaseActivity {
         setRightText("相册");
         setRightTextListener(new PhotoListener());
         setLeftImageListener(new CancelListener());
-        preview = (Button) findViewById(Res.getWidgetID("preview"));
+        preview = (Button) findViewById(R.id.preview);
+//        preview = (Button) findViewById(Res.getWidgetID("preview"));
         preview.setOnClickListener(new PreviewListener());
         intent = getIntent();
         Bundle bundle = intent.getExtras();
-        gridView = (GridView) findViewById(Res.getWidgetID("myGrid"));
+        gridView = (GridView) findViewById(R.id.myGrid);
+//        gridView = (GridView) findViewById(Res.getWidgetID("myGrid"));
         gridImageAdapter = new AlbumGridViewAdapter(this, dataList,
                 Bimp.tempSelectBitmap);
         gridView.setAdapter(gridImageAdapter);
-        tv = (TextView) findViewById(Res.getWidgetID("myText"));
+        tv = (TextView) findViewById(R.id.myText);
         gridView.setEmptyView(tv);
-        okButton = (Button) findViewById(Res.getWidgetID("ok_button"));
-        okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size()
+        okButton = (Button) findViewById(R.id.ok_button);
+//        okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size()
+        okButton.setText(getString(R.string.finish) + "(" + Bimp.tempSelectBitmap.size()
                 + "/" + PublicWay.num + ")");
     }
 
@@ -156,8 +162,9 @@ public class AlbumActivity extends SEBaseActivity {
                 if (Bimp.tempSelectBitmap.size() >= PublicWay.num) {
                     toggleButton.setChecked(false);
                     if (!removeOneData(dataList.get(position))) {
-                        Toast.makeText(AlbumActivity.this, Res.getString("only_choose_num"),Toast.LENGTH_SHORT).show();
-                    }else{ //移除成功
+//                        Toast.makeText(AlbumActivity.this, Res.getString("only_choose_num"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AlbumActivity.this, getString(R.string.only_choose_num), Toast.LENGTH_SHORT).show();
+                    } else { //移除成功
                         chooseBt.setChecked(false);
                     }
                     return;
@@ -166,7 +173,7 @@ public class AlbumActivity extends SEBaseActivity {
 //                    chooseBt.setChecked(true);
 //                    Bimp.tempSelectBitmap.add(dataList.get(position));
 //                    okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
-               //病例假中做出的修改
+                //病例假中做出的修改
                 if (isChecked) {
                     chooseBt.setChecked(true);
                     ImageItem ima = dataList.get(position);
@@ -175,11 +182,13 @@ public class AlbumActivity extends SEBaseActivity {
                     pi.isNew = true;
                     ima.tag = pi;
                     Bimp.tempSelectBitmap.add(ima);
-                    okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+//                    okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+                    okButton.setText(getString(R.string.finish) + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
                 } else {
                     chooseBt.setChecked(false);
                     Bimp.tempSelectBitmap.remove(dataList.get(position));
-                    okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+//                    okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+                    okButton.setText(getString(R.string.finish) + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
                 }
                 isShowOkBt();
             }
@@ -192,7 +201,8 @@ public class AlbumActivity extends SEBaseActivity {
     private boolean removeOneData(ImageItem imageItem) {
         if (Bimp.tempSelectBitmap.contains(imageItem)) {
             Bimp.tempSelectBitmap.remove(imageItem);
-            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+//            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+            okButton.setText(getString(R.string.finish) + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
             return true;
         }
         return false;
@@ -200,7 +210,8 @@ public class AlbumActivity extends SEBaseActivity {
 
     public void isShowOkBt() {
         if (Bimp.tempSelectBitmap.size() > 0) {
-            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+//            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+            okButton.setText(getString(R.string.finish) + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
             preview.setPressed(true);
             okButton.setPressed(true);
             preview.setClickable(true);
@@ -208,7 +219,8 @@ public class AlbumActivity extends SEBaseActivity {
             okButton.setTextColor(Color.WHITE);
             preview.setTextColor(Color.WHITE);
         } else {
-            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+//            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+            okButton.setText(getString(R.string.finish) + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
             preview.setPressed(false);
             preview.setClickable(false);
             okButton.setPressed(false);
