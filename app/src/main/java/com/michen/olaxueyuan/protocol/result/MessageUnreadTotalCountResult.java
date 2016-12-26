@@ -7,7 +7,7 @@ package com.michen.olaxueyuan.protocol.result;
 public class MessageUnreadTotalCountResult {
     /**
      * message : 成功
-     * result : {"systemCount":0,"circleCount":21,"praiseCount":0}
+     * result : {"systemCount":1,"circleCount":2,"praiseCount":0}
      * apicode : 10000
      */
 
@@ -41,36 +41,36 @@ public class MessageUnreadTotalCountResult {
 
     public static class ResultBean {
         /**
-         * systemCount : 0
-         * circleCount : 21
+         * systemCount : 1
+         * circleCount : 2
          * praiseCount : 0
          */
 
-        private String systemCount;
-        private String circleCount;
-        private String praiseCount;
+        private int systemCount;
+        private int circleCount;
+        private int praiseCount;
 
-        public String getSystemCount() {
+        public int getSystemCount() {
             return systemCount;
         }
 
-        public void setSystemCount(String systemCount) {
+        public void setSystemCount(int systemCount) {
             this.systemCount = systemCount;
         }
 
-        public String getCircleCount() {
+        public int getCircleCount() {
             return circleCount;
         }
 
-        public void setCircleCount(String circleCount) {
+        public void setCircleCount(int circleCount) {
             this.circleCount = circleCount;
         }
 
-        public String getPraiseCount() {
+        public int getPraiseCount() {
             return praiseCount;
         }
 
-        public void setPraiseCount(String praiseCount) {
+        public void setPraiseCount(int praiseCount) {
             this.praiseCount = praiseCount;
         }
     }

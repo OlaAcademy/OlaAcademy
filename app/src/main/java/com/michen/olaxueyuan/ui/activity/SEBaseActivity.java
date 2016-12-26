@@ -24,7 +24,7 @@ public class SEBaseActivity extends FragmentActivity {
     private ImageView rightImage;
     private TextView leftText, titleText, rightText;
     ActionBar actionBar;
-    protected Context mContext;
+    public Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

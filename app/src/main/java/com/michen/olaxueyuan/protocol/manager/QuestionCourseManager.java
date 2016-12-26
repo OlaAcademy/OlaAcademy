@@ -149,7 +149,7 @@ public class QuestionCourseManager {
     }
 
     /**
-     * 未读消息数
+     * 未读消息数(旧)
      *
      * @param userId
      * @param callback

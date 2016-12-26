@@ -97,6 +97,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         EventBus.getDefault().register(this);
         initView();
         fetchData("", PAGE_SIZE);
+        getUnReadMessageCount();
         return rootView;
     }
 
@@ -114,14 +115,12 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     }
 
     private void fetchData(final String circleId, String pageSize) {
-//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
         SEAPP.showCatDialog(this);
         QuestionCourseManager.getInstance().getCircleList(SEUserManager.getInstance().getUserId(), circleId, pageSize, type, new Callback<OLaCircleModule>() {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     SEAPP.dismissAllowingStateLoss();
-//                    SVProgressHUD.dismiss(getActivity());
                     listview.onRefreshComplete();
 //                Logger.json(oLaCircleModule);
                     if (oLaCircleModule.getApicode() != 10000) {
@@ -131,7 +130,6 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
                             ToastUtil.showToastShort(getActivity(), R.string.to_end);
                             return;
                         }
-//                    Logger.json(oLaCircleModule);
                         if (circleId.equals("")) {
                             list.clear();
                             listview.setAdapter(adapter);
@@ -147,7 +145,6 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     listview.onRefreshComplete();
                     SEAPP.dismissAllowingStateLoss();
-//                    SVProgressHUD.dismiss(getActivity());
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
             }
@@ -221,6 +218,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         if (SEAuthManager.getInstance().isAuthenticated()) {
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         } else {
+            redDot.setVisibility(View.GONE);
             return;
         }
         QuestionCourseManager.getInstance().getUnreadTotalCount(userId, new Callback<MessageUnreadTotalCountResult>() {
@@ -231,8 +229,12 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
                     if (messageUnreadTotalCountResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), messageUnreadTotalCountResult.getMessage(), 2.0f);
                     } else {
-//                        refreshData(messageUnreadTotalCountResult.getResult());
-
+                        int num = messageUnreadTotalCountResult.getResult().getCircleCount() + messageUnreadTotalCountResult.getResult().getPraiseCount()
+                                + messageUnreadTotalCountResult.getResult().getSystemCount();
+                        if (num > 0) {
+                            redDot.setVisibility(View.VISIBLE);
+                            redDot.setText(String.valueOf(num));
+                        }
                     }
                 }
             }
@@ -313,6 +315,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     @Override
     public void onPullDownToRefresh(PullToRefreshBase refreshView) {
         fetchData("", PAGE_SIZE);
+        getUnReadMessageCount();
     }
 
     @Override

@@ -144,7 +144,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     @Bind(R.id.voice_state)
     ImageView voiceState;
     @Bind(R.id.voice_bg)
-    LinearLayout voiceBg;
+    RelativeLayout voiceBg;
     @Bind(R.id.voice_time)
     TextView voiceTime;
     @Bind(R.id.voice_again)
@@ -163,6 +163,10 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     FrameLayout bottomView;
     @Bind(R.id.bottom_video_img_grid)
     NoScrollGridView bottomVideoImgGrid;
+    @Bind(R.id.appoint_answer_title)
+    TextView appointAnswerTitle;
+    @Bind(R.id.appoint_answer_comment_list)
+    SubListView appointAnswerCommentList;
 
     PostCommentAdapter commentAdapter;
     private Context mContext;
@@ -186,8 +190,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         mContext = this;
-        etContent.clearFocus();
-        setTitleText("欧拉分享");
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://upload.olaxueyuan.com").build();
         uploadService = restAdapter.create(UploadService.class);
         initView();
@@ -197,6 +199,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     }
 
     private void initView() {
+        etContent.clearFocus();
+        setTitleText("欧拉分享");
         circleId = getIntent().getIntExtra("circleId", 0);
         queryCircleDetail(String.valueOf(circleId));
         commentAdapter = new PostCommentAdapter(this);

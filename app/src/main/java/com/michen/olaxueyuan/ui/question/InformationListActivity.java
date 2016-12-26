@@ -2,7 +2,6 @@ package com.michen.olaxueyuan.ui.question;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -98,19 +97,19 @@ public class InformationListActivity extends SEBaseActivity implements PullToRef
     }
 
     private void refreshData(MessageUnreadTotalCountResult.ResultBean result) {
-        if (!TextUtils.isEmpty(result.getCircleCount()) && Integer.parseInt(result.getCircleCount()) > 0) {
+        if (result.getCircleCount() > 0) {
             answerUnreadDot.setVisibility(View.VISIBLE);
-            answerUnreadDot.setText(result.getCircleCount());
+            answerUnreadDot.setText(String.valueOf(result.getCircleCount()));
         }
         answerContent.setText(getString(R.string.pending_deal_comment, result.getCircleCount()));
-        if (!TextUtils.isEmpty(result.getPraiseCount()) && Integer.parseInt(result.getPraiseCount()) > 0) {
+        if (result.getPraiseCount() > 0) {
             praiseUnreadDot.setVisibility(View.VISIBLE);
-            praiseUnreadDot.setText(result.getPraiseCount());
+            praiseUnreadDot.setText(String.valueOf(result.getPraiseCount()));
         }
         praiseContent.setText(getString(R.string.num_praise, result.getPraiseCount()));
-        if (!TextUtils.isEmpty(result.getSystemCount()) && Integer.parseInt(result.getSystemCount()) > 0) {
+        if (result.getSystemCount() > 0) {
             systemUnreadDot.setVisibility(View.VISIBLE);
-            systemUnreadDot.setText(result.getSystemCount());
+            systemUnreadDot.setText(String.valueOf(result.getSystemCount()));
         }
         systemContent.setText(getString(R.string.pending_deal_system_info, result.getSystemCount()));
     }
