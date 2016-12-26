@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.snail.photo.R;
 import com.snail.photo.util.BitmapCache;
 import com.snail.photo.util.BitmapCache.ImageCallback;
 import com.snail.photo.util.ImageItem;
@@ -94,13 +95,17 @@ public class AlbumGridViewAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(
-                    Res.getLayoutID("plugin_camera_select_imageview"), parent, false);
+                    R.layout.plugin_camera_select_imageview, parent, false);
+//                    Res.getLayoutID("plugin_camera_select_imageview"), parent, false);
             viewHolder.imageView = (ImageView) convertView
-                    .findViewById(Res.getWidgetID("image_view"));
+                    .findViewById(R.id.image_view);
+//                    .findViewById(Res.getWidgetID("image_view"));
             viewHolder.toggleButton = (ToggleButton) convertView
-                    .findViewById(Res.getWidgetID("toggle_button"));
-            viewHolder.choosetoggle = (CheckBox) convertView.findViewById(Res.getWidgetID("choosedbt"));
-//			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,dipToPx(65)); 
+                    .findViewById(R.id.toggle_button);
+//                    .findViewById(Res.getWidgetID("toggle_button"));
+//            viewHolder.choosetoggle = (CheckBox) convertView.findViewById(Res.getWidgetID("choosedbt"));
+            viewHolder.choosetoggle = (CheckBox) convertView.findViewById(R.id.choosedbt);
+//			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,dipToPx(65));
 //			lp.setMargins(50, 0, 50,0); 
 //			viewHolder.imageView.setLayoutParams(lp);
             convertView.setTag(viewHolder);
@@ -113,13 +118,14 @@ public class AlbumGridViewAdapter extends BaseAdapter {
         else
             path = "camera_default";
         if (path.contains("camera_default")) {
-            viewHolder.imageView.setImageResource(Res.getDrawableID("plugin_camera_no_pictures"));
+            viewHolder.imageView.setImageResource(R.drawable.plugin_camera_no_pictures);
+//            viewHolder.imageView.setImageResource(Res.getDrawableID("plugin_camera_no_pictures"));
         } else {
 //			ImageManager2.from(mContext).displayImage(viewHolder.imageView,
 //					path, Res.getDrawableID("plugin_camera_camera_default"), 100, 100);
             final ImageItem item = dataList.get(position);
             viewHolder.imageView.setTag(item.imagePath);
-            cache.displayBmp(viewHolder.imageView, item.thumbnailPath, item.imagePath,callback);
+            cache.displayBmp(viewHolder.imageView, item.thumbnailPath, item.imagePath, callback);
         }
         viewHolder.toggleButton.setTag(position);
         viewHolder.choosetoggle.setTag(position);
@@ -165,7 +171,7 @@ public class AlbumGridViewAdapter extends BaseAdapter {
     }
 
     public interface OnItemClickListener {
-        void onItemClick(ToggleButton view, int position,boolean isChecked, CheckBox chooseBt);
+        void onItemClick(ToggleButton view, int position, boolean isChecked, CheckBox chooseBt);
     }
 
 }
