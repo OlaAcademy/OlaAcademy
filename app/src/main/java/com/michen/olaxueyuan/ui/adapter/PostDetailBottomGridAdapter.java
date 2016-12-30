@@ -57,7 +57,7 @@ public class PostDetailBottomGridAdapter extends BaseAdapter {
         } else {
             mHolder = (ViewHolder) convertView.getTag();
         }
-        mHolder.imageItem.setBackgroundResource(listBeans.get(position).getImg());
+        mHolder.imageItem.setImageResource(listBeans.get(position).getImg());
         mHolder.text_item.setText(listBeans.get(position).getText());
         return convertView;
     }

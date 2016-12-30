@@ -62,6 +62,7 @@ import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
 import com.michen.olaxueyuan.protocol.service.UploadService;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
+import com.michen.olaxueyuan.ui.adapter.PostCommentAdapterV2;
 import com.michen.olaxueyuan.ui.adapter.PostDetailBottomGridAdapter;
 import com.michen.olaxueyuan.ui.adapter.PostDetailVideoGridAdapter;
 import com.michen.olaxueyuan.ui.circle.upload.AlbumActivity;
@@ -168,7 +169,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     @Bind(R.id.appoint_answer_comment_list)
     SubListView appointAnswerCommentList;
 
-    PostCommentAdapter commentAdapter;
+//    PostCommentAdapter commentAdapter;
+    PostCommentAdapterV2 commentAdapter;
     private Context mContext;
     private CommentModule.ResultBean commentResultBean;
     private PostDetailModule.ResultBean resultBean;
@@ -203,7 +205,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         setTitleText("欧拉分享");
         circleId = getIntent().getIntExtra("circleId", 0);
         queryCircleDetail(String.valueOf(circleId));
-        commentAdapter = new PostCommentAdapter(this);
+//        commentAdapter = new PostCommentAdapter(this);
+        commentAdapter = new PostCommentAdapterV2(this);
         listView.setAdapter(commentAdapter);
         videoGridAdapter = new PostDetailVideoGridAdapter(this);
         bottomVideoImgGrid.setAdapter(videoGridAdapter);
@@ -406,21 +409,29 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         //音频限制一个
         if (!TextUtils.isEmpty(mVoiceFilePath)) {
             uploadAudioVideo(new TypedFile("application/octet-stream", new File(mVoiceFilePath)), "amr");
+            return;
         }
         //视频限制一个
         for (int i = 0; i < tempSelectBitmap.size(); i++) {
             if (tempSelectBitmap.get(i).tag.type.equals("3")) {
                 String videoPath = tempSelectBitmap.get(0).tag.path;
                 uploadAudioVideo(new TypedFile("application/octet-stream", new File(videoPath)), "mp4");
+                break;
             }
-        }  //图片限制三个
+        }
+        //图片限制三个
         for (int i = 0; i < tempSelectBitmap.size(); i++) {
             if (tempSelectBitmap.get(i).tag.type.equals("1")) {
                 int degree = PictureUtil.readPictureDegree(tempSelectBitmap.get(i).imagePath);
                 final File imageFile = new File(Bimp.tempSelectBitmap.get(i).getImagePath());
                 uploadImagesByExecutors(new TypedFile("application/octet-stream", imageFile), degree);
             }
+            if (i == tempSelectBitmap.size() - 1) {
+                return;
+            }
         }
+        //普通文本
+        addComment();
     }
 
     private void uploadAudioVideo(final TypedFile typeFile, final String type) {
