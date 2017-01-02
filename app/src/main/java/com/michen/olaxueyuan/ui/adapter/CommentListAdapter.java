@@ -60,7 +60,7 @@ public class CommentListAdapter extends BaseAdapter {
         }
         holder.userName.setText(list.get(position).getUserName() + " 评论了回答：");
         holder.title.setText(list.get(position).getTitle());
-        holder.content.setText(list.get(position).getContent());
+//        holder.content.setText(list.get(position).getContent());
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

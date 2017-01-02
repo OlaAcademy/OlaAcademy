@@ -119,10 +119,10 @@ public class QuestionCourseManager {
      * @param audioUrls
      * @param callback
      */
-    public void addComment(String userId, String postId, String toUserId, String content, String location, String type
+    public void addComment(String userId, String postId, String toUserId, String content, String type
             , String imageIds, String videoUrls, String videoImgs, String audioUrls
             , final Callback<CommentSucessResult> callback) {
-        getQuestionService().addComment(userId, postId, toUserId, content, location, type, imageIds, videoUrls, videoImgs, audioUrls, callback);
+        getQuestionService().addComment(userId, postId, toUserId, content, type, imageIds, videoUrls, videoImgs, audioUrls, callback);
     }
 
     /**

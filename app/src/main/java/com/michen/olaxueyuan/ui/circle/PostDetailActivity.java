@@ -40,13 +40,13 @@ import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.AndUtil;
 import com.michen.olaxueyuan.common.manager.AndroidUtil;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
-import com.michen.olaxueyuan.common.manager.LocationManager;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.MyAudioManager;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.SharePlatformManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.event.PostDetailClickEvent;
 import com.michen.olaxueyuan.protocol.event.VideoRefreshEvent;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
@@ -64,7 +64,7 @@ import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapterV2;
 import com.michen.olaxueyuan.ui.adapter.PostDetailBottomGridAdapter;
-import com.michen.olaxueyuan.ui.adapter.PostDetailVideoGridAdapter;
+import com.michen.olaxueyuan.ui.adapter.PostDetailBottomMediaGridAdapter;
 import com.michen.olaxueyuan.ui.circle.upload.AlbumActivity;
 import com.michen.olaxueyuan.ui.circle.upload.Video;
 import com.michen.olaxueyuan.ui.circle.upload.VideoThumbnailUtil;
@@ -105,8 +105,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     RoundRectImageView avatar;
     @Bind(R.id.title)
     TextView title;
-    @Bind(R.id.address)
-    TextView address;
     @Bind(R.id.time)
     TextView time;
     @Bind(R.id.study_name)
@@ -169,13 +167,13 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     @Bind(R.id.appoint_answer_comment_list)
     SubListView appointAnswerCommentList;
 
-//    PostCommentAdapter commentAdapter;
+    //    PostCommentAdapter commentAdapter;
     PostCommentAdapterV2 commentAdapter;
     private Context mContext;
     private CommentModule.ResultBean commentResultBean;
     private PostDetailModule.ResultBean resultBean;
     private PostDetailBottomGridAdapter bottomGridAdapter;
-    private PostDetailVideoGridAdapter videoGridAdapter;
+    private PostDetailBottomMediaGridAdapter videoGridAdapter;
     Vibrator vibrator;
     private int circleId;
     private String imageIds = "";//上传之后的图片id
@@ -196,7 +194,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         uploadService = restAdapter.create(UploadService.class);
         initView();
         initAudio();//初始化播放录音的操作
-        LocationManager.getInstance().locations(this);
         getCommentListData();
     }
 
@@ -208,7 +205,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 //        commentAdapter = new PostCommentAdapter(this);
         commentAdapter = new PostCommentAdapterV2(this);
         listView.setAdapter(commentAdapter);
-        videoGridAdapter = new PostDetailVideoGridAdapter(this);
+        videoGridAdapter = new PostDetailBottomMediaGridAdapter(this);
         bottomVideoImgGrid.setAdapter(videoGridAdapter);
         bottomGridAdapter = new PostDetailBottomGridAdapter(this);
         bottomViewGrid.setAdapter(bottomGridAdapter);
@@ -304,11 +301,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         time.setText(resultBean.getTime());
         studyName.setText(resultBean.getContent());
         commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
-        if (!TextUtils.isEmpty(resultBean.getLocation())) {
-            address.setText("@" + resultBean.getLocation());
-        } else {
-            address.setText("");
-        }
         if (!TextUtils.isEmpty(resultBean.getImageGids())) {
             ArrayList<String> imageUrls = PictureUtils.getListFromString(resultBean.getImageGids());
             final ArrayList<String> imageList = imageUrls;
@@ -374,6 +366,15 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 showView(GONE, VISIBLE, VISIBLE, GONE, GONE, true);
                 break;
             default:
+                break;
+        }
+    }
+
+    public void onEventMainThread(PostDetailClickEvent postDetailClickEvent) {
+        switch (postDetailClickEvent.type) {
+            case 1:
+                //Todo 对每个评论点赞,需要单独的评论id
+                praise();
                 break;
         }
     }
@@ -548,7 +549,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 toUserId = "";
             }
             QuestionCourseManager.getInstance().addComment(user.getId(), postId, toUserId
-                    , content, LocationManager.location, "2", imageIds, videoUrls, videoImages, audioUrls, new Callback<CommentSucessResult>() {
+                    , content, "2", imageIds, videoUrls, videoImages, audioUrls, new Callback<CommentSucessResult>() {
                         @Override
                         public void success(CommentSucessResult commentSuccess, Response response) {
                             SEAPP.dismissAllowingStateLoss();
@@ -1015,5 +1016,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         commentAdapter.stopDownload();
         AndroidUtil.stopVibrate(vibrator);
         selectedVideoList.clear();
+        Bimp.tempSelectBitmap.clear();
     }
 }

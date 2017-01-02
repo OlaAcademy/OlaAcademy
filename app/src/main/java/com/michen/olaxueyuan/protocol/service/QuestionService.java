@@ -129,7 +129,6 @@ public interface QuestionService {
                     @Field("postId") String postId,
                     @Field("toUserId") String toUserId,
                     @Field("content") String content,
-                    @Field("location") String location,
                     @Field("type") String type,
                     @Field("imageIds") String imageIds,
                     @Field("videoUrls") String videoUrls,

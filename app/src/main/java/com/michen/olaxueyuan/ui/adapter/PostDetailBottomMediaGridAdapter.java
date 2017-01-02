@@ -18,11 +18,11 @@ import com.snail.photo.util.Bimp;
  * Created by mingge on 2016/12/19.
  */
 
-public class PostDetailVideoGridAdapter extends BaseAdapter {
+public class PostDetailBottomMediaGridAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
 
-    public PostDetailVideoGridAdapter(Context context) {
+    public PostDetailBottomMediaGridAdapter(Context context) {
         this.context = context;
         inflater = LayoutInflater.from(context);
     }

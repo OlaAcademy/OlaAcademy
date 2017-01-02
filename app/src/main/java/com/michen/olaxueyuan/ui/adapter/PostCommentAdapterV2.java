@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -14,6 +15,8 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,6 +31,7 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.Logger;
@@ -35,10 +39,13 @@ import com.michen.olaxueyuan.common.manager.MyAudioManager;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.event.PostDetailClickEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
+import com.michen.olaxueyuan.ui.circle.ReviewMultimediaActivity;
+import com.michen.olaxueyuan.ui.circle.upload.VideoThumbnailUtil;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.photo.util.NoScrollGridView;
 import com.squareup.picasso.Picasso;
@@ -121,23 +128,38 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
             Picasso.with(mContext).load(avatarUrl).placeholder(R.drawable.ic_default_avatar)
                     .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(holder.itemCommentAvatar);
         }
+        holder.commentPraise.setText(String.valueOf(list.get(position).getPraiseNumber()));
         if (!TextUtils.isEmpty(list.get(position).getAudioUrls())) {
             holder.voiceBg.setVisibility(View.VISIBLE);
         } else {
             holder.voiceBg.setVisibility(View.GONE);
-
         }
         if (!TextUtils.isEmpty(list.get(position).getVideoUrls())) {
             holder.videoView.setVisibility(View.VISIBLE);
+            Picasso.with(mContext).load(SEAPP.MEDIA_BASE_URL + "/" + list.get(position).getVideoImgs()).placeholder(R.drawable.system_wu)
+                    .error(R.drawable.system_wu).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(holder.videoImage);
         } else {
             holder.videoView.setVisibility(View.GONE);
-
         }
         if (!TextUtils.isEmpty(list.get(position).getImageIds())) {
             holder.imageGridview.setVisibility(View.VISIBLE);
+            ArrayList<String> imageUrls = PictureUtils.getListFromString(list.get(position).getImageIds());
+            final ArrayList<String> imageList = imageUrls;
+            if (imageUrls.size() == 1) {
+                holder.imageGridview.setNumColumns(1);
+            } else {
+                holder.imageGridview.setNumColumns(3);
+            }
+            holder.imageGridview.setAdapter(new NoScrollGridAdapter(mContext, imageUrls));
+            // 点击回帖九宫格，查看大图
+            holder.imageGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    PictureUtils.viewPictures(mContext, position, imageList);
+                }
+            });
         } else {
             holder.imageGridview.setVisibility(View.GONE);
-
         }
         switch (list.get(position).getVoiceState()) {
             case 0:
@@ -158,6 +180,25 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
                 PictureUtils.viewPictures(mContext, list.get(position).getUserAvatar());
             }
         });
+        holder.videoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String videoUrl = list.get(position).getVideoUrls();
+                // 调用系统自带的播放器来播放流媒体视频
+                Intent playIntent = new Intent(Intent.ACTION_VIEW);
+                if (!TextUtils.isEmpty(videoUrl)) {
+                    String extension = MimeTypeMap.getFileExtensionFromUrl(videoUrl);
+                    String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                    playIntent.setDataAndType(Uri.parse(SEAPP.MEDIA_BASE_URL + "/" + videoUrl), mimeType);
+
+                } else {
+                    ToastUtil.showToastShort(mContext, "播放地址不存在");
+                    return;
+                }
+                Intent finalIntent = VideoThumbnailUtil.filterIntentByType(mContext, playIntent);
+                mContext.startActivity(finalIntent);
+            }
+        });
         holder.voiceBg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +209,13 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
                     }
                 }
                 downloadAudio(list.get(position).getAudioUrls(), position);
+            }
+        });
+        holder.commentPraise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new PostDetailClickEvent(1, position));
+                holder.commentPraise.setText(String.valueOf(list.get(position).getPraiseNumber() + 1));
             }
         });
         convertView.setOnClickListener(new View.OnClickListener() {

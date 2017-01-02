@@ -17,6 +17,7 @@ import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.DateUtils;
+import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.CircleClickEvent;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
@@ -68,7 +69,7 @@ public class CircleAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.fragment_circle_listview_item, null);
+            convertView = View.inflate(mContext, R.layout.fragment_circle_listview_item_v2, null);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -125,7 +126,8 @@ public class CircleAdapter extends BaseAdapter {
                 holder.commentPraise.setText(String.valueOf(list.get(position).getPraiseNumber()));
                 if (!TextUtils.isEmpty(list.get(position).getImageGids())) {
                     holder.gridview.setVisibility(View.VISIBLE);
-                    ArrayList<String> imageUrls = getListFromString(list.get(position).getImageGids());
+//                    ArrayList<String> imageUrls = getListFromString(list.get(position).getImageGids());
+                    ArrayList<String> imageUrls = PictureUtils.getListFromString(list.get(position).getImageGids());
                     final ArrayList<String> imageList = imageUrls;
                     if (imageUrls.size() == 1) {
                         holder.gridview.setNumColumns(1);
@@ -137,7 +139,8 @@ public class CircleAdapter extends BaseAdapter {
                     holder.gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            imageBrower(position, imageList);
+//                            imageBrower(position, imageList);
+                            PictureUtils.viewPictures(mContext,position,imageList);
                         }
                     });
                 } else {

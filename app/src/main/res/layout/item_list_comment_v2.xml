@@ -15,7 +15,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="@dimen/dp_10"
         android:background="@drawable/ic_default_avatar"
         app:siBorderAlpha="0"
         app:siBorderWidth="0dp"
@@ -59,13 +59,7 @@
             android:id="@+id/video_view"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/video_white_play_icon" />
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/video_image"
@@ -73,6 +67,11 @@
                 android:layout_height="110dp"
                 android:src="@drawable/system_wu" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/video_white_play_icon" />
         </FrameLayout>
 
         <RelativeLayout
@@ -81,7 +80,7 @@
             android:layout_height="@dimen/dp_45"
             android:layout_marginRight="@dimen/dp_38"
             android:background="@drawable/shape_rectangle_blue_bg_25dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/voice_icon"

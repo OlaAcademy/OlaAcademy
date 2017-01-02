@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:paddingBottom="@dimen/dp_3"
+        android:paddingBottom="@dimen/dp_5"
         android:paddingLeft="@dimen/dp_10"
         android:paddingRight="@dimen/dp_10"
         android:paddingTop="@dimen/dp_5"
@@ -38,9 +38,8 @@
         android:singleLine="true"
         android:text="我的评论"
         android:textColor="@color/black_272b36"
-        android:textSize="@dimen/sp_14" />
+        android:textSize="@dimen/sp_14"
+        android:visibility="gone" />
 
-    <View
-        style="@style/line_horizontal"
-        android:layout_height="@dimen/dp_10" />
+    <View style="@style/line_horizontal" />
 </LinearLayout>
