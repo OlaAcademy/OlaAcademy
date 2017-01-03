@@ -60,12 +60,10 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CircleFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener2, PlatformActionListener, Handler.Callback, CirclePopManager.CircleClickListener {
+public class CircleFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener2, PlatformActionListener, Handler.Callback {
     List<OLaCircleModule.ResultBean> list = new ArrayList<>();
     TitleManager titleManager;
     View rootView;
-    @Bind(R.id.title_tv)
-    TextView titleTv;
     @Bind(R.id.right_response)
     ImageView rightResponse;
     @Bind(R.id.listview)
@@ -74,7 +72,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     LinearLayout allSearchView;
     @Bind(R.id.pop_line2)
     View popLine;
-    public static String type = "";//1 学习记录 2 帖子 "" 全部
+    public static String type = "2";//1 学习记录 2 帖子 "" 全部
     private static final String PAGE_SIZE = "20";//每次加载20条
 
     CircleAdapter adapter;
@@ -103,11 +101,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
     private void initView() {
         titleManager = new TitleManager(R.string.ola_circle, this, rootView, false);
-//        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.ic_circle_add);
         titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
-        Drawable drawable = getResources().getDrawable(R.drawable.title_down_nromal);
-        drawable.setBounds(10, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
-        titleManager.title_tv.setCompoundDrawables(null, null, drawable, null);
         adapter = new CircleAdapter(getActivity());
         listview.getRefreshableView().setDivider(null);
         listview.setMode(PullToRefreshBase.Mode.BOTH);
@@ -160,7 +154,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
                 Utils.jumpLoginOrNot(getActivity(), InformationListActivity.class);
                 break;
             case R.id.title_tv:
-                CirclePopManager.getInstance().showMarkPop(getActivity(), popLine, this, allSearchView);
+//                CirclePopManager.getInstance().showMarkPop(getActivity(), popLine, this, allSearchView);
                 break;
             case R.id.deploy_post_icon:
                 Utils.jumpLoginOrNot(getActivity(), DeployPostActivity.class);
@@ -181,7 +175,6 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     public void onEventMainThread(ChangeIndexEvent changeIndexEvent) {
         if (changeIndexEvent.isChange) {
             this.type = "2";
-            titleTv.setText(getActivity().getResources().getStringArray(R.array.circle_select)[2]);
             fetchData("", PAGE_SIZE);
         }
     }
@@ -364,19 +357,5 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
             share.dismiss();
         }
         return false;
-    }
-
-    @Override
-    public void circlePosition(int type, String text) {
-        titleTv.setText(text);
-        switch (type) {
-            case 0:
-                this.type = "";
-                break;
-            default:
-                this.type = String.valueOf(type);
-                break;
-        }
-        fetchData("", PAGE_SIZE);
     }
 }
