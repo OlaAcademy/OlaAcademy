@@ -39,12 +39,10 @@ import com.michen.olaxueyuan.common.manager.MyAudioManager;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
-import com.michen.olaxueyuan.protocol.event.PostDetailClickEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
-import com.michen.olaxueyuan.ui.circle.ReviewMultimediaActivity;
 import com.michen.olaxueyuan.ui.circle.upload.VideoThumbnailUtil;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.photo.util.NoScrollGridView;
@@ -118,6 +116,7 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
             holder.itemCommentOriginalContent.setText(list.get(position).getContent());
         }
         holder.commentTime.setText(list.get(position).getTime());
+        holder.numRead.setText("回复" + list.get(position).getPraiseNumber());
         if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
             String avatarUrl = "";
             if (list.get(position).getUserAvatar().contains(".")) {
@@ -128,7 +127,6 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
             Picasso.with(mContext).load(avatarUrl).placeholder(R.drawable.ic_default_avatar)
                     .error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(holder.itemCommentAvatar);
         }
-        holder.commentPraise.setText(String.valueOf(list.get(position).getPraiseNumber()));
         if (!TextUtils.isEmpty(list.get(position).getAudioUrls())) {
             holder.voiceBg.setVisibility(View.VISIBLE);
         } else {
@@ -137,7 +135,7 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
         if (!TextUtils.isEmpty(list.get(position).getVideoUrls())) {
             holder.videoView.setVisibility(View.VISIBLE);
             Picasso.with(mContext).load(SEAPP.MEDIA_BASE_URL + "/" + list.get(position).getVideoImgs()).placeholder(R.drawable.system_wu)
-                    .error(R.drawable.system_wu).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(holder.videoImage);
+                    .error(R.drawable.system_wu).resize(Utils.dip2px(mContext, 175), Utils.dip2px(mContext, 111)).into(holder.videoImage);
         } else {
             holder.videoView.setVisibility(View.GONE);
         }
@@ -150,7 +148,7 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
             } else {
                 holder.imageGridview.setNumColumns(3);
             }
-            holder.imageGridview.setAdapter(new NoScrollGridAdapter(mContext, imageUrls));
+            holder.imageGridview.setAdapter(new NoScrollGridAdapter(mContext, imageUrls, 2));
             // 点击回帖九宫格，查看大图
             holder.imageGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -211,13 +209,7 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
                 downloadAudio(list.get(position).getAudioUrls(), position);
             }
         });
-        holder.commentPraise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new PostDetailClickEvent(1, position));
-                holder.commentPraise.setText(String.valueOf(list.get(position).getPraiseNumber() + 1));
-            }
-        });
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -398,8 +390,6 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
         FrameLayout mediaView;
         @Bind(R.id.child_content)
         TextView childContent;
-        @Bind(R.id.comment_praise)
-        TextView commentPraise;
         @Bind(R.id.num_read)
         TextView numRead;
         @Bind(R.id.comment_time)

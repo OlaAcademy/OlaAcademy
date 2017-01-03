@@ -111,24 +111,26 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     TextView studyName;
     @Bind(R.id.gridview)
     NoScrollGridView gridview;
-    @Bind(R.id.comment_comment)
-    TextView commentComment;
     @Bind(R.id.comment_empty)
     TextView commentEmpty;
     @Bind(R.id.comment_list)
     SubListView listView;
-    @Bind(R.id.comment_praise)
-    TextView commentPraise;
-    @Bind(R.id.comment)
-    ImageView comment;
-    @Bind(R.id.share)
-    ImageView share;
+    @Bind(R.id.child_content)
+    TextView childContent;
+    @Bind(R.id.num_read)
+    TextView numRead;
+    @Bind(R.id.num_comment)
+    TextView numComment;
+    @Bind(R.id.open_more_content)
+    TextView openMoreContent;
+    @Bind(R.id.type_view)
+    LinearLayout typeView;
+    @Bind(R.id.focus_view)
+    LinearLayout focusView;
     @Bind(R.id.et_content)
     EditText etContent;
     @Bind(R.id.bt_send)
     Button btSend;
-    @Bind(R.id.comment_layout)
-    RelativeLayout commentLayout;
     @Bind(R.id.key_voice)
     ImageView keyVoice;
     @Bind(R.id.view_more)
@@ -169,6 +171,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
     //    PostCommentAdapter commentAdapter;
     PostCommentAdapterV2 commentAdapter;
+
     private Context mContext;
     private CommentModule.ResultBean commentResultBean;
     private PostDetailModule.ResultBean resultBean;
@@ -199,7 +202,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
     private void initView() {
         etContent.clearFocus();
-        setTitleText("欧拉分享");
+        setTitleText("回答");
         circleId = getIntent().getIntExtra("circleId", 0);
         queryCircleDetail(String.valueOf(circleId));
 //        commentAdapter = new PostCommentAdapter(this);
@@ -299,8 +302,15 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             }
         }
         time.setText(resultBean.getTime());
-        studyName.setText(resultBean.getContent());
-        commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
+        studyName.setText(resultBean.getTitle());
+        if (resultBean.getContent().length() > 60) {
+            openMoreContent.setVisibility(VISIBLE);
+        } else {
+            openMoreContent.setVisibility(GONE);
+        }
+        childContent.setText(resultBean.getContent());
+        numRead.setText(resultBean.getReadNumber() + "人预览");
+        numComment.setText(resultBean.getCommentNumber() + "条评论");
         if (!TextUtils.isEmpty(resultBean.getImageGids())) {
             ArrayList<String> imageUrls = PictureUtils.getListFromString(resultBean.getImageGids());
             final ArrayList<String> imageList = imageUrls;
@@ -309,7 +319,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             } else {
                 gridview.setNumColumns(3);
             }
-            gridview.setAdapter(new NoScrollGridAdapter(mContext, imageUrls));
+            gridview.setAdapter(new NoScrollGridAdapter(mContext, imageUrls, 2));
             // 点击回帖九宫格，查看大图
             gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -322,21 +332,10 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         }
     }
 
-    @OnClick({R.id.comment_praise, R.id.comment, R.id.share, R.id.bt_send, R.id.avatar, R.id.key_voice
-            , R.id.view_more, R.id.voice_bg, R.id.voice_again})
+    @OnClick({R.id.bt_send, R.id.avatar, R.id.key_voice, R.id.view_more, R.id.voice_bg, R.id.voice_again
+            , R.id.type_view, R.id.focus_view, R.id.open_more_content})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.comment_praise:
-                praise();
-                break;
-            case R.id.comment:
-                Utils.showInputMethod(PostDetailActivity.this);
-                this.commentResultBean = null;
-                break;
-            case R.id.share:
-                SharePlatformManager.getInstance().share(mContext, findViewById(R.id.circle_detail)
-                        , resultBean.getUserAvatar(), String.valueOf(resultBean.getId()), resultBean.getContent());
-                break;
             case R.id.bt_send:
                 sendMedia();
                 break;
@@ -364,6 +363,18 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 break;
             case R.id.voice_again:
                 showView(GONE, VISIBLE, VISIBLE, GONE, GONE, true);
+                break;
+            case R.id.type_view:
+                SharePlatformManager.getInstance().share(mContext, findViewById(R.id.circle_detail)
+                        , resultBean.getUserAvatar(), String.valueOf(resultBean.getId()), resultBean.getContent());
+                break;
+            case R.id.focus_view:
+                Utils.showInputMethod(PostDetailActivity.this);
+                this.commentResultBean = null;
+                break;
+            case R.id.open_more_content:
+                childContent.setMaxLines(Integer.MAX_VALUE);
+                openMoreContent.setVisibility(GONE);
                 break;
             default:
                 break;
@@ -394,7 +405,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     SVProgressHUD.showInViewWithoutIndicator(mContext, mcCommonResult.getMessage(), 2.0f);
                 } else {
                     resultBean.setPraiseNumber(resultBean.getPraiseNumber() + 1);
-                    commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
+//                    commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
+                    numComment.setText(String.valueOf(resultBean.getCommentNumber()));
                 }
             }
 

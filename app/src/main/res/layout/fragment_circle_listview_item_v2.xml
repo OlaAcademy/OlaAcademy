@@ -73,7 +73,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="60dp"
         android:horizontalSpacing="5dp"
-        android:verticalSpacing="5dp" />
+        android:verticalSpacing="5dp"
+        android:visibility="visible" />
 
     <RelativeLayout
         android:id="@+id/comment_layout"

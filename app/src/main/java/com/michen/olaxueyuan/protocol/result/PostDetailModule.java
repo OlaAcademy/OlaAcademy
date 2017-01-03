@@ -10,29 +10,11 @@ public class PostDetailModule implements Serializable {
 
     /**
      * message : 成功
-     * result : {"content":"为满足广大备考者学习需求，欧拉学院将进行一次送课程活动，课程内容包括，陈剑数学基础课程，田然写作有效性分析课程，同学们可回复service@olaxueyuan.com，将您的id和手机号发于邮箱即可，如：小欧0880，13911110880；同时记得给予我们好评哦～","courseId":0,"id":3231,"imageGids":"02f3f5ae-918d-40ac-8ec2-78e573f1e748","location":"北京市朝阳区","praiseNumber":6,"readNumber":1,"title":"欧拉圈","type":2,"userId":517,"videoId":0,"userName":"欧拉客服","userAvatar":"59ba012f-c2d3-4564-889d-76b80c8daef4","time":"2016-08-23 16:49:22","commentList":[{"content":"已发","id":65,"location":"","postId":3231,"praiseNumber":0,"toUserId":"517","type":2,"userId":1017,"userName":"小欧咩咩","userAvatar":"1471425532624.jpg","toUserName":"欧拉客服","time":"2016-08-23 17:27:45"},{"content":"已发","id":64,"location":"北京市,朝阳区","postId":3231,"praiseNumber":0,"toUserId":"517","type":2,"userId":422,"userName":"小欧8460-豆豆","userAvatar":"","toUserName":"欧拉客服","time":"2016-08-23 17:27:15"},{"content":"已发","id":63,"location":"","postId":3231,"praiseNumber":0,"toUserId":"517","type":2,"userId":990,"userName":"小欧6900","userAvatar":"1471324624797.jpg","toUserName":"欧拉客服","time":"2016-08-23 17:26:51"},{"content":"活动名额20人","id":62,"location":"北京市,海淀区","postId":3231,"praiseNumber":0,"toUserId":"","type":2,"userId":517,"userName":"欧拉客服","userAvatar":"59ba012f-c2d3-4564-889d-76b80c8daef4","time":"2016-08-23 16:52:57"}]}
+     * result : {"assignUser":"381","commentNumber":4,"content":"指定回答","courseId":0,"id":13636,"imageGids":"5bbf52d3-b3e8-4a6f-838f-032262984e4b,","isPublic":1,"location":"","praiseNumber":1,"readNumber":60,"title":"指定回答","type":2,"userId":1292,"videoId":0,"userName":"明哥","userAvatar":"60464f71-3b08-4ba1-b4c7-4ba2af6f0597","isPraised":0,"time":"2016-12-30 16:47:23","commentList":[{"audioUrls":"","content":"图片","id":280,"imageIds":"915d19d3-419d-43e8-9bb4-a3631bcef283,832831c6-e158-4ecd-afa3-de5fbe26e932,","isRead":1,"location":"","postId":13636,"praiseNumber":0,"toUserId":"","type":2,"userId":1292,"videoImgs":"","videoUrls":"","userName":"明哥","userAvatar":"60464f71-3b08-4ba1-b4c7-4ba2af6f0597","time":"2016-12-31 11:39:02"},{"audioUrls":"","content":"上面图片的清晰度再提高一下","id":279,"imageIds":"","isRead":1,"location":"北京市,海淀区","postId":13636,"praiseNumber":0,"toUserId":"","type":2,"userId":1017,"videoImgs":"","videoUrls":"","userName":"欧啦啦","userAvatar":"1471425532624.jpg","time":"2016-12-30 21:19:56"},{"audioUrls":"","content":"我是4738","id":278,"imageIds":"","isRead":1,"location":"","postId":13636,"praiseNumber":0,"toUserId":"","type":2,"userId":378,"videoImgs":"","videoUrls":"","userName":"小欧4743","userAvatar":"1468744004262.jpg","time":"2016-12-30 16:50:34"},{"audioUrls":"","content":"我回答了","id":277,"imageIds":"","isRead":1,"location":"北京市,海淀区","postId":13636,"praiseNumber":0,"toUserId":"","type":2,"userId":381,"videoImgs":"","videoUrls":"","userName":"欧拉技术支持","userAvatar":"78de30c6-2234-4ac0-af2d-0f0b5f792f91","time":"2016-12-30 16:48:23"}]}
      * apicode : 10000
      */
 
     private String message;
-    /**
-     * content : 为满足广大备考者学习需求，欧拉学院将进行一次送课程活动，课程内容包括，陈剑数学基础课程，田然写作有效性分析课程，同学们可回复service@olaxueyuan.com，将您的id和手机号发于邮箱即可，如：小欧0880，13911110880；同时记得给予我们好评哦～
-     * courseId : 0
-     * id : 3231
-     * imageGids : 02f3f5ae-918d-40ac-8ec2-78e573f1e748
-     * location : 北京市朝阳区
-     * praiseNumber : 6
-     * readNumber : 1
-     * title : 欧拉圈
-     * type : 2
-     * userId : 517
-     * videoId : 0
-     * userName : 欧拉客服
-     * userAvatar : 59ba012f-c2d3-4564-889d-76b80c8daef4
-     * time : 2016-08-23 16:49:22
-     * commentList : [{"content":"已发","id":65,"location":"","postId":3231,"praiseNumber":0,"toUserId":"517","type":2,"userId":1017,"userName":"小欧咩咩","userAvatar":"1471425532624.jpg","toUserName":"欧拉客服","time":"2016-08-23 17:27:45"},{"content":"已发","id":64,"location":"北京市,朝阳区","postId":3231,"praiseNumber":0,"toUserId":"517","type":2,"userId":422,"userName":"小欧8460-豆豆","userAvatar":"","toUserName":"欧拉客服","time":"2016-08-23 17:27:15"},{"content":"已发","id":63,"location":"","postId":3231,"praiseNumber":0,"toUserId":"517","type":2,"userId":990,"userName":"小欧6900","userAvatar":"1471324624797.jpg","toUserName":"欧拉客服","time":"2016-08-23 17:26:51"},{"content":"活动名额20人","id":62,"location":"北京市,海淀区","postId":3231,"praiseNumber":0,"toUserId":"","type":2,"userId":517,"userName":"欧拉客服","userAvatar":"59ba012f-c2d3-4564-889d-76b80c8daef4","time":"2016-08-23 16:52:57"}]
-     */
-
     private ResultBean result;
     private int apicode;
 
@@ -61,10 +43,35 @@ public class PostDetailModule implements Serializable {
     }
 
     public static class ResultBean {
+        /**
+         * assignUser : 381
+         * commentNumber : 4
+         * content : 指定回答
+         * courseId : 0
+         * id : 13636
+         * imageGids : 5bbf52d3-b3e8-4a6f-838f-032262984e4b,
+         * isPublic : 1
+         * location :
+         * praiseNumber : 1
+         * readNumber : 60
+         * title : 指定回答
+         * type : 2
+         * userId : 1292
+         * videoId : 0
+         * userName : 明哥
+         * userAvatar : 60464f71-3b08-4ba1-b4c7-4ba2af6f0597
+         * isPraised : 0
+         * time : 2016-12-30 16:47:23
+         * commentList : [{"audioUrls":"","content":"图片","id":280,"imageIds":"915d19d3-419d-43e8-9bb4-a3631bcef283,832831c6-e158-4ecd-afa3-de5fbe26e932,","isRead":1,"location":"","postId":13636,"praiseNumber":0,"toUserId":"","type":2,"userId":1292,"videoImgs":"","videoUrls":"","userName":"明哥","userAvatar":"60464f71-3b08-4ba1-b4c7-4ba2af6f0597","time":"2016-12-31 11:39:02"},{"audioUrls":"","content":"上面图片的清晰度再提高一下","id":279,"imageIds":"","isRead":1,"location":"北京市,海淀区","postId":13636,"praiseNumber":0,"toUserId":"","type":2,"userId":1017,"videoImgs":"","videoUrls":"","userName":"欧啦啦","userAvatar":"1471425532624.jpg","time":"2016-12-30 21:19:56"},{"audioUrls":"","content":"我是4738","id":278,"imageIds":"","isRead":1,"location":"","postId":13636,"praiseNumber":0,"toUserId":"","type":2,"userId":378,"videoImgs":"","videoUrls":"","userName":"小欧4743","userAvatar":"1468744004262.jpg","time":"2016-12-30 16:50:34"},{"audioUrls":"","content":"我回答了","id":277,"imageIds":"","isRead":1,"location":"北京市,海淀区","postId":13636,"praiseNumber":0,"toUserId":"","type":2,"userId":381,"videoImgs":"","videoUrls":"","userName":"欧拉技术支持","userAvatar":"78de30c6-2234-4ac0-af2d-0f0b5f792f91","time":"2016-12-30 16:48:23"}]
+         */
+
+        private String assignUser;
+        private int commentNumber;
         private String content;
         private int courseId;
         private int id;
         private String imageGids;
+        private int isPublic;
         private String location;
         private int praiseNumber;
         private int readNumber;
@@ -74,23 +81,25 @@ public class PostDetailModule implements Serializable {
         private int videoId;
         private String userName;
         private String userAvatar;
+        private int isPraised;
         private String time;
-        /**
-         * content : 已发
-         * id : 65
-         * location :
-         * postId : 3231
-         * praiseNumber : 0
-         * toUserId : 517
-         * type : 2
-         * userId : 1017
-         * userName : 小欧咩咩
-         * userAvatar : 1471425532624.jpg
-         * toUserName : 欧拉客服
-         * time : 2016-08-23 17:27:45
-         */
-
         private List<CommentListBean> commentList;
+
+        public String getAssignUser() {
+            return assignUser;
+        }
+
+        public void setAssignUser(String assignUser) {
+            this.assignUser = assignUser;
+        }
+
+        public int getCommentNumber() {
+            return commentNumber;
+        }
+
+        public void setCommentNumber(int commentNumber) {
+            this.commentNumber = commentNumber;
+        }
 
         public String getContent() {
             return content;
@@ -122,6 +131,14 @@ public class PostDetailModule implements Serializable {
 
         public void setImageGids(String imageGids) {
             this.imageGids = imageGids;
+        }
+
+        public int getIsPublic() {
+            return isPublic;
+        }
+
+        public void setIsPublic(int isPublic) {
+            this.isPublic = isPublic;
         }
 
         public String getLocation() {
@@ -196,6 +213,14 @@ public class PostDetailModule implements Serializable {
             this.userAvatar = userAvatar;
         }
 
+        public int getIsPraised() {
+            return isPraised;
+        }
+
+        public void setIsPraised(int isPraised) {
+            this.isPraised = isPraised;
+        }
+
         public String getTime() {
             return time;
         }
@@ -213,18 +238,49 @@ public class PostDetailModule implements Serializable {
         }
 
         public static class CommentListBean {
+            /**
+             * audioUrls :
+             * content : 图片
+             * id : 280
+             * imageIds : 915d19d3-419d-43e8-9bb4-a3631bcef283,832831c6-e158-4ecd-afa3-de5fbe26e932,
+             * isRead : 1
+             * location :
+             * postId : 13636
+             * praiseNumber : 0
+             * toUserId :
+             * type : 2
+             * userId : 1292
+             * videoImgs :
+             * videoUrls :
+             * userName : 明哥
+             * userAvatar : 60464f71-3b08-4ba1-b4c7-4ba2af6f0597
+             * time : 2016-12-31 11:39:02
+             */
+
+            private String audioUrls;
             private String content;
             private int id;
+            private String imageIds;
+            private int isRead;
             private String location;
             private int postId;
             private int praiseNumber;
             private String toUserId;
             private int type;
             private int userId;
+            private String videoImgs;
+            private String videoUrls;
             private String userName;
             private String userAvatar;
-            private String toUserName;
             private String time;
+
+            public String getAudioUrls() {
+                return audioUrls;
+            }
+
+            public void setAudioUrls(String audioUrls) {
+                this.audioUrls = audioUrls;
+            }
 
             public String getContent() {
                 return content;
@@ -240,6 +296,22 @@ public class PostDetailModule implements Serializable {
 
             public void setId(int id) {
                 this.id = id;
+            }
+
+            public String getImageIds() {
+                return imageIds;
+            }
+
+            public void setImageIds(String imageIds) {
+                this.imageIds = imageIds;
+            }
+
+            public int getIsRead() {
+                return isRead;
+            }
+
+            public void setIsRead(int isRead) {
+                this.isRead = isRead;
             }
 
             public String getLocation() {
@@ -290,6 +362,22 @@ public class PostDetailModule implements Serializable {
                 this.userId = userId;
             }
 
+            public String getVideoImgs() {
+                return videoImgs;
+            }
+
+            public void setVideoImgs(String videoImgs) {
+                this.videoImgs = videoImgs;
+            }
+
+            public String getVideoUrls() {
+                return videoUrls;
+            }
+
+            public void setVideoUrls(String videoUrls) {
+                this.videoUrls = videoUrls;
+            }
+
             public String getUserName() {
                 return userName;
             }
@@ -304,14 +392,6 @@ public class PostDetailModule implements Serializable {
 
             public void setUserAvatar(String userAvatar) {
                 this.userAvatar = userAvatar;
-            }
-
-            public String getToUserName() {
-                return toUserName;
-            }
-
-            public void setToUserName(String toUserName) {
-                this.toUserName = toUserName;
             }
 
             public String getTime() {

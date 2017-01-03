@@ -116,7 +116,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
     private void fetchData(final String circleId, String pageSize) {
         SEAPP.showCatDialog(this);
-        QuestionCourseManager.getInstance().getCircleList(SEUserManager.getInstance().getUserId(), circleId, pageSize, type, new Callback<OLaCircleModule>() {
+//        QuestionCourseManager.getInstance().getCircleList(SEUserManager.getInstance().getUserId(), circleId, pageSize, type, new Callback<OLaCircleModule>() {
+        QuestionCourseManager.getInstance().getCircleList(SEUserManager.getInstance().getUserId(), circleId, pageSize, "2", new Callback<OLaCircleModule>() {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {

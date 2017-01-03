@@ -25,10 +25,17 @@ public class NoScrollGridAdapter extends BaseAdapter {
      * 图片Url集合
      */
     private ArrayList<String> imageUrls;
+    private int type = 1;
 
     public NoScrollGridAdapter(Context ctx, ArrayList<String> urls) {
         this.ctx = ctx;
         this.imageUrls = urls;
+    }
+
+    public NoScrollGridAdapter(Context ctx, ArrayList<String> urls, int type) {
+        this.ctx = ctx;
+        this.imageUrls = urls;
+        this.type = type;
     }
 
     @Override
@@ -52,13 +59,29 @@ public class NoScrollGridAdapter extends BaseAdapter {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.iv_image);
         // 根据屏幕宽度，以3列为标准计算每列宽度
         int screenWidth = ctx.getResources().getDisplayMetrics().widthPixels;
-        int itemWidth = (int) (screenWidth - (Utils.dip2px(ctx, 60 + 15))) / 3;
-        int itemHeight = (int) (screenWidth - (Utils.dip2px(ctx, 60 + 15))) / 3;
-//        int itemWidth = (int) (screenWidth - (paddingLeft + horizontalSpacing) * 2 )) / 3;
-        // 下面根据比例计算item的高度，此处只是h使用itemWidth
+        int itemWidth = 0;
+        int itemHeight = 0;
         RelativeLayout.LayoutParams param;
-        if (imageUrls.size() == 1) {
-            itemWidth = itemWidth * 3 + Utils.dip2px(ctx, 5);
+        switch (type) {
+            case 1:
+            default:
+                itemWidth = (screenWidth - (Utils.dip2px(ctx, 60 + 15))) / 3;
+                itemHeight = (screenWidth - (Utils.dip2px(ctx, 60 + 15))) / 3;
+                if (imageUrls.size() == 1) {
+                    itemWidth = itemWidth * 3 + Utils.dip2px(ctx, 5);
+                }
+                break;
+            case 2:
+                itemWidth = (screenWidth - (Utils.dip2px(ctx, 40))) / 3;
+                itemHeight = (screenWidth - (Utils.dip2px(ctx, 40))) / 3;
+                if (imageUrls.size() == 1) {
+                    itemWidth = screenWidth - Utils.dip2px(ctx, 20);
+                }
+                break;
+            case 3:
+                itemHeight = (screenWidth - (Utils.dip2px(ctx, 40))) / 3;
+                itemWidth = screenWidth - Utils.dip2px(ctx, 20);
+                break;
         }
         param = new RelativeLayout.LayoutParams(itemWidth, itemHeight);
         imageView.setLayoutParams(param);

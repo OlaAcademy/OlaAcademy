@@ -52,19 +52,21 @@
         android:id="@+id/media_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/item_comment_avatar"
         android:layout_below="@+id/item_comment_originalContent">
 
         <FrameLayout
             android:id="@+id/video_view"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/item_comment_avatar"
+            android:layout_marginLeft="@dimen/dp_5"
             android:visibility="visible">
 
             <ImageView
                 android:id="@+id/video_image"
                 android:layout_width="175dp"
-                android:layout_height="110dp"
+                android:layout_height="111dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/system_wu" />
 
             <ImageView
@@ -78,6 +80,7 @@
             android:id="@+id/voice_bg"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_45"
+            android:layout_marginLeft="@dimen/dp_5"
             android:layout_marginRight="@dimen/dp_38"
             android:background="@drawable/shape_rectangle_blue_bg_25dp"
             android:visibility="gone">
@@ -136,20 +139,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_comment_avatar"
-        android:layout_below="@+id/child_content">
-
-        <TextView
-            android:id="@+id/comment_praise"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/praise_blue_icon"
-            android:drawablePadding="3dp"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:padding="8dp"
-            android:singleLine="true"
-            android:text="0"
-            android:textColor="@color/LightTextColor" />
+        android:layout_below="@+id/child_content"
+        android:paddingBottom="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_8">
 
         <TextView
             android:id="@+id/num_read"
@@ -157,10 +149,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/comment_praise"
             android:src="@drawable/icon_comment"
-            android:text="试听0" />
+            android:text="回复0" />
 
         <TextView
             android:id="@+id/comment_time"
