@@ -52,8 +52,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/avatar"
         android:layout_below="@id/name"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
         android:lineSpacingExtra="1.2dp"
         android:paddingEnd="10dp"
         android:paddingRight="10dp"
@@ -64,6 +64,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:scaleType="centerCrop"
         android:visibility="visible" />
 
     <TextView
@@ -73,7 +75,6 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/avatar"
         android:layout_below="@+id/image"
-        android:layout_marginTop="@dimen/dp_5"
         android:text="次级内容" />
 
     <RelativeLayout

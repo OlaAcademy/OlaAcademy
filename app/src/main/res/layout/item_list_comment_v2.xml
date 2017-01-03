@@ -30,8 +30,7 @@
         android:gravity="center_vertical"
         android:maxLines="1"
         android:singleLine="true"
-        android:textColor="@color/black_323232"
-        android:textSize="15dp"
+        style="@style/normal_text_14dp_style"
         tools:text="欧拉学院" />
 
     <TextView

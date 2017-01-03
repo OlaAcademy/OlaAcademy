@@ -71,7 +71,7 @@
                             android:background="@color/line_color"
                             android:gravity="center_vertical"
                             android:paddingLeft="@dimen/dp_15"
-                            android:text="学友回答" />
+                            android:text="全部回答" />
 
                         <com.michen.olaxueyuan.common.SubListView
                             android:id="@+id/comment_list"

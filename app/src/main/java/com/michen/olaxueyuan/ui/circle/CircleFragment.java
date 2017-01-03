@@ -2,7 +2,6 @@ package com.michen.olaxueyuan.ui.circle;
 
 
 import android.app.Fragment;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,7 +20,6 @@ import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
-import com.michen.olaxueyuan.protocol.event.CircleClickEvent;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -36,7 +34,6 @@ import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.CircleAdapter;
 import com.michen.olaxueyuan.ui.home.HomeFragment;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
-import com.michen.olaxueyuan.ui.manager.CirclePopManager;
 import com.michen.olaxueyuan.ui.question.InformationListActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
@@ -72,15 +69,14 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     LinearLayout allSearchView;
     @Bind(R.id.pop_line2)
     View popLine;
-    public static String type = "2";//1 学习记录 2 帖子 "" 全部
-    private static final String PAGE_SIZE = "20";//每次加载20条
-
-    CircleAdapter adapter;
     @Bind(R.id.deploy_post_icon)
     ImageView deployPostIcon;
     @Bind(R.id.red_dot)
     TextView redDot;
 
+    public static String type = "2";//1 学习记录 2 帖子 "" 全部
+    private static final String PAGE_SIZE = "20";//每次加载20条
+    CircleAdapter adapter;
     private SharePopupWindow share;
 
     public CircleFragment() {
@@ -110,8 +106,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
     private void fetchData(final String circleId, String pageSize) {
         SEAPP.showCatDialog(this);
-//        QuestionCourseManager.getInstance().getCircleList(SEUserManager.getInstance().getUserId(), circleId, pageSize, type, new Callback<OLaCircleModule>() {
-        QuestionCourseManager.getInstance().getCircleList(SEUserManager.getInstance().getUserId(), circleId, pageSize, "2", new Callback<OLaCircleModule>() {
+        QuestionCourseManager.getInstance().getCircleList(SEUserManager.getInstance().getUserId(), circleId, pageSize, type, new Callback<OLaCircleModule>() {
             @Override
             public void success(OLaCircleModule oLaCircleModule, Response response) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
@@ -185,25 +180,6 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         }
         fetchData("", PAGE_SIZE);
         getUnReadMessageCount();
-    }
-
-    /**
-     * 点赞
-     * {@link CircleAdapter.ViewHolder#commentPraise}
-     *
-     * @param circlePraiseEvent
-     */
-    public void onEventMainThread(CircleClickEvent circlePraiseEvent) {
-        switch (circlePraiseEvent.type) {
-            case 1:
-                praise(circlePraiseEvent.position);
-                break;
-            case 2:
-                share(circlePraiseEvent.position);
-                break;
-            default:
-                break;
-        }
     }
 
     private void getUnReadMessageCount() {

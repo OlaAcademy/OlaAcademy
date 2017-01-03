@@ -168,6 +168,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     TextView appointAnswerTitle;
     @Bind(R.id.appoint_answer_comment_list)
     SubListView appointAnswerCommentList;
+    @Bind(R.id.comment_praise)
+    TextView commentPraise;
 
     //    PostCommentAdapter commentAdapter;
     PostCommentAdapterV2 commentAdapter;
@@ -303,6 +305,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         }
         time.setText(resultBean.getTime());
         studyName.setText(resultBean.getTitle());
+        commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
         if (resultBean.getContent().length() > 60) {
             openMoreContent.setVisibility(VISIBLE);
         } else {
@@ -333,9 +336,12 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     }
 
     @OnClick({R.id.bt_send, R.id.avatar, R.id.key_voice, R.id.view_more, R.id.voice_bg, R.id.voice_again
-            , R.id.type_view, R.id.focus_view, R.id.open_more_content})
+            , R.id.type_view, R.id.focus_view, R.id.open_more_content, R.id.comment_praise})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.comment_praise:
+                praise();
+                break;
             case R.id.bt_send:
                 sendMedia();
                 break;

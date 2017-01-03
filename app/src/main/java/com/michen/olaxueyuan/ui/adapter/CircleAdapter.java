@@ -108,7 +108,7 @@ public class CircleAdapter extends BaseAdapter {
             holder.image.setVisibility(View.VISIBLE);
             ViewGroup.LayoutParams layoutParams = holder.image.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.height = layoutParams.width * 300 / 750;
+            layoutParams.height = Utils.getScreenMetricsPoint(mContext).x * 300 / 750;
             holder.image.setLayoutParams(layoutParams);
             ArrayList<String> imageUrls = PictureUtils.getListFromString(list.get(position).getImageGids());
             Logger.e("imageUrls.get(0)==" + imageUrls.get(0));
