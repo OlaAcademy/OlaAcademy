@@ -19,7 +19,7 @@ import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
-import com.michen.olaxueyuan.ui.circle.PersonalHomePageActivity;
+import com.michen.olaxueyuan.protocol.result.UserPostListResult;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 import com.squareup.picasso.Picasso;
 
@@ -32,15 +32,15 @@ import butterknife.ButterKnife;
 /**
  * Created by mingge on 2016/7/11.
  */
-public class CircleAdapter extends BaseAdapter {
+public class PersonalHomePageListAdapter extends BaseAdapter {
     private Context mContext;
-    List<OLaCircleModule.ResultBean> list = new ArrayList<>();
+    List<UserPostListResult.ResultBean.DeployListBean> list = new ArrayList<>();
 
-    public CircleAdapter(Context mContext) {
+    public PersonalHomePageListAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void updateData(List<OLaCircleModule.ResultBean> list) {
+    public void updateData(List<UserPostListResult.ResultBean.DeployListBean> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -64,7 +64,7 @@ public class CircleAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.circle_list_item, null);
+            convertView = View.inflate(mContext, R.layout.personal_homepage_list_item, null);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -88,16 +88,7 @@ public class CircleAdapter extends BaseAdapter {
         holder.avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
-                    String avatarUrl = "";
-                    if (list.get(position).getUserAvatar().contains(".")) {
-                        avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar();
-                    } else {
-                        avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();
-                    }
-                    PictureUtils.viewPictures(mContext, avatarUrl);
-                }*/
-                mContext.startActivity(new Intent(mContext, PersonalHomePageActivity.class).putExtra("userId",list.get(position).getUserId()));
+                PictureUtils.viewPictures(mContext, list.get(position).getUserAvatar());
             }
         });
         holder.name.setText(list.get(position).getUserName());
@@ -113,7 +104,6 @@ public class CircleAdapter extends BaseAdapter {
             layoutParams.height = Utils.getScreenMetricsPoint(mContext).x * 300 / 750;
             holder.image.setLayoutParams(layoutParams);
             ArrayList<String> imageUrls = PictureUtils.getListFromString(list.get(position).getImageGids());
-            Logger.e("imageUrls.get(0)==" + imageUrls.get(0));
             Picasso.with(mContext).load(imageUrls.get(0)).placeholder(R.drawable.system_wu).error(R.drawable.system_wu).into(holder.image);
         } else {
             holder.image.setVisibility(View.GONE);
@@ -123,7 +113,7 @@ public class CircleAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(mContext, PostDetailActivity.class);//
-                intent.putExtra("circleId", list.get(position).getCircleId());
+                intent.putExtra("circleId", list.get(position).getId());
                 mContext.startActivity(intent);
             }
         });

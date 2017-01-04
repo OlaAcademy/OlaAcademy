@@ -15,6 +15,7 @@ import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.PraiseListResult;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.UnlockSubjectResult;
+import com.michen.olaxueyuan.protocol.result.UserPostListResult;
 
 import retrofit.Callback;
 import retrofit.http.Field;
@@ -242,4 +243,16 @@ public interface QuestionService {
             @Field("praiseId") String praiseId,
             @Field("pageSize") String pageSize,
             Callback<PraiseListResult> cb);
+
+    /**
+     * 个人主页
+     *
+     * @param userId   (必填)
+     * @param callback
+     */
+    @FormUrlEncoded
+    @POST("/ola/circle/getUserPostList")
+    void getUserPostList(
+            @Field("userId") String userId,
+            Callback<UserPostListResult> callback);
 }

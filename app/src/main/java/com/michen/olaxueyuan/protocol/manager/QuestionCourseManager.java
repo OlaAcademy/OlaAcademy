@@ -15,6 +15,7 @@ import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.PraiseListResult;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.UnlockSubjectResult;
+import com.michen.olaxueyuan.protocol.result.UserPostListResult;
 import com.michen.olaxueyuan.protocol.service.QuestionService;
 
 import retrofit.Callback;
@@ -213,5 +214,14 @@ public class QuestionCourseManager {
      */
     public void getPraiseList(String userId, String praiseId, String pageSize, Callback<PraiseListResult> callback) {
         getQuestionService().getPraiseList(userId, praiseId, pageSize, callback);
+    }
+
+    /**
+     * 个人主页
+     *  @param userId   (必填)
+     * @param callback
+     */
+    public void getUserPostList(String userId, Callback<UserPostListResult> callback) {
+        getQuestionService().getUserPostList(userId, callback);
     }
 }
