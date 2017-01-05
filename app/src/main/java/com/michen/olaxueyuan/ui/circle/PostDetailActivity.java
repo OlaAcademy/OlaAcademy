@@ -123,6 +123,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     TextView numComment;
     @Bind(R.id.open_more_content)
     TextView openMoreContent;
+    @Bind(R.id.open_more_content_ellipsis)
+    TextView openMoreContentEllipsis;
     @Bind(R.id.type_view)
     LinearLayout typeView;
     @Bind(R.id.focus_view)
@@ -226,6 +228,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                         break;
                     case PostDetailBottomGridAdapter.PICTURE://相册
                         Intent intent = new Intent(PostDetailActivity.this, AlbumActivity.class);
+                        intent.putExtra("num", 3);
                         startActivity(intent);
                         break;
                     case PostDetailBottomGridAdapter.VIDEO://视频
@@ -306,13 +309,15 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         time.setText(resultBean.getTime());
         studyName.setText(resultBean.getTitle());
         commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
-        if (resultBean.getContent().length() > 60) {
+        if (resultBean.getContent().length() > 50) {
             openMoreContent.setVisibility(VISIBLE);
+            openMoreContentEllipsis.setVisibility(VISIBLE);
         } else {
             openMoreContent.setVisibility(GONE);
+            openMoreContentEllipsis.setVisibility(GONE);
         }
         childContent.setText(resultBean.getContent());
-        numRead.setText(resultBean.getReadNumber() + "人预览");
+        numRead.setText(resultBean.getReadNumber() + "人浏览");
         numComment.setText(resultBean.getCommentNumber() + "条评论");
         if (!TextUtils.isEmpty(resultBean.getImageGids())) {
             ArrayList<String> imageUrls = PictureUtils.getListFromString(resultBean.getImageGids());
@@ -346,8 +351,9 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 sendMedia();
                 break;
             case R.id.avatar:
-                if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
-                    PictureUtils.viewPictures(mContext, resultBean.getUserAvatar());
+                if (resultBean.getUserId() != 0) {
+//                    PictureUtils.viewPictures(mContext, resultBean.getUserAvatar());
+                    startActivity(new Intent(mContext, PersonalHomePageActivity.class).putExtra("userId", resultBean.getUserId()));
                 }
                 break;
             case R.id.key_voice:
@@ -381,6 +387,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             case R.id.open_more_content:
                 childContent.setMaxLines(Integer.MAX_VALUE);
                 openMoreContent.setVisibility(GONE);
+                openMoreContentEllipsis.setVisibility(GONE);
                 break;
             default:
                 break;

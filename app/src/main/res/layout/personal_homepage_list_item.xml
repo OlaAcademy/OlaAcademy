@@ -1,114 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/selector_white_item_bg"
     android:clickable="true"
     android:descendantFocusability="blocksDescendants"
-    android:focusable="true">
-
-    <com.michen.olaxueyuan.common.RoundRectImageView
-        android:id="@+id/avatar"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_5"
-        android:background="@drawable/ic_default_avatar"
-        app:siBorderAlpha="0"
-        app:siBorderWidth="0dp"
-        app:siRadius="5dp" />
+    android:focusable="true"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/name"
+        style="@style/hint_text_12dp_style"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_toRightOf="@id/avatar"
+        android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:gravity="center_vertical"
         android:maxLines="1"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
         android:singleLine="true"
-        android:textColor="@color/black_323232"
-        android:textSize="13dp"
-        tools:text="欧拉学院" />
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:text="时间"
-        android:textColor="@color/title_hint_text_color"
-        android:textSize="11dp" />
+        android:text="" />
 
     <TextView
         android:id="@+id/title"
         style="@style/normal_text_14dp_style"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/avatar"
-        android:layout_below="@id/name"
-        android:layout_marginBottom="@dimen/dp_5"
-        android:layout_marginTop="@dimen/dp_5"
-        android:lineSpacingExtra="1.2dp"
-        android:paddingEnd="10dp"
-        android:paddingRight="10dp"
-        tools:text="这是原文内容。。。。。。。。。。。。。。。。。。。。。。。。" />
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
+        android:singleLine="true"
+        android:text="" />
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_marginBottom="@dimen/dp_5"
-        android:scaleType="centerCrop"
-        android:visibility="visible" />
-
-    <TextView
-        android:id="@+id/content"
-        style="@style/hint_text_14dp_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/avatar"
-        android:layout_below="@+id/image"
-        android:text="次级内容" />
-
-    <RelativeLayout
-        android:id="@+id/comment_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/avatar"
-        android:layout_below="@+id/content"
-        android:paddingBottom="@dimen/dp_8"
-        android:paddingTop="@dimen/dp_8">
-
-        <TextView
-            android:id="@+id/num_read"
-            style="@style/hint_text_12dp_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@drawable/icon_comment"
-            android:text="1人浏览" />
-
-        <TextView
-            android:id="@+id/num_comment"
-            style="@style/hint_text_12dp_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_30"
-            android:layout_toRightOf="@+id/num_read"
-            android:src="@drawable/icon_comment"
-            android:text="1人评论" />
-
-    </RelativeLayout>
-
-    <View
-        style="@style/line_horizontal"
-        android:layout_alignParentBottom="true" />
-</RelativeLayout>
+    <View style="@style/line_horizontal" />
+</LinearLayout>

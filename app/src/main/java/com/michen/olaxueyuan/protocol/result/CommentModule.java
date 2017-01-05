@@ -70,6 +70,7 @@ public class CommentModule implements Serializable {
                     ", videoUrls='" + videoUrls + '\'' +
                     ", videoImgs='" + videoImgs + '\'' +
                     ", voiceState=" + voiceState +
+                    ", subCount='" + subCount + '\'' +
                     '}';
         }
 
@@ -105,6 +106,24 @@ public class CommentModule implements Serializable {
         private String videoUrls;
         private String videoImgs;
         private int voiceState = 0;
+        private String subCount;
+        private String voiceTime;
+
+        public String getVoiceTime() {
+            return voiceTime;
+        }
+
+        public void setVoiceTime(String voiceTime) {
+            this.voiceTime = voiceTime;
+        }
+
+        public String getSubCount() {
+            return subCount;
+        }
+
+        public void setSubCount(String subCount) {
+            this.subCount = subCount;
+        }
 
         public int getVoiceState() {
             return voiceState;

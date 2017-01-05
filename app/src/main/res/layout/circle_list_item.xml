@@ -70,11 +70,13 @@
 
     <TextView
         android:id="@+id/content"
-        style="@style/hint_text_14dp_style"
+        style="@style/normal_text_13dp_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/avatar"
         android:layout_below="@+id/image"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:text="次级内容" />
 
     <RelativeLayout

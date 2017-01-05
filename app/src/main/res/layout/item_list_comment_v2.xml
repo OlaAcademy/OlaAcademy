@@ -23,6 +23,7 @@
 
     <TextView
         android:id="@+id/item_comment_name"
+        style="@style/normal_text_14dp_style"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_toRightOf="@id/item_comment_avatar"
@@ -30,7 +31,6 @@
         android:gravity="center_vertical"
         android:maxLines="1"
         android:singleLine="true"
-        style="@style/normal_text_14dp_style"
         tools:text="欧拉学院" />
 
     <TextView
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/item_comment_avatar"
             android:layout_marginLeft="@dimen/dp_5"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/video_image"
@@ -109,9 +109,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp_15"
-                android:text="12'"
+                android:text=""
                 android:textColor="@color/white"
-                android:textSize="@dimen/dp_13" />
+                android:textSize="@dimen/dp_13"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <com.snail.photo.util.NoScrollGridView
@@ -130,8 +131,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_comment_avatar"
         android:layout_below="@+id/media_view"
-        android:layout_marginTop="@dimen/dp_5"
-        android:text="次级内容" />
+        android:text=""
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/comment_layout"
@@ -139,8 +140,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_comment_avatar"
         android:layout_below="@+id/child_content"
-        android:paddingBottom="@dimen/dp_8"
-        android:paddingTop="@dimen/dp_8">
+        android:layout_marginBottom="@dimen/dp_5">
 
         <TextView
             android:id="@+id/num_read"

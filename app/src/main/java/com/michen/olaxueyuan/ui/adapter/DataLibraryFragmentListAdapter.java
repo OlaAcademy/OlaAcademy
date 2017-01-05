@@ -82,7 +82,7 @@ public class DataLibraryFragmentListAdapter extends BaseAdapter {
             holder.status.setVisibility(View.VISIBLE);
             holder.price.setVisibility(View.INVISIBLE);
             holder.olaCoin.setVisibility(View.INVISIBLE);
-        } else if (list.get(position).getPic().equals("0")) {
+        } else if (list.get(position).getPrice() == 0) {
             holder.status.setText("免费");
             holder.status.setVisibility(View.VISIBLE);
             holder.price.setVisibility(View.INVISIBLE);

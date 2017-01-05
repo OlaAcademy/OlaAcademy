@@ -2,26 +2,14 @@ package com.michen.olaxueyuan.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.app.SEAPP;
-import com.michen.olaxueyuan.app.SEConfig;
-import com.michen.olaxueyuan.common.RoundRectImageView;
-import com.michen.olaxueyuan.common.manager.DateUtils;
-import com.michen.olaxueyuan.common.manager.Logger;
-import com.michen.olaxueyuan.common.manager.PictureUtils;
-import com.michen.olaxueyuan.common.manager.Utils;
-import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.protocol.result.UserPostListResult;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +23,15 @@ import butterknife.ButterKnife;
 public class PersonalHomePageListAdapter extends BaseAdapter {
     private Context mContext;
     List<UserPostListResult.ResultBean.DeployListBean> list = new ArrayList<>();
+    private int type = 1;
 
     public PersonalHomePageListAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void updateData(List<UserPostListResult.ResultBean.DeployListBean> list) {
+    public void updateData(List<UserPostListResult.ResultBean.DeployListBean> list, int type) {
         this.list = list;
+        this.type = type;
         notifyDataSetChanged();
     }
 
@@ -70,44 +60,12 @@ public class PersonalHomePageListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.avatar.setRectAdius(100);
-        holder.title.setText(list.get(position).getUserName());
-        if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
-            String avatarUrl = "";
-            if (list.get(position).getUserAvatar().contains(".")) {
-                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar();
-            } else {
-                avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();
-            }
-            Picasso.with(mContext).load(avatarUrl)
-                    .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50))
-                    .into(holder.avatar);
+        if (type == 1) {
+            holder.name.setText(list.get(position).getUserName() + " 发表了回答");
         } else {
-            holder.avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
+            holder.name.setText(list.get(position).getUserName() + " 回复了回答");
         }
-        holder.avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PictureUtils.viewPictures(mContext, list.get(position).getUserAvatar());
-            }
-        });
-        holder.name.setText(list.get(position).getUserName());
-        holder.time.setText(DateUtils.formatTime(list.get(position).getTime()));
         holder.title.setText(list.get(position).getTitle());
-        holder.content.setText(list.get(position).getContent());
-        holder.numRead.setText(list.get(position).getReadNumber() + "人浏览");
-        holder.numComment.setText(list.get(position).getCommentNumber() + "人评论");
-        if (!TextUtils.isEmpty(list.get(position).getImageGids())) {
-            holder.image.setVisibility(View.VISIBLE);
-            ViewGroup.LayoutParams layoutParams = holder.image.getLayoutParams();
-            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.height = Utils.getScreenMetricsPoint(mContext).x * 300 / 750;
-            holder.image.setLayoutParams(layoutParams);
-            ArrayList<String> imageUrls = PictureUtils.getListFromString(list.get(position).getImageGids());
-            Picasso.with(mContext).load(imageUrls.get(0)).placeholder(R.drawable.system_wu).error(R.drawable.system_wu).into(holder.image);
-        } else {
-            holder.image.setVisibility(View.GONE);
-        }
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,25 +79,12 @@ public class PersonalHomePageListAdapter extends BaseAdapter {
         return convertView;
     }
 
+
     class ViewHolder {
-        @Bind(R.id.avatar)
-        RoundRectImageView avatar;
         @Bind(R.id.name)
         TextView name;
-        @Bind(R.id.time)
-        TextView time;
         @Bind(R.id.title)
         TextView title;
-        @Bind(R.id.image)
-        ImageView image;
-        @Bind(R.id.content)
-        TextView content;
-        @Bind(R.id.num_read)
-        TextView numRead;
-        @Bind(R.id.num_comment)
-        TextView numComment;
-        @Bind(R.id.comment_layout)
-        RelativeLayout commentLayout;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

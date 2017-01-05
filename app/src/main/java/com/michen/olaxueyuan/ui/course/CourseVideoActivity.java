@@ -85,6 +85,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     public SeekBar mediacontrollerSeekbar;
     @Bind(R.id.mediacontroller_file_name)
     public TextView mediacontrollerFileName;
+    @Bind(R.id.mediacontroller_speed_text)
+    public TextView speedText;
     @Bind(R.id.root_view)
     public LinearLayout rootView;
     @Bind(R.id.loading_text)
@@ -321,7 +323,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         }
     }
 
-    @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return
+    @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return, R.id.mediacontroller_speed_text
             , R.id.video_download_btn, R.id.video_collect_btn, R.id.video_share_btn, R.id.catalog_layout, R.id.handout_layout})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -388,10 +390,41 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                 mViewPager.setCurrentItem(1);
                 setDownloadPdfPosition(pdfPosition);
                 break;
+            case R.id.mediacontroller_speed_text:
+                switch (speedCount) {
+                    case 0:
+                        speedCount = 1;
+                        mVideoView.setPlaybackSpeed(1.25f);
+                        speedText.setText("1.25x");
+                        break;
+                    case 1:
+                        speedCount = 2;
+                        mVideoView.setPlaybackSpeed(1.5f);
+                        speedText.setText("1.5x");
+                        break;
+                    case 2:
+                        speedCount = 3;
+                        mVideoView.setPlaybackSpeed(1.75f);
+                        speedText.setText("1.75x");
+                        break;
+                    case 3:
+                        speedCount = 4;
+                        mVideoView.setPlaybackSpeed(2.0f);
+                        speedText.setText("2.0x");
+                        break;
+                    case 4:
+                        speedCount = 0;
+                        mVideoView.setPlaybackSpeed(1.0f);
+                        speedText.setText("1.0x");
+                        break;
+                }
+                break;
             default:
                 break;
         }
     }
+
+    int speedCount = 0;
 
     private void loginDialog() {
         DialogUtils.showDialog(CourseVideoActivity.this, new View.OnClickListener() {

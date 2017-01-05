@@ -116,7 +116,7 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
             holder.itemCommentOriginalContent.setText(list.get(position).getContent());
         }
         holder.commentTime.setText(list.get(position).getTime());
-        holder.numRead.setText("回复" + list.get(position).getPraiseNumber());
+        holder.numRead.setText("回复" + list.get(position).getSubCount());
         if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
             String avatarUrl = "";
             if (list.get(position).getUserAvatar().contains(".")) {

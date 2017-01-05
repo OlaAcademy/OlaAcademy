@@ -26,7 +26,6 @@ import com.snail.photo.util.Bimp;
 import com.snail.photo.util.ImageItem;
 import com.snail.photo.util.PicInfo;
 import com.snail.photo.util.PublicWay;
-import com.snail.photo.util.Res;
 
 import java.util.ArrayList;
 
@@ -51,6 +50,7 @@ public class AlbumActivity extends SEBaseActivity {
     public static Bitmap bitmap;
 
     private boolean isReg = false;
+    private int num = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +58,12 @@ public class AlbumActivity extends SEBaseActivity {
         setContentView(R.layout.plugin_camera_album);
         setTitleText("选取图片");
         PublicWay.activityList.add(this);
+        num = getIntent().getIntExtra("num", 0);
+        if (num > 0) {
+            PublicWay.num = num;
+        } else {
+            PublicWay.num = 9;
+        }
         mContext = this;
         register();
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plugin_camera_no_pictures);

@@ -27,6 +27,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.Vitamio;
 import io.vov.vitamio.widget.MediaControllerView;
@@ -50,6 +51,8 @@ public class VideoPlayActivity extends FragmentActivity implements View.OnClickL
     public ImageView mOperationPercent;
     @Bind(R.id.operation_volume_brightness)
     public FrameLayout mVolumeBrightnessLayout;
+    @Bind(R.id.mediacontroller_speed_text)
+    public TextView speedText;
     @Bind(R.id.gesture_iv_progress)
     public ImageView gesture_iv_progress;// 快进或快退标志
     @Bind(R.id.geture_tv_progress_time)
@@ -138,14 +141,47 @@ public class VideoPlayActivity extends FragmentActivity implements View.OnClickL
         }
     }
 
-    @Override
+    @OnClick({R.id.video_view_return, R.id.mediacontroller_speed_text})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.video_view_return:
                 finish();
                 break;
+            case R.id.mediacontroller_speed_text:
+                switch (speedCount) {
+                    case 0:
+                        speedCount = 1;
+                        mVideoView.setPlaybackSpeed(1.25f);
+                        speedText.setText("1.25x");
+                        break;
+                    case 1:
+                        speedCount = 2;
+                        mVideoView.setPlaybackSpeed(1.5f);
+                        speedText.setText("1.5x");
+                        break;
+                    case 2:
+                        speedCount = 3;
+                        mVideoView.setPlaybackSpeed(1.75f);
+                        speedText.setText("1.75x");
+                        break;
+                    case 3:
+                        speedCount = 4;
+                        mVideoView.setPlaybackSpeed(2.0f);
+                        speedText.setText("2.0x");
+                        break;
+                    case 4:
+                        speedCount = 0;
+                        mVideoView.setPlaybackSpeed(1.0f);
+                        speedText.setText("1.0x");
+                        break;
+                }
+                break;
+            default:
+                break;
         }
     }
+
+    int speedCount = 0;
 
     MediaPlayer.OnInfoListener infoListener = new MediaPlayer.OnInfoListener() {
         @Override

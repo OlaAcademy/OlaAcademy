@@ -1,10 +1,8 @@
 package com.michen.olaxueyuan.ui.circle;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,11 +15,11 @@ import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
-import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.UserPostListResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PersonalHomePageListAdapter;
-import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
+import com.snail.pulltorefresh.PullToRefreshBase;
+import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
@@ -32,7 +30,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class PersonalHomePageActivity extends SEBaseActivity {
+public class PersonalHomePageActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener {
 
     @Bind(R.id.avatar)
     RoundRectImageView avatar;
@@ -40,10 +38,6 @@ public class PersonalHomePageActivity extends SEBaseActivity {
     TextView name;
     @Bind(R.id.sign_text)
     TextView signText;
-    @Bind(R.id.deploy_num_text)
-    TextView deployNumText;
-    @Bind(R.id.reply_num_text)
-    TextView replyNumText;
     @Bind(R.id.reply_text)
     TextView replyText;
     @Bind(R.id.reply_indicator)
@@ -58,6 +52,8 @@ public class PersonalHomePageActivity extends SEBaseActivity {
     RelativeLayout deployLayout;
     @Bind(R.id.listview)
     SubListView listview;
+    @Bind(R.id.scroll_view)
+    PullToRefreshScrollView scrollView;
 
     private PersonalHomePageListAdapter adapter;
     private UserPostListResult postListResult;
@@ -76,9 +72,25 @@ public class PersonalHomePageActivity extends SEBaseActivity {
     private void initView() {
         setTitleText("个人主页");
         userId = getIntent().getIntExtra("userId", 0);
-        avatar.setRectAdius(100);
+        avatar.setRectAdius(200);
+        scrollView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        scrollView.setOnRefreshListener(this);
         adapter = new PersonalHomePageListAdapter(this);
+        listview.setDivider(null);
         listview.setAdapter(adapter);
+        changeTab(true, false);
+    }
+
+    private void changeTab(boolean deploy, boolean reply) {
+        deployText.setSelected(deploy);
+        deployIndicator.setSelected(deploy);
+        replyText.setSelected(reply);
+        replyIndicator.setSelected(reply);
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+        fetchData();
     }
 
     private void fetchData() {
@@ -87,10 +99,12 @@ public class PersonalHomePageActivity extends SEBaseActivity {
             @Override
             public void success(UserPostListResult userPostListResult, Response response) {
                 if (mContext != null && !PersonalHomePageActivity.this.isFinishing()) {
+                    scrollView.onRefreshComplete();
                     SEAPP.dismissAllowingStateLoss();
                     if (userPostListResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(mContext, userPostListResult.getMessage(), 2.0f);
                     } else {
+                        scrollView.scrollTo(0, 0);
                         postListResult = userPostListResult;
                         updateUI(userPostListResult.getResult());
                     }
@@ -100,6 +114,7 @@ public class PersonalHomePageActivity extends SEBaseActivity {
             @Override
             public void failure(RetrofitError error) {
                 if (mContext != null && !PersonalHomePageActivity.this.isFinishing()) {
+                    scrollView.onRefreshComplete();
                     SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
                 }
@@ -118,9 +133,8 @@ public class PersonalHomePageActivity extends SEBaseActivity {
                 .resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(avatar);
         name.setText(result.getName());
         signText.setText(result.getSign());
-        deployNumText.setText(String.valueOf(result.getDeployList().size()));
-        replyNumText.setText(String.valueOf(result.getReplyList().size()));
-        adapter.updateData(result.getDeployList());
+        adapter.updateData(result.getDeployList(), 1);
+        scrollView.scrollTo(0, 0);
     }
 
 
@@ -134,12 +148,14 @@ public class PersonalHomePageActivity extends SEBaseActivity {
                 break;
             case R.id.reply_layout:
                 if (postListResult != null) {
-                    adapter.updateData(postListResult.getResult().getReplyList());
+                    changeTab(false, true);
+                    adapter.updateData(postListResult.getResult().getReplyList(), 2);
                 }
                 break;
             case R.id.deploy_layout:
                 if (postListResult != null) {
-                    adapter.updateData(postListResult.getResult().getDeployList());
+                    changeTab(true, false);
+                    adapter.updateData(postListResult.getResult().getDeployList(), 1);
                 }
                 break;
         }
@@ -150,4 +166,5 @@ public class PersonalHomePageActivity extends SEBaseActivity {
         super.onDestroy();
         ButterKnife.unbind(this);
     }
+
 }

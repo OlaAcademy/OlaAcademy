@@ -257,6 +257,7 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="10dp"
+                    android:verticalSpacing="@dimen/dp_10"
                     android:visibility="gone" />
             </FrameLayout>
         </LinearLayout>

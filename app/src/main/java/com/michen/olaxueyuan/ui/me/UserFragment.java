@@ -34,7 +34,6 @@ import com.michen.olaxueyuan.ui.me.activity.MyCourseCollectActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserUpdateActivity;
 import com.michen.olaxueyuan.ui.me.activity.WrongTopicSetActivity;
-import com.michen.olaxueyuan.ui.question.InformationListActivity;
 import com.michen.olaxueyuan.ui.setting.SettingActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshScrollView;
@@ -152,9 +151,7 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
                 Utils.jumpLoginOrNot(getActivity(), CoinHomePageActivity.class);
                 break;
             case R.id.service_email_layout:
-                //Todo 暂时代替
-                Utils.jumpLoginOrNot(getActivity(),InformationListActivity.class);
-//                sendEmail();
+                sendEmail();
                 break;
             case R.id.avatar:
                 if (SEAuthManager.getInstance().getAccessUser() != null && !TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
