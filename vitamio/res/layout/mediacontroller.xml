@@ -5,9 +5,10 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:alpha="0.68"
-    android:background="@color/blacks"
+    android:background="@android:color/black"
     android:orientation="vertical"
     android:visibility="gone">
+    <!--android:background="@color/blacks"-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,13 +37,25 @@
             android:src="@drawable/icon_full_screen" />
 
         <TextView
+            android:id="@+id/mediacontroller_speed_text"
+            style="@style/MediaController_Text"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/set_full_screen"
+            android:background="@drawable/shape_white_rectangle_bg"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="1.0x" />
+
+        <TextView
             android:id="@+id/mediacontroller_time_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/set_full_screen"
-            android:text=""
+            android:layout_toLeftOf="@+id/mediacontroller_speed_text"
+            android:text="/111"
             android:textColor="@color/mediacontroller_total_color"
             android:textSize="10dp" />
 
@@ -54,7 +67,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_toLeftOf="@id/mediacontroller_time_total"
-            android:text="" />
+            android:text="222" />
 
         <SeekBar
             android:id="@+id/mediacontroller_seekbar"

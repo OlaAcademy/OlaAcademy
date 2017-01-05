@@ -796,4 +796,15 @@ public class VideoView extends SurfaceView implements MediaControllerView.MediaP
     public interface OnVideoPlayFailListener {
         void videoPlayFaile(boolean isFaile);
     }
+
+    /**
+     * Set video and audio playback speed
+     *
+     * @param speed e.g. 0.8 or 2.0, default to 1.0, range in [0.5-2]
+     */
+    public void setPlaybackSpeed(float speed) {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.setPlaybackSpeed(speed);
+        }
+    }
 }
