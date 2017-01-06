@@ -47,7 +47,7 @@ public class HorizontalScrollViewAdapter extends BaseAdapter {
             this.mDatas = mDatas;
         }
         width = Utils.getScreenWidth(mContext);
-        height = width * 302 / 750;
+        height = width * 300 / 750;
         params = new RelativeLayout.LayoutParams((int) (width * 0.8), 200);
     }
 

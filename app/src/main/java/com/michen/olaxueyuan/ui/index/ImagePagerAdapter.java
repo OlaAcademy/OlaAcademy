@@ -46,12 +46,12 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
                 @Override
                 public void onClick(View view) {
                     MCBanner banner = bannerList.get(position);
-                    if (banner.type.equals("2")){
-                        Intent intent = new Intent(context,CourseVideoActivity.class);
+                    if (banner.type.equals("2")) {
+                        Intent intent = new Intent(context, CourseVideoActivity.class);
                         intent.putExtra("pid", banner.id);
                         context.startActivity(intent);
-                    }else if(banner.type.equals("3")){
-                        Intent intent = new Intent(context,WebViewActivity.class);
+                    } else if (banner.type.equals("3")) {
+                        Intent intent = new Intent(context, WebViewActivity.class);
                         intent.putExtra("textUrl", banner.profile);
                         context.startActivity(intent);
                     }
@@ -66,7 +66,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
                 .load(bannerList.get(position).address)
                 .placeholder(R.drawable.default_index)
                 .error(R.drawable.default_index)
-                .resize(width, width*320/750)
+                .resize(width, width * 300 / 750)
                 .into(holder.imageView);
         return view;
     }

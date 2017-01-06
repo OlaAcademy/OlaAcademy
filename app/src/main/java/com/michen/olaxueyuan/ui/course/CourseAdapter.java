@@ -105,7 +105,7 @@ public class CourseAdapter extends BaseAdapter {
                 topViewHolder = new TopViewHolder();
                 topViewHolder.autoSlidingPagerView = (SEAutoSlidingPagerView) convertView.findViewById(R.id.autoSlideImage);
                 int width = context.getResources().getDisplayMetrics().widthPixels;
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, width * 320 / 750);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, width * 300 / 750);
                 topViewHolder.autoSlidingPagerView.setLayoutParams(layoutParams);
                 convertView.setTag(topViewHolder);
             } else {

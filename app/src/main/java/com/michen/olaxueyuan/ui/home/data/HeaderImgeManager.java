@@ -57,7 +57,7 @@ public class HeaderImgeManager {
 
     public void initHeaderImgView() {
         int width = Utils.getScreenWidth(context);
-        int height = width * 400 / 750;
+        int height = width * 300 / 750;
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) imgViewpager.getLayoutParams();
         layoutParams.height = height;
         imgViewpager.setLayoutParams(layoutParams);
@@ -179,16 +179,23 @@ public class HeaderImgeManager {
         public void onClick(View v) {
             imgViewpager.stopAutoScroll();
             HomeModule.ResultBean.BannerListBean banner = mBanners.get(position);
-            if (banner.getType()==1){
-                Intent intent = new Intent(context, WebViewActivity.class);
-                intent.putExtra("textUrl", banner.getUrl());
-                context.startActivity(intent);
-            }else{
-                Intent intent = new Intent(context, CourseVideoActivity.class);
-                intent.putExtra("pid", String.valueOf(banner.getObjectId()));
-                context.startActivity(intent);
+            switch (banner.getType()) {
+                default:
+                case 1://web页
+                    Intent intent = new Intent(context, WebViewActivity.class);
+                    intent.putExtra("textUrl", banner.getUrl());
+                    context.startActivity(intent);
+                    break;
+                case 2://课程页面
+                    Intent intent2 = new Intent(context, CourseVideoActivity.class);
+                    intent2.putExtra("pid", String.valueOf(banner.getObjectId()));
+                    context.startActivity(intent2);
+                    break;
+                case 3://精品课
+                    break;
+                case 4://报名
+                    break;
             }
-
         }
     }
 
