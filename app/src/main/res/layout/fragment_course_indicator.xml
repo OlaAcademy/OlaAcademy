@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/dp_30"
+    android:paddingRight="@dimen/dp_30"
+    android:weightSum="5">
+
+    <RelativeLayout
+        android:id="@+id/maths_layout"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_48"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/maths_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/math"
+            android:textColor="@color/black_blue_text_color"
+            android:textSize="@dimen/dp_17" />
+
+        <View
+            android:id="@+id/maths_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/indicator_bottom_selector" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/english_layout"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_48"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/english_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/english"
+            android:textColor="@color/black_blue_text_color"
+            android:textSize="@dimen/sp_17" />
+
+        <View
+            android:id="@+id/english_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/indicator_bottom_selector" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/logic_layout"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_48"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/logic_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/logic"
+            android:textColor="@color/black_blue_text_color"
+            android:textSize="@dimen/sp_17" />
+
+        <View
+            android:id="@+id/logic_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/indicator_bottom_selector" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/writing_layout"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_48"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/writing_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/writing"
+            android:textColor="@color/black_blue_text_color"
+            android:textSize="@dimen/sp_17" />
+
+        <View
+            android:id="@+id/writing_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/indicator_bottom_selector" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/interview_layout"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_48"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/interview_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="面试"
+            android:textColor="@color/black_blue_text_color"
+            android:textSize="@dimen/sp_17" />
+
+        <View
+            android:id="@+id/interview_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/indicator_bottom_selector" />
+    </RelativeLayout>
+</LinearLayout>

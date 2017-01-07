@@ -17,7 +17,9 @@ import com.michen.olaxueyuan.common.AutoScrollViewPager;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
+import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
 import com.michen.olaxueyuan.ui.course.WebViewActivity;
+import com.michen.olaxueyuan.ui.course.turtor.OrgEnrolActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -192,8 +194,15 @@ public class HeaderImgeManager {
                     context.startActivity(intent2);
                     break;
                 case 3://精品课
+                    Intent intent3 = new Intent(context, SystemVideoActivity.class);
+                    intent3.putExtra("pid", String.valueOf(banner.getCommodity().getId()));
+                    intent3.putExtra("ResultEntity", banner.getCommodity());
+                    context.startActivity(intent3);
                     break;
                 case 4://报名
+                    Intent intent4 = new Intent(context, OrgEnrolActivity.class);
+                    intent4.putExtra("objectId", banner.getObjectId());
+                    context.startActivity(intent4);
                     break;
             }
         }

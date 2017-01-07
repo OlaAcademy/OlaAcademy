@@ -28,6 +28,7 @@ import com.lidroid.xutils.exception.DbException;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;

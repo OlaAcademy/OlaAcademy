@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ public class CourseDatabaseRecyclerAdapter extends BaseRecyclerAdapter<HomeModul
     }
 
     public class CourseDatabaseItemHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_course_layout)
+        FrameLayout ivCourseLayout;
         @Bind(R.id.iv_course)
         ImageView ivCourse;
         @Bind(R.id.tv_name)
@@ -61,7 +64,7 @@ public class CourseDatabaseRecyclerAdapter extends BaseRecyclerAdapter<HomeModul
     @Override
     public void onBindViewHolder(CourseDatabaseItemHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.ivCourse.getLayoutParams();
+        RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.ivCourseLayout.getLayoutParams();
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
         linearParams.width = dm.widthPixels / 2 - 45;
@@ -70,7 +73,7 @@ public class CourseDatabaseRecyclerAdapter extends BaseRecyclerAdapter<HomeModul
             linearParams.setMargins(30, 0, 15, 0);
         else
             linearParams.setMargins(15, 0, 30, 0);
-        holder.ivCourse.setLayoutParams(linearParams);
+        holder.ivCourseLayout.setLayoutParams(linearParams);
 
         final HomeModule.ResultBean.CourseListBean course = list.get(position);
         holder.tvName.setText(course.getName());

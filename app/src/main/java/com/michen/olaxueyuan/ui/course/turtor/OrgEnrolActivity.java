@@ -62,6 +62,7 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
     private String orgId;
     private String location;
     private LocationClient mLocationClient;
+    private String objectId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
 
     private void initView() {
         setTitleText("全国最优质的教育报名通道");
+        objectId = getIntent().getStringExtra("objectId");
         int width = Utils.getScreenWidth(mContext);
         int height = width * 400 / 750;
         ViewGroup.LayoutParams layoutParams = orgEnrolBg.getLayoutParams();
@@ -122,7 +124,22 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
     }
 
     private void initData() {
-
+        if (!TextUtils.isEmpty(objectId)) {
+            String[] objectIds = objectId.split(",");
+            if (objectIds.length >= 2) {
+                try {
+                    orgType = Integer.parseInt(objectIds[0]);
+                    childType = Integer.parseInt(objectIds[1]);
+                    optionTypeName = organizationInfoResult.getResult().get(orgType).getOptionName();
+                    optionTypeText.setText(optionTypeName);
+                    optionNameText.setText(organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getName());
+                    optionNamePdf.setText(organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getProfile());
+                    orgId = organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getId();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @OnClick({R.id.option_type, R.id.option_name, R.id.enrol_btn, R.id.option_name_pdf})
@@ -149,7 +166,7 @@ public class OrgEnrolActivity extends SEBaseActivity implements OrgEnrolPopManag
                         intent.putExtra("title", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getProfile());
                         intent.putExtra("id", "orgEnrol_" + organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getId());
                         intent.putExtra("name", organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).getProfile());
-                        Logger.e("==="+organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).toString());
+                        Logger.e("===" + organizationInfoResult.getResult().get(orgType).getOptionList().get(childType).toString());
                         mContext.startActivity(intent);
                     } catch (Exception e) {
                         e.printStackTrace();

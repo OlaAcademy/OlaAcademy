@@ -64,7 +64,7 @@
         android:layout_marginLeft="5dp"
         android:horizontalSpacing="5dp"
         android:verticalSpacing="5dp"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -139,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_3"
-            android:drawableLeft="@drawable/praise_blue_icon"
+            android:drawableLeft="@drawable/selector_praise_blue"
             android:drawablePadding="3dp"
             android:ellipsize="end"
             android:paddingBottom="@dimen/dp_5"

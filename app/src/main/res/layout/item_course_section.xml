@@ -3,20 +3,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/icon_video"
+    <FrameLayout
+        android:id="@+id/iv_course_layout"
         android:layout_width="130dp"
         android:layout_height="80dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/icon_video"
+            android:layout_width="130dp"
+            android:layout_height="80dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/video_white_play_icon" />
+    </FrameLayout>
+
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/icon_video"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@+id/iv_course_layout" />
 
     <ImageView
         android:id="@+id/iv_clock"
@@ -32,9 +46,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title"
-        android:textSize="10sp"
         android:layout_marginLeft="3dp"
+        android:layout_toRightOf="@+id/iv_clock"
         android:textColor="#a4a6a9"
-        android:layout_toRightOf="@+id/iv_clock" />
+        android:textSize="10sp" />
 
 </RelativeLayout>

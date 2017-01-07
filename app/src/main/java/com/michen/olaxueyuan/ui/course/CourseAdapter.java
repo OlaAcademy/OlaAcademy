@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,6 +31,7 @@ import com.snail.svprogresshud.SVProgressHUD;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import butterknife.Bind;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -60,7 +62,8 @@ public class CourseAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         if (courseList != null) {
-            return courseList.size() + 1;  //顶部滚动图占据一行
+//            return courseList.size() + 1;  //顶部滚动图占据一行
+            return courseList.size();
         } else {
             return 1;
         }
@@ -69,7 +72,8 @@ public class CourseAdapter extends BaseAdapter {
     @Override
     public Object getItem(int index) {
         if (courseList != null && index > 0) {
-            return courseList.get(index - 1);
+//            return courseList.get(index - 1);
+            return courseList.get(index);
         } else {
             return null;
         }
@@ -82,11 +86,11 @@ public class CourseAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return PIC_ITEM;
-        } else {
-            return PIC_WORD_ITEM;
-        }
+//        if (position == 0) {
+//            return PIC_ITEM;
+//        } else {
+        return PIC_WORD_ITEM;
+//        }
     }
 
     @Override
@@ -99,7 +103,7 @@ public class CourseAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         ViewHolder holder = null;
         TopViewHolder topViewHolder = null;
-        if (getItemViewType(position) == PIC_ITEM) {
+        /*if (getItemViewType(position) == PIC_ITEM) {
             if (convertView == null) {
                 convertView = View.inflate(context, R.layout.view_information_top, null);
                 topViewHolder = new TopViewHolder();
@@ -133,44 +137,45 @@ public class CourseAdapter extends BaseAdapter {
                 }
             });
 
+        } else {*/
+        if (convertView == null) {
+            convertView = View.inflate(context, R.layout.item_course, null);
+            holder = new ViewHolder();
+            holder.tv_all = (TextView) convertView.findViewById(R.id.allTV);
+            holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+            holder.horizontalListView = (HorizontalListView) convertView.findViewById(R.id.horizontalListView);
+            int width = Utils.getScreenWidth(context);
+            int height = (width / 2 - 45) * 350 / 750 + Utils.dip2px(context, 55);
+            ViewGroup.LayoutParams layoutParams = holder.horizontalListView.getLayoutParams();
+            layoutParams.height = height;
+            holder.horizontalListView.setLayoutParams(layoutParams);
+            convertView.setTag(holder);
         } else {
-            if (convertView == null) {
-                convertView = View.inflate(context, R.layout.item_course, null);
-                holder = new ViewHolder();
-                holder.tv_all = (TextView) convertView.findViewById(R.id.allTV);
-                holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-                holder.horizontalListView = (HorizontalListView) convertView.findViewById(R.id.horizontalListView);
-                int width = Utils.getScreenWidth(context);
-                int height = (width / 2 - 45) * 350 / 750 + Utils.dip2px(context, 55);
-                ViewGroup.LayoutParams layoutParams = holder.horizontalListView.getLayoutParams();
-                layoutParams.height = height;
-                holder.horizontalListView.setLayoutParams(layoutParams);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            final MCSubCourse course = courseList.get(position - 1);
-//            Logger.e("course=="+course.toString());
-            holder.tv_title.setText(course.name);
-            holder.tv_all.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, CourseListActivity.class);
-                    intent.putExtra("courseList", (Serializable) course.subCourseArrayList);
-                    context.startActivity(intent);
-                }
-            });
-            HorizontalListViewAdapter adapter = new HorizontalListViewAdapter(course.subCourseArrayList);
-            holder.horizontalListView.setAdapter(adapter);
-            holder.horizontalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(context, CourseVideoActivity.class);
-                    intent.putExtra("pid", course.subCourseArrayList.get(position).id);
-                    context.startActivity(intent);
-                }
-            });
+            holder = (ViewHolder) convertView.getTag();
         }
+//            final MCSubCourse course = courseList.get(position - 1);
+        final MCSubCourse course = courseList.get(position);
+//            Logger.e("course=="+course.toString());
+        holder.tv_title.setText(course.name);
+        holder.tv_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CourseListActivity.class);
+                intent.putExtra("courseList", (Serializable) course.subCourseArrayList);
+                context.startActivity(intent);
+            }
+        });
+        HorizontalListViewAdapter adapter = new HorizontalListViewAdapter(course.subCourseArrayList);
+        holder.horizontalListView.setAdapter(adapter);
+        holder.horizontalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(context, CourseVideoActivity.class);
+                intent.putExtra("pid", course.subCourseArrayList.get(position).id);
+                context.startActivity(intent);
+            }
+        });
+//        }
         return convertView;
     }
 
@@ -190,6 +195,7 @@ public class CourseAdapter extends BaseAdapter {
         private ImageView iv_course;
         private TextView tv_time;
         private TextView tv_browser;
+        private FrameLayout ivCourseLayout;
     }
 
     private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
@@ -226,7 +232,8 @@ public class CourseAdapter extends BaseAdapter {
                 convertView = View.inflate(context, R.layout.item_gridview_course, null);
                 viewHolder = new GridViewHolder();
                 viewHolder.iv_course = (ImageView) convertView.findViewById(R.id.iv_course);
-                RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) viewHolder.iv_course.getLayoutParams();
+                viewHolder.ivCourseLayout = (FrameLayout) convertView.findViewById(R.id.iv_course_layout);
+                RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) viewHolder.ivCourseLayout.getLayoutParams();
                 Resources resources = context.getResources();
                 DisplayMetrics dm = resources.getDisplayMetrics();
                 linearParams.width = dm.widthPixels / 2 - 45;
@@ -235,7 +242,7 @@ public class CourseAdapter extends BaseAdapter {
                     linearParams.setMargins(30, 0, 15, 0);
                 else
                     linearParams.setMargins(15, 0, 30, 0);
-                viewHolder.iv_course.setLayoutParams(linearParams);
+                viewHolder.ivCourseLayout.setLayoutParams(linearParams);
                 viewHolder.iv_course.setScaleType(ImageView.ScaleType.FIT_XY); // 设置缩放方式
                 viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
                 viewHolder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);

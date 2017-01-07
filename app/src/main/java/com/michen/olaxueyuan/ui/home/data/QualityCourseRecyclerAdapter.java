@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +32,8 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
     }
 
     public class QualityCourseItemHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_course_layout)
+        FrameLayout ivCourseLayout;
         @Bind(R.id.iv_course)
         ImageView ivCourse;
         @Bind(R.id.tv_name)
@@ -64,18 +67,14 @@ public class QualityCourseRecyclerAdapter extends BaseRecyclerAdapter<SystemCour
     @Override
     public void onBindViewHolder(QualityCourseItemHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
-        RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.ivCourse.getLayoutParams();
-//        Resources resources = context.getResources();
-//        DisplayMetrics dm = resources.getDisplayMetrics();
-//        linearParams.width = dm.widthPixels / 2 - 45;
-//        linearParams.width = Utils.getScreenWidth(context) / 2 - 45;
+        RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.ivCourseLayout.getLayoutParams();
         linearParams.width = Utils.getScreenMetricsPoint(context).x / 2 - 45;
         linearParams.height = linearParams.width * 17 / 31;
         if (position % 2 == 0)
             linearParams.setMargins(30, 0, 15, 0);
         else
             linearParams.setMargins(15, 0, 30, 0);
-        holder.ivCourse.setLayoutParams(linearParams);
+        holder.ivCourseLayout.setLayoutParams(linearParams);
 
         final SystemCourseResultEntity course = list.get(position);
         if (course.getPrice() > 0) {

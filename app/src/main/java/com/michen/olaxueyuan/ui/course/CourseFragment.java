@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.TitleManager;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.model.MCSubCourse;
@@ -60,13 +61,19 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
     View writingIndicator;
     @Bind(R.id.writing_layout)
     RelativeLayout writingLayout;
+    @Bind(R.id.interview_text)
+    TextView interviewText;
+    @Bind(R.id.interview_indicator)
+    View interviewIndicator;
+    @Bind(R.id.interview_layout)
+    RelativeLayout interviewLayout;
 
     private PullToRefreshListView courseListView;
     private CourseAdapter adapter;
     private ArrayList<MCSubCourse> courseArrayList;
     View mMainView;
     TitleManager titleManager;
-    private String pid = "1";// 1 数学 2 英语 3 逻辑 4 协作
+    private String pid = "1";// 1 数学 2 英语 3 逻辑 4 协作 5 面试
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,7 +130,11 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.message, 2.0f);
                     } else {
                         courseArrayList = result.course.courseArrayList;
-                        adapter.updateData(courseArrayList);
+                        if (courseArrayList != null) {
+                            adapter.updateData(courseArrayList);
+                        } else {
+                            ToastUtil.showShortToast(getActivity(), "课程在路上，敬请期待...");
+                        }
                     }
                     courseListView.onRefreshComplete();
                 }
@@ -139,25 +150,28 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
         });
     }
 
-    @OnClick({R.id.maths_layout, R.id.english_layout, R.id.logic_layout, R.id.writing_layout})
+    @OnClick({R.id.maths_layout, R.id.english_layout, R.id.logic_layout, R.id.writing_layout, R.id.interview_layout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.maths_layout:
-                changeTab(true, false, false, false, 0);
+                changeTab(true, false, false, false, false, 0);
                 break;
             case R.id.english_layout:
-                changeTab(false, true, false, false, 1);
+                changeTab(false, true, false, false, false, 1);
                 break;
             case R.id.logic_layout:
-                changeTab(false, false, true, false, 2);
+                changeTab(false, false, true, false, false, 2);
                 break;
             case R.id.writing_layout:
-                changeTab(false, false, false, true, 3);
+                changeTab(false, false, false, true, false, 3);
+                break;
+            case R.id.interview_layout:
+                changeTab(false, false, false, false, true, 4);
                 break;
         }
     }
 
-    private void changeTab(boolean maths, boolean english, boolean logic, boolean writing, int position) {
+    private void changeTab(boolean maths, boolean english, boolean logic, boolean writing, boolean interview, int position) {
         mathsText.setSelected(maths);
         mathsIndicator.setSelected(maths);
         englishText.setSelected(english);
@@ -166,6 +180,8 @@ public class CourseFragment extends SuperFragment implements TitlePopManager.Pid
         logicIndicator.setSelected(logic);
         writingText.setSelected(writing);
         writingIndicator.setSelected(writing);
+        interviewText.setSelected(interview);
+        interviewIndicator.setSelected(interview);
         this.pid = String.valueOf(position + 1);
         performRefresh();
     }

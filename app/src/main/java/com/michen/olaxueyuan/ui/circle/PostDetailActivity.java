@@ -306,6 +306,11 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
             }
         }
+        if (resultBean.getIsPraised() == 0) {
+            commentPraise.setEnabled(true);
+        } else {
+            commentPraise.setEnabled(false);
+        }
         time.setText(resultBean.getTime());
         studyName.setText(resultBean.getTitle());
         commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
@@ -418,8 +423,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     SVProgressHUD.showInViewWithoutIndicator(mContext, mcCommonResult.getMessage(), 2.0f);
                 } else {
                     resultBean.setPraiseNumber(resultBean.getPraiseNumber() + 1);
-//                    commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
-                    numComment.setText(String.valueOf(resultBean.getCommentNumber()));
+                    commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
+                    commentPraise.setEnabled(false);
                 }
             }
 

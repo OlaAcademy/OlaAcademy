@@ -12,7 +12,11 @@
 
     <include
         android:id="@+id/indicator_view"
-        layout="@layout/fragment_question_indicator" />
+        layout="@layout/fragment_course_indicator" />
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_height="@dimen/dp_10" />
 
     <com.snail.pulltorefresh.PullToRefreshListView
         android:id="@+id/infoListView"
