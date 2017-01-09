@@ -189,4 +189,6 @@
     <string name="pending_deal_comment">%d条待处理评论</string>
     <string name="num_praise">%d个赞</string>
     <string name="pending_deal_system_info">%d条待处理系统消息</string>
+    <string name="photo">选择相册</string>
+    <string name="only_choose_num">超出可选图片张数</string>
 </resources>

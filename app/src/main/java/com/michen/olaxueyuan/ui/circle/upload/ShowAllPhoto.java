@@ -18,11 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.michen.olaxueyuan.R;
 import com.snail.photo.adapter.AlbumGridViewAdapter;
 import com.snail.photo.util.Bimp;
 import com.snail.photo.util.ImageItem;
+import com.snail.photo.util.PicInfo;
 import com.snail.photo.util.PublicWay;
-import com.snail.photo.util.Res;
 
 import java.util.ArrayList;
 
@@ -57,14 +58,14 @@ public class ShowAllPhoto extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(Res.getLayoutID("plugin_camera_show_all_photo"));
+        setContentView(R.layout.plugin_camera_show_all_photo);
         PublicWay.activityList.add(this);
         mContext = this;
-        back = (Button) findViewById(Res.getWidgetID("showallphoto_back"));
-        cancel = (Button) findViewById(Res.getWidgetID("showallphoto_cancel"));
-        preview = (Button) findViewById(Res.getWidgetID("showallphoto_preview"));
-        okButton = (Button) findViewById(Res.getWidgetID("showallphoto_ok_button"));
-        headTitle = (TextView) findViewById(Res.getWidgetID("showallphoto_headtitle"));
+        back = (Button) findViewById(R.id.showallphoto_back);
+        cancel = (Button) findViewById(R.id.showallphoto_cancel);
+        preview = (Button) findViewById(R.id.showallphoto_preview);
+        okButton = (Button) findViewById(R.id.showallphoto_ok_button);
+        headTitle = (TextView) findViewById(R.id.showallphoto_headtitle);
         this.intent = getIntent();
         String folderName = intent.getStringExtra("folderName");
         if (folderName.length() > 8) {
@@ -126,13 +127,13 @@ public class ShowAllPhoto extends Activity {
 
     private void init() {
         register();
-        progressBar = (ProgressBar) findViewById(Res.getWidgetID("showallphoto_progressbar"));
+        progressBar = (ProgressBar) findViewById(R.id.showallphoto_progressbar);
         progressBar.setVisibility(View.GONE);
-        gridView = (GridView) findViewById(Res.getWidgetID("showallphoto_myGrid"));
+        gridView = (GridView) findViewById(R.id.showallphoto_myGrid);
         gridImageAdapter = new AlbumGridViewAdapter(this, dataList,
                 Bimp.tempSelectBitmap);
         gridView.setAdapter(gridImageAdapter);
-        okButton = (Button) findViewById(Res.getWidgetID("showallphoto_ok_button"));
+        okButton = (Button) findViewById(R.id.showallphoto_ok_button);
     }
 
     private void initListener() {
@@ -143,18 +144,24 @@ public class ShowAllPhoto extends Activity {
                         if (Bimp.tempSelectBitmap.size() >= PublicWay.num && isChecked) {
                             toggleButton.setChecked(false);
 //                            button.setChecked(false);
-                            Toast.makeText(ShowAllPhoto.this, Res.getString("only_choose_num"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ShowAllPhoto.this, ShowAllPhoto.this.getString(R.string.only_choose_num), Toast.LENGTH_SHORT).show();
                             return;
                         }
 
                         if (isChecked) {
                             button.setChecked(true);
-                            Bimp.tempSelectBitmap.add(dataList.get(position));
-                            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+//                            Bimp.tempSelectBitmap.add(dataList.get(position));
+                            ImageItem ima = dataList.get(position);
+                            PicInfo pi = new PicInfo();
+                            pi.type = "1";
+                            pi.isNew = true;
+                            ima.tag = pi;
+                            Bimp.tempSelectBitmap.add(ima);
+                            okButton.setText(getString(R.string.finish) + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
                         } else {
                             button.setChecked(false);
                             Bimp.tempSelectBitmap.remove(dataList.get(position));
-                            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+                            okButton.setText(getString(R.string.finish) + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
                         }
                         isShowOkBt();
                     }
@@ -189,7 +196,7 @@ public class ShowAllPhoto extends Activity {
 
     public void isShowOkBt() {
         if (Bimp.tempSelectBitmap.size() > 0) {
-            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+            okButton.setText(getString(R.string.finish) + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
             preview.setPressed(true);
             okButton.setPressed(true);
             preview.setClickable(true);
@@ -197,7 +204,7 @@ public class ShowAllPhoto extends Activity {
             okButton.setTextColor(Color.WHITE);
             preview.setTextColor(Color.WHITE);
         } else {
-            okButton.setText(Res.getString("finish") + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+            okButton.setText(getString(R.string.finish) + "(" + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
             preview.setPressed(false);
             preview.setClickable(false);
             okButton.setPressed(false);

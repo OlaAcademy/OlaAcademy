@@ -444,7 +444,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         }
         //视频限制一个
         for (int i = 0; i < tempSelectBitmap.size(); i++) {
-            if (tempSelectBitmap.get(i).tag.type.equals("3")) {
+            if (tempSelectBitmap.get(i) != null && tempSelectBitmap.get(i).tag != null && tempSelectBitmap.get(i).tag.type.equals("3")) {
                 String videoPath = tempSelectBitmap.get(0).tag.path;
                 uploadAudioVideo(new TypedFile("application/octet-stream", new File(videoPath)), "mp4");
                 break;

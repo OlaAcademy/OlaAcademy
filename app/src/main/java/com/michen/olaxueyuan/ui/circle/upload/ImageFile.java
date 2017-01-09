@@ -13,12 +13,12 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.R;
 import com.snail.photo.adapter.FolderAdapter;
 import com.snail.photo.upload.Constants;
 import com.snail.photo.util.Bimp;
 import com.snail.photo.util.ImageItem;
 import com.snail.photo.util.PublicWay;
-import com.snail.photo.util.Res;
 
 import java.util.ArrayList;
 
@@ -26,28 +26,30 @@ import java.util.ArrayList;
  * 这个类主要是用来进行显示包含图片的文件夹
  *
  * @author king
- * @QQ:595163260
  * @version 2014年10月18日  下午11:48:06
+ * @QQ:595163260
  */
 public class ImageFile extends Activity {
 
-	private FolderAdapter folderAdapter;
-	private Button bt_cancel;
-	private Context mContext;
+    private FolderAdapter folderAdapter;
+    private Button bt_cancel;
+    private Context mContext;
 
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(Res.getLayoutID("plugin_camera_image_file"));
-		PublicWay.activityList.add(this);
-		mContext = this;
-		bt_cancel = (Button) findViewById(Res.getWidgetID("cancel"));
-		bt_cancel.setOnClickListener(new CancelListener());
-		GridView gridView = (GridView) findViewById(Res.getWidgetID("fileGridView"));
-		TextView textView = (TextView) findViewById(Res.getWidgetID("headerTitle"));
-		textView.setText(Res.getString("photo"));
-		folderAdapter = new FolderAdapter(this);
-		gridView.setAdapter(folderAdapter);
+//		setContentView(Res.getLayoutID("plugin_camera_image_file"));
+        setContentView(R.layout.plugin_camera_image_file);
+        PublicWay.activityList.add(this);
+        mContext = this;
+        bt_cancel = (Button) findViewById(R.id.cancel);
+        bt_cancel.setOnClickListener(new CancelListener());
+        GridView gridView = (GridView) findViewById(R.id.fileGridView);
+        TextView textView = (TextView) findViewById(R.id.headerTitle);
+//        textView.setText(Res.getString("photo"));
+        textView.setText(getString(R.string.photo));
+        folderAdapter = new FolderAdapter(this);
+        gridView.setAdapter(folderAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -57,21 +59,22 @@ public class ImageFile extends Activity {
                 intent.putExtra("folderName", folderName);
                 intent.setClass(mContext, ShowAllPhoto.class);
                 mContext.startActivity(intent);
-				finish();
+                finish();
             }
         });
-	}
+    }
 
-	private class CancelListener implements OnClickListener {// 取消按钮的监听
-		public void onClick(View v) {
-			//清空选择的图片
-			Bimp.tempSelectBitmap.clear();
-			finish();
+    private class CancelListener implements OnClickListener {// 取消按钮的监听
+
+        public void onClick(View v) {
+            //清空选择的图片
+            Bimp.tempSelectBitmap.clear();
+            finish();
 //			Intent intent = new Intent();
 //			intent.setClass(mContext, DeployActivity.class);
 //			startActivity(intent);
-		}
-	}
+        }
+    }
 
 //	public boolean onKeyDown(int keyCode, KeyEvent event) {
 //		if (keyCode == KeyEvent.KEYCODE_BACK) {
