@@ -13,11 +13,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.snail.photo.R;
 import com.snail.photo.upload.Constants;
 import com.snail.photo.util.BitmapCache;
 import com.snail.photo.util.BitmapCache.ImageCallback;
 import com.snail.photo.util.ImageItem;
-import com.snail.photo.util.Res;
 
 /**
  * 这个是显示所有包含图片的文件夹的适配器
@@ -98,17 +98,17 @@ public class FolderAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(
-                    Res.getLayoutID("plugin_camera_select_folder"), null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.plugin_camera_select_folder, null);
+//                    Res.getLayoutID("plugin_camera_select_folder"), null);
             holder = new ViewHolder();
             holder.backImage = (ImageView) convertView
-                    .findViewById(Res.getWidgetID("file_back"));
+                    .findViewById(R.id.file_back);
             holder.imageView = (ImageView) convertView
-                    .findViewById(Res.getWidgetID("file_image"));
+                    .findViewById(R.id.file_image);
             holder.choose_back = (ImageView) convertView
-                    .findViewById(Res.getWidgetID("choose_back"));
-            holder.folderName = (TextView) convertView.findViewById(Res.getWidgetID("name"));
-            holder.fileNum = (TextView) convertView.findViewById(Res.getWidgetID("filenum"));
+                    .findViewById(R.id.choose_back);
+            holder.folderName = (TextView) convertView.findViewById(R.id.name);
+            holder.fileNum = (TextView) convertView.findViewById(R.id.filenum);
             holder.imageView.setAdjustViewBounds(true);
 //			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,dipToPx(65));
 //			lp.setMargins(50, 0, 50,0);
@@ -134,7 +134,8 @@ public class FolderAdapter extends BaseAdapter {
         } else
             path = "android_hybrid_camera_default";
         if (path.contains("android_hybrid_camera_default"))
-            holder.imageView.setImageResource(Res.getDrawableID("plugin_camera_no_pictures"));
+            holder.imageView.setImageResource(R.drawable.plugin_camera_no_pictures);
+//            holder.imageView.setImageResource(Res.getDrawableID("plugin_camera_no_pictures"));
         else {
 //			holder.imageView.setImageBitmap( AlbumActivity.contentList.get(position).imageList.get(0).getBitmap());
             final ImageItem item = Constants.contentList.get(position).imageList.get(0);

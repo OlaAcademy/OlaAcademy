@@ -10,11 +10,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Base64;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class PictureUtil {
 
@@ -166,7 +163,7 @@ public class PictureUtil {
                     degree = 270;
                     break;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return degree;
