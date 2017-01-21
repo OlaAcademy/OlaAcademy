@@ -59,7 +59,7 @@ public class HeaderImgeManager {
 
     public void initHeaderImgView() {
         int width = Utils.getScreenWidth(context);
-        int height = width * 300 / 750;
+        int height = width * 400 / 750;
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) imgViewpager.getLayoutParams();
         layoutParams.height = height;
         imgViewpager.setLayoutParams(layoutParams);

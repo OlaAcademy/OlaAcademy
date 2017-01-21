@@ -6,6 +6,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.protocol.model.AccessToken;
 
@@ -62,11 +63,11 @@ public class SERestManager {
 
         _restAdapter = new RestAdapter.Builder()
                 .setEndpoint(SEConfig.getInstance().getAPIBaseURL())
-                        //                           .setClient(client)
+                //                           .setClient(client)
                 .setErrorHandler(errorHandler)
                 .setRequestInterceptor(requestInterceptor)
                 .setConverter(new GsonConverter(gson))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(SEAPP.debug ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                 .build();
     }
 
