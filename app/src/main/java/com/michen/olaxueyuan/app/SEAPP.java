@@ -25,6 +25,7 @@ public class SEAPP extends Application {
     public static final String MEDIA_BASE_URL = "http://upload.olaxueyuan.com";
     private String versionNames;
     private static CatLoadingView catLoadingView;
+    public static boolean debug = false;
 
     @Override
     public void onCreate() {
@@ -35,8 +36,8 @@ public class SEAPP extends Application {
         SEThemer.getInstance().setActionBarBackgroundColor(getResources().getColor(R.color.ActionBarBackgroundColor));
         SEThemer.getInstance().setActionBarForegroundColor(getResources().getColor(R.color.ActionBarForegroundColor));
 
-//        final String API_BASE_URL = "http://api.olaxueyuan.com";
-        final String API_BASE_URL = "http://123.59.129.137:8080";
+        final String API_BASE_URL = "http://api.olaxueyuan.com";
+//        final String API_BASE_URL = "http://123.59.129.137:8080";
         try {
             versionNames = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (Exception e) {

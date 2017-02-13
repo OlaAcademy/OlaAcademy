@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.michen.olaxueyuan.app.SEAPP;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +28,7 @@ public class Logger {
     public static final int WARN = 3;
     public static final int ERROR = 4;
     public static final int NONE = 5;
-    public static int level = VERBOSE;
+    public static int level = SEAPP.debug ? VERBOSE : NONE;
     public static String tag = "bonedict";
 
     /**
