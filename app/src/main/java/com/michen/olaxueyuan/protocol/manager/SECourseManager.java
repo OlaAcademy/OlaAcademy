@@ -24,6 +24,7 @@ import com.michen.olaxueyuan.protocol.result.SECourseDetailResult;
 import com.michen.olaxueyuan.protocol.result.SECourseResult;
 import com.michen.olaxueyuan.protocol.result.ServiceError;
 import com.michen.olaxueyuan.protocol.result.VideoCollectionResult;
+import com.michen.olaxueyuan.protocol.result.VideoCourseSubResult;
 import com.michen.olaxueyuan.protocol.service.SECourseService;
 
 import java.util.ArrayList;
@@ -284,7 +285,7 @@ public class SECourseManager {
     }
 
     /**
-     * 首页课程列表
+     * 首页课程列表(旧)
      *
      * @param callback
      */
@@ -304,6 +305,18 @@ public class SECourseManager {
                 }
             }
         });
+    }
+
+    /**
+     * 首页课程列表
+     *
+     * @param userId
+     * @param pid
+     * @param order
+     * @param callback
+     */
+    public void getVideoCourseList(String userId, String pid, String order, final Callback<MCCourseListResult> callback) {
+        getCourseService().getVideoCourseList(userId, pid, order, callback);
     }
 
     /**
@@ -531,7 +544,7 @@ public class SECourseManager {
     /**
      * 体系课程下面的视频列表
      *
-     * @param gid    goodsId
+     * @param gid      goodsId
      * @param userId
      * @param callback
      */
@@ -583,10 +596,10 @@ public class SECourseManager {
      *
      * @param userId   userId
      * @param answer   answer
-     * @param type    type   1考点 2 模考真题 3 作业
+     * @param type     type   1考点 2 模考真题 3 作业
      * @param callback
      */
-    public void submitAnswer(String userId, String answer,String type, final Callback<CommentSucessResult> callback) {
+    public void submitAnswer(String userId, String answer, String type, final Callback<CommentSucessResult> callback) {
         getCourseService().submitAnswer(userId, answer, type, new Callback<CommentSucessResult>() {
             @Override
             public void success(CommentSucessResult result, Response response) {
@@ -602,6 +615,16 @@ public class SECourseManager {
                 }
             }
         });
+    }
+
+    /**
+     * 视频课程列表
+     *
+     * @param pid
+     * @param callback
+     */
+    public void getVideoCourseSubList(String pid, Callback<VideoCourseSubResult> callback) {
+        getCourseService().getVideoCourseSubList(pid, callback);
     }
 }
 

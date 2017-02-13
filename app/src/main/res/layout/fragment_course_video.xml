@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:cacheColorHint="@android:color/transparent"
+    android:orientation="vertical"
+    app:item_margin="8dp"
+    app:ptrMode="both">
+
+    <include layout="@layout/title_layout" />
+
+    <include
+        android:id="@+id/indicator_view"
+        layout="@layout/fragment_course_indicator" />
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_height="@dimen/dp_10" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:padding="@dimen/dp_10"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:id="@+id/recommend_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/dp_5"
+            android:layout_weight="1"
+            android:background="@drawable/selector_gray_item_bg"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/recommend_title"
+                style="@style/title_text_15dp_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="标题" />
+
+            <TextView
+                android:id="@+id/recommend_intro"
+                style="@style/normal_text_13dp_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recommend_title"
+                android:text="简介" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/charge_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_weight="1"
+            android:background="@drawable/selector_gray_item_bg"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/charge_title"
+                style="@style/title_text_15dp_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/charge_intro"
+                style="@style/normal_text_13dp_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.snail.pulltorefresh.PullToRefreshListView
+        android:id="@+id/infoListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FAFAFA"
+        android:scrollbars="none"
+        app:ptrAnimationStyle="flip" />
+</LinearLayout>
