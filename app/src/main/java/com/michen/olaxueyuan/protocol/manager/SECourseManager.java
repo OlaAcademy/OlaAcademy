@@ -3,6 +3,7 @@ package com.michen.olaxueyuan.protocol.manager;
 import com.michen.olaxueyuan.protocol.model.SECourse;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
+import com.michen.olaxueyuan.protocol.result.CourseVieoListResult;
 import com.michen.olaxueyuan.protocol.result.MCCollectionResult;
 import com.michen.olaxueyuan.protocol.result.MCVideoResult;
 import com.michen.olaxueyuan.protocol.result.SECourseCateResult;
@@ -315,7 +316,7 @@ public class SECourseManager {
      * @param order
      * @param callback
      */
-    public void getVideoCourseList(String userId, String pid, String order, final Callback<MCCourseListResult> callback) {
+    public void getVideoCourseList(String userId, String pid, String order, final Callback<CourseVieoListResult> callback) {
         getCourseService().getVideoCourseList(userId, pid, order, callback);
     }
 

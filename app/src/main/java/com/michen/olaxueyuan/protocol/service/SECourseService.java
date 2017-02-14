@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.protocol.service;
 
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
+import com.michen.olaxueyuan.protocol.result.CourseVieoListResult;
 import com.michen.olaxueyuan.protocol.result.MCCollectionResult;
 import com.michen.olaxueyuan.protocol.result.MCVideoResult;
 import com.michen.olaxueyuan.protocol.result.SECourseCateResult;
@@ -174,7 +175,7 @@ public interface SECourseService {
             @Field("userId") String userId,
             @Field("pid") String pid,
             @Field("order") String type,
-            Callback<MCCourseListResult> cb);
+            Callback<CourseVieoListResult> cb);
 
     /**
      * 课程子分类

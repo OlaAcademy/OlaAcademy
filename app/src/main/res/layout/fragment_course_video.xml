@@ -62,13 +62,16 @@
                 android:id="@+id/charge_title"
                 style="@style/title_text_15dp_style"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="标题" />
 
             <TextView
                 android:id="@+id/charge_intro"
                 style="@style/normal_text_13dp_style"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/charge_title"
+                android:text="简介" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -77,6 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FAFAFA"
+        android:divider="@null"
         android:scrollbars="none"
         app:ptrAnimationStyle="flip" />
 </LinearLayout>

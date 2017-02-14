@@ -2,7 +2,7 @@ package com.michen.olaxueyuan.ui.course;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,57 +10,45 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.protocol.model.MCSubCourse;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.result.CourseVieoListResult;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by tianxiaopeng on 15-1-10.
+ *
  */
 public class CourseSubListAdapter extends BaseAdapter {
 
 
     private Context context;
-    private List<MCSubCourse> videoList;
+    private List<CourseVieoListResult.ResultBean.CourseListBean> videoList = new ArrayList<>();
 
     public CourseSubListAdapter(Context context) {
         super();
         this.context = context;
     }
 
-    public void updateData(List<MCSubCourse> videoList) {
+    public void updateData(List<CourseVieoListResult.ResultBean.CourseListBean> videoList) {
         this.videoList = videoList;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        if (videoList != null) {
-            return videoList.size();
-        } else {
-            return 0;
-        }
+        return videoList.size();
     }
 
     @Override
     public Object getItem(int index) {
-        if (videoList != null) {
-            return videoList.get(index);
-        } else {
-            return null;
-        }
+        return videoList.get(index);
     }
 
     @Override
-    public long getItemId(int index) {
-        return index;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
@@ -77,19 +65,26 @@ public class CourseSubListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv_title.setText(videoList.get(position).name);
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-        ImageLoader.getInstance().displayImage(videoList.get(position).address, holder.iv_video, options);
-        holder.tv_time.setText(videoList.get(position).subAllNum + "课时," + videoList.get(position).totalTime + " " + videoList.get(position).playcount + "人学习");
+        holder.tv_title.setText(videoList.get(position).getName());
+        if (!TextUtils.isEmpty(videoList.get(position).getAddress())) {
+            Picasso.with(context).load(videoList.get(position).getAddress())
+                    .placeholder(R.drawable.system_wu).error(R.drawable.system_wu)
+                    .resize(Utils.dip2px(context, 130), Utils.dip2px(context, 80))
+                    .into(holder.iv_video);
+        }
+//        DisplayImageOptions options = new DisplayImageOptions.Builder()
+//                .cacheInMemory(true)
+//                .cacheOnDisk(true)
+//                .bitmapConfig(Bitmap.Config.RGB_565)
+//                .build();
+//        ImageLoader.getInstance().displayImage(videoList.get(position).getAddress(), holder.iv_video, options);
+        holder.tv_time.setText(videoList.get(position).getSubAllNum() + "课时," + videoList.get(position).getTotalTime()
+                + " " + videoList.get(position).getPlaycount() + "人学习");
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CourseVideoActivity.class);
-                intent.putExtra("pid", videoList.get(position).id);
+                intent.putExtra("pid", videoList.get(position).getPid());
                 context.startActivity(intent);
             }
         });

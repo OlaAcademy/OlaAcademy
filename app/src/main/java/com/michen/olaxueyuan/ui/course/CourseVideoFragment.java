@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.course;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +13,14 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.TitleManager;
-import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
-import com.michen.olaxueyuan.protocol.model.MCSubCourse;
-import com.michen.olaxueyuan.protocol.result.MCCourseListResult;
+import com.michen.olaxueyuan.protocol.result.CourseVieoListResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.manager.TitlePopManager;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
 import com.snail.svprogresshud.SVProgressHUD;
-
-import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -81,11 +78,11 @@ public class CourseVideoFragment extends SuperFragment implements TitlePopManage
     RelativeLayout chargeLayout;
 
     private PullToRefreshListView courseListView;
-    private CourseAdapter adapter;
-    private ArrayList<MCSubCourse> courseArrayList;
+    private CourseVieoListResult.ResultBean resultBean;
     View mMainView;
     TitleManager titleManager;
     private String pid = "1";// 1 数学 2 英语 3 逻辑 4 协作 5 面试
+    private CourseSubListAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,8 +99,7 @@ public class CourseVideoFragment extends SuperFragment implements TitlePopManage
         setupNavBar();
 
         courseListView = (PullToRefreshListView) mMainView.findViewById(R.id.infoListView);
-        courseListView.getRefreshableView().setDivider(null);
-        adapter = new CourseAdapter(getActivity());
+        adapter = new CourseSubListAdapter(getActivity());
         courseListView.setAdapter(adapter);
         mathsText.setSelected(true);
         mathsIndicator.setSelected(true);
@@ -133,33 +129,35 @@ public class CourseVideoFragment extends SuperFragment implements TitlePopManage
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
         SEAPP.showCatDialog(this);
-        courseManager.getVideoCourseList(userId, pid, "1", new Callback<MCCourseListResult>() {
-            @Override
-            public void success(MCCourseListResult result, Response response) {
-                if (getActivity() != null && !getActivity().isFinishing()) {
-                    SEAPP.dismissAllowingStateLoss();
-                    if (!result.apicode.equals("10000")) {
-                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.message, 2.0f);
-                    } else {
-                        courseArrayList = result.course.courseArrayList;
-                        if (courseArrayList != null) {
-                            adapter.updateData(courseArrayList);
-                        } else {
-                            ToastUtil.showShortToast(getActivity(), "课程在路上，敬请期待...");
+        courseManager.getVideoCourseList(userId, pid, "1", new Callback<CourseVieoListResult>() {
+                    @Override
+                    public void success(CourseVieoListResult result, Response response) {
+                        if (getActivity() != null && !getActivity().isFinishing()) {
+                            SEAPP.dismissAllowingStateLoss();
+                            if (result.getApicode() != 10000) {
+                                SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.getMessage(), 2.0f);
+                            } else {
+                                resultBean = result.getResult();
+                                recommendTitle.setText(resultBean.getRecommend().getTitle());
+                                recommendIntro.setText(resultBean.getRecommend().getProfile());
+                                chargeTitle.setText(resultBean.getCharge().getTitle());
+                                chargeIntro.setText(resultBean.getCharge().getProfile());
+                                adapter.updateData(resultBean.getCourseList());
+                            }
+                            courseListView.onRefreshComplete();
                         }
                     }
-                    courseListView.onRefreshComplete();
-                }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                if (getActivity() != null && !getActivity().isFinishing()) {
-                    courseListView.onRefreshComplete();
-                    SEAPP.dismissAllowingStateLoss();
+                    @Override
+                    public void failure(RetrofitError error) {
+                        if (getActivity() != null && !getActivity().isFinishing()) {
+                            courseListView.onRefreshComplete();
+                            SEAPP.dismissAllowingStateLoss();
+                        }
+                    }
                 }
-            }
-        });
+
+        );
     }
 
     @OnClick({R.id.maths_layout, R.id.english_layout, R.id.logic_layout, R.id.writing_layout
@@ -182,6 +180,7 @@ public class CourseVideoFragment extends SuperFragment implements TitlePopManage
                 changeTab(false, false, false, false, true, 4);
                 break;
             case R.id.recommend_layout:
+                startActivity(new Intent(getActivity(), CourseVideoSubListActivity.class).putExtra("pid", resultBean.getRecommend().getCourseId()));
                 break;
             case R.id.charge_layout:
                 break;
