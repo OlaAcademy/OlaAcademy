@@ -14,6 +14,7 @@ import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.michen.olaxueyuan.protocol.result.UserKnowledgeResult;
 import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
+import com.michen.olaxueyuan.protocol.result.VipPriceResult;
 import com.michen.olaxueyuan.protocol.result.WrongListResult;
 
 import retrofit.Callback;
@@ -221,6 +222,15 @@ public interface SEUserService {
             @Field("coin") String coin,
 //            @Field("body") String body,
             Callback<UserWXpayResult> cb);
+
+    /**
+     * 后台获取VIP价格
+     *
+     * @param cb
+     */
+    @POST("/ola/pay/getVIPPrice")
+    void getVIPPrice(
+            Callback<VipPriceResult> cb);
 
     /**
      * 获取已购买视频列表

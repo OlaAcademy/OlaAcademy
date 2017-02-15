@@ -130,7 +130,7 @@
     <string name="service_olaxueyuan_com">service@olaxueyuan.com</string>
     <string name="wrong_topic_text">错题本</string>
     <string name="vip_buy_text">VIP购买</string>
-    <string name="vip_money_30">30元/月</string>
+    <string name="vip_money_38">38元/月</string>
     <string name="my_buy_text">我的购买</string>
     <string name="my_collect_text">我的收藏</string>
     <string name="my_download_text">我的下载</string>
@@ -191,4 +191,11 @@
     <string name="pending_deal_system_info">%d条待处理系统消息</string>
     <string name="photo">选择相册</string>
     <string name="only_choose_num">超出可选图片张数</string>
+    <string name="course_list">课程列表</string>
+    <string name="month_vip_price">月度黄金会员%s元</string>
+    <string name="half_year_vip_price">半年黄金会员%s元</string>
+    <string name="all_year_vip_price">一年黄金会员%s元</string>
+    <string name="qq_study_group_name">QQ学习群</string>
+    <string name="qq_group_num_text">群号码：162489337</string>
+    <string name="qq_group_num">162489337</string>
 </resources>

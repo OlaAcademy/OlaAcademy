@@ -1,12 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_light"
     android:orientation="vertical">
 
-    <ScrollView
+    <com.snail.pulltorefresh.PullToRefreshScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:ptrAnimationStyle="flip">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="@dimen/dp_20"
-                    android:text="月度黄金会员30元"
+                    android:text="月度黄金会员38元"
                     android:textColor="@color/black_323232"
                     android:textSize="15dp" />
 
@@ -95,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="@dimen/dp_20"
-                    android:text="半年黄金会员158元"
+                    android:text="半年黄金会员198元"
                     android:textColor="@color/black_323232"
                     android:textSize="15dp" />
 
@@ -149,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="@dimen/dp_20"
-                    android:text="一年黄金会员299元"
+                    android:text="一年黄金会员398元"
                     android:textColor="@color/black_323232"
                     android:textSize="15dp" />
 
@@ -390,5 +393,5 @@
                     android:textSize="15dp" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.snail.pulltorefresh.PullToRefreshScrollView>
 </LinearLayout>

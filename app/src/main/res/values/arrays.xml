@@ -45,5 +45,8 @@
         <item>不公开</item>
         <item>公开</item>
     </string-array>
-    <!--结束-->
+    <string-array name="course_rank_select">
+        <item>默认排序</item>
+        <item>热度排序</item>
+    </string-array>
 </resources>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.result.CourseVieoListResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
+import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
+import com.michen.olaxueyuan.ui.manager.CirclePopManager;
 import com.michen.olaxueyuan.ui.manager.TitlePopManager;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
@@ -29,7 +32,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CourseVideoFragment extends SuperFragment implements TitlePopManager.PidClickListener {
+public class CourseVideoFragment extends SuperFragment implements TitlePopManager.PidClickListener, CirclePopManager.CircleClickListener {
     @Bind(R.id.title_tv)
     TextView titleTv;
     @Bind(R.id.pop_line)
@@ -76,13 +79,18 @@ public class CourseVideoFragment extends SuperFragment implements TitlePopManage
     TextView chargeIntro;
     @Bind(R.id.charge_layout)
     RelativeLayout chargeLayout;
+    @Bind(R.id.course_rank)
+    TextView courseRank;
+    @Bind(R.id.all_search_view)
+    LinearLayout allSearchView;
 
     private PullToRefreshListView courseListView;
     private CourseVieoListResult.ResultBean resultBean;
     View mMainView;
     TitleManager titleManager;
     private String pid = "1";// 1 数学 2 英语 3 逻辑 4 协作 5 面试
-    private CourseSubListAdapter adapter;
+    private String order = "1";//1 默认排序 2 热度排序
+    private CourseVideoListAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +107,7 @@ public class CourseVideoFragment extends SuperFragment implements TitlePopManage
         setupNavBar();
 
         courseListView = (PullToRefreshListView) mMainView.findViewById(R.id.infoListView);
-        adapter = new CourseSubListAdapter(getActivity());
+        adapter = new CourseVideoListAdapter(getActivity());
         courseListView.setAdapter(adapter);
         mathsText.setSelected(true);
         mathsIndicator.setSelected(true);
@@ -129,7 +137,7 @@ public class CourseVideoFragment extends SuperFragment implements TitlePopManage
             userId = SEAuthManager.getInstance().getAccessUser().getId();
         }
         SEAPP.showCatDialog(this);
-        courseManager.getVideoCourseList(userId, pid, "1", new Callback<CourseVieoListResult>() {
+        courseManager.getVideoCourseList(userId, pid, order, new Callback<CourseVieoListResult>() {
                     @Override
                     public void success(CourseVieoListResult result, Response response) {
                         if (getActivity() != null && !getActivity().isFinishing()) {
@@ -161,7 +169,7 @@ public class CourseVideoFragment extends SuperFragment implements TitlePopManage
     }
 
     @OnClick({R.id.maths_layout, R.id.english_layout, R.id.logic_layout, R.id.writing_layout
-            , R.id.interview_layout, R.id.recommend_layout, R.id.charge_layout})
+            , R.id.interview_layout, R.id.recommend_layout, R.id.charge_layout, R.id.course_rank})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.maths_layout:
@@ -183,6 +191,13 @@ public class CourseVideoFragment extends SuperFragment implements TitlePopManage
                 startActivity(new Intent(getActivity(), CourseVideoSubListActivity.class).putExtra("pid", resultBean.getRecommend().getCourseId()));
                 break;
             case R.id.charge_layout:
+                Intent commodityIntent = new Intent(getActivity(), CommodityActivity.class);
+                commodityIntent.putExtra("title", "精品课程");
+                commodityIntent.putExtra("type", "1");
+                getActivity().startActivity(commodityIntent);
+                break;
+            case R.id.course_rank:
+                CirclePopManager.getInstance().showMarkPop(getActivity(), courseRank, this, allSearchView, 1);
                 break;
         }
     }
@@ -220,6 +235,13 @@ public class CourseVideoFragment extends SuperFragment implements TitlePopManage
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void circlePosition(int position, String text) {
+        order = String.valueOf(position + 1);
+        courseRank.setText(text);
+        performRefresh();
     }
 }
 

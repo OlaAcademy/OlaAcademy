@@ -12,7 +12,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.Utils;
 
 import butterknife.Bind;
@@ -24,7 +23,7 @@ import butterknife.ButterKnife;
 public class CirclePopManager {
     private static CirclePopManager popManager;
     Context context;
-    private String[] mMarkArray = SEAPP.getAppContext().getResources().getStringArray(R.array.circle_select);
+    private String[] mMarkArray;
     private View all_search_view;
 
     public static CirclePopManager getInstance() {
@@ -40,9 +39,18 @@ public class CirclePopManager {
      * @param context
      * @param popLine
      */
-    public void showMarkPop(Context context, View popLine, final CircleClickListener circleClickListener, View all_search_view) {
+    public void showMarkPop(Context context, View popLine, final CircleClickListener circleClickListener, View all_search_view, int type) {
         this.context = context;
         this.all_search_view = all_search_view;
+        switch (type) {
+            default:
+            case 0:
+                mMarkArray = context.getResources().getStringArray(R.array.circle_select);
+                break;
+            case 1:
+                mMarkArray = context.getResources().getStringArray(R.array.course_rank_select);
+                break;
+        }
         View contentView = LayoutInflater.from(context).inflate(R.layout.circle_fragment_pop_listview, null);
         ListView listView = (ListView) contentView.findViewById(R.id.listview);
         final MarkAdapter markAdapter = new MarkAdapter();
@@ -54,7 +62,7 @@ public class CirclePopManager {
                 popupWindow.dismiss();
             }
         });
-        popupWindow = new PopupWindow(contentView, Utils.dip2px(context, 150), Utils.dip2px(context, 150));
+        popupWindow = new PopupWindow(contentView, Utils.dip2px(context, 150), Utils.dip2px(context, 120));
         contentView.setFocusableInTouchMode(true);
         // 返回键可用
         contentView.setOnKeyListener(new View.OnKeyListener() {
@@ -128,6 +136,6 @@ public class CirclePopManager {
     }
 
     public interface CircleClickListener {
-        void circlePosition(int type, String text);
+        void circlePosition(int position, String text);
     }
 }
