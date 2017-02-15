@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="fitXY"
-            android:src="@drawable/tiwen_icon" />
+            android:src="@drawable/home_question_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="fitXY"
-            android:src="@drawable/laoshi_icon" />
+            android:src="@drawable/home_enroll_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="fitXY"
-            android:src="@drawable/ziliao_icon" />
+            android:src="@drawable/home_find_data_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -100,7 +100,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="fitXY"
-            android:src="@drawable/ruqun_icon" />
+            android:src="@drawable/home_group_icon"
+            android:id="@+id/imageView" />
 
         <TextView
             android:layout_width="wrap_content"

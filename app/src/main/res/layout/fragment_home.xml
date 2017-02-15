@@ -3,14 +3,13 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <com.snail.pulltorefresh.PullToRefreshScrollView
-        xmlns:ptr="http://schemas.android.com/apk/res-auto"
-        ptr:ptrAnimationStyle="flip"
+    <com.snail.pulltorefresh.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        ptr:ptrAnimationStyle="flip">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,6 +18,8 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
+
+            <include layout="@layout/home_study_view" />
 
             <include layout="@layout/home_header_img_layout" />
 
