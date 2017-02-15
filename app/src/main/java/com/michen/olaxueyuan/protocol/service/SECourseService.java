@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.protocol.service;
 
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
+import com.michen.olaxueyuan.protocol.result.CourseVieoListResult;
 import com.michen.olaxueyuan.protocol.result.MCCollectionResult;
 import com.michen.olaxueyuan.protocol.result.MCVideoResult;
 import com.michen.olaxueyuan.protocol.result.SECourseCateResult;
@@ -21,6 +22,7 @@ import com.michen.olaxueyuan.protocol.result.SECourseDetailResult;
 import com.michen.olaxueyuan.protocol.result.SECourseResult;
 import com.michen.olaxueyuan.protocol.result.SEOrderResult;
 import com.michen.olaxueyuan.protocol.result.VideoCollectionResult;
+import com.michen.olaxueyuan.protocol.result.VideoCourseSubResult;
 
 import retrofit.Callback;
 import retrofit.http.Field;
@@ -148,7 +150,7 @@ public interface SECourseService {
 
 
     /**
-     * 首页课程列表
+     * 首页课程列表(旧)
      *
      * @param pid  1 数学 2 英语 3 逻辑 4 协作
      * @param type 1 题库课程 2 视频课程
@@ -160,6 +162,20 @@ public interface SECourseService {
             @Field("pid") String pid,
             @Field("type") String type,
             Callback<MCCourseListResult> cb);
+
+    /**
+     * 首页课程列表
+     *
+     * @param pid   1 数学 2 英语 3 逻辑 4 协作
+     * @param order 1 默认排序 2 热度排序
+     */
+    @FormUrlEncoded
+    @POST("/ola/cour/getVideoCourseList")
+    public void getVideoCourseList(
+            @Field("userId") String userId,
+            @Field("pid") String pid,
+            @Field("order") String type,
+            Callback<CourseVieoListResult> cb);
 
     /**
      * 课程子分类
@@ -199,9 +215,9 @@ public interface SECourseService {
     /**
      * 提交答案
      *
-     * @param userId   userId
-     * @param answer   answer
-     * @param type    type   1考点 2 模考真题 3 作业
+     * @param userId userId
+     * @param answer answer
+     * @param type   type   1考点 2 模考真题 3 作业
      */
     @FormUrlEncoded
     @POST("/ola/cour/checkAnswer")
@@ -321,5 +337,17 @@ public interface SECourseService {
             @Field("userId") String userId,
             @Field("gid") String gid,
             Callback<GoodsOrderStatusResult> cb);
+
+    /**
+     * 视频课程列表
+     *
+     * @param pid
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/cour/getVideoCourseSubList")
+    void getVideoCourseSubList(
+            @Field("pid") String pid,
+            Callback<VideoCourseSubResult> cb);
 
 }

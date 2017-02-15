@@ -388,6 +388,7 @@
     <color name="light_gray_color2">#7F8186</color>
     <color name="light_blue_color">#5893F4</color>
     <color name="voice_blue_bg_color">#157EFB</color>
+    <color name="course_light_gray">#FDF3F4</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>

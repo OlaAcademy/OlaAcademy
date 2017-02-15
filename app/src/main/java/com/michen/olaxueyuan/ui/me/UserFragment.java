@@ -1,5 +1,7 @@
 package com.michen.olaxueyuan.ui.me;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
@@ -25,6 +28,7 @@ import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
+import com.michen.olaxueyuan.protocol.result.VipPriceResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.CoinHomePageActivity;
@@ -87,6 +91,10 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
     ImageView signDot;
     @Bind(R.id.root_scroll)
     PullToRefreshScrollView rootScroll;
+    @Bind(R.id.buy_vip_text)
+    TextView buyVipText;
+    @Bind(R.id.qq_group_layout)
+    RelativeLayout qqGroupLayout;
 
     private final static int EDIT_USER_INFO = 0x1010;
 
@@ -103,6 +111,13 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
         avatar.setRectAdius(100);
         rootScroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         rootScroll.setOnRefreshListener(this);
+        qqGroupLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                copyQQGroupNum();
+                return false;
+            }
+        });
     }
 
 
@@ -122,7 +137,7 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
 
     @OnClick({R.id.right_response, R.id.headLL, R.id.wrong_topic_layout, R.id.buy_vip_layout
             , R.id.my_buy_layout, R.id.my_collect_layout, R.id.my_download_layout
-            , R.id.service_email_layout, R.id.my_coin_layout, R.id.avatar})
+            , R.id.service_email_layout, R.id.my_coin_layout, R.id.avatar, R.id.qq_group_layout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_response:
@@ -158,9 +173,19 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
                     PictureUtils.viewPictures(getActivity(), SEAuthManager.getInstance().getAccessUser().getAvator());
                 }
                 break;
+            case R.id.qq_group_layout:
+                copyQQGroupNum();
+                break;
             default:
                 break;
         }
+    }
+
+    private void copyQQGroupNum() {
+        ClipboardManager mClipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData mClipData = ClipData.newPlainText("QQGroup", getActivity().getString(R.string.qq_group_num));
+        mClipboardManager.setPrimaryClip(mClipData);
+        ToastUtil.showToastShort(getActivity(), "QQ群号已复制到剪切板");
     }
 
     private void sendEmail() {
@@ -178,6 +203,7 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
         super.onResume();
         fetchUserInfo();
         getSignStatus();
+        getVipPrice();
     }
 
     private void fetchUserInfo() {
@@ -299,6 +325,28 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
         });
     }
 
+    private void getVipPrice() {
+        SEUserManager.getInstance().getVIPPrice(new Callback<VipPriceResult>() {
+            @Override
+            public void success(VipPriceResult vipPriceResult, Response response) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    if (vipPriceResult.getApicode() != 10000) {
+                        ToastUtil.showToastShort(getActivity(), vipPriceResult.getMessage());
+                    } else {
+                        buyVipText.setText(vipPriceResult.getResult().getMonthPrice() + "元/月");
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+                }
+            }
+        });
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -314,6 +362,7 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
 
     @Override
     public void onRefresh(PullToRefreshBase refreshView) {
+        getVipPrice();
         fetchUserInfo();
         getSignStatus();
     }

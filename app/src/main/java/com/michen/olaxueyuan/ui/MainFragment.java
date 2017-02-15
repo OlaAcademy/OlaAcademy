@@ -21,6 +21,7 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.course.CourseFragment;
+import com.michen.olaxueyuan.ui.course.CourseVideoFragment;
 import com.michen.olaxueyuan.ui.examination.ExamFragment;
 import com.michen.olaxueyuan.ui.home.HomeFragment;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
@@ -94,16 +95,16 @@ public class MainFragment extends Fragment {
                 isTeacher(true);
                 break;
             case 1:
-                changeFragment(courseFragment, teacherHomeFragment, questionFragment, homeFragment, circleFragment, userFragment);
+                changeFragment(courseVideoFragment, teacherHomeFragment, questionFragment, homeFragment, circleFragment, userFragment);
                 break;
             case 2:
-                changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseFragment, circleFragment, userFragment);
+                changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseVideoFragment, circleFragment, userFragment);
                 break;
             case 3:
-                changeFragment(circleFragment, teacherHomeFragment, questionFragment, courseFragment, homeFragment, userFragment);
+                changeFragment(circleFragment, teacherHomeFragment, questionFragment, courseVideoFragment, homeFragment, userFragment);
                 break;
             case 4:
-                changeFragment(userFragment, teacherHomeFragment, questionFragment, courseFragment, homeFragment, circleFragment);
+                changeFragment(userFragment, teacherHomeFragment, questionFragment, courseVideoFragment, homeFragment, circleFragment);
                 break;
             default:
                 break;
@@ -126,17 +127,19 @@ public class MainFragment extends Fragment {
     private HomeFragment homeFragment;
     private TeacherHomeFragment teacherHomeFragment;
     private UserFragment userFragment;
+    private CourseVideoFragment courseVideoFragment;
 
     private void addChildFragment() {
         questionFragment = new QuestionFragment();
 //        examFragment = new ExamFragment();
         courseFragment = new CourseFragment();
+        courseVideoFragment=new CourseVideoFragment();
         homeFragment = new HomeFragment();
         circleFragment = new CircleFragment();
 //        userFragment = new UserFragment();
         teacherHomeFragment = new TeacherHomeFragment();
         userFragment = new UserFragment();
-        changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseFragment, circleFragment, userFragment);
+        changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseVideoFragment, circleFragment, userFragment);
     }
 
     private void changeFragment(Fragment targetFragment, Fragment... fragments) {
@@ -155,11 +158,11 @@ public class MainFragment extends Fragment {
         if (SEAuthManager.getInstance() != null && SEAuthManager.getInstance().getAccessUser() != null
                 && SEAuthManager.getInstance().getAccessUser().getIsActive() == 2) {
             if (flag || questionFragment.isVisible()) {
-                changeFragment(teacherHomeFragment, questionFragment, courseFragment, homeFragment, circleFragment, userFragment);
+                changeFragment(teacherHomeFragment, questionFragment, courseVideoFragment, homeFragment, circleFragment, userFragment);
             }
         } else {
             if (flag || teacherHomeFragment.isVisible()) {
-                changeFragment(questionFragment, teacherHomeFragment, courseFragment, homeFragment, circleFragment, userFragment);
+                changeFragment(questionFragment, teacherHomeFragment, courseVideoFragment, homeFragment, circleFragment, userFragment);
             }
         }
     }

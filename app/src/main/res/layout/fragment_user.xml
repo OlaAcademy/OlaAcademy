@@ -203,7 +203,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="3dp"
                 android:layout_toLeftOf="@+id/buy_vip_next"
-                android:text="@string/vip_money_30"
+                android:text="@string/vip_money_38"
                 android:textColor="@color/black_a8aaad"
                 android:textSize="13dp" />
 
@@ -471,6 +471,52 @@
 
             <ImageView
                 android:id="@+id/service_email_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_next" />
+        </RelativeLayout>
+
+        <View style="@style/line_horizontal" />
+
+        <RelativeLayout
+            android:id="@+id/qq_group_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/selector_white_item_bg"
+            android:padding="12dp"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/qq_group_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/qq_study_group" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/qq_group_img"
+                android:text="@string/qq_study_group_name"
+                android:textColor="@color/black_272b36"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/qq_group_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="3dp"
+                android:layout_toLeftOf="@+id/qq_group_next"
+                android:text="@string/qq_group_num_text"
+                android:textColor="@color/black_a8aaad"
+                android:textSize="13dp" />
+
+            <ImageView
+                android:id="@+id/qq_group_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

@@ -15,16 +15,20 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
+import com.michen.olaxueyuan.protocol.result.VipPriceResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.course.pay.weixin.MD5;
 import com.michen.olaxueyuan.ui.course.pay.weixin.WxPayUtile;
 import com.michen.olaxueyuan.ui.course.pay.zhifubao.PayResult;
+import com.snail.pulltorefresh.PullToRefreshBase;
+import com.snail.pulltorefresh.PullToRefreshScrollView;
 
 import java.util.Random;
 
@@ -36,7 +40,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class BuyVipActivity extends SEBaseActivity {
+public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener {
     @Bind(R.id.month_current_money)
     TextView monthCurrentMoney;
     @Bind(R.id.month_old_money)
@@ -74,6 +78,8 @@ public class BuyVipActivity extends SEBaseActivity {
     TextView allYearOldMoney;
     @Bind(R.id.all_year_icon)
     ImageView allYearIcon;
+    @Bind(R.id.scroll)
+    PullToRefreshScrollView scroll;
     private int payType = PAY_BY_WECHAT;//最终支付方式,默认支付宝
     public static final String MOTH_VIP = "1";//1月度会员
     public static final String YEAR_VIP = "2";//2 半年会员
@@ -91,11 +97,14 @@ public class BuyVipActivity extends SEBaseActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         initView();
+        getVipPrice();
     }
 
     private void initView() {
         monthIcon.setSelected(true);
         wechatView.setSelected(true);
+        scroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        scroll.setOnRefreshListener(this);
        /* SpannableString spannedMonth = new SpannableString(monthOldMoney.getText().toString().trim());
         spannedMonth.setSpan(new StrikethroughSpan(), 0, monthOldMoney.getText().toString().trim().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         monthOldMoney.setText(spannedMonth);
@@ -282,10 +291,45 @@ public class BuyVipActivity extends SEBaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        SEAPP.dismissAllowingStateLoss();
         EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.all_year_vip)
     public void onClick() {
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+        getVipPrice();
+    }
+
+    private void getVipPrice() {
+        SEAPP.showCatDialog(this);
+        SEUserManager.getInstance().getVIPPrice(new Callback<VipPriceResult>() {
+            @Override
+            public void success(VipPriceResult vipPriceResult, Response response) {
+                if (mContext != null && !BuyVipActivity.this.isFinishing()) {
+                    scroll.onRefreshComplete();
+                    SEAPP.dismissAllowingStateLoss();
+                    if (vipPriceResult.getApicode() != 10000) {
+                        ToastUtil.showToastShort(mContext, vipPriceResult.getMessage());
+                    } else {
+                        monthCurrentMoney.setText(getString(R.string.month_vip_price, vipPriceResult.getResult().getMonthPrice()));
+                        yearCurrentMoney.setText(getString(R.string.half_year_vip_price, vipPriceResult.getResult().getHalfYearPrice()));
+                        allYearCurrentMoney.setText(getString(R.string.all_year_vip_price, vipPriceResult.getResult().getYearPrice()));
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (mContext != null && !BuyVipActivity.this.isFinishing()) {
+                    scroll.onRefreshComplete();
+                    SEAPP.dismissAllowingStateLoss();
+                    ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+                }
+            }
+        });
     }
 }

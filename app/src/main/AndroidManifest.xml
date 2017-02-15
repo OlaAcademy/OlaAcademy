@@ -543,7 +543,8 @@
             android:name=".ui.question.CommonMessageActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.circle.PersonalHomePageActivity"></activity>
+        <activity android:name=".ui.circle.PersonalHomePageActivity" />
+        <activity android:name=".ui.course.CourseVideoSubListActivity"></activity>
     </application>
 
 </manifest>

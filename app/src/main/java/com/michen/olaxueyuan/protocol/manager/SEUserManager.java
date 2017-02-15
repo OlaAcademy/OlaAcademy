@@ -21,6 +21,7 @@ import com.michen.olaxueyuan.protocol.result.UserBuyGoodsResult;
 import com.michen.olaxueyuan.protocol.result.UserCourseCollectResult;
 import com.michen.olaxueyuan.protocol.result.UserKnowledgeResult;
 import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
+import com.michen.olaxueyuan.protocol.result.VipPriceResult;
 import com.michen.olaxueyuan.protocol.result.WrongListResult;
 import com.michen.olaxueyuan.protocol.service.SEUserService;
 
@@ -343,6 +344,15 @@ public class SEUserManager {
      */
     public void getWXPayReq(String userId, String type, String goodsId, String coin, Callback<UserWXpayResult> cb) {
         _userService.getWXPayReq(userId, type, goodsId, coin, cb);
+    }
+
+    /**
+     * 后台获取VIP价格
+     *
+     * @param cb
+     */
+    public void getVIPPrice(Callback<VipPriceResult> cb) {
+        _userService.getVIPPrice(cb);
     }
 
     /**
