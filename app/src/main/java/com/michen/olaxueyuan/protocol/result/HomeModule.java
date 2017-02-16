@@ -43,10 +43,37 @@ public class HomeModule implements Serializable {
     }
 
     public static class ResultBean implements Serializable{
+        private String studyDay;
+        private String finishCount;
+        private String defeatPercent;
         private List<BannerListBean> bannerList;
         private List<QuestionListBean> questionList;
         private List<SystemCourseResultEntity> goodsList;
         private List<CourseListBean> courseList;
+
+        public String getStudyDay() {
+            return studyDay;
+        }
+
+        public void setStudyDay(String studyDay) {
+            this.studyDay = studyDay;
+        }
+
+        public String getFinishCount() {
+            return finishCount;
+        }
+
+        public void setFinishCount(String finishCount) {
+            this.finishCount = finishCount;
+        }
+
+        public String getDefeatPercent() {
+            return defeatPercent;
+        }
+
+        public void setDefeatPercent(String defeatPercent) {
+            this.defeatPercent = defeatPercent;
+        }
 
         public List<BannerListBean> getBannerList() {
             return bannerList;

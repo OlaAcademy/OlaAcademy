@@ -100,8 +100,8 @@ public class StoryAdapter extends BaseAdapter {
         String imageUrl = story.getUser_icon();
         Picasso.with(context)
                 .load(imageUrl)
-                .placeholder(R.drawable.ic_avatar_default)
-                .error(R.drawable.ic_avatar_default)
+                .placeholder(R.drawable.ic_default_avatar)
+                .error(R.drawable.ic_default_avatar)
                 .into(holder.iv_avatar);
         final ArrayList<String> imageUrls = story.getPics();
         if (imageUrls == null || imageUrls.size() == 0) { // 没有图片资源就隐藏GridView

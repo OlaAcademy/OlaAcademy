@@ -1,55 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/selector_white_item_bg">
+    android:layout_height="75dp"
+    android:background="@drawable/selector_white_item_bg"
+    android:gravity="center_vertical">
 
-    <FrameLayout
-        android:id="@+id/iv_course_layout"
-        android:layout_width="130dp"
-        android:layout_height="80dp"
+    <TextView
+        android:id="@+id/num"
+        style="@style/title_text_17dp_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp">
-
-        <ImageView
-            android:id="@+id/icon_video"
-            android:layout_width="130dp"
-            android:layout_height="80dp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:scaleType="centerInside"
-            android:src="@drawable/video_white_play_icon" />
-    </FrameLayout>
-
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_10"
+        android:text="1" />
 
     <TextView
         android:id="@+id/tv_title"
+        style="@style/title_text_15dp_style"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_toRightOf="@+id/iv_course_layout" />
-
-    <ImageView
-        android:id="@+id/iv_clock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tv_title"
-        android:layout_below="@+id/tv_title"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/icon_time" />
+        android:layout_height="38dp"
+        android:layout_marginLeft="@dimen/dp_35"
+        android:layout_marginStart="@dimen/dp_35"
+        android:gravity="bottom"
+        android:paddingBottom="@dimen/dp_2" />
 
     <TextView
         android:id="@+id/tv_time"
+        style="@style/small_text_13dp_style"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:layout_below="@+id/tv_title"
-        android:layout_marginLeft="3dp"
-        android:layout_toRightOf="@+id/iv_clock"
-        android:textColor="#a4a6a9"
-        android:textSize="10sp" />
+        android:layout_marginLeft="@dimen/dp_35"
+        android:layout_marginStart="@dimen/dp_35"
+        android:paddingTop="@dimen/dp_3" />
 
+    <View
+        style="@style/line_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/dp_30" />
 </RelativeLayout>

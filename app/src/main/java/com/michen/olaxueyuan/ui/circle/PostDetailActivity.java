@@ -121,10 +121,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     TextView numRead;
     @Bind(R.id.num_comment)
     TextView numComment;
-    @Bind(R.id.open_more_content)
-    TextView openMoreContent;
-    @Bind(R.id.open_more_content_ellipsis)
-    TextView openMoreContentEllipsis;
     @Bind(R.id.type_view)
     LinearLayout typeView;
     @Bind(R.id.focus_view)
@@ -314,13 +310,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         time.setText(resultBean.getTime());
         studyName.setText(resultBean.getTitle());
         commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
-        if (resultBean.getContent().length() > 50) {
-            openMoreContent.setVisibility(VISIBLE);
-            openMoreContentEllipsis.setVisibility(VISIBLE);
-        } else {
-            openMoreContent.setVisibility(GONE);
-            openMoreContentEllipsis.setVisibility(GONE);
-        }
         childContent.setText(resultBean.getContent());
         numRead.setText(resultBean.getReadNumber() + "人浏览");
         numComment.setText(resultBean.getCommentNumber() + "条评论");
@@ -346,7 +335,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     }
 
     @OnClick({R.id.bt_send, R.id.avatar, R.id.key_voice, R.id.view_more, R.id.voice_bg, R.id.voice_again
-            , R.id.type_view, R.id.focus_view, R.id.open_more_content, R.id.comment_praise})
+            , R.id.type_view, R.id.focus_view,  R.id.comment_praise})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.comment_praise:
@@ -388,11 +377,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             case R.id.focus_view:
                 Utils.showInputMethod(PostDetailActivity.this);
                 this.commentResultBean = null;
-                break;
-            case R.id.open_more_content:
-                childContent.setMaxLines(Integer.MAX_VALUE);
-                openMoreContent.setVisibility(GONE);
-                openMoreContentEllipsis.setVisibility(GONE);
                 break;
             default:
                 break;

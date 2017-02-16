@@ -37,7 +37,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_avatar_default" />
+                    android:src="@drawable/ic_default_avatar" />
             </RelativeLayout>
 
             <View

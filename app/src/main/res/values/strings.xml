@@ -198,4 +198,5 @@
     <string name="qq_study_group_name">QQ学习群</string>
     <string name="qq_group_num_text">群号码：162489337</string>
     <string name="qq_group_num">162489337</string>
+    <string name="study_progress">学习进度</string>
 </resources>

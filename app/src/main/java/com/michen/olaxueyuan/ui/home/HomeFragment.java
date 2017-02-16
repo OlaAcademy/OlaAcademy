@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
+import com.michen.olaxueyuan.ui.MainFragment;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.circle.DeployPostActivity;
@@ -39,6 +41,7 @@ import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -83,6 +86,16 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     TextView showAllCourseDatabase;
     @Bind(R.id.recycler_view_course_database)
     RecyclerView recyclerViewCourseDatabase;
+    @Bind(R.id.study_time_length_text)
+    TextView studyTimeLengthText;
+    @Bind(R.id.complete_num_subject_text)
+    TextView completeNumSubjectText;
+    @Bind(R.id.persist_text)
+    TextView persistText;
+    @Bind(R.id.defeat_text)
+    TextView defeatText;
+    @Bind(R.id.user_avatar)
+    RoundRectImageView userAvatar;
 
     HomeQuestionAdapter homeQuestionAdapter;
     DirectBroadCastRecyclerAdapter directBroadCastRecyclerAdapter;
@@ -104,6 +117,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewQualityCourse.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewCourseDatabase.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        userAvatar.setRectAdius(100);
 
         homeQuestionAdapter = new HomeQuestionAdapter(getActivity());
         questionListListview.setAdapter(homeQuestionAdapter);
@@ -150,6 +164,15 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         directBroadCastRecyclerAdapter.updateData(result.getResult().getGoodsList());
         qualityCourseRecyclerAdapter.updateData(result.getResult().getGoodsList());
         courseDatabaseRecyclerAdapter.updateData(result.getResult().getCourseList());
+        studyTimeLengthText.setText(result.getResult().getStudyDay());
+        completeNumSubjectText.setText(result.getResult().getFinishCount());
+        persistText.setText(result.getResult().getStudyDay());
+        defeatText.setText(result.getResult().getDefeatPercent());
+        if (!TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
+            Picasso.with(getActivity()).load(SEAuthManager.getInstance().getAccessUser().getAvator())
+                    .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar)
+                    .resize(60, 60).into(userAvatar);
+        }
     }
 
     @OnClick({R.id.put_question_layout, R.id.find_teacher_layout, R.id.find_data_layout, R.id.find_data_group, R.id.show_all_question
@@ -200,8 +223,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
 
     private void chageIndex(int position) {
         /**
-         *{@link com.michen.olaxueyuan.ui.MainFragment#onEventMainThread(ChangeIndexEvent)}
-         * {@link com.michen.olaxueyuan.ui.circle.CircleFragment#onEventMainThread(ChangeIndexEvent)}
+         *{@link MainFragment#onEventMainThread(ChangeIndexEvent)}
+         * {@link CircleFragment#onEventMainThread(ChangeIndexEvent)}
          */
         EventBus.getDefault().post(new ChangeIndexEvent(position, true));
     }

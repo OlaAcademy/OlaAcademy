@@ -350,8 +350,8 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         } else if (!TextUtils.isEmpty(avatarUrl)) {
             Picasso.with(this)
                     .load(avatarUrl)
-                    .placeholder(R.drawable.ic_avatar_default)
-                    .error(R.drawable.ic_avatar_default)
+                    .placeholder(R.drawable.ic_default_avatar)
+                    .error(R.drawable.ic_default_avatar)
                     .into(avatarImageView);
         }
     }

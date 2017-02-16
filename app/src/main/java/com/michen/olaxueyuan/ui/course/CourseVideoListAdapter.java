@@ -76,9 +76,11 @@ public class CourseVideoListAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, CourseVideoActivity.class);
+                /*Intent intent = new Intent(context, CourseVideoActivity.class);
                 intent.putExtra("pid", videoList.get(position).getPid());
-                context.startActivity(intent);
+                context.startActivity(intent);*/
+                context.startActivity(new Intent(context, CourseVideoSubListActivity.class)
+                        .putExtra("pid", String.valueOf(videoList.get(position).getId())));
             }
         });
         return convertView;

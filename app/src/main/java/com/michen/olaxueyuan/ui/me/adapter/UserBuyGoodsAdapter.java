@@ -74,7 +74,6 @@ public class UserBuyGoodsAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Todo 跳转到播放视频界面
                 Intent intent = new Intent(context, SystemVideoActivity.class);
                 intent.putExtra("pid", String.valueOf(list.get(position).getId()));
                 intent.putExtra("ResultEntity", list.get(position));
