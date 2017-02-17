@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui.home;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +19,9 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.AutoScrollViewPager;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.SubListView;
+import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
+import com.michen.olaxueyuan.download.DownloadService;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -112,6 +115,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     }
 
     private void initView() {
+        DownloadService.startTimer(getActivity());
         scroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         scroll.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -164,7 +168,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         directBroadCastRecyclerAdapter.updateData(result.getResult().getGoodsList());
         qualityCourseRecyclerAdapter.updateData(result.getResult().getGoodsList());
         courseDatabaseRecyclerAdapter.updateData(result.getResult().getCourseList());
-        studyTimeLengthText.setText(result.getResult().getStudyDay());
+        studyTimeLengthText.setText(String.valueOf(getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, Context.MODE_PRIVATE)
+                .getInt(CommonConstant.DAY_STUDY_TIME_LENGTH, 0)));
         completeNumSubjectText.setText(result.getResult().getFinishCount());
         persistText.setText(result.getResult().getStudyDay());
         defeatText.setText(result.getResult().getDefeatPercent());
@@ -245,7 +250,22 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     @Override
     public void onResume() {
         super.onResume();
+        onChange();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!isHidden()) {
+            onChange();
+        }
+    }
+
+    private void onChange() {
         imgViewpagerHome.startAutoScroll();
+        studyTimeLengthText.setText(String.valueOf(CommonConstant.DAY_STUDY_TIME
+                + getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, Context.MODE_PRIVATE)
+                .getInt(CommonConstant.DAY_STUDY_TIME_LENGTH, 0)));
     }
 
     @Override
@@ -258,6 +278,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        DownloadService.destroyTimer(getActivity());
         ButterKnife.unbind(this);
     }
 

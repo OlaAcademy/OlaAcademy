@@ -1,7 +1,5 @@
 package com.michen.olaxueyuan.ui.me;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,6 +16,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
@@ -111,13 +110,6 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
         avatar.setRectAdius(100);
         rootScroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         rootScroll.setOnRefreshListener(this);
-        qqGroupLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                copyQQGroupNum();
-                return false;
-            }
-        });
     }
 
 
@@ -174,18 +166,25 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
                 }
                 break;
             case R.id.qq_group_layout:
-                copyQQGroupNum();
+                joinQQGroup();
                 break;
             default:
                 break;
         }
     }
 
-    private void copyQQGroupNum() {
-        ClipboardManager mClipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData mClipData = ClipData.newPlainText("QQGroup", getActivity().getString(R.string.qq_group_num));
-        mClipboardManager.setPrimaryClip(mClipData);
-        ToastUtil.showToastShort(getActivity(), "QQ群号已复制到剪切板");
+    private boolean joinQQGroup() {
+        Intent intent = new Intent();
+        intent.setData(Uri.parse(CommonConstant.QQ_GROUP_URI + CommonConstant.QQ_GROUP_KEY));
+        // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面
+        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        try {
+            startActivity(intent);
+            return true;
+        } catch (Exception e) {
+            ToastUtil.showToastShort(getActivity(), "未安装手Q或安装的版本不支持");
+            return false;
+        }
     }
 
     private void sendEmail() {

@@ -24,4 +24,11 @@ public class CommonConstant {
 
     public static final int CODE_REQUEST_VIDEO_RECORD = 10001;
     public static final int TAKE_PICTURE = 10002;
+    public static int DAY_STUDY_TIME = 0;//首页每日学习的时长
+    public static final String DAY_STUDY_PREFERENCE = "day_study_time_preference";//首页每日学习的时长sharePreference存储名称
+    public static final String DAY_STUDY_TIME_LENGTH = "day_study_time";//首页每日学习的时长sharePreference
+    public static final String DAY_STUDY_DATE = "day_study_date_preference";//首页每日学习最后的时间sharePreference
+    public static final String QQ_GROUP_KEY = "u5Whiq-Ik7zFDroIeRRPolENgFYi63PF";//qq群的key
+    public static final String QQ_GROUP_URI = "mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D";//qq群的uri
+
 }
