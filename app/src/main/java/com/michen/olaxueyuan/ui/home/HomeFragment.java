@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.AutoScrollViewPager;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.SubListView;
@@ -174,7 +175,13 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         persistText.setText(result.getResult().getStudyDay());
         defeatText.setText(result.getResult().getDefeatPercent());
         if (!TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
-            Picasso.with(getActivity()).load(SEAuthManager.getInstance().getAccessUser().getAvator())
+            String avatarUrl;
+            if (SEAuthManager.getInstance().getAccessUser().getAvator().contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + SEAuthManager.getInstance().getAccessUser().getAvator();
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + SEAuthManager.getInstance().getAccessUser().getAvator();
+            }
+            Picasso.with(getActivity()).load(avatarUrl)
                     .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar)
                     .resize(60, 60).into(userAvatar);
         }
