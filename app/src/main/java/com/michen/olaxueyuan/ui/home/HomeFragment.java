@@ -173,7 +173,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         completeNumSubjectText.setText(result.getResult().getFinishCount());
         persistText.setText(result.getResult().getStudyDay());
         defeatText.setText(result.getResult().getDefeatPercent());
-        if (!TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
+        if (SEAuthManager.getInstance().getAccessUser() != null && !TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
             Picasso.with(getActivity()).load(SEAuthManager.getInstance().getAccessUser().getAvator())
                     .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar)
                     .resize(60, 60).into(userAvatar);
