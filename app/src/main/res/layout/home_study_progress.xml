@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="38dp">
+        android:layout_height="@dimen/dp_35">
 
         <View
             android:layout_width="2dp"
@@ -32,10 +32,6 @@
             android:paddingRight="@dimen/dp_15"
             android:src="@drawable/ic_next"
             android:text="" />
-
-        <View
-            style="@style/line_horizontal_margin_15dp"
-            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -48,11 +44,10 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_15"
             android:gravity="center"
             android:text="0"
             android:textColor="@color/black_one"
-            android:textSize="30dp" />
+            android:textSize="33dp" />
 
         <TextView
             android:id="@+id/study_time_unit"
@@ -68,7 +63,7 @@
 
         <TextView
             android:id="@+id/complete_hint"
-            style="@style/small_text_13dp_style"
+            style="@style/small_text_12dp_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/study_time_length_text"
@@ -80,7 +75,7 @@
 
         <TextView
             android:id="@+id/persist_hint"
-            style="@style/small_text_13dp_style"
+            style="@style/small_text_12dp_style"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/study_time_length_text"
@@ -92,7 +87,7 @@
 
         <TextView
             android:id="@+id/defeat_hint"
-            style="@style/small_text_13dp_style"
+            style="@style/small_text_12dp_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/study_time_length_text"
@@ -111,7 +106,7 @@
 
             <TextView
                 android:id="@+id/complete_num_subject_text"
-                style="@style/title_text_16dp_style"
+                style="@style/title_text_17dp_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -140,7 +135,7 @@
 
             <TextView
                 android:id="@+id/persist_text"
-                style="@style/title_text_16dp_style"
+                style="@style/title_text_17dp_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -168,7 +163,7 @@
 
             <TextView
                 android:id="@+id/defeat_text"
-                style="@style/title_text_16dp_style"
+                style="@style/title_text_17dp_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -191,7 +186,7 @@
             android:id="@+id/study_line"
             style="@style/line_horizontal_margin_15dp"
             android:layout_below="@+id/persist_center_layout"
-            android:layout_marginTop="@dimen/dp_5" />
+            android:layout_marginTop="@dimen/dp_7" />
 
         <TextView
             style="@style/normal_text_14dp_style"
