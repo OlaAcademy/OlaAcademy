@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.me.activity;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -67,11 +68,6 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
     RelativeLayout wechatView;
     @Bind(R.id.buy_vip)
     Button buyVip;
-    private static final int SDK_PAY_FLAG = 1;
-    private static final int SDK_CHECK_FLAG = 2;
-    private static final int PAY_BY_ALIPAY = 101;//使用支付宝支付
-    private static final int PAY_BY_WECHAT = 102;//使用微信支付
-    private static Context context;
     @Bind(R.id.all_year_current_money)
     TextView allYearCurrentMoney;
     @Bind(R.id.all_year_old_money)
@@ -80,13 +76,25 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
     ImageView allYearIcon;
     @Bind(R.id.scroll)
     PullToRefreshScrollView scroll;
+    @Bind(R.id.season_current_money)
+    TextView seasonCurrentMoney;
+    @Bind(R.id.season_icon)
+    ImageView seasonIcon;
+
+    private static final int SDK_PAY_FLAG = 1;
+    private static final int SDK_CHECK_FLAG = 2;
+    private static final int PAY_BY_ALIPAY = 101;//使用支付宝支付
+    private static final int PAY_BY_WECHAT = 102;//使用微信支付
+    private static Context context;
     private int payType = PAY_BY_WECHAT;//最终支付方式,默认支付宝
     public static final String MOTH_VIP = "1";//1月度会员
     public static final String YEAR_VIP = "2";//2 半年会员
     public static final String SUPER_VIP = "3";//3 整套视频
     public static final String ALL_YEAR_VIP = "4";//4年度会员
-    private String type = MOTH_VIP;// 1月度会员 2 半年度会员 3 整套视频 4年度会员
+    public static final String SEASON_VIP = "5";//5季度会员
+    private String type = MOTH_VIP;// 1月度会员 2 半年度会员 3 整套视频 4年度会员 5季度会员
     private String userId = "126";//测试的userId
+    private String versionName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +113,12 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
         wechatView.setSelected(true);
         scroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         scroll.setOnRefreshListener(this);
+        try {
+            versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            versionName = "1.2.9";
+        }
        /* SpannableString spannedMonth = new SpannableString(monthOldMoney.getText().toString().trim());
         spannedMonth.setSpan(new StrikethroughSpan(), 0, monthOldMoney.getText().toString().trim().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         monthOldMoney.setText(spannedMonth);
@@ -113,24 +127,35 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
         yearOldMoney.setText(spannedYear);*/
     }
 
-    @OnClick({R.id.month_vip, R.id.year_vip, R.id.alipay_view, R.id.wechat_view, R.id.buy_vip, R.id.all_year_vip})
+    @OnClick({R.id.month_vip, R.id.year_vip, R.id.alipay_view, R.id.wechat_view
+            , R.id.buy_vip, R.id.all_year_vip, R.id.season_vip})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.month_vip:
                 type = MOTH_VIP;
                 monthIcon.setSelected(true);
+                seasonIcon.setSelected(false);
+                yearIcon.setSelected(false);
+                allYearIcon.setSelected(false);
+                break;
+            case R.id.season_vip:
+                type = SEASON_VIP;
+                monthIcon.setSelected(false);
+                seasonIcon.setSelected(true);
                 yearIcon.setSelected(false);
                 allYearIcon.setSelected(false);
                 break;
             case R.id.year_vip:
                 type = YEAR_VIP;
                 monthIcon.setSelected(false);
+                seasonIcon.setSelected(false);
                 yearIcon.setSelected(true);
                 allYearIcon.setSelected(false);
                 break;
             case R.id.all_year_vip:
                 type = ALL_YEAR_VIP;
                 monthIcon.setSelected(false);
+                seasonIcon.setSelected(false);
                 yearIcon.setSelected(false);
                 allYearIcon.setSelected(true);
                 break;
@@ -160,7 +185,7 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
 
     public void payForAlipay() {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        SEUserManager.getInstance().getAliOrderInfo(userId, type, "", "0", new Callback<UserAlipayResult>() {
+        SEUserManager.getInstance().getAliOrderInfo(userId, type, "", "0", versionName, new Callback<UserAlipayResult>() {
             @Override
             public void success(UserAlipayResult userAlipayResult, Response response) {
                 if (!BuyVipActivity.this.isFinishing()) {
@@ -246,7 +271,7 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
 
     public void payForWXRequest() {
         userId = SEAuthManager.getInstance().getAccessUser().getId();
-        SEUserManager.getInstance().getWXPayReq(userId, type, "", "0", new Callback<UserWXpayResult>() {
+        SEUserManager.getInstance().getWXPayReq(userId, type, "", "0", versionName, new Callback<UserWXpayResult>() {
             @Override
             public void success(UserWXpayResult wxPayModule, Response response) {
                 if (!BuyVipActivity.this.isFinishing()) {
@@ -295,10 +320,6 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick(R.id.all_year_vip)
-    public void onClick() {
-    }
-
     @Override
     public void onRefresh(PullToRefreshBase refreshView) {
         getVipPrice();
@@ -316,6 +337,7 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
                         ToastUtil.showToastShort(mContext, vipPriceResult.getMessage());
                     } else {
                         monthCurrentMoney.setText(getString(R.string.month_vip_price, vipPriceResult.getResult().getMonthPrice()));
+                        seasonCurrentMoney.setText(getString(R.string.season_vip_price, vipPriceResult.getResult().getSeasonPrice()));
                         yearCurrentMoney.setText(getString(R.string.half_year_vip_price, vipPriceResult.getResult().getHalfYearPrice()));
                         allYearCurrentMoney.setText(getString(R.string.all_year_vip_price, vipPriceResult.getResult().getYearPrice()));
                     }
@@ -331,5 +353,9 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
                 }
             }
         });
+    }
+
+    @OnClick(R.id.season_vip)
+    public void onClick() {
     }
 }

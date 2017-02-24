@@ -6,6 +6,13 @@
         <item>逻辑</item>
         <item>写作</item>
     </string-array>
+    <string-array name="deploy_post_course">
+        <item>数学</item>
+        <item>英语</item>
+        <item>逻辑</item>
+        <item>写作</item>
+        <item>其它</item>
+    </string-array>
     <string-array name="system_course">
         <item>课程</item>
         <item>教材</item>

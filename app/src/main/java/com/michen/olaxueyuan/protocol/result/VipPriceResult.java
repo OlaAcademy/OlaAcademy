@@ -46,9 +46,18 @@ public class VipPriceResult {
          * yearPrice : 298
          */
 
-        private String  monthPrice;
+        private String monthPrice;
+        private String seasonPrice;
         private String halfYearPrice;
         private String yearPrice;
+
+        public String getSeasonPrice() {
+            return seasonPrice;
+        }
+
+        public void setSeasonPrice(String seasonPrice) {
+            this.seasonPrice = seasonPrice;
+        }
 
         public String getMonthPrice() {
             return monthPrice;

@@ -17,8 +17,8 @@
             android:layout_height="48dp"
             android:background="@color/white"
             android:paddingLeft="15dp"
-            android:visibility="gone"
-            android:paddingRight="15dp">
+            android:paddingRight="15dp"
+            android:visibility="visible">
 
             <TextView
                 style="@style/black_one_text_15dp_style"
@@ -34,8 +34,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/question_type_img"
-                android:text="请选择"
-                android:textColor="@color/black_a4a6a9" />
+                android:hint="请选择"
+                android:textColor="@color/black_a4a6a9"
+                android:textColorHint="@color/black_a4a6a9" />
 
             <ImageView
                 android:id="@+id/question_type_img"

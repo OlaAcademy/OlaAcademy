@@ -328,8 +328,8 @@ public class SEUserManager {
      * @param goodsId
      * @param cb
      */
-    public void getAliOrderInfo(String userId, String type, String goodsId, String coin, Callback<UserAlipayResult> cb) {
-        _userService.getAliOrderInfo(userId, type, goodsId, coin, cb);
+    public void getAliOrderInfo(String userId, String type, String goodsId, String coin, String version, Callback<UserAlipayResult> cb) {
+        _userService.getAliOrderInfo(userId, type, goodsId, coin, version, cb);
     }
 
     /**
@@ -342,8 +342,8 @@ public class SEUserManager {
      * @param coin
      * @param cb
      */
-    public void getWXPayReq(String userId, String type, String goodsId, String coin, Callback<UserWXpayResult> cb) {
-        _userService.getWXPayReq(userId, type, goodsId, coin, cb);
+    public void getWXPayReq(String userId, String type, String goodsId, String coin, String version, Callback<UserWXpayResult> cb) {
+        _userService.getWXPayReq(userId, type, goodsId, coin, version, cb);
     }
 
     /**

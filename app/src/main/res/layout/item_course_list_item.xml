@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/video_white_play_icon" />
+            android:src="@drawable/video_white_play_icon"
+            android:visibility="gone" />
     </FrameLayout>
 
     <RelativeLayout

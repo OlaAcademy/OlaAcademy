@@ -62,7 +62,7 @@ public class CirclePopManager {
                 popupWindow.dismiss();
             }
         });
-        popupWindow = new PopupWindow(contentView, Utils.dip2px(context, 150), Utils.dip2px(context, 120));
+        popupWindow = new PopupWindow(contentView, Utils.dip2px(context, 140), Utils.dip2px(context, 120));
         contentView.setFocusableInTouchMode(true);
         // 返回键可用
         contentView.setOnKeyListener(new View.OnKeyListener() {

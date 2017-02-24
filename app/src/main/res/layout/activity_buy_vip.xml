@@ -87,6 +87,48 @@
             <View style="@style/line_horizontal" />
 
             <RelativeLayout
+                android:id="@+id/season_vip"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_white_item_bg">
+
+                <TextView
+                    android:id="@+id/season_current_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/dp_20"
+                    android:text="季度黄金会员98元"
+                    android:textColor="@color/black_323232"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/season_old_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:layout_toLeftOf="@+id/season_icon"
+                    android:padding="2dp"
+                    android:text="比任何网课都值"
+                    android:textColor="@color/title_hint_text_color"
+                    android:textSize="13dp"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/season_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/select_group_item_bg" />
+            </RelativeLayout>
+
+            <View style="@style/line_horizontal" />
+
+            <RelativeLayout
                 android:id="@+id/year_vip"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

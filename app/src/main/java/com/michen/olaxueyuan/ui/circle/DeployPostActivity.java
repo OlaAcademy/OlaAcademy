@@ -37,6 +37,7 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.NoScrollGridView;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.Logger;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
@@ -130,6 +131,7 @@ public class DeployPostActivity extends SEBaseActivity {
     private int optionType = 1;//区分选择器返回的类型；1、类型；2、是否公开
     private int isPublic = 0;//是否公开
     private int assignUser;//指定回答者Id
+    private String postType;//
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,7 +203,7 @@ public class DeployPostActivity extends SEBaseActivity {
         });
         //选项选择器
         pvOptions = new OptionsPickerView(this);
-        String[] coursesArray = getResources().getStringArray(R.array.courses);
+        String[] coursesArray = getResources().getStringArray(R.array.deploy_post_course);
         for (int i = 0; i < coursesArray.length; i++) {
             courses.add(coursesArray[i]);
         }
@@ -238,6 +240,11 @@ public class DeployPostActivity extends SEBaseActivity {
         int imageCount = Bimp.tempSelectBitmap.size();
         if (TextUtils.isEmpty(content) || content.length() < 2) {
             Toast.makeText(this, "请输入不少于两个字的帖子内容", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        postType = questionTypeHintText.getText().toString().trim();
+        if (TextUtils.isEmpty(postType)) {
+            ToastUtil.showToastShort(mContext, "请选择类型");
             return;
         }
 //        SVProgressHUD.showInView(this, "正在发布中，请稍后...", true);

@@ -202,6 +202,7 @@ public interface SEUserService {
             @Field("type") String type,
             @Field("goodsId") String goodsId,
             @Field("coin") String coin,
+            @Field("app_version") String app_version,
             Callback<UserAlipayResult> cb);
 
     /**
@@ -220,6 +221,7 @@ public interface SEUserService {
             @Field("type") String type,
             @Field("goodsId") String goodsId,
             @Field("coin") String coin,
+            @Field("app_version") String app_version,
 //            @Field("body") String body,
             Callback<UserWXpayResult> cb);
 

@@ -193,6 +193,7 @@
     <string name="only_choose_num">超出可选图片张数</string>
     <string name="course_list">课程列表</string>
     <string name="month_vip_price">月度黄金会员%s元</string>
+    <string name="season_vip_price">季度黄金会员%s元</string>
     <string name="half_year_vip_price">半年黄金会员%s元</string>
     <string name="all_year_vip_price">一年黄金会员%s元</string>
     <string name="qq_study_group_name">QQ学习群</string>

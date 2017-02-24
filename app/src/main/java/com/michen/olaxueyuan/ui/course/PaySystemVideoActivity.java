@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.ui.course;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,7 +20,6 @@ import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
-import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.protocol.result.UserAlipayResult;
 import com.michen.olaxueyuan.protocol.result.UserWXpayResult;
@@ -93,6 +93,7 @@ public class PaySystemVideoActivity extends SuperActivity {
     private int maxCoin;//最多使用多少欧拉币，最多为总价的1/10,1元=20欧拉币
     private float coinMoney;//可以抵扣多少钱
     private DecimalFormat format = new DecimalFormat("0.00");
+    private String versionName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,12 @@ public class PaySystemVideoActivity extends SuperActivity {
         EventBus.getDefault().register(this);
         titleManager = new TitleManager(this, "支付订单", this, true);
         wechatRadio.setSelected(true);
+        try {
+            versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            versionName = "1.2.9";
+        }
     }
 
     @Override
@@ -182,7 +189,7 @@ public class PaySystemVideoActivity extends SuperActivity {
         if (isUseCoin) {
             maxCoinString = String.valueOf(maxCoin);
         }
-        SEUserManager.getInstance().getWXPayReq(userId, type, courseId, maxCoinString, new Callback<UserWXpayResult>() {
+        SEUserManager.getInstance().getWXPayReq(userId, type, courseId, maxCoinString, versionName, new Callback<UserWXpayResult>() {
             @Override
             public void success(UserWXpayResult wxPayModule, Response response) {
                 if (wxPayModule != null && wxPayModule.getApicode() == 10000) {
@@ -216,7 +223,7 @@ public class PaySystemVideoActivity extends SuperActivity {
         if (isUseCoin) {
             maxCoinString = String.valueOf(maxCoin);
         }
-        SEUserManager.getInstance().getAliOrderInfo(userId, type, courseId, maxCoinString, new Callback<UserAlipayResult>() {
+        SEUserManager.getInstance().getAliOrderInfo(userId, type, courseId, maxCoinString, versionName, new Callback<UserAlipayResult>() {
             @Override
             public void success(UserAlipayResult userAlipayResult, Response response) {
                 if (userAlipayResult != null && userAlipayResult.getApicode() == 10000) {
