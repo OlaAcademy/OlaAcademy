@@ -101,12 +101,14 @@ public interface QuestionService {
      *
      * @param postId couserId或circle中的帖子Id
      * @param type   1 postId为课程 2 postId 为帖子
+     * @param assign 0 全部评论 1 指定回答
      * @param cb
      */
     @FormUrlEncoded
     @POST("/ola/comment/getCommentList")
     void getCommentList(@Field("postId") String postId,
                         @Field("type") String type,
+                        @Field("assign") String assign,
                         Callback<CommentModule> cb);
 
     /**

@@ -85,6 +85,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
     private DownloadManager downloadManager;
     private SharePopupWindow share;
     private int playPosition;//当前播放位置
+    private long playProgress = 0;
 
     @Nullable
     @Override
@@ -158,6 +159,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.getMessage(), 2.0f);
                     } else {
                         videoArrayList = result.getResult();
+                        playProgress = result.getPlayProgress();
                         ((SystemVideoActivity) getActivity()).setVieoArrayList(videoArrayList);
                         if (videoArrayList != null && videoArrayList.size() > 0) {
                             videoArrayList.get(0).setSelected(true);
@@ -165,7 +167,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
                             listview.setAdapter(adapter);
                             adapter.updateData(videoArrayList);
                             initListViewItemClick();
-                            ((SystemVideoActivity) getActivity()).playVideo(videoArrayList.get(0).getAddress());
+                            ((SystemVideoActivity) getActivity()).playVideo(videoArrayList.get(0), result.getPlayIndex(), result.getPlayProgress());
                         }
                     }
                 }
@@ -196,7 +198,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
                         if (hasBuyGoods) {
                             bottomView.setVisibility(View.GONE);
                             bottomDownloadView.setVisibility(View.VISIBLE);
-                            ((SystemVideoActivity) getActivity()).playVideo(videoArrayList.get(position).getAddress());
+                            ((SystemVideoActivity) getActivity()).playVideo(videoArrayList.get(position), position, playProgress);
                             ((SystemVideoActivity) getActivity()).pdfPosition = position;
                             adapter.updateData(videoArrayList);
                         } else {

@@ -7,6 +7,7 @@ import com.michen.olaxueyuan.protocol.result.CourseVieoListResult;
 import com.michen.olaxueyuan.protocol.result.MCCollectionResult;
 import com.michen.olaxueyuan.protocol.result.MCVideoResult;
 import com.michen.olaxueyuan.protocol.result.SECourseCateResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
 import com.michen.olaxueyuan.protocol.SECallBack;
 import com.michen.olaxueyuan.protocol.model.SECart;
@@ -626,6 +627,20 @@ public class SECourseManager {
      */
     public void getVideoCourseSubList(String pid, Callback<VideoCourseSubResult> callback) {
         getCourseService().getVideoCourseSubList(pid, callback);
+    }
+
+    /**
+     * 保存视频播放时长
+     *
+     * @param objectId
+     * @param type         1 course 2 goods
+     * @param currentIndex 课程或精品课中的第几个视频
+     * @param duration     时长 秒为单位
+     * @param cb
+     */
+    public void recordPlayProgress(String userId, String objectId, String type, String currentIndex
+            , String duration, Callback<SimpleResult> callback) {
+        getCourseService().recordPlayProgress(userId, objectId, type, currentIndex, duration, callback);
     }
 }
 

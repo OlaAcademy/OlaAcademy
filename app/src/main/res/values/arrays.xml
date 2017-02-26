@@ -56,4 +56,8 @@
         <item>默认排序</item>
         <item>热度排序</item>
     </string-array>
+    <string-array name="post_detail_comment_select">
+        <item>全部评论</item>
+        <item>指定回答</item>
+    </string-array>
 </resources>

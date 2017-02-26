@@ -7,6 +7,7 @@ import com.michen.olaxueyuan.protocol.result.MCCollectionResult;
 import com.michen.olaxueyuan.protocol.result.MCVideoResult;
 import com.michen.olaxueyuan.protocol.result.SECourseCateResult;
 import com.michen.olaxueyuan.protocol.result.SEWXPayInfoResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
 import com.michen.olaxueyuan.protocol.result.CourseCollectResult;
 import com.michen.olaxueyuan.protocol.result.GoodsOrderStatusResult;
@@ -349,5 +350,24 @@ public interface SECourseService {
     void getVideoCourseSubList(
             @Field("pid") String pid,
             Callback<VideoCourseSubResult> cb);
+
+    /**
+     * 保存视频播放时长
+     *
+     * @param objectId
+     * @param type         1 course 2 goods
+     * @param currentIndex 课程或精品课中的第几个视频
+     * @param duration     时长 秒为单位
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/watchrecord/recordPlayProgress")
+    void recordPlayProgress(
+            @Field("userId") String userId,
+            @Field("objectId") String objectId,
+            @Field("type") String type,
+            @Field("currentIndex") String currentIndex,
+            @Field("duration") String duration,
+            Callback<SimpleResult> cb);
 
 }

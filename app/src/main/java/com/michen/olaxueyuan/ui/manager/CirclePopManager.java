@@ -50,6 +50,9 @@ public class CirclePopManager {
             case 1:
                 mMarkArray = context.getResources().getStringArray(R.array.course_rank_select);
                 break;
+            case 2:
+                mMarkArray = context.getResources().getStringArray(R.array.post_detail_comment_select);
+                break;
         }
         View contentView = LayoutInflater.from(context).inflate(R.layout.circle_fragment_pop_listview, null);
         ListView listView = (ListView) contentView.findViewById(R.id.listview);
@@ -80,7 +83,9 @@ public class CirclePopManager {
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.showAsDropDown(popLine);
-        all_search_view.setVisibility(View.VISIBLE);
+        if (all_search_view != null) {
+            all_search_view.setVisibility(View.VISIBLE);
+        }
     }
 
     PopupWindow popupWindow;

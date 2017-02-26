@@ -99,10 +99,11 @@ public class QuestionCourseManager {
      *
      * @param postId   couserId或circle中的帖子Id
      * @param type     1 postId为课程 2 postId 为帖子
+     * @param assign     0 全部评论 1 指定回答
      * @param callback
      */
-    public void getCommentList(String postId, String type, final Callback<CommentModule> callback) {
-        getQuestionService().getCommentList(postId, type, callback);
+    public void getCommentList(String postId, String type, String assign, final Callback<CommentModule> callback) {
+        getQuestionService().getCommentList(postId, type, assign, callback);
     }
 
     /**
@@ -218,7 +219,8 @@ public class QuestionCourseManager {
 
     /**
      * 个人主页
-     *  @param userId   (必填)
+     *
+     * @param userId   (必填)
      * @param callback
      */
     public void getUserPostList(String userId, Callback<UserPostListResult> callback) {

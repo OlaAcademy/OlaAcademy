@@ -15,6 +15,43 @@ public class SystemVideoResult extends ServiceResult implements Serializable {
 
     private String message;
     private int apicode;
+    private int playIndex;
+    private int isCollect;
+    private int orderStatus;
+    private long playProgress;
+
+    public int getPlayIndex() {
+        return playIndex;
+    }
+
+    public void setPlayIndex(int playIndex) {
+        this.playIndex = playIndex;
+    }
+
+    public int getIsCollect() {
+        return isCollect;
+    }
+
+    public void setIsCollect(int isCollect) {
+        this.isCollect = isCollect;
+    }
+
+    public int getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(int orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public long getPlayProgress() {
+        return playProgress;
+    }
+
+    public void setPlayProgress(long playProgress) {
+        this.playProgress = playProgress;
+    }
+
     /**
      * id : 110
      * name : 课时1：算数部分【1】

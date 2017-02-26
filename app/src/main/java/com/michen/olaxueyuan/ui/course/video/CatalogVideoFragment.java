@@ -81,24 +81,25 @@ public class CatalogVideoFragment extends BaseFragment {
                         videoArrayList.get(i).setSelected(false);
                     }
                     videoArrayList.get(position).setSelected(true);
-                    ((CourseVideoActivity)getActivity()).playVideo(position);
+                    ((CourseVideoActivity) getActivity()).playVideo(position);
                     adapter.updateData(videoArrayList);
                 }
             }
         });
     }
 
-    public void onEventMainThread(CourseVideoResult result){
+    public void onEventMainThread(CourseVideoResult result) {
         courseVideoResult = result;
         videoArrayList = result.getResult().getVideoList();
         if (videoArrayList != null && videoArrayList.size() > 0) {
-            videoArrayList.get(0).setSelected(true);
+            videoArrayList.get(result.getPlayIndex()).setSelected(true);
             adapter = new CourseVideoListAdapter(getActivity());
             listview.setAdapter(adapter);
             initListViewItemClick();
             adapter.updateData(videoArrayList);
         }
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -5,22 +5,25 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
+import com.michen.olaxueyuan.common.NoScrollThreeGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.DateUtils;
-import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
+import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.circle.PersonalHomePageActivity;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
+import com.snail.photo.util.NoScrollGridView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -34,10 +37,12 @@ import butterknife.ButterKnife;
  */
 public class CircleAdapter extends BaseAdapter {
     private Context mContext;
+    private CircleFragment fragment;
     List<OLaCircleModule.ResultBean> list = new ArrayList<>();
 
-    public CircleAdapter(Context mContext) {
-        this.mContext = mContext;
+    public CircleAdapter(CircleFragment mContext) {
+        this.fragment = mContext;
+        this.mContext = fragment.getActivity();
     }
 
     public void updateData(List<OLaCircleModule.ResultBean> list) {
@@ -64,7 +69,7 @@ public class CircleAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.circle_list_item, null);
+            convertView = View.inflate(mContext, R.layout.circle_list_item_v2, null);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -97,7 +102,7 @@ public class CircleAdapter extends BaseAdapter {
                     }
                     PictureUtils.viewPictures(mContext, avatarUrl);
                 }*/
-                mContext.startActivity(new Intent(mContext, PersonalHomePageActivity.class).putExtra("userId",list.get(position).getUserId()));
+                mContext.startActivity(new Intent(mContext, PersonalHomePageActivity.class).putExtra("userId", list.get(position).getUserId()));
             }
         });
         holder.name.setText(list.get(position).getUserName());
@@ -105,19 +110,46 @@ public class CircleAdapter extends BaseAdapter {
         holder.title.setText(list.get(position).getTitle());
         holder.content.setText(list.get(position).getContent());
         holder.numRead.setText(list.get(position).getReadNumber() + "人浏览");
-        holder.numComment.setText(list.get(position).getCommentNumber() + "人评论");
+        holder.numComment.setText(String.valueOf(list.get(position).getCommentNumber()));
+        holder.favNum.setText(String.valueOf(list.get(position).getPraiseNumber()));
+        holder.postType.setText("类型：" + list.get(position).getSubject());
         if (!TextUtils.isEmpty(list.get(position).getImageGids())) {
-            holder.image.setVisibility(View.VISIBLE);
-            ViewGroup.LayoutParams layoutParams = holder.image.getLayoutParams();
-            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.height = Utils.getScreenMetricsPoint(mContext).x * 300 / 750;
-            holder.image.setLayoutParams(layoutParams);
+            holder.imageGridview.setVisibility(View.VISIBLE);
             ArrayList<String> imageUrls = PictureUtils.getListFromString(list.get(position).getImageGids());
-            Logger.e("imageUrls.get(0)==" + imageUrls.get(0));
-            Picasso.with(mContext).load(imageUrls.get(0)).placeholder(R.drawable.system_wu).error(R.drawable.system_wu).into(holder.image);
+            final ArrayList<String> imageList = imageUrls;
+            if (imageUrls.size() == 1) {
+                holder.imageGridview.setNumColumns(1);
+            } else {
+                holder.imageGridview.setNumColumns(3);
+            }
+            holder.imageGridview.setAdapter(new NoScrollThreeGridAdapter(mContext, imageUrls, 2));
+            // 点击回帖九宫格，查看大图
+            holder.imageGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    PictureUtils.viewPictures(mContext, position, imageList);
+                }
+            });
         } else {
-            holder.image.setVisibility(View.GONE);
+            holder.imageGridview.setVisibility(View.GONE);
         }
+        if (list.get(position).getIsPraised() == 0) {
+            holder.favImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.circle_list_fave_normal_icon));
+        } else {
+            holder.favImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.circle_list_fave_selected_icon));
+        }
+        holder.shareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment.share(position);
+            }
+        });
+        holder.favView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment.praise(position);
+            }
+        });
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,18 +170,30 @@ public class CircleAdapter extends BaseAdapter {
         TextView name;
         @Bind(R.id.time)
         TextView time;
-        @Bind(R.id.title)
-        TextView title;
-        @Bind(R.id.image)
-        ImageView image;
-        @Bind(R.id.content)
-        TextView content;
         @Bind(R.id.num_read)
         TextView numRead;
+        @Bind(R.id.title)
+        TextView title;
+        @Bind(R.id.content)
+        TextView content;
+        @Bind(R.id.image_gridview)
+        NoScrollGridView imageGridview;
+        @Bind(R.id.post_type)
+        TextView postType;
+        @Bind(R.id.bottom_view_line)
+        View bottomViewLine;
+        @Bind(R.id.share_view)
+        LinearLayout shareView;
         @Bind(R.id.num_comment)
         TextView numComment;
-        @Bind(R.id.comment_layout)
-        RelativeLayout commentLayout;
+        @Bind(R.id.comment_view)
+        LinearLayout commentView;
+        @Bind(R.id.fav_num)
+        TextView favNum;
+        @Bind(R.id.fav_img)
+        ImageView favImg;
+        @Bind(R.id.fav_view)
+        LinearLayout favView;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

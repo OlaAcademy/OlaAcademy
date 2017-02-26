@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
@@ -44,6 +45,7 @@ import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.MyAudioManager;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.SharePlatformManager;
+import com.michen.olaxueyuan.common.manager.SimpleSharePlatformManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.PostDetailClickEvent;
@@ -68,6 +70,7 @@ import com.michen.olaxueyuan.ui.adapter.PostDetailBottomMediaGridAdapter;
 import com.michen.olaxueyuan.ui.circle.upload.AlbumActivity;
 import com.michen.olaxueyuan.ui.circle.upload.Video;
 import com.michen.olaxueyuan.ui.circle.upload.VideoThumbnailUtil;
+import com.michen.olaxueyuan.ui.manager.CirclePopManager;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.photo.upload.UploadResult;
 import com.snail.photo.util.Bimp;
@@ -81,6 +84,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -88,6 +92,9 @@ import java.util.concurrent.Executors;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.utils.UIHandler;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -100,7 +107,8 @@ import static android.view.View.VISIBLE;
 import static com.michen.olaxueyuan.common.manager.CommonConstant.TAKE_PICTURE;
 import static com.snail.photo.util.Bimp.tempSelectBitmap;
 
-public class PostDetailActivity extends SEBaseActivity implements MyAudioManager.RecordingListener, MyAudioManager.PlayingListener {
+public class PostDetailActivity extends SEBaseActivity implements MyAudioManager.RecordingListener
+        , MyAudioManager.PlayingListener, PlatformActionListener, Handler.Callback, CirclePopManager.CircleClickListener {
     @Bind(R.id.avatar)
     RoundRectImageView avatar;
     @Bind(R.id.title)
@@ -119,12 +127,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     TextView childContent;
     @Bind(R.id.num_read)
     TextView numRead;
-    @Bind(R.id.num_comment)
-    TextView numComment;
-    @Bind(R.id.type_view)
-    LinearLayout typeView;
-    @Bind(R.id.focus_view)
-    LinearLayout focusView;
     @Bind(R.id.et_content)
     EditText etContent;
     @Bind(R.id.bt_send)
@@ -166,12 +168,21 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     TextView appointAnswerTitle;
     @Bind(R.id.appoint_answer_comment_list)
     SubListView appointAnswerCommentList;
-    @Bind(R.id.comment_praise)
-    TextView commentPraise;
+    @Bind(R.id.share_wechat_circle)
+    ImageView shareWechatCircle;
+    @Bind(R.id.share_wechat)
+    ImageView shareWechat;
+    @Bind(R.id.share_wechat_qq)
+    ImageView shareWechatQq;
+    @Bind(R.id.share_sina)
+    ImageView shareSina;
+    @Bind(R.id.all_comment)
+    TextView allComment;
+    @Bind(R.id.all_search_view)
+    LinearLayout allSearchView;
 
     //    PostCommentAdapter commentAdapter;
     PostCommentAdapterV2 commentAdapter;
-
     private Context mContext;
     private CommentModule.ResultBean commentResultBean;
     private PostDetailModule.ResultBean resultBean;
@@ -184,12 +195,13 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private String videoImages;//上传视频之后获取到的img
     private String audioUrls;//上传音频
     private int uploadNum = 0;//图片张数
+    private int assign = 0;
     private UploadService uploadService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_detail_v2);
+        setContentView(R.layout.activity_post_detail);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         mContext = this;
@@ -242,7 +254,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
     private void getCommentListData() {
         SEAPP.showCatDialog(this);
-        QuestionCourseManager.getInstance().getCommentList(String.valueOf(circleId), "2", new Callback<CommentModule>() {
+        QuestionCourseManager.getInstance().getCommentList(String.valueOf(circleId), "2", String.valueOf(assign), new Callback<CommentModule>() {
             @Override
             public void success(CommentModule commentModule, Response response) {
 //                Logger.json(commentModule);
@@ -302,17 +314,10 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
             }
         }
-        if (resultBean.getIsPraised() == 0) {
-            commentPraise.setEnabled(true);
-        } else {
-            commentPraise.setEnabled(false);
-        }
         time.setText(resultBean.getTime());
         studyName.setText(resultBean.getTitle());
-        commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
         childContent.setText(resultBean.getContent());
         numRead.setText(resultBean.getReadNumber() + "人浏览");
-        numComment.setText(resultBean.getCommentNumber() + "条评论");
         if (!TextUtils.isEmpty(resultBean.getImageGids())) {
             ArrayList<String> imageUrls = PictureUtils.getListFromString(resultBean.getImageGids());
             final ArrayList<String> imageList = imageUrls;
@@ -335,12 +340,9 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     }
 
     @OnClick({R.id.bt_send, R.id.avatar, R.id.key_voice, R.id.view_more, R.id.voice_bg, R.id.voice_again
-            , R.id.type_view, R.id.focus_view,  R.id.comment_praise})
+            , R.id.share_wechat_circle, R.id.share_wechat, R.id.share_wechat_qq, R.id.share_sina, R.id.all_comment})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.comment_praise:
-                praise();
-                break;
             case R.id.bt_send:
                 sendMedia();
                 break;
@@ -370,23 +372,38 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             case R.id.voice_again:
                 showView(GONE, VISIBLE, VISIBLE, GONE, GONE, true);
                 break;
-            case R.id.type_view:
-                SharePlatformManager.getInstance().share(mContext, findViewById(R.id.circle_detail)
-                        , resultBean.getUserAvatar(), String.valueOf(resultBean.getId()), resultBean.getContent());
+//            case R.id.type_view:
+//                SharePlatformManager.getInstance().share(mContext, findViewById(R.id.circle_detail)
+//                        , resultBean.getUserAvatar(), String.valueOf(resultBean.getId()), resultBean.getContent());
+//                break;
+            case R.id.share_wechat_circle:
+                share(0);
                 break;
-            case R.id.focus_view:
-                Utils.showInputMethod(PostDetailActivity.this);
-                this.commentResultBean = null;
+            case R.id.share_wechat:
+                share(1);
+                break;
+            case R.id.share_wechat_qq:
+                share(2);
+                break;
+            case R.id.share_sina:
+                share(3);
+                break;
+            case R.id.all_comment:
+                CirclePopManager.getInstance().showMarkPop(mContext, allComment, this, allSearchView, 2);
                 break;
             default:
                 break;
         }
     }
 
+    private void share(int position) {
+        SimpleSharePlatformManager.getInstance().share(mContext, resultBean.getUserAvatar(), String.valueOf(resultBean.getId())
+                , resultBean.getContent(), position, this);
+    }
+
     public void onEventMainThread(PostDetailClickEvent postDetailClickEvent) {
         switch (postDetailClickEvent.type) {
             case 1:
-                //Todo 对每个评论点赞,需要单独的评论id
                 praise();
                 break;
         }
@@ -407,8 +424,6 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     SVProgressHUD.showInViewWithoutIndicator(mContext, mcCommonResult.getMessage(), 2.0f);
                 } else {
                     resultBean.setPraiseNumber(resultBean.getPraiseNumber() + 1);
-                    commentPraise.setText(String.valueOf(resultBean.getPraiseNumber()));
-                    commentPraise.setEnabled(false);
                 }
             }
 
@@ -1002,6 +1017,47 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     private void closeIme() {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etContent.getWindowToken(), 0);
+    }
+
+    /////////////////////// 分享相关  //////////////////////
+
+    @Override
+    public void onComplete(Platform plat, int action,
+                           HashMap<String, Object> res) {
+        Message msg = new Message();
+        msg.arg1 = 1;
+        msg.arg2 = action;
+        msg.obj = plat;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public void onError(Platform arg0, int arg1, Throwable arg2) {
+        Message msg = new Message();
+        msg.what = 1;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public void onCancel(Platform platform, int arg1) {
+        Message msg = new Message();
+        msg.what = 0;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        int what = msg.what;
+        if (what == 1) {
+            Toast.makeText(mContext, "分享失败", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
+    @Override
+    public void circlePosition(int position, String text) {
+        assign = position;
+        getCommentListData();
     }
 
     @Override

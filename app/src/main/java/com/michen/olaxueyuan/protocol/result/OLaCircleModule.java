@@ -96,9 +96,27 @@ public class OLaCircleModule implements Serializable {
         private String content;
         private String imageGids;
         private String location;
+        private String subject;
         private int praiseNumber;
+        private int isPraised;
         private int readNumber;
         private int commentNumber;
+
+        public String getSubject() {
+            return subject;
+        }
+
+        public void setSubject(String subject) {
+            this.subject = subject;
+        }
+
+        public int getIsPraised() {
+            return isPraised;
+        }
+
+        public void setIsPraised(int isPraised) {
+            this.isPraised = isPraised;
+        }
 
         public int getCircleId() {
             return circleId;

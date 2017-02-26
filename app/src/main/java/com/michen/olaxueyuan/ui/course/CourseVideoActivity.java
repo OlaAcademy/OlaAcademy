@@ -39,6 +39,7 @@ import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.result.CourseCollectResult;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
@@ -210,6 +211,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         msec = mVideoView.getCurrentPosition();
         mVideoView.pause();
         MobclickAgent.onPause(this);
+        recordPlayProgress();
     }
 
 
@@ -266,7 +268,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                         courseVideoResult = result;
                         videoArrayList = result.getResult().getVideoList();
                         if (videoArrayList != null && videoArrayList.size() > 0) {
-                            mVideoView.setVideoPath(videoArrayList.get(0).getAddress());
+                            mVideoView.setVideoPath(videoArrayList.get(result.getPlayIndex()).getAddress());
+                            mVideoView.seekTo(result.getPlayProgress() * 1000);
                             if (result.getResult().getIsCollect().equals("1")) {
                                 videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
                             } else {
@@ -619,6 +622,20 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         } catch (DbException e) {
             SVProgressHUD.showInViewWithoutIndicator(this, "添加下载失败", 2.0f);
         }
+    }
+
+    private void recordPlayProgress() {
+        SECourseManager.getInstance().recordPlayProgress(SEAuthManager.getInstance().getAccessUser().getId()
+                , courseVideoResult.getResult().getPointId(), "1", String.valueOf(pdfPosition)
+                , String.valueOf(msec / 1000), new Callback<SimpleResult>() {
+                    @Override
+                    public void success(SimpleResult simpleResult, Response response) {
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                    }
+                });
     }
 
     private void shareCourse(CourseVideoResult.ResultBean.VideoListBean videoInfo) {

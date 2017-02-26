@@ -27,9 +27,12 @@ import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.VideoPdfEvent;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
+import com.michen.olaxueyuan.protocol.result.VideoCourseSubResult;
 import com.michen.olaxueyuan.ui.adapter.SystemVideoListAdapter;
 import com.michen.olaxueyuan.ui.course.video.SystemVideoFragmentManger;
 import com.michen.olaxueyuan.ui.course.video.VideoManager;
@@ -45,6 +48,9 @@ import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.Vitamio;
 import io.vov.vitamio.widget.MediaControllerView;
 import io.vov.vitamio.widget.VideoView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class SystemVideoActivity extends FragmentActivity implements View.OnClickListener
         , VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication {
@@ -143,7 +149,8 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     private String userId = "";
     SystemCourseResultEntity resultEntity;
     public int pdfPosition = 0;
-
+    private SystemVideoResult.ResultBean resultBean;
+    private int videoListPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +183,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         super.onPause();
         msec = mVideoView.getCurrentPosition();
         mVideoView.pause();
+        recordPlayProgress();
     }
 
     @Override
@@ -204,8 +212,11 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
 //        performRefresh();
     }
 
-    public void playVideo(String address) {
-        mVideoView.setVideoPath(address);
+    public void playVideo(SystemVideoResult.ResultBean resultBean, int position, long playProgress) {
+        this.resultBean = resultBean;
+        this.videoListPosition = position;
+        mVideoView.setVideoPath(resultBean.getAddress());
+        mVideoView.seekTo(playProgress * 1000);
     }
 
     SECourseManager courseManager = SECourseManager.getInstance();
@@ -449,5 +460,19 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void recordPlayProgress() {
+        SECourseManager.getInstance().recordPlayProgress(SEAuthManager.getInstance().getAccessUser().getId()
+                , String.valueOf(resultBean.getId()), "2", String.valueOf(videoListPosition)
+                , String.valueOf(msec / 1000), new Callback<SimpleResult>() {
+                    @Override
+                    public void success(SimpleResult simpleResult, Response response) {
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                    }
+                });
     }
 }

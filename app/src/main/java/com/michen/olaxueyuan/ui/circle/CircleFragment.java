@@ -97,8 +97,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
 
     private void initView() {
         titleManager = new TitleManager(R.string.ola_circle, this, rootView, false);
-        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
-        adapter = new CircleAdapter(getActivity());
+        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.circle_message_tip_icon);
+        adapter = new CircleAdapter(this);
         listview.getRefreshableView().setDivider(null);
         listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
@@ -219,7 +219,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         });
     }
 
-    private void praise(final int position) {
+    public void praise(final int position) {
 //        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
         SEAPP.showCatDialog(this);
         MCCircleManager.getInstance().praiseCirclePost(SEUserManager.getInstance().getUserId(), String.valueOf(list.get(position).getCircleId()), new Callback<PraiseCirclePostResult>() {
@@ -231,7 +231,13 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
                     if (mcCommonResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), mcCommonResult.getMessage(), 2.0f);
                     } else {
-                        list.get(position).setPraiseNumber(list.get(position).getPraiseNumber() + 1);
+                        if (list.get(position).getIsPraised() == 0) {
+                            list.get(position).setIsPraised(1);
+                            list.get(position).setPraiseNumber(list.get(position).getPraiseNumber() + 1);
+                        } else {
+                            list.get(position).setIsPraised(0);
+                            list.get(position).setPraiseNumber(list.get(position).getPraiseNumber() - 1);
+                        }
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -248,7 +254,7 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         });
     }
 
-    private void share(int position) {
+    public void share(int position) {
         OLaCircleModule.ResultBean circle = list.get(position);
         share = new SharePopupWindow(getActivity());
         share.setPlatformActionListener(this);
