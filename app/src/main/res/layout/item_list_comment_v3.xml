@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="true"
+    android:padding="5dp">
+
+    <com.michen.olaxueyuan.common.RoundRectImageView
+        android:id="@+id/item_comment_avatar"
+        android:layout_width="@dimen/dp_38"
+        android:layout_height="@dimen/dp_38"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/ic_default_avatar"
+        app:siBorderAlpha="0"
+        app:siBorderWidth="0dp"
+        app:siRadius="5dp" />
+
+    <TextView
+        android:id="@+id/item_comment_name"
+        style="@style/normal_text_14dp_style"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_38"
+        android:layout_toRightOf="@id/item_comment_avatar"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:singleLine="true"
+        tools:text="欧拉学院" />
+
+    <TextView
+        android:id="@+id/comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_38"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@color/LightTextColor"
+        android:textSize="12dp"
+        tools:text="昨天" />
+
+    <TextView
+        android:id="@+id/item_comment_originalContent"
+        style="@style/normal_text_14dp_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_comment_name"
+        android:layout_alignStart="@id/item_comment_name"
+        android:layout_below="@id/item_comment_name"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="5dp"
+        android:lineSpacingExtra="1.2dp"
+        tools:text="这是原文内容。。。。。。。。。。。。。。。。。。。。。。。。" />
+
+    <FrameLayout
+        android:id="@+id/media_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_comment_originalContent">
+
+        <FrameLayout
+            android:id="@+id/video_view"
+            android:layout_width="241dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/item_comment_avatar"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/video_image"
+                android:layout_width="241dp"
+                android:layout_height="132dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/system_wu" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/video_white_play_icon" />
+        </FrameLayout>
+
+        <com.snail.photo.util.NoScrollGridView
+            android:id="@+id/image_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:horizontalSpacing="5dp"
+            android:verticalSpacing="5dp"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/voice_bg"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45"
+            android:layout_marginLeft="@dimen/dp_52"
+            android:layout_marginRight="@dimen/dp_45"
+            android:background="@drawable/shape_rectangle_blue_bg_25dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/voice_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:src="@drawable/voice_white_icon" />
+
+            <ImageView
+                android:id="@+id/voice_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_toRightOf="@+id/voice_icon"
+                android:scaleType="centerInside"
+                android:src="@drawable/left_voice_play_white" />
+
+            <TextView
+                android:id="@+id/voice_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_15"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/dp_13"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/child_content"
+        style="@style/hint_text_14dp_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_comment_avatar"
+        android:layout_below="@+id/media_view"
+        android:text=""
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_35"
+        android:layout_alignLeft="@id/item_comment_avatar"
+        android:layout_below="@+id/child_content"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15">
+
+        <Button
+            android:id="@+id/num_praised"
+            style="@style/hint_text_14dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_52"
+            android:layout_marginRight="@dimen/dp_52"
+            android:layout_toLeftOf="@+id/num_read"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/selector_post_detail_comment_praise"
+            android:drawablePadding="@dimen/dp_5"
+            android:gravity="center"
+            android:src="@drawable/icon_comment"
+            android:text="0"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/num_read"
+            style="@style/hint_text_14dp_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/post_detail_comment_num"
+            android:drawablePadding="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
+            android:src="@drawable/icon_comment"
+            android:text="0" />
+    </RelativeLayout>
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
