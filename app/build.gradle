@@ -13,8 +13,8 @@ android {
         applicationId "com.michen.olaxueyuan"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 17
-        versionName "1.2.7"
+        versionCode 19
+        versionName "1.3.0"
         // dex突破65535的限制
         multiDexEnabled true
         // 默认是umeng的渠道
@@ -39,9 +39,11 @@ android {
         debug {
             // No debug config
             storeFile file("olaxueyuan.jks")
-            storePassword KEYSTORE_PASSWORD
+            storePassword "72106891"
+//            storePassword KEYSTORE_PASSWORD
             keyAlias "olaxueyuan"
-            keyPassword KEY_PASSWORD
+            keyPassword "72106891"
+//            keyPassword KEY_PASSWORD
         }
 
         release {

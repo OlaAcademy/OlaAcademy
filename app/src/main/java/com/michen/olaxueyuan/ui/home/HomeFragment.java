@@ -174,7 +174,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         completeNumSubjectText.setText(result.getResult().getFinishCount());
         persistText.setText(result.getResult().getStudyDay());
         defeatText.setText(result.getResult().getDefeatPercent());
-        if (!TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
+        if (SEAuthManager.getInstance().getAccessUser() != null && !TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
             String avatarUrl;
             if (SEAuthManager.getInstance().getAccessUser().getAvator().contains(".")) {
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + SEAuthManager.getInstance().getAccessUser().getAvator();

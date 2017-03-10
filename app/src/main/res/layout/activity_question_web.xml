@@ -38,7 +38,7 @@
             android:singleLine="true"
             android:text=""
             android:textColor="@color/black_51545d"
-            android:textSize="20sp" />
+            android:textSize="17dp" />
 
         <ImageView
             android:id="@+id/add_wrong_topic_icon"
@@ -55,9 +55,10 @@
             android:id="@+id/open_video_icon"
             android:layout_width="33dp"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/add_wrong_topic_icon"
-            android:layout_toStartOf="@+id/add_wrong_topic_icon"
+            android:layout_marginRight="60dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_video_answer"
             android:visibility="invisible" />

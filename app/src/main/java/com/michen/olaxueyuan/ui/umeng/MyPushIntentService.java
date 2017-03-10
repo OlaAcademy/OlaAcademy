@@ -1,23 +1,24 @@
+/*
 package com.michen.olaxueyuan.ui.umeng;
 
 import android.content.Context;
 import android.content.Intent;
 
 import com.michen.olaxueyuan.common.manager.Logger;
-import com.umeng.common.message.Log;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengBaseIntentService;
 import com.umeng.message.entity.UMessage;
 
-import org.android.agoo.client.BaseConstants;
 import org.json.JSONObject;
 
+*/
 /**
  * Developer defined push intent service.
  * Remember to call {@link com.umeng.message.PushAgent#setPushIntentServiceClass(Class)}.
  *
  * @author lucas
- */
+ *//*
+
 //完全自定义处理类
 //参考文档的1.6.5
 //http://dev.umeng.com/push/android/integration#1_6_5
@@ -53,7 +54,8 @@ public class MyPushIntentService extends UmengBaseIntentService {
             // 首先需要设置完全自定义消息处理方式
             // mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
             // code to handle to start/stop service for app process
-            /*JSONObject json = new JSONObject(msg.custom);
+            */
+/*JSONObject json = new JSONObject(msg.custom);
             String topic = json.getString("topic");
             Log.d(TAG, "topic="+topic);
 			if(topic != null && topic.equals("appName:startService")) {
@@ -72,7 +74,8 @@ public class MyPushIntentService extends UmengBaseIntentService {
 				Intent intent1 = new Intent();
 				intent1.setClass(context, NotificationService.class); 
 				context.stopService(intent1);
-			}*/
+			}*//*
+
             String messageExtra = intent.getStringExtra("extra");
             UMessage msgExtra = new UMessage(new JSONObject(messageExtra));
             Logger.e("msgExtra=="+msgExtra.extra.toString());
@@ -91,3 +94,4 @@ public class MyPushIntentService extends UmengBaseIntentService {
         }
     }
 }
+*/

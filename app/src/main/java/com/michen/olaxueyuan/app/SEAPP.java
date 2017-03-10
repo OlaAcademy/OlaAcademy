@@ -8,10 +8,13 @@ import android.support.v4.app.FragmentActivity;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SEThemer;
 import com.michen.olaxueyuan.common.catloading.CatLoadingView;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.tencent.smtt.sdk.QbSdk;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public class SEAPP extends Application {
         super.onCreate();
         mAppContext = this;
         QbSdk.initX5Environment(getApplicationContext(), null);//调用 QbSdk 的预加载接口 ,当 App 后续创建 webview 时就可以首次加载 x5 内核了
+        registerUmeng();
         SEThemer.getInstance().init(this);
         SEThemer.getInstance().setActionBarBackgroundColor(getResources().getColor(R.color.ActionBarBackgroundColor));
         SEThemer.getInstance().setActionBarForegroundColor(getResources().getColor(R.color.ActionBarForegroundColor));
@@ -67,6 +71,27 @@ public class SEAPP extends Application {
                 .build();//
         ImageLoader.getInstance().init(config);
 
+    }
+
+    PushAgent mPushAgent;
+
+    private void registerUmeng() {
+        mPushAgent = PushAgent.getInstance(this);
+        //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回device token
+                Logger.e("deviceToken-----------------" + deviceToken);
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+
+            }
+        });
+        PushAgent.getInstance(this).onAppStart();
     }
 
     public static Context getAppContext() {

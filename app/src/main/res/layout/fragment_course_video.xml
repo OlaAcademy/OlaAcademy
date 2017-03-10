@@ -59,17 +59,19 @@
             <TextView
                 android:id="@+id/charge_title"
                 style="@style/title_text_15dp_style"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="真题名家详解" />
 
             <TextView
                 android:id="@+id/charge_intro"
                 style="@style/normal_text_13dp_style"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/charge_title"
-                android:text="必会题型全覆盖" />
+                android:gravity="center"
+                android:text="必会题型全覆盖(非会员)" />
         </RelativeLayout>
     </LinearLayout>
 

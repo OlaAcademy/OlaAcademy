@@ -108,7 +108,7 @@ public class PostCommentAdapterV3 extends BaseAdapter implements MyAudioManager.
         holder.itemCommentAvatar.setRectAdius(100);
         holder.itemCommentName.setText(list.get(position).getUserName());
         if (!TextUtils.isEmpty(list.get(position).getToUserName())) {
-            String comment = "@" + list.get(position).getToUserName() + ":" + list.get(position).getContent();
+            String comment = "@" + list.get(position).getToUserName() + "  " + list.get(position).getContent();
             SpannableStringBuilder builder = new SpannableStringBuilder(comment);
             ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.rgb(0, 144, 255));
             builder.setSpan(redSpan, 0, list.get(position).getToUserName().length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

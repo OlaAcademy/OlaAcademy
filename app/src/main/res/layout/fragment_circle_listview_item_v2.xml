@@ -66,7 +66,7 @@
 
         <TextView
             android:id="@+id/study_name"
-            style="@style/title_text_14dp_style"
+            style="@style/title_text_15dp_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/avatar"
@@ -80,14 +80,14 @@
 
         <TextView
             android:id="@+id/child_content"
-            style="@style/normal_gray_text_12dp_style"
+            style="@style/normal_gray_text_13dp_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/avatar"
             android:layout_below="@+id/study_name"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容" />
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp"
+            android:text="次级内容" />
 
     </RelativeLayout>
 

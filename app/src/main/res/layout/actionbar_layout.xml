@@ -16,8 +16,8 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:background="@null"
-        android:src="@drawable/ic_back"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:src="@drawable/ic_back" />
 
     <TextView
         android:id="@+id/left_text"
@@ -31,40 +31,40 @@
 
     <TextView
         android:id="@+id/tv_title"
-        android:gravity="left"
-        android:layout_marginLeft="@dimen/dp_60"
-        android:layout_marginStart="@dimen/dp_60"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/dp_60"
+        android:layout_marginStart="@dimen/dp_60"
         android:ellipsize="end"
+        android:gravity="left"
         android:maxLines="1"
         android:singleLine="true"
         android:text="标题"
         android:textColor="@color/black_51545d"
-        android:textSize="20sp" />
+        android:textSize="17dp" />
 
     <ImageButton
         android:id="@+id/right_imbt"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@null"
-        android:paddingLeft="@dimen/dp_10"
-        android:paddingStart="@dimen/dp_10"
-        android:paddingRight="@dimen/dp_5"
         android:paddingEnd="@dimen/dp_5"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_5"
+        android:paddingStart="@dimen/dp_10"
         android:scaleType="centerInside" />
 
     <TextView
         android:id="@+id/right_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@null"
         android:padding="5dp"
