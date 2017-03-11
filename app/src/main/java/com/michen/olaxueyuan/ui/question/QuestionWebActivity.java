@@ -103,7 +103,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         } else if (type == 3) {
             tvTitle.setText("欧拉作业");
             addWrongTopicIcon.setVisibility(View.GONE);
-            rightText.setVisibility(View.VISIBLE);
+//            rightText.setVisibility(View.VISIBLE);
         } else if (type == 4 || type == 5) {
             tvTitle.setText("错题集");
             addWrongTopicIcon.setSelected(true);

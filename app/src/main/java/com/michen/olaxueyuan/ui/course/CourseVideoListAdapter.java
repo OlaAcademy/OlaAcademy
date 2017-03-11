@@ -68,7 +68,7 @@ public class CourseVideoListAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(videoList.get(position).getAddress())) {
             Picasso.with(context).load(videoList.get(position).getAddress())
                     .placeholder(R.drawable.system_wu).error(R.drawable.system_wu)
-                    .resize(230, 214)
+//                    .resize(230, 214)
                     .into(holder.iconVideo);
         }
         holder.tvChapter.setText(videoList.get(position).getSubAllNum() + "章节");

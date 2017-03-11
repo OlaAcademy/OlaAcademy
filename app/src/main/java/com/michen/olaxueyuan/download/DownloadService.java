@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import com.lidroid.xutils.exception.DbException;
 import com.lidroid.xutils.util.LogUtils;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
-import com.michen.olaxueyuan.common.manager.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -71,7 +70,7 @@ public class DownloadService extends Service {
             @Override
             public void run() {
                 CommonConstant.DAY_STUDY_TIME++;
-                Logger.e("DAY_STUDY_TIME==" + CommonConstant.DAY_STUDY_TIME);
+//                Logger.e("DAY_STUDY_TIME==" + CommonConstant.DAY_STUDY_TIME);
             }
         }, 60000, 60000);
     }

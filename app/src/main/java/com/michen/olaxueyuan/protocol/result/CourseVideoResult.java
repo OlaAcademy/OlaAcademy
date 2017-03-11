@@ -21,10 +21,6 @@ public class CourseVideoResult extends ServiceResult implements Serializable {
                 "message='" + message + '\'' +
                 ", result=" + result +
                 ", apicode=" + apicode +
-                ", playIndex=" + playIndex +
-                ", isCollect=" + isCollect +
-                ", orderStatus=" + orderStatus +
-                ", playProgress=" + playProgress +
                 '}';
     }
 
@@ -36,42 +32,6 @@ public class CourseVideoResult extends ServiceResult implements Serializable {
 
     private ResultBean result;
     private int apicode;
-    private int playIndex;
-    private int isCollect;
-    private int orderStatus;
-    private long playProgress;
-
-    public int getPlayIndex() {
-        return playIndex;
-    }
-
-    public void setPlayIndex(int playIndex) {
-        this.playIndex = playIndex;
-    }
-
-    public int getIsCollect() {
-        return isCollect;
-    }
-
-    public void setIsCollect(int isCollect) {
-        this.isCollect = isCollect;
-    }
-
-    public int getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(int orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public long getPlayProgress() {
-        return playProgress;
-    }
-
-    public void setPlayProgress(long playProgress) {
-        this.playProgress = playProgress;
-    }
 
     public String getMessage() {
         return message;
@@ -100,12 +60,43 @@ public class CourseVideoResult extends ServiceResult implements Serializable {
     public static class ResultBean implements Serializable {
         private String pointId;
         private String isCollect;
+        private int playIndex;
+        private int orderStatus;
+        private long playProgress;
+
+        public int getPlayIndex() {
+            return playIndex;
+        }
+
+        public void setPlayIndex(int playIndex) {
+            this.playIndex = playIndex;
+        }
+
+        public int getOrderStatus() {
+            return orderStatus;
+        }
+
+        public void setOrderStatus(int orderStatus) {
+            this.orderStatus = orderStatus;
+        }
+
+        public long getPlayProgress() {
+            return playProgress;
+        }
+
+        public void setPlayProgress(long playProgress) {
+            this.playProgress = playProgress;
+        }
 
         @Override
         public String toString() {
             return "ResultBean{" +
                     "pointId='" + pointId + '\'' +
                     ", isCollect='" + isCollect + '\'' +
+                    ", playIndex=" + playIndex +
+                    ", isCollect=" + isCollect +
+                    ", orderStatus=" + orderStatus +
+                    ", playProgress=" + playProgress +
                     ", videoList=" + videoList +
                     '}';
         }

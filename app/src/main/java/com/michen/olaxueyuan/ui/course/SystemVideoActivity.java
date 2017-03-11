@@ -32,7 +32,6 @@ import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
-import com.michen.olaxueyuan.protocol.result.VideoCourseSubResult;
 import com.michen.olaxueyuan.ui.adapter.SystemVideoListAdapter;
 import com.michen.olaxueyuan.ui.course.video.SystemVideoFragmentManger;
 import com.michen.olaxueyuan.ui.course.video.VideoManager;
@@ -217,6 +216,8 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         this.videoListPosition = position;
         mVideoView.setVideoPath(resultBean.getAddress());
         mVideoView.seekTo(playProgress * 1000);
+        msec=playProgress*1000;
+        mDismissHandler.sendEmptyMessage(1);
     }
 
     SECourseManager courseManager = SECourseManager.getInstance();
@@ -464,7 +465,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
 
     private void recordPlayProgress() {
         SECourseManager.getInstance().recordPlayProgress(SEAuthManager.getInstance().getAccessUser().getId()
-                , String.valueOf(resultBean.getId()), "2", String.valueOf(videoListPosition)
+                , String.valueOf(resultBean.getId()), "1", String.valueOf(videoListPosition)
                 , String.valueOf(msec / 1000), new Callback<SimpleResult>() {
                     @Override
                     public void success(SimpleResult simpleResult, Response response) {

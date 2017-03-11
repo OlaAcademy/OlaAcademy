@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
@@ -13,14 +12,9 @@ import com.baidu.autoupdatesdk.UICheckUpdateCallback;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.StatusBarCompat;
-import com.michen.olaxueyuan.common.manager.Logger;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.sriramramani.droid.inspector.server.ViewServer;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.common.message.UmengMessageDeviceConfig;
-import com.umeng.message.IUmengRegisterCallback;
-import com.umeng.message.MsgConstant;
-import com.umeng.message.PushAgent;
 
 import cn.sharesdk.framework.ShareSDK;
 
@@ -28,7 +22,6 @@ import cn.sharesdk.framework.ShareSDK;
 public class MainActivity extends FragmentActivity {
 
     private ProgressDialog dialog;
-    PushAgent mPushAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,25 +29,6 @@ public class MainActivity extends FragmentActivity {
         SetStatusBarColor();
         setContentView(R.layout.activity_main);
         ShareSDK.initSDK(this);
-        mPushAgent = PushAgent.getInstance(this);
-        mPushAgent.onAppStart();
-        mPushAgent.enable(new IUmengRegisterCallback() {
-            @Override
-            public void onRegistered(String s) {
-//                Logger.e("s==" + s);
-                handler.post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        // TODO Auto-generated method stub
-                        updateStatus();
-                    }
-                });
-            }
-        });
-//        String device_token = UmengRegistrar.getRegistrationId(this);
-//        Logger.e("device_token==" + device_token);
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new MainFragment())
@@ -68,21 +42,6 @@ public class MainActivity extends FragmentActivity {
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
         BDAutoUpdateSDK.uiUpdateAction(this, new MyUICheckUpdateCallback());
-    }
-
-    public Handler handler = new Handler();
-
-    private void updateStatus() {
-        String pkgName = getApplicationContext().getPackageName();
-        String info = String.format("==enabled:%s\nisRegistered:%s\nDeviceToken:%s\n" +
-                        "SdkVersion:%s\nAppVersionCode:%s\nAppVersionName:%s",
-                mPushAgent.isEnabled(), mPushAgent.isRegistered(),
-                mPushAgent.getRegistrationId(), MsgConstant.SDK_VERSION,
-                UmengMessageDeviceConfig.getAppVersionCode(this), UmengMessageDeviceConfig.getAppVersionName(this));
-        Logger.e("应用包名：" + pkgName + "\n" + info);
-
-        Logger.e("updateStatus===:" + String.format("enabled:%s  isRegistered:%s",
-                mPushAgent.isEnabled(), mPushAgent.isRegistered()));
     }
 
     @Override

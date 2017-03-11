@@ -79,7 +79,14 @@ public class CirclePopManager {
             }
         });
         popupWindow.setOnDismissListener(new poponDismissListener());
-        popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.circle_select));
+        switch (type) {
+            case 2:
+                popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.post_select));
+                break;
+            default:
+                popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.circle_select));
+                break;
+        }
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.showAsDropDown(popLine);

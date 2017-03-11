@@ -64,7 +64,7 @@ import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
 import com.michen.olaxueyuan.protocol.service.UploadService;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.PostCommentAdapter;
-import com.michen.olaxueyuan.ui.adapter.PostCommentAdapterV2;
+import com.michen.olaxueyuan.ui.adapter.PostCommentAdapterV3;
 import com.michen.olaxueyuan.ui.adapter.PostDetailBottomGridAdapter;
 import com.michen.olaxueyuan.ui.adapter.PostDetailBottomMediaGridAdapter;
 import com.michen.olaxueyuan.ui.circle.upload.AlbumActivity;
@@ -182,7 +182,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     LinearLayout allSearchView;
 
     //    PostCommentAdapter commentAdapter;
-    PostCommentAdapterV2 commentAdapter;
+//    PostCommentAdapterV2 commentAdapter;
+    PostCommentAdapterV3 commentAdapter;
     private Context mContext;
     private CommentModule.ResultBean commentResultBean;
     private PostDetailModule.ResultBean resultBean;
@@ -218,7 +219,8 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         circleId = getIntent().getIntExtra("circleId", 0);
         queryCircleDetail(String.valueOf(circleId));
 //        commentAdapter = new PostCommentAdapter(this);
-        commentAdapter = new PostCommentAdapterV2(this);
+//        commentAdapter = new PostCommentAdapterV2(this);
+        commentAdapter = new PostCommentAdapterV3(this);
         listView.setAdapter(commentAdapter);
         videoGridAdapter = new PostDetailBottomMediaGridAdapter(this);
         bottomVideoImgGrid.setAdapter(videoGridAdapter);
@@ -409,7 +411,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         }
     }
 
-    private void praise() {
+    public void praise() {
         if (!SEAuthManager.getInstance().isAuthenticated()) {
             Intent loginIntent = new Intent(PostDetailActivity.this, UserLoginActivity.class);
             startActivity(loginIntent);
@@ -924,7 +926,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             mFixedExecutor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    Bitmap bitmap = VideoThumbnailUtil.getVideoThumbnail(video.getPath(), 100, 100, MediaStore.Images.Thumbnails.MICRO_KIND);
+                    Bitmap bitmap = VideoThumbnailUtil.getVideoThumbnail(video.getPath(), 268, 147, MediaStore.Images.Thumbnails.MICRO_KIND);
                     video.setThumbnailBitmap(bitmap);
                     PicInfo pi = new PicInfo();
                     pi.type = "3";
@@ -1057,6 +1059,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
     @Override
     public void circlePosition(int position, String text) {
         assign = position;
+        allComment.setText(text);
         getCommentListData();
     }
 

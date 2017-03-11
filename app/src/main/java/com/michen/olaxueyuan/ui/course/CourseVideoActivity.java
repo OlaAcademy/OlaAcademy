@@ -190,7 +190,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        mDismissHandler.sendEmptyMessage(1);
+//        mDismissHandler.sendEmptyMessage(1);
         mDismissHandler.sendEmptyMessageDelayed(1, 500);
         MobclickAgent.onResume(this);          //统计时长
 
@@ -266,10 +266,15 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                     } else {
                         EventBus.getDefault().post(result);
                         courseVideoResult = result;
+                        msec = result.getResult().getPlayProgress() * 1000;
                         videoArrayList = result.getResult().getVideoList();
                         if (videoArrayList != null && videoArrayList.size() > 0) {
-                            mVideoView.setVideoPath(videoArrayList.get(result.getPlayIndex()).getAddress());
-                            mVideoView.seekTo(result.getPlayProgress() * 1000);
+                            mVideoView.setVideoPath(videoArrayList.get(result.getResult().getPlayIndex()).getAddress());
+                            mVideoView.resume();
+                            mVideoView.seekTo(result.getResult().getPlayProgress() * 1000);
+                            Logger.e("msec===" + msec);
+                            Logger.e("result.getPlayProgress() * 1000===" + result.getResult().getPlayProgress() * 1000);
+                            mDismissHandler.sendEmptyMessage(1);
                             if (result.getResult().getIsCollect().equals("1")) {
                                 videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
                             } else {
@@ -527,6 +532,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 //                    Utils.dismissDialog(mDialog);
                     break;
                 case 1:
+                    Logger.e("msec=" + msec);
                     if (msec > 0) {
                         mVideoView.resume();
                         mVideoView.seekTo(msec);
