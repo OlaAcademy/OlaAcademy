@@ -54,7 +54,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:background="@color/white"
             android:gravity="left|top"
-            android:hint="请输入标题"
+            android:hint="请输入标题...(2-10个字)"
             android:maxLength="15"
             android:maxLines="1"
             android:padding="@dimen/dp_10"
@@ -70,9 +70,9 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:gravity="left|top"
-            android:hint="请输入内容......"
+            android:hint="请输入内容....(2-200个字)"
             android:maxLength="700"
-            android:minHeight="50dp"
+            android:minHeight="100dp"
             android:padding="@dimen/dp_10"
             android:textSize="@dimen/fontSize_articleContent" />
 
@@ -82,7 +82,8 @@
             android:id="@+id/rl_orignal"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_switch_open_orignal"

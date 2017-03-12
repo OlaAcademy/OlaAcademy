@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginBottom="2dp"
+        android:visibility="visible">
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="13dp"
+            android:background="@color/blue_light" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:text="提问"
+            android:textColor="@color/black_272b36"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/show_all_ask_question"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_white_item_bg"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="显示全部"
+            android:textColor="@color/black_a8aaad"
+            android:textSize="12sp" />
+
+        <View
+            style="@style/line_horizontal_margin_10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="4dp" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_ask_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

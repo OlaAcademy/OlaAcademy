@@ -42,7 +42,7 @@ public class HomeModule implements Serializable {
         this.apicode = apicode;
     }
 
-    public static class ResultBean implements Serializable{
+    public static class ResultBean implements Serializable {
         private String studyDay;
         private String finishCount;
         private String defeatPercent;
@@ -50,6 +50,15 @@ public class HomeModule implements Serializable {
         private List<QuestionListBean> questionList;
         private List<SystemCourseResultEntity> goodsList;
         private List<CourseListBean> courseList;
+        private List<UserListBean> userList;
+
+        public List<UserListBean> getUserList() {
+            return userList;
+        }
+
+        public void setUserList(List<UserListBean> userList) {
+            this.userList = userList;
+        }
 
         public String getStudyDay() {
             return studyDay;
@@ -107,7 +116,7 @@ public class HomeModule implements Serializable {
             this.courseList = courseList;
         }
 
-        public static class BannerListBean implements Serializable{
+        public static class BannerListBean implements Serializable {
             /**
              * id : 4
              * name : 2017年幂学系统班
@@ -182,7 +191,7 @@ public class HomeModule implements Serializable {
                 this.commodity = commodity;
             }
 
-            public static class CommodityBean implements Serializable{
+            public static class CommodityBean implements Serializable {
                 /**
                  * attentionnum : 100
                  * detail : 逻辑名师，讲课生动有趣，善于把握考点，总结规律，把知识点板块化，把考点逻辑化，对考生的逻辑学习提升起到了至关重要的作用。学生评语：方法独特，一招制胜，把复杂的逻辑提干简单化，冗长的逻辑容易理解。
@@ -339,7 +348,7 @@ public class HomeModule implements Serializable {
             }
         }
 
-        public static class QuestionListBean implements Serializable{
+        public static class QuestionListBean implements Serializable {
             /**
              * id : 13636
              * title : 指定回答
@@ -395,7 +404,7 @@ public class HomeModule implements Serializable {
             }
         }
 
-        public static class GoodsListBean implements Serializable{
+        public static class GoodsListBean implements Serializable {
             /**
              * attentionnum : 100
              * createTime : {"date":18,"day":4,"hours":20,"minutes":58,"month":7,"seconds":27,"time":1471525107000,"timezoneOffset":-480,"year":116}
@@ -560,7 +569,7 @@ public class HomeModule implements Serializable {
                 this.videonum = videonum;
             }
 
-            public static class CreateTimeBean implements Serializable{
+            public static class CreateTimeBean implements Serializable {
                 /**
                  * date : 18
                  * day : 4
@@ -657,7 +666,7 @@ public class HomeModule implements Serializable {
             }
         }
 
-        public static class CourseListBean implements Serializable{
+        public static class CourseListBean implements Serializable {
             /**
              * address : http://cospic.ufile.ucloud.com.cn/31.jpg
              * bannerPic : http://banner.ufile.ucloud.com.cn/course_banner7.jpg
@@ -770,6 +779,65 @@ public class HomeModule implements Serializable {
 
             public void setType(String type) {
                 this.type = type;
+            }
+        }
+
+        public static class UserListBean implements Serializable {
+            String id;
+            String name;
+            String phone;
+            String avator;
+            String sign;
+
+            @Override
+            public String toString() {
+                return "UserListBean{" +
+                        "id='" + id + '\'' +
+                        ", name='" + name + '\'' +
+                        ", phone='" + phone + '\'' +
+                        ", avator='" + avator + '\'' +
+                        ", sign='" + sign + '\'' +
+                        '}';
+            }
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+
+            public String getAvator() {
+                return avator;
+            }
+
+            public void setAvator(String avator) {
+                this.avator = avator;
+            }
+
+            public String getSign() {
+                return sign;
+            }
+
+            public void setSign(String sign) {
+                this.sign = sign;
             }
         }
     }

@@ -35,6 +35,7 @@ import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.michen.olaxueyuan.ui.course.commodity.DataLibraryActivity;
 import com.michen.olaxueyuan.ui.course.turtor.OrgEnrolActivity;
 import com.michen.olaxueyuan.ui.group.GroupListActivity;
+import com.michen.olaxueyuan.ui.home.data.AskQuestionRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.home.data.CourseDatabaseRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.DirectBroadCastRecyclerAdapter;
@@ -100,11 +101,15 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     TextView defeatText;
     @Bind(R.id.user_avatar)
     RoundRectImageView userAvatar;
+    @Bind(R.id.recycler_view_ask_question)
+    RecyclerView recyclerViewAskQuestion;
+
 
     HomeQuestionAdapter homeQuestionAdapter;
     DirectBroadCastRecyclerAdapter directBroadCastRecyclerAdapter;
     QualityCourseRecyclerAdapter qualityCourseRecyclerAdapter;
     CourseDatabaseRecyclerAdapter courseDatabaseRecyclerAdapter;
+    AskQuestionRecyclerAdapter askQuestionRecyclerAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -122,6 +127,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewQualityCourse.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewCourseDatabase.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewAskQuestion.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         userAvatar.setRectAdius(100);
 
         homeQuestionAdapter = new HomeQuestionAdapter(getActivity());
@@ -132,6 +138,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         recyclerViewQualityCourse.setAdapter(qualityCourseRecyclerAdapter);
         courseDatabaseRecyclerAdapter = new CourseDatabaseRecyclerAdapter(getActivity());
         recyclerViewCourseDatabase.setAdapter(courseDatabaseRecyclerAdapter);
+        askQuestionRecyclerAdapter = new AskQuestionRecyclerAdapter(getActivity());
+        recyclerViewAskQuestion.setAdapter(askQuestionRecyclerAdapter);
     }
 
     private void fetchData() {
@@ -169,6 +177,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         directBroadCastRecyclerAdapter.updateData(result.getResult().getGoodsList());
         qualityCourseRecyclerAdapter.updateData(result.getResult().getGoodsList());
         courseDatabaseRecyclerAdapter.updateData(result.getResult().getCourseList());
+        askQuestionRecyclerAdapter.updateData(result.getResult().getUserList());
         studyTimeLengthText.setText(String.valueOf(getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, Context.MODE_PRIVATE)
                 .getInt(CommonConstant.DAY_STUDY_TIME_LENGTH, 0)));
         completeNumSubjectText.setText(result.getResult().getFinishCount());
@@ -188,7 +197,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     }
 
     @OnClick({R.id.put_question_layout, R.id.find_teacher_layout, R.id.find_data_layout, R.id.find_data_group, R.id.show_all_question
-            , R.id.show_all_direct_broadcast, R.id.show_all_quality_course, R.id.show_all_course_database})
+            , R.id.show_all_direct_broadcast, R.id.show_all_quality_course, R.id.show_all_course_database, R.id.show_all_ask_question})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.put_question_layout:
@@ -229,6 +238,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
                 break;
             case R.id.show_all_course_database:
                 chageIndex(1);
+                break;
+            case R.id.show_all_ask_question:
                 break;
         }
     }

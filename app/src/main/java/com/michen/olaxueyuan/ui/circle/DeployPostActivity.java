@@ -119,7 +119,7 @@ public class DeployPostActivity extends SEBaseActivity {
     private PopupWindow pop = null;
     private LinearLayout ll_popup;
 
-    private boolean isOrignalImage = false;
+    private boolean isOrignalImage = true;
     private UploadService uploadService;
     private int uploadNum = 0;
     private String imageGids = "";

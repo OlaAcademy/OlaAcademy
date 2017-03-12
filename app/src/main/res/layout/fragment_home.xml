@@ -3,7 +3,8 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <com.snail.pulltorefresh.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <com.snail.pulltorefresh.PullToRefreshScrollView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,6 +31,12 @@
                 android:layout_height="10dp" />
 
             <include layout="@layout/home_study_progress" />
+
+            <include layout="@layout/fragment_home_ask_question" />
+
+            <View
+                style="@style/line_horizontal"
+                android:layout_height="10dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
