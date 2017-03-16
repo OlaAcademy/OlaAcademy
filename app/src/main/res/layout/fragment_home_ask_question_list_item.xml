@@ -15,8 +15,8 @@
 
         <com.michen.olaxueyuan.common.RoundRectImageView
             android:id="@+id/ic_avatar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_horizontal" />
 
         <TextView

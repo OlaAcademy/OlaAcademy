@@ -1,7 +1,7 @@
 package com.michen.olaxueyuan.ui.circle;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -11,7 +11,6 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.SubListView;
-import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
@@ -142,9 +141,10 @@ public class PersonalHomePageActivity extends SEBaseActivity implements PullToRe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.avatar:
-                if (postListResult != null && !TextUtils.isEmpty(postListResult.getResult().getAvator())) {
-                    PictureUtils.viewPictures(mContext, postListResult.getResult().getAvator());
-                }
+//                if (postListResult != null && !TextUtils.isEmpty(postListResult.getResult().getAvator())) {
+//                    PictureUtils.viewPictures(mContext, postListResult.getResult().getAvator());
+//                }
+                startActivity(new Intent(this,PersonalHomePageActivityTwo.class));
                 break;
             case R.id.reply_layout:
                 if (postListResult != null) {

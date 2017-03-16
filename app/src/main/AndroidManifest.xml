@@ -405,11 +405,7 @@
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
 
-        <!--
-            <service
-            android:name=".ui.umeng.MyPushIntentService"
-            android:process=":push" />
-        -->
+        <!--<service android:name=".ui.umeng.MyPushIntentService" />-->
 
         <activity
             android:name=".ui.question.WebViewActivity"
@@ -556,7 +552,11 @@
             android:name=".ui.course.CourseVideoSubListActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.circle.PersonalHomePageActivityTwo"></activity>
+        <activity
+            android:name=".ui.circle.PersonalHomePageActivityTwo"
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>
