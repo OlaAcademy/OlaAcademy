@@ -81,9 +81,14 @@ public class VideoView extends SurfaceView implements MediaControllerView.MediaP
     private static final int STATE_RESUME = 7;
     private static final int STATE_SUSPEND_UNSUPPORTED = 8;
     public OnVideoPlayFailListener videoPlayFailListener;
+    public OnVideoSizeChangedListener2 onVideoSizeChangedListener2;
 
     public void setOnVideoPlayFailListener(OnVideoPlayFailListener videoPlayFailListener) {
         this.videoPlayFailListener = videoPlayFailListener;
+    }
+
+    public void setOnVideoSizeChangedListener2(OnVideoSizeChangedListener2 onVideoSizeChangedListener2) {
+        this.onVideoSizeChangedListener2 = onVideoSizeChangedListener2;
     }
 
     OnVideoSizeChangedListener mSizeChangedListener = new OnVideoSizeChangedListener() {
@@ -94,6 +99,9 @@ public class VideoView extends SurfaceView implements MediaControllerView.MediaP
             mVideoAspectRatio = mp.getVideoAspectRatio();
 //            if (mVideoWidth != 0 && mVideoHeight != 0)
 //                setVideoLayout(mVideoLayout, mAspectRatio);
+            if (onVideoSizeChangedListener2 != null) {
+                onVideoSizeChangedListener2.onVideoSizeChanged(mp, width, height);
+            }
         }
     };
     OnPreparedListener mPreparedListener = new OnPreparedListener() {
@@ -806,5 +814,9 @@ public class VideoView extends SurfaceView implements MediaControllerView.MediaP
         if (mMediaPlayer != null) {
             mMediaPlayer.setPlaybackSpeed(speed);
         }
+    }
+
+    public interface OnVideoSizeChangedListener2 {
+        public void onVideoSizeChanged(MediaPlayer mp, int width, int height);
     }
 }
