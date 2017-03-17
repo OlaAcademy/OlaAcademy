@@ -16,7 +16,7 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.BaseRecyclerAdapter;
-import com.michen.olaxueyuan.ui.circle.PersonalHomePageActivity;
+import com.michen.olaxueyuan.ui.circle.PersonalHomePageActivityTwo;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -83,7 +83,8 @@ public class AskQuestionRecyclerAdapter extends BaseRecyclerAdapter<HomeModule.R
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, PersonalHomePageActivity.class)
+//                context.startActivity(new Intent(context, PersonalHomePageActivity.class)
+                context.startActivity(new Intent(context, PersonalHomePageActivityTwo.class)
                         .putExtra("userId", Integer.parseInt(list.get(position).getId())));
             }
         });

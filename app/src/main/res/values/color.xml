@@ -390,6 +390,7 @@
     <color name="voice_blue_bg_color">#348AF0</color>
     <color name="course_light_gray">#FDF3F4</color>
     <color name="gray_normal_color">#5F5F62</color>
+    <color name="light_green">#50E3C2</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>

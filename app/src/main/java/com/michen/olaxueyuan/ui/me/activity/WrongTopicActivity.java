@@ -71,6 +71,10 @@ public class WrongTopicActivity extends SEBaseActivity implements PullToRefreshB
     }
 
     private void fetchData() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            startActivity(new Intent(this, UserLoginActivity.class));
+            return;
+        }
 //        SVProgressHUD.showInView(mContext, getString(R.string.request_running), true);
         SEAPP.showCatDialog(this);
         SEUserManager.getInstance().getStatisticsList("1", SEAuthManager.getInstance().getAccessUser().getId(), new Callback<UserKnowledgeResult>() {

@@ -480,6 +480,9 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     }
 
     private void recordPlayProgress() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            return;
+        }
         SECourseManager.getInstance().recordPlayProgress(SEAuthManager.getInstance().getAccessUser().getId()
                 , String.valueOf(resultBean.getId()), "1", String.valueOf(videoListPosition)
                 , String.valueOf(msec / 1000), new Callback<SimpleResult>() {

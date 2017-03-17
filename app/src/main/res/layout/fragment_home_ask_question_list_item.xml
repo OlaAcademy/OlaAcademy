@@ -51,7 +51,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/selector_blue_grey_line_rectangle"
             android:gravity="center"
-            android:text="@string/see_view"
+            android:text="@string/ask_question"
             android:textColor="@color/selector_blue_gray" />
     </LinearLayout>
 </LinearLayout>

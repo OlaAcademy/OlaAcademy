@@ -53,6 +53,10 @@ public class MyBuyGoodsActivity extends SEBaseActivity implements PullToRefreshB
     }
 
     private void fetchData() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            startActivity(new Intent(this, UserLoginActivity.class));
+            return;
+        }
         SEUserManager.getInstance().getBuyGoodsList(SEAuthManager.getInstance().getAccessUser().getId(), new Callback<UserBuyGoodsResult>() {
             @Override
             public void success(UserBuyGoodsResult userBuyGoodsResult, Response response) {

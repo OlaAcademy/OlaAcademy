@@ -645,6 +645,10 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     }
 
     private void recordPlayProgress() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            startActivity(new Intent(this, UserLoginActivity.class));
+            return;
+        }
         SECourseManager.getInstance().recordPlayProgress(SEAuthManager.getInstance().getAccessUser().getId()
                 , courseVideoResult.getResult().getPointId(), "1", String.valueOf(pdfPosition)
                 , String.valueOf(msec / 1000), new Callback<SimpleResult>() {

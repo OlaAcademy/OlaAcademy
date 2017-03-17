@@ -555,8 +555,7 @@
         <activity
             android:name=".ui.circle.PersonalHomePageActivityTwo"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
