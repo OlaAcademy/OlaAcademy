@@ -88,6 +88,10 @@ public class MyCourseCollectActivity extends SEBaseActivity implements PullToRef
     }
 
     private void fetchData() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            startActivity(new Intent(this, UserLoginActivity.class));
+            return;
+        }
         // userId,316测试
 //        SEUserManager.getInstance().getCollectionByUserId("126", new Callback<UserCourseCollectResult>() {
         SEUserManager.getInstance().getCollectionByUserId(SEAuthManager.getInstance().getAccessUser().getId(), new Callback<UserCourseCollectResult>() {

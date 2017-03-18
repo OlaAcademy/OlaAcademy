@@ -52,7 +52,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class SystemVideoActivity extends FragmentActivity implements View.OnClickListener
-        , VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication {
+        , VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication, VideoView.OnVideoSizeChangedListener2 {
 
     @Bind(R.id.left_return)
     public TextView leftReturn;
@@ -150,6 +150,8 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     public int pdfPosition = 0;
     private SystemVideoResult.ResultBean resultBean;
     private int videoListPosition = 0;
+    private int videoWidth = 16;
+    private int videoHeight = 9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,8 +161,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         setContentView(R.layout.activity_system_video);
         ButterKnife.bind(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setVideoViewHeight();
-
+        setVideoViewHeight(videoWidth, videoHeight);
         initView();
     }
 
@@ -207,6 +208,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         mGestureDetector = new GestureDetector(this, new MyGestureListener());
         mVideoView.setOnInfoListener(infoListener);
         mVideoView.setOnVideoPlayFailListener(this);
+        mVideoView.setOnVideoSizeChangedListener2(this);
 //        mVideoView.setVideoPath("http://mooc.ufile.ucloud.com.cn/0110010_360p_w141.mp4");
 //        performRefresh();
     }
@@ -216,7 +218,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         this.videoListPosition = position;
         mVideoView.setVideoPath(resultBean.getAddress());
         mVideoView.seekTo(playProgress * 1000);
-        msec=playProgress*1000;
+        msec = playProgress * 1000;
         mDismissHandler.sendEmptyMessage(1);
     }
 
@@ -236,6 +238,14 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         });
     }
 
+    @Override
+    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+//        Logger.e("width==" + width + ";height==" + height);
+        videoWidth = width;
+        videoHeight = height;
+        setVideoViewHeight(width, height);
+    }
+
     public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -246,12 +256,17 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
         }
     }
 
-    public void setVideoViewHeight() {
-        int width = Utils.getScreenWidth(context);
-        int height = width * 9 / 16;
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mVideoView.getLayoutParams();
-        layoutParams.height = height;
-        mVideoView.setLayoutParams(layoutParams);
+    public void setVideoViewHeight(int videoWidth, int videoHeight) {
+        try {
+            int width = Utils.getScreenWidth(context);
+//        int height = width * 9 / 16;
+            int height = width * videoHeight / videoWidth;
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mVideoView.getLayoutParams();
+            layoutParams.height = height;
+            mVideoView.setLayoutParams(layoutParams);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return
@@ -268,6 +283,7 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
                 // 设置横竖屏
                 if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
                     VideoSystemManager.getInstance().setPortrait();
+                    setVideoViewHeight(videoWidth, videoHeight);
                 } else if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                     VideoSystemManager.getInstance().setLandScape();
                 }
@@ -464,6 +480,9 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     }
 
     private void recordPlayProgress() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            return;
+        }
         SECourseManager.getInstance().recordPlayProgress(SEAuthManager.getInstance().getAccessUser().getId()
                 , String.valueOf(resultBean.getId()), "1", String.valueOf(videoListPosition)
                 , String.valueOf(msec / 1000), new Callback<SimpleResult>() {

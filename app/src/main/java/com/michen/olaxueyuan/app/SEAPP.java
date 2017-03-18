@@ -9,15 +9,20 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SEThemer;
 import com.michen.olaxueyuan.common.catloading.CatLoadingView;
 import com.michen.olaxueyuan.common.manager.Logger;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.ui.umeng.CustomNotificationHandler;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
 
 import java.util.ArrayList;
 import java.util.List;
+
+//import com.michen.olaxueyuan.ui.umeng.MyPushIntentService;
 
 /**
  * Created by tianxiaopeng on 15-1-7.
@@ -73,16 +78,26 @@ public class SEAPP extends Application {
 
     }
 
-    PushAgent mPushAgent;
+    public PushAgent mPushAgent;
 
     private void registerUmeng() {
         mPushAgent = PushAgent.getInstance(this);
+//        mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
+        mPushAgent.setNotificationClickHandler(new CustomNotificationHandler());
+
         //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
+
             @Override
             public void onSuccess(String deviceToken) {
+                //注册成功会返回device token
                 Logger.e("deviceToken-----------------" + deviceToken);
-
+                mPushAgent.addAlias(SEAuthManager.getInstance().getAccessUser().getPhone(), "USER_PHONE", new UTrack.ICallBack() {
+                    @Override
+                    public void onMessage(boolean b, String s) {
+                        Logger.e("b==" + b + ";s==" + s);
+                    }
+                });
             }
 
             @Override
@@ -90,6 +105,7 @@ public class SEAPP extends Application {
 
             }
         });
+        mPushAgent.setDebugMode(debug);
         PushAgent.getInstance(this).onAppStart();
     }
 

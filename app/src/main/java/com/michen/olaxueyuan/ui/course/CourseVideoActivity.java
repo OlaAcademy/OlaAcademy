@@ -67,7 +67,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CourseVideoActivity extends FragmentActivity implements View.OnClickListener, VideoView.OnVideoPlayFailListener, MediaControllerView.Authentication, PlatformActionListener, Handler.Callback {
+public class CourseVideoActivity extends FragmentActivity implements View.OnClickListener, VideoView.OnVideoPlayFailListener
+        , MediaControllerView.Authentication, PlatformActionListener, Handler.Callback, VideoView.OnVideoSizeChangedListener2 {
 
     @Bind(R.id.left_return)
     public TextView leftReturn;
@@ -164,6 +165,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 
     private SharePopupWindow share;
     public int pdfPosition;
+    private int videoWidth = 16;
+    private int videoHeight = 9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +178,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setVideoViewHeight();
+        setVideoViewHeight(videoWidth, videoHeight);
         initView();
 
         downloadManager = DownloadService.getDownloadManager(this);
@@ -230,6 +233,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         mGestureDetector = new GestureDetector(this, new MyGestureListener());
         mVideoView.setOnInfoListener(infoListener);
         mVideoView.setOnVideoPlayFailListener(this);
+        mVideoView.setOnVideoSizeChangedListener2(this);
         performRefresh();
     }
 
@@ -308,6 +312,14 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         });
     }
 
+    @Override
+    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+//        Logger.e("width==" + width + ";height==" + height);
+        videoWidth = width;
+        videoHeight = height;
+        setVideoViewHeight(width, height);
+    }
+
     public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -320,10 +332,11 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         }
     }
 
-    public void setVideoViewHeight() {
+    public void setVideoViewHeight(int videoWidth, int videoHeight) {
         try {
             int width = Utils.getScreenWidth(context);
-            int height = width * 9 / 16;
+//        int height = width * 9 / 16;
+            int height = width * videoHeight / videoWidth;
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mVideoView.getLayoutParams();
             layoutParams.height = height;
             mVideoView.setLayoutParams(layoutParams);
@@ -346,6 +359,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                 // 设置横竖屏
                 if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
                     VideoManager.getInstance().setPortrait();
+                    setVideoViewHeight(videoWidth, videoHeight);
                 } else if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                     VideoManager.getInstance().setLandScape();
                 }
@@ -631,6 +645,10 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     }
 
     private void recordPlayProgress() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            startActivity(new Intent(this, UserLoginActivity.class));
+            return;
+        }
         SECourseManager.getInstance().recordPlayProgress(SEAuthManager.getInstance().getAccessUser().getId()
                 , courseVideoResult.getResult().getPointId(), "1", String.valueOf(pdfPosition)
                 , String.valueOf(msec / 1000), new Callback<SimpleResult>() {

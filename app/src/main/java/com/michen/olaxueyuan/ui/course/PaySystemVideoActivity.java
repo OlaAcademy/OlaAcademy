@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.ui.course;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.ui.course.pay.weixin.MD5;
 import com.michen.olaxueyuan.ui.course.pay.weixin.WxPayUtile;
 import com.michen.olaxueyuan.ui.course.pay.zhifubao.PayResult;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -181,6 +183,10 @@ public class PaySystemVideoActivity extends SuperActivity {
     }
 
     public void payForWXRequest() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            startActivity(new Intent(this, UserLoginActivity.class));
+            return;
+        }
         price = "0.01";
         userId = SEAuthManager.getInstance().getAccessUser().getId();
         double pricess = Double.parseDouble(price) * 100;
@@ -218,6 +224,10 @@ public class PaySystemVideoActivity extends SuperActivity {
     }
 
     public void payForAlipay() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            startActivity(new Intent(this, UserLoginActivity.class));
+            return;
+        }
         userId = SEAuthManager.getInstance().getAccessUser().getId();
         String maxCoinString = "0";
         if (isUseCoin) {

@@ -1,6 +1,7 @@
 package com.michen.olaxueyuan.ui.me.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -184,6 +185,10 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
     }
 
     public void payForAlipay() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            startActivity(new Intent(this, UserLoginActivity.class));
+            return;
+        }
         userId = SEAuthManager.getInstance().getAccessUser().getId();
         SEUserManager.getInstance().getAliOrderInfo(userId, type, "", "0", versionName, new Callback<UserAlipayResult>() {
             @Override
@@ -270,6 +275,10 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
     };
 
     public void payForWXRequest() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            startActivity(new Intent(this, UserLoginActivity.class));
+            return;
+        }
         userId = SEAuthManager.getInstance().getAccessUser().getId();
         SEUserManager.getInstance().getWXPayReq(userId, type, "", "0", versionName, new Callback<UserWXpayResult>() {
             @Override

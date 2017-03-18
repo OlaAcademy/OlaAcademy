@@ -55,9 +55,54 @@ public class UserPostListResult {
         private String name;
         private String avator;
         private String sign;
+        private String phone;
+        private String role;
+        private int attendStatus;
+        private int attendNum;
+        private int followerNum;
         private List<DeployListBean> deployList;
         private List<DeployListBean> replyList;
 //        private List<ReplyListBean> replyList;
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getRole() {
+            return role;
+        }
+
+        public void setRole(String role) {
+            this.role = role;
+        }
+
+        public int getAttendStatus() {
+            return attendStatus;
+        }
+
+        public void setAttendStatus(int attendStatus) {
+            this.attendStatus = attendStatus;
+        }
+
+        public int getAttendNum() {
+            return attendNum;
+        }
+
+        public void setAttendNum(int attendNum) {
+            this.attendNum = attendNum;
+        }
+
+        public int getFollowerNum() {
+            return followerNum;
+        }
+
+        public void setFollowerNum(int followerNum) {
+            this.followerNum = followerNum;
+        }
 
         public int getId() {
             return id;
