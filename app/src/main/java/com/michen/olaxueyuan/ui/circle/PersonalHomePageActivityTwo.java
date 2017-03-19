@@ -3,6 +3,7 @@ package com.michen.olaxueyuan.ui.circle;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,14 +11,24 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.DateUtils;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
+import com.michen.olaxueyuan.protocol.result.HomePageDeployPostBean;
 import com.michen.olaxueyuan.protocol.result.UserPostListResult;
 import com.michen.olaxueyuan.ui.activity.SuperActivity;
+import com.michen.olaxueyuan.ui.adapter.PersonalHomePageAdapter;
+import com.snail.pulltorefresh.PullToRefreshBase;
+import com.snail.pulltorefresh.PullToRefreshExpandableListView;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,9 +59,13 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
     TextView numFocus;
     @Bind(R.id.num_fans)
     TextView numFans;
+    @Bind(R.id.expandableListView)
+    ExpandableListView expandableListView;
     private int userId;
     private UserPostListResult postListResult;
     private String avatarUrl = "";
+    private SimpleDateFormat format = new SimpleDateFormat();
+    private PersonalHomePageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +80,10 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
     public void initView() {
         headBg.setRectAdius(200);
         headImage.setRectAdius(200);
+        expandableListView.setDivider(null);
+        expandableListView.setGroupIndicator(null);
+        adapter = new PersonalHomePageAdapter(this);
+        expandableListView.setAdapter(adapter);
     }
 
     @Override
@@ -78,13 +97,36 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
             @Override
             public void success(UserPostListResult userPostListResult, Response response) {
                 if (mContext != null && !PersonalHomePageActivityTwo.this.isFinishing()) {
-//                    scrollView.onRefreshComplete();
                     SEAPP.dismissAllowingStateLoss();
                     if (userPostListResult.getApicode() != 10000) {
                         SVProgressHUD.showInViewWithoutIndicator(mContext, userPostListResult.getMessage(), 2.0f);
                     } else {
-//                        scrollView.scrollTo(0, 0);
                         postListResult = userPostListResult;
+                        List<HomePageDeployPostBean> list = new ArrayList<>();
+                        List<UserPostListResult.ResultBean.DeployListBean> deployList = postListResult.getResult().getDeployList();
+                        HomePageDeployPostBean bean = new HomePageDeployPostBean();
+                        List<UserPostListResult.ResultBean.DeployListBean> child = new ArrayList<>();
+                        for (int i = 0; i < deployList.size(); i++) {
+                            if (i == 0 || (i > 0 && DateUtils.getMonth(deployList.get(i).getTime(), 1) == DateUtils.getMonth(deployList.get(i - 1).getTime(), 1))) {
+                                bean.setTime(deployList.get(i).getTime());
+                                child.add(deployList.get(i));
+                                bean.setChild(child);
+                            } else {
+                                list.add(bean);
+                                child = new ArrayList<>();
+                                bean = new HomePageDeployPostBean();
+                                bean.setTime(deployList.get(i).getTime());
+                                child.add(deployList.get(i));
+                                bean.setChild(child);
+                            }
+                            if (i == deployList.size() - 1) {
+                                list.add(bean);
+                            }
+                        }
+                        adapter.updateList(list);
+                        for (int i = 0; i < list.size(); i++) {
+                            expandableListView.expandGroup(i);
+                        }
                         updateUI(userPostListResult.getResult());
                     }
                 }
@@ -93,7 +135,6 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
             @Override
             public void failure(RetrofitError error) {
                 if (mContext != null && !PersonalHomePageActivityTwo.this.isFinishing()) {
-//                    scrollView.onRefreshComplete();
                     SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(mContext, R.string.data_request_fail);
                 }
@@ -112,11 +153,14 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
                 .resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50)).into(headImage);
         title.setText(result.getName());
         role.setText(result.getRole());
-        sign.setText(result.getSign());
+        if (!TextUtils.isEmpty(result.getSign())) {
+            sign.setText(result.getSign());
+        } else {
+            sign.setText(R.string.come_on_2018);
+        }
         numFocus.setText(String.valueOf(result.getAttendNum()));
         numFans.setText(String.valueOf(result.getFollowerNum()));
 //        adapter.updateData(result.getDeployList(), 1);
-//        scrollView.scrollTo(0, 0);
     }
 
     @OnClick({R.id.left_return, R.id.right_response, R.id.head_image})

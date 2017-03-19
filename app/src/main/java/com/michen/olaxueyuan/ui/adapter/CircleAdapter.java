@@ -22,6 +22,7 @@ import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.circle.PersonalHomePageActivity;
+import com.michen.olaxueyuan.ui.circle.PersonalHomePageActivityTwo;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 import com.snail.photo.util.NoScrollGridView;
 import com.squareup.picasso.Picasso;
@@ -102,7 +103,7 @@ public class CircleAdapter extends BaseAdapter {
                     }
                     PictureUtils.viewPictures(mContext, avatarUrl);
                 }*/
-                mContext.startActivity(new Intent(mContext, PersonalHomePageActivity.class).putExtra("userId", list.get(position).getUserId()));
+                mContext.startActivity(new Intent(mContext, PersonalHomePageActivityTwo.class).putExtra("userId", list.get(position).getUserId()));
             }
         });
         holder.name.setText(list.get(position).getUserName());

@@ -17,6 +17,15 @@ public class UserPostListResult {
     private ResultBean result;
     private int apicode;
 
+    @Override
+    public String toString() {
+        return "UserPostListResult{" +
+                "message='" + message + '\'' +
+                ", result=" + result +
+                ", apicode=" + apicode +
+                '}';
+    }
+
     public String getMessage() {
         return message;
     }
@@ -63,6 +72,23 @@ public class UserPostListResult {
         private List<DeployListBean> deployList;
         private List<DeployListBean> replyList;
 //        private List<ReplyListBean> replyList;
+
+        @Override
+        public String toString() {
+            return "ResultBean{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    ", avator='" + avator + '\'' +
+                    ", sign='" + sign + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", role='" + role + '\'' +
+                    ", attendStatus=" + attendStatus +
+                    ", attendNum=" + attendNum +
+                    ", followerNum=" + followerNum +
+                    ", deployList=" + deployList +
+                    ", replyList=" + replyList +
+                    '}';
+        }
 
         public String getPhone() {
             return phone;
@@ -190,6 +216,29 @@ public class UserPostListResult {
             private String userAvatar;
             private int videoId;
             private String time;
+
+            @Override
+            public String toString() {
+                return "DeployListBean{" +
+                        "assignUser='" + assignUser + '\'' +
+                        ", commentNumber=" + commentNumber +
+                        ", content='" + content + '\'' +
+                        ", courseId=" + courseId +
+                        ", id=" + id +
+                        ", imageGids='" + imageGids + '\'' +
+                        ", isPublic=" + isPublic +
+                        ", location='" + location + '\'' +
+                        ", praiseNumber=" + praiseNumber +
+                        ", readNumber=" + readNumber +
+                        ", title='" + title + '\'' +
+                        ", type=" + type +
+                        ", userId=" + userId +
+                        ", userName='" + userName + '\'' +
+                        ", userAvatar='" + userAvatar + '\'' +
+                        ", videoId=" + videoId +
+                        ", time='" + time + '\'' +
+                        '}';
+            }
 
             public String getAssignUser() {
                 return assignUser;

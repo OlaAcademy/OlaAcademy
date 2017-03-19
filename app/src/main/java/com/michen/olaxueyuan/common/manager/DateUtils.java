@@ -13,6 +13,7 @@ import java.util.Locale;
 public class DateUtils {
 
     private static final SimpleDateFormat _format = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat formatHSN = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * 返回指定格式的日期字符串。
@@ -206,4 +207,30 @@ public class DateUtils {
         return timeString;
     }
 
+    /**
+     * 获取年月日时分秒的月份
+     *
+     * @param date
+     * @return
+     */
+    public static int getMonth(String date, int type) {
+        int month = 0;
+        int year = 0;
+        try {
+            Date parse = formatHSN.parse(date);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(parse);
+            month = calendar.get(Calendar.MONTH);
+            year = calendar.get(Calendar.YEAR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        switch (type) {
+            default:
+            case 1:
+                return month + 1;
+            case 2:
+                return year;
+        }
+    }
 }

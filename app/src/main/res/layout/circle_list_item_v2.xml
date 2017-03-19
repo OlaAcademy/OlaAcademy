@@ -197,7 +197,13 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/bold_line"
         style="@style/line_horizontal"
         android:layout_height="@dimen/dp_10"
+        android:layout_below="@+id/bottom_view" />
+
+    <View
+        android:id="@+id/fine_line"
+        style="@style/line_horizontal"
         android:layout_below="@+id/bottom_view" />
 </RelativeLayout>
