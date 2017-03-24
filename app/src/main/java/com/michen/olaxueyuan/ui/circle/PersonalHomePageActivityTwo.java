@@ -1,43 +1,57 @@
 package com.michen.olaxueyuan.ui.circle;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.DateUtils;
-import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
+import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.HomePageDeployPostBean;
+import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 import com.michen.olaxueyuan.protocol.result.UserPostListResult;
+import com.michen.olaxueyuan.sharesdk.ShareModel;
+import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.ui.adapter.PersonalHomePageAdapter;
-import com.snail.pulltorefresh.PullToRefreshBase;
-import com.snail.pulltorefresh.PullToRefreshExpandableListView;
+import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.leancloud.chatkit.LCChatKitUser;
+import cn.leancloud.chatkit.activity.LCIMConversationActivity;
+import cn.leancloud.chatkit.utils.LCIMConstants;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.utils.UIHandler;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class PersonalHomePageActivityTwo extends SuperActivity {
+public class PersonalHomePageActivityTwo extends SuperActivity implements PlatformActionListener, Handler.Callback {
 
     @Bind(R.id.head_bg)
     RoundRectImageView headBg;
@@ -61,11 +75,17 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
     TextView numFans;
     @Bind(R.id.expandableListView)
     ExpandableListView expandableListView;
+    @Bind(R.id.focus)
+    TextView focus;
+    @Bind(R.id.chat)
+    TextView chat;
     private int userId;
     private UserPostListResult postListResult;
     private String avatarUrl = "";
-    private SimpleDateFormat format = new SimpleDateFormat();
     private PersonalHomePageAdapter adapter;
+    private List<HomePageDeployPostBean> list;
+    private SharePopupWindow share;
+    private LCChatKitUser lcChatKitUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +108,7 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
 
     @Override
     public void initData() {
-
+        list = new ArrayList<>();
     }
 
     private void fetchData() {
@@ -102,7 +122,7 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
                         SVProgressHUD.showInViewWithoutIndicator(mContext, userPostListResult.getMessage(), 2.0f);
                     } else {
                         postListResult = userPostListResult;
-                        List<HomePageDeployPostBean> list = new ArrayList<>();
+                        list.clear();
                         List<UserPostListResult.ResultBean.DeployListBean> deployList = postListResult.getResult().getDeployList();
                         HomePageDeployPostBean bean = new HomePageDeployPostBean();
                         List<UserPostListResult.ResultBean.DeployListBean> child = new ArrayList<>();
@@ -143,7 +163,9 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
     }
 
     private void updateUI(UserPostListResult.ResultBean result) {
-        if (result.getAvator().contains(".")) {
+        if (result.getAvator().contains("http://")) {
+            avatarUrl = result.getAvator();
+        } else if (result.getAvator().contains(".")) {
             avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + result.getAvator();
         } else {
             avatarUrl = SEAPP.PIC_BASE_URL + result.getAvator();
@@ -160,10 +182,10 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
         }
         numFocus.setText(String.valueOf(result.getAttendNum()));
         numFans.setText(String.valueOf(result.getFollowerNum()));
-//        adapter.updateData(result.getDeployList(), 1);
+        lcChatKitUser = new LCChatKitUser(result.getPhone(), result.getName(), avatarUrl);
     }
 
-    @OnClick({R.id.left_return, R.id.right_response, R.id.head_image})
+    @OnClick({R.id.left_return, R.id.right_response, R.id.head_image, R.id.focus, R.id.chat})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.head_image:
@@ -176,6 +198,113 @@ public class PersonalHomePageActivityTwo extends SuperActivity {
                 break;
             case R.id.right_response:
                 break;
+            case R.id.focus:
+                break;
+            case R.id.chat:
+                CustomUserProvider.getInstance().setpartUsers(lcChatKitUser);
+                Intent intent = new Intent(mContext, LCIMConversationActivity.class);
+//                intent.putExtra(LCIMConstants.PEER_ID, "378");
+//                intent.putExtra(LCIMConstants.PEER_ID, "1292");
+                intent.putExtra(LCIMConstants.PEER_ID, lcChatKitUser.getUserId());
+                startActivity(intent);
+                break;
         }
+    }
+
+    public void praise(final int groupPosition, final int childPosition) {
+//        SVProgressHUD.showInView(getActivity(), getString(R.string.request_running), true);
+        SEAPP.showCatDialog(this);
+        final UserPostListResult.ResultBean.DeployListBean deployListBean = list.get(groupPosition).getChild().get(childPosition);
+        MCCircleManager.getInstance().praiseCirclePost(SEUserManager.getInstance().getUserId(), String.valueOf(deployListBean.getId()), new Callback<PraiseCirclePostResult>() {
+            @Override
+            public void success(PraiseCirclePostResult mcCommonResult, Response response) {
+                if (mContext != null && !PersonalHomePageActivityTwo.this.isFinishing()) {
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
+                    if (mcCommonResult.getApicode() != 10000) {
+                        SVProgressHUD.showInViewWithoutIndicator(mContext, mcCommonResult.getMessage(), 2.0f);
+                    } else {
+                        if (deployListBean.getIsPraised() == 0) {
+                            deployListBean.setIsPraised(1);
+                            deployListBean.setPraiseNumber(deployListBean.getPraiseNumber() + 1);
+                        } else {
+                            deployListBean.setIsPraised(0);
+                            deployListBean.setPraiseNumber(deployListBean.getPraiseNumber() - 1);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (mContext != null && !PersonalHomePageActivityTwo.this.isFinishing()) {
+//                    SVProgressHUD.dismiss(getActivity());
+                    SEAPP.dismissAllowingStateLoss();
+                    ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+                }
+            }
+        });
+    }
+
+
+    public void share(final int groupPosition, final int childPosition) {
+        UserPostListResult.ResultBean.DeployListBean deployListBean = list.get(groupPosition).getChild().get(childPosition);
+        share = new SharePopupWindow(mContext);
+        share.setPlatformActionListener(this);
+        ShareModel model = new ShareModel();
+//        if (circle.getUserAvatar().indexOf("jpg") != -1) {
+        if (deployListBean.getUserAvatar().contains("http://")) {
+            model.setImageUrl(deployListBean.getUserAvatar());
+        } else if (deployListBean.getUserAvatar().contains(".")) {
+            model.setImageUrl("http://api.olaxueyuan.com/upload/" + deployListBean);
+        } else {
+            model.setImageUrl(SEAPP.PIC_BASE_URL + deployListBean.getUserAvatar());
+        }
+        model.setText(deployListBean.getContent());
+        model.setTitle("欧拉学院");
+        model.setUrl(SEConfig.getInstance().getAPIBaseURL() + "/circlepost.html?circleId=" + deployListBean.getId());
+        share.initShareParams(model);
+        share.showShareWindow();
+        // 显示窗口 (设置layout在PopupWindow中显示的位置)
+        share.showAtLocation(findViewById(R.id.main_personal_home),
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
+    /////////////////////// 分享相关  //////////////////////
+    @Override
+    public void onComplete(Platform plat, int action,
+                           HashMap<String, Object> res) {
+        Message msg = new Message();
+        msg.arg1 = 1;
+        msg.arg2 = action;
+        msg.obj = plat;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public void onError(Platform arg0, int arg1, Throwable arg2) {
+        Message msg = new Message();
+        msg.what = 1;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public void onCancel(Platform platform, int arg1) {
+        Message msg = new Message();
+        msg.what = 0;
+        UIHandler.sendMessage(msg, this);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        int what = msg.what;
+        if (what == 1) {
+            Toast.makeText(this, "分享失败", Toast.LENGTH_SHORT).show();
+        }
+        if (share != null) {
+            share.dismiss();
+        }
+        return false;
     }
 }

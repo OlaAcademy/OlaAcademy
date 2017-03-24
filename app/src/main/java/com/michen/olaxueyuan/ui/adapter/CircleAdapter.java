@@ -21,7 +21,6 @@ import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
-import com.michen.olaxueyuan.ui.circle.PersonalHomePageActivity;
 import com.michen.olaxueyuan.ui.circle.PersonalHomePageActivityTwo;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 import com.snail.photo.util.NoScrollGridView;
@@ -80,7 +79,9 @@ public class CircleAdapter extends BaseAdapter {
         holder.title.setText(list.get(position).getUserName());
         if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
             String avatarUrl = "";
-            if (list.get(position).getUserAvatar().contains(".")) {
+            if (list.get(position).getUserAvatar().contains("http://")) {
+                avatarUrl = list.get(position).getUserAvatar();
+            } else if (list.get(position).getUserAvatar().contains(".")) {
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar();
             } else {
                 avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();

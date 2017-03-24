@@ -36,6 +36,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static android.R.attr.fragment;
+
 /**
  * Created by mingge on 16/4/28.
  */
@@ -132,7 +134,9 @@ public class PersonalHomePageAdapter extends BaseExpandableListAdapter {
         holder.title.setText(list.get(groupPosition).getChild().get(childPosition).getUserName());
         if (!TextUtils.isEmpty(list.get(groupPosition).getChild().get(childPosition).getUserAvatar())) {
             String avatarUrl = "";
-            if (list.get(groupPosition).getChild().get(childPosition).getUserAvatar().contains(".")) {
+            if (list.get(groupPosition).getChild().get(childPosition).getUserAvatar().contains("http://")) {
+                avatarUrl = list.get(groupPosition).getChild().get(childPosition).getUserAvatar();
+            } else if (list.get(groupPosition).getChild().get(childPosition).getUserAvatar().contains(".")) {
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(groupPosition).getChild().get(childPosition).getUserAvatar();
             } else {
                 avatarUrl = SEAPP.PIC_BASE_URL + list.get(groupPosition).getChild().get(childPosition).getUserAvatar();
@@ -177,23 +181,23 @@ public class PersonalHomePageAdapter extends BaseExpandableListAdapter {
         } else {
             holder.imageGridview.setVisibility(View.GONE);
         }
-//        if (list.get(groupPosition).getChild().get(childPosition).getIsPraised() == 0) {
-        holder.favImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.circle_list_fave_normal_icon));
-//        } else {
-//            holder.favImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.circle_list_fave_selected_icon));
-//        }
+        if (list.get(groupPosition).getChild().get(childPosition).getIsPraised() == 0) {
+            holder.favImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.circle_list_fave_normal_icon));
+        } else {
+            holder.favImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.circle_list_fave_selected_icon));
+        }
         holder.shareView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mContext instanceof PersonalHomePageActivityTwo) {
-//                    (PersonalHomePageActivityTwo(mContext)).share(position);
+                    ((PersonalHomePageActivityTwo) (mContext)).share(groupPosition, childPosition);
                 }
             }
         });
         holder.favView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                fragment.praise(position);
+                ((PersonalHomePageActivityTwo) (mContext)).praise(groupPosition, childPosition);
             }
         });
         convertView.setOnClickListener(new View.OnClickListener() {

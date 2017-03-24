@@ -128,6 +128,14 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
         sourceCompatibility JavaVersion.VERSION_1_7
     }
+    //为了解决部分第三方库重复打包了META-INF的问题
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -176,10 +184,11 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile project(':BDUpdateSDK')
     compile project(':PushSDK')
-    compile 'com.android.support:recyclerview-v7:22.0.0'
+//    compile 'com.android.support:recyclerview-v7:22.0.0'
     //    compile 'com.android.support:design:22.2.1'
     compile files('libs/alipaySingle-20160825.jar')
     compile files('libs/tbs_sdk_thirdapp_v2.4.0.1073_36840.jar')
-    compile 'com.android.support:appcompat-v7:22.2.1'
+//    compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
+    compile project(':leancloudchatkit')
 }

@@ -329,7 +329,9 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         String avatarUrl = "";
         if (_user != null) {
 //            if (_user.getAvator().indexOf("jpg")!=-1){
-            if (_user.getAvator().contains(".")) {
+            if (_user.getAvator().contains("http://")) {
+                avatarUrl = _user.getAvator();
+            } else if (_user.getAvator().contains(".")) {
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + _user.getAvator();
             } else {
                 avatarUrl = SEAPP.PIC_BASE_URL + _user.getAvator();
@@ -488,7 +490,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
                             return;
                         } else {
                             _imageName = result.imgGid;
-                            Logger.e("_imageName=="+_imageName);
+                            Logger.e("_imageName==" + _imageName);
                         }
                     }
 

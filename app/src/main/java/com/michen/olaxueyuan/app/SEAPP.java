@@ -2,15 +2,22 @@ package com.michen.olaxueyuan.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.im.v2.AVIMClient;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SEThemer;
 import com.michen.olaxueyuan.common.catloading.CatLoadingView;
+import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
 import com.michen.olaxueyuan.ui.umeng.CustomNotificationHandler;
+import com.michen.olaxueyuan.ui.umeng.LoginFromOtherDialogActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -22,7 +29,7 @@ import com.umeng.message.UTrack;
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.michen.olaxueyuan.ui.umeng.MyPushIntentService;
+import cn.leancloud.chatkit.LCChatKit;
 
 /**
  * Created by tianxiaopeng on 15-1-7.
@@ -39,6 +46,7 @@ public class SEAPP extends Application {
     public void onCreate() {
         super.onCreate();
         mAppContext = this;
+        MultiDex.install(this);
         QbSdk.initX5Environment(getApplicationContext(), null);//调用 QbSdk 的预加载接口 ,当 App 后续创建 webview 时就可以首次加载 x5 内核了
         registerUmeng();
         SEThemer.getInstance().init(this);
@@ -75,16 +83,18 @@ public class SEAPP extends Application {
                 .writeDebugLogs()//
                 .build();//
         ImageLoader.getInstance().init(config);
-
+        // 初始化参数依次为 this, AppId, AppKey
+        LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
+        AVOSCloud.setDebugLogEnabled(debug);
+        LCChatKit.getInstance().init(getApplicationContext(), CommonConstant.LeanCloud_APP_ID, CommonConstant.LeanCloud_APP_KEY);
+        AVIMClient.setAutoOpen(false);
     }
 
     public PushAgent mPushAgent;
 
     private void registerUmeng() {
         mPushAgent = PushAgent.getInstance(this);
-//        mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
         mPushAgent.setNotificationClickHandler(new CustomNotificationHandler());
-
         //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
 
@@ -161,5 +171,11 @@ public class SEAPP extends Application {
             }
         }
         catLoadingViewList.clear();
+    }
+
+    public static void showLoginFromOtherDialog() {
+        Intent dialogIntent = new Intent(mAppContext, LoginFromOtherDialogActivity.class);
+        dialogIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mAppContext.startActivity(dialogIntent);
     }
 }

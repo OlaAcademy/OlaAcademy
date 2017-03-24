@@ -322,7 +322,9 @@ public class PictureUtils {
      */
     public static void viewPictures(Context mContext, String avatarUrl) {
         if (avatarUrl != null) {
-            if (avatarUrl.contains(".")) {
+            if (avatarUrl.contains("http://")) {
+
+            } else if (avatarUrl.contains(".")) {
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + avatarUrl;
             } else {
                 avatarUrl = SEAPP.PIC_BASE_URL + avatarUrl;

@@ -21,11 +21,13 @@ import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
+import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
+import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.protocol.result.VipPriceResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
@@ -201,6 +203,7 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
     public void onResume() {
         super.onResume();
         fetchUserInfo();
+        getTokenInfo();
         getSignStatus();
         getVipPrice();
     }
@@ -252,7 +255,9 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
                 if (userInfo.getAvator() != null) {
                     String avatarUrl = "";
                     //                if (userInfo.getAvator().contains("jpg")||userInfo.getAvator().contains("gif")) {
-                    if (userInfo.getAvator().contains(".")) {
+                    if (userInfo.getAvator().contains("http://")) {
+                        avatarUrl = userInfo.getAvator();
+                    } else if (userInfo.getAvator().contains(".")) {
                         avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + userInfo.getAvator();
                     } else {
                         avatarUrl = SEAPP.PIC_BASE_URL + userInfo.getAvator();
@@ -364,5 +369,33 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
         getVipPrice();
         fetchUserInfo();
         getSignStatus();
+        getTokenInfo();
+    }
+
+    private void getTokenInfo() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            return;
+        }
+        String userId = SEAuthManager.getInstance().getAccessUser().getId();
+        HomeListManager.getInstance().getTokenInfo(userId, new Callback<TokenInfoResult>() {
+            @Override
+            public void success(TokenInfoResult tokenInfoResult, Response response) {
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    if (tokenInfoResult != null && tokenInfoResult.getApicode() == 10000) {
+                        String nativeToken = SEAuthManager.getInstance().getTokenInfoResult().getResult().getToken();
+                        if (nativeToken != null && !nativeToken.equals(tokenInfoResult.getResult().getToken())) {
+                            SEAPP.showLoginFromOtherDialog();
+                        } else {
+                            SEAuthManager.getInstance().setTokenInfoResult(tokenInfoResult);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 }

@@ -119,7 +119,9 @@ public class PostCommentAdapterV2 extends BaseAdapter implements MyAudioManager.
         holder.numRead.setText("回复" + list.get(position).getSubCount());
         if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
             String avatarUrl = "";
-            if (list.get(position).getUserAvatar().contains(".")) {
+            if (list.get(position).getUserAvatar().contains("http://")) {
+                avatarUrl = list.get(position).getUserAvatar();
+            } else if (list.get(position).getUserAvatar().contains(".")) {
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar();
             } else {
                 avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();

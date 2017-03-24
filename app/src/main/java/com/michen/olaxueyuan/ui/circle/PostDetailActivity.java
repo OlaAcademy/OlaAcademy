@@ -302,7 +302,9 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         if (!TextUtils.isEmpty(resultBean.getUserAvatar())) {
             String avatarUrl = "";
 //            if (resultBean.getUserAvatar().indexOf("jpg") != -1) {
-            if (resultBean.getUserAvatar().contains(".")) {
+            if (resultBean.getUserAvatar().contains("http://")) {
+                avatarUrl = resultBean.getUserAvatar();
+            } else if (resultBean.getUserAvatar().contains(".")) {
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + resultBean.getUserAvatar();
             } else {
                 avatarUrl = SEAPP.PIC_BASE_URL + resultBean.getUserAvatar();
@@ -351,7 +353,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
             case R.id.avatar:
                 if (resultBean.getUserId() != 0) {
 //                    PictureUtils.viewPictures(mContext, resultBean.getUserAvatar());
-                    startActivity(new Intent(mContext, PersonalHomePageActivity.class).putExtra("userId", resultBean.getUserId()));
+                    startActivity(new Intent(mContext, PersonalHomePageActivityTwo.class).putExtra("userId", resultBean.getUserId()));
                 }
                 break;
             case R.id.key_voice:

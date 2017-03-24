@@ -3,6 +3,7 @@ package com.michen.olaxueyuan.protocol.manager;
 import android.content.Context;
 
 import com.michen.olaxueyuan.protocol.model.SEUser;
+import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
 import com.michen.olaxueyuan.protocol.service.AuthService;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.protocol.SECallBack;
@@ -35,6 +36,15 @@ public class SEAuthManager {
     private AuthService _authService;
     private AccessToken _accessToken;
     private SEUser accessUser;
+    private TokenInfoResult tokenInfoResult;
+
+    public TokenInfoResult getTokenInfoResult() {
+        return tokenInfoResult;
+    }
+
+    public void setTokenInfoResult(TokenInfoResult tokenInfoResult) {
+        this.tokenInfoResult = tokenInfoResult;
+    }
 
     private SEAuthManager() {
         _authService = SERestManager.getInstance().create(AuthService.class);

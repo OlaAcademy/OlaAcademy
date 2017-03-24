@@ -788,6 +788,7 @@ public class HomeModule implements Serializable {
             String phone;
             String avator;
             String sign;
+            String introduction;
 
             @Override
             public String toString() {
@@ -797,7 +798,16 @@ public class HomeModule implements Serializable {
                         ", phone='" + phone + '\'' +
                         ", avator='" + avator + '\'' +
                         ", sign='" + sign + '\'' +
+                        ", introduction='" + introduction + '\'' +
                         '}';
+            }
+
+            public String getIntroduction() {
+                return introduction;
+            }
+
+            public void setIntroduction(String introduction) {
+                this.introduction = introduction;
             }
 
             public String getId() {

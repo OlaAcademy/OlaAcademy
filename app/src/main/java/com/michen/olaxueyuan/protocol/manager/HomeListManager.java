@@ -4,6 +4,7 @@ import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.protocol.result.MaterialListResult;
 import com.michen.olaxueyuan.protocol.result.OrganizationInfoResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
+import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
 import com.michen.olaxueyuan.protocol.service.HomeListService;
 
 import retrofit.Callback;
@@ -37,8 +38,8 @@ public class HomeListManager {
      *
      * @param callback
      */
-    public void fetchHomeCourseList(String userId,final Callback<HomeModule> callback) {
-        getHomeListService().getHomeList(userId,callback);
+    public void fetchHomeCourseList(String userId, final Callback<HomeModule> callback) {
+        getHomeListService().getHomeList(userId, callback);
     }
 
     /**
@@ -83,5 +84,15 @@ public class HomeListManager {
      */
     public void getOrganizationInfo(final Callback<OrganizationInfoResult> callback) {
         getHomeListService().getOrganizationInfo(callback);
+    }
+
+    /**
+     * 用户登录token信息
+     *
+     * @param userId
+     * @param callback
+     */
+    public void getTokenInfo(String userId, final Callback<TokenInfoResult> callback) {
+        getHomeListService().getTokenInfo(userId, callback);
     }
 }

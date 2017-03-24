@@ -123,7 +123,9 @@ public class PersonalHomePageActivity extends SEBaseActivity implements PullToRe
     }
 
     private void updateUI(UserPostListResult.ResultBean result) {
-        if (result.getAvator().contains(".")) {
+        if (result.getAvator().contains("http://")) {
+            avatarUrl = result.getAvator();
+        } else if (result.getAvator().contains(".")) {
             avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + result.getAvator();
         } else {
             avatarUrl = SEAPP.PIC_BASE_URL + result.getAvator();

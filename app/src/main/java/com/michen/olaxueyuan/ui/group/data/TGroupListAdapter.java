@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.TeacherGroupListResult;
@@ -69,7 +70,15 @@ public class TGroupListAdapter extends BaseAdapter {
         holder.time.setText(list.get(position).getTime());
         holder.avatar.setRectAdius(100);
         if (!TextUtils.isEmpty(list.get(position).getAvatar())) {
-            Picasso.with(context).load(SEAPP.PIC_BASE_URL+list.get(position).getAvatar())
+            String avatarUrl = "";
+            if (list.get(position).getAvatar().contains("http://")) {
+                avatarUrl = list.get(position).getAvatar();
+            } else if (list.get(position).getAvatar().contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getAvatar();
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getAvatar();
+            }
+            Picasso.with(context).load(avatarUrl)
                     .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar)
                     .resize(Utils.dip2px(context, 52), Utils.dip2px(context, 52))
                     .into(holder.avatar);

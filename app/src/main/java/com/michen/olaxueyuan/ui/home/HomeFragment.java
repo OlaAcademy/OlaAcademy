@@ -2,8 +2,8 @@ package com.michen.olaxueyuan.ui.home;
 
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,10 +24,12 @@ import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.download.DownloadService;
+import com.michen.olaxueyuan.protocol.event.LenChatUnReadEvent;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
+import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.MainFragment;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
@@ -34,7 +37,6 @@ import com.michen.olaxueyuan.ui.circle.DeployPostActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.michen.olaxueyuan.ui.course.commodity.DataLibraryActivity;
 import com.michen.olaxueyuan.ui.course.turtor.OrgEnrolActivity;
-import com.michen.olaxueyuan.ui.group.GroupListActivity;
 import com.michen.olaxueyuan.ui.home.data.AskQuestionRecyclerAdapter;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.home.data.CourseDatabaseRecyclerAdapter;
@@ -43,6 +45,7 @@ import com.michen.olaxueyuan.ui.home.data.HeaderImgeManager;
 import com.michen.olaxueyuan.ui.home.data.HomeQuestionAdapter;
 import com.michen.olaxueyuan.ui.home.data.QualityCourseRecyclerAdapter;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
+import com.michen.olaxueyuan.ui.question.CommonMessageActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -55,6 +58,8 @@ import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -103,6 +108,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     RoundRectImageView userAvatar;
     @Bind(R.id.recycler_view_ask_question)
     RecyclerView recyclerViewAskQuestion;
+    @Bind(R.id.chat_message_dot)
+    ImageView chatMessageDot;
 
 
     HomeQuestionAdapter homeQuestionAdapter;
@@ -115,6 +122,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         initView();
         fetchData();
         return view;
@@ -140,6 +148,13 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         recyclerViewCourseDatabase.setAdapter(courseDatabaseRecyclerAdapter);
         askQuestionRecyclerAdapter = new AskQuestionRecyclerAdapter(getActivity());
         recyclerViewAskQuestion.setAdapter(askQuestionRecyclerAdapter);
+
+        SharedPreferences mSp = getActivity().getSharedPreferences(CommonConstant.LEAN_CHAT_UNREAD, MODE_PRIVATE);
+        if (mSp.getBoolean(CommonConstant.LEAN_CHAT_UNREAD_KEY, false)) {
+            chatMessageDot.setVisibility(View.VISIBLE);
+        } else {
+            chatMessageDot.setVisibility(View.GONE);
+        }
     }
 
     private void fetchData() {
@@ -178,14 +193,16 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         qualityCourseRecyclerAdapter.updateData(result.getResult().getGoodsList());
         courseDatabaseRecyclerAdapter.updateData(result.getResult().getCourseList());
         askQuestionRecyclerAdapter.updateData(result.getResult().getUserList());
-        studyTimeLengthText.setText(String.valueOf(getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, Context.MODE_PRIVATE)
+        studyTimeLengthText.setText(String.valueOf(getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, MODE_PRIVATE)
                 .getInt(CommonConstant.DAY_STUDY_TIME_LENGTH, 0)));
         completeNumSubjectText.setText(result.getResult().getFinishCount());
         persistText.setText(result.getResult().getStudyDay());
         defeatText.setText(result.getResult().getDefeatPercent());
         if (SEAuthManager.getInstance().getAccessUser() != null && !TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
             String avatarUrl;
-            if (SEAuthManager.getInstance().getAccessUser().getAvator().contains(".")) {
+            if (SEAuthManager.getInstance().getAccessUser().getAvator().contains("http://")) {
+                avatarUrl = SEAuthManager.getInstance().getAccessUser().getAvator();
+            } else if (SEAuthManager.getInstance().getAccessUser().getAvator().contains(".")) {
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + SEAuthManager.getInstance().getAccessUser().getAvator();
             } else {
                 avatarUrl = SEAPP.PIC_BASE_URL + SEAuthManager.getInstance().getAccessUser().getAvator();
@@ -222,7 +239,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
                     startActivity(loginIntent);
                     return;
                 }
-                startActivity(new Intent(getActivity(), GroupListActivity.class));
+//                startActivity(new Intent(getActivity(), GroupListActivity.class));
+                startActivity(new Intent(getActivity(), CommonMessageActivity.class).putExtra("type", 4));
                 break;
             case R.id.show_all_question:
                 CircleFragment.type = "2";
@@ -282,7 +300,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     private void onChange() {
         imgViewpagerHome.startAutoScroll();
         studyTimeLengthText.setText(String.valueOf(CommonConstant.DAY_STUDY_TIME
-                + getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, Context.MODE_PRIVATE)
+                + getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, MODE_PRIVATE)
                 .getInt(CommonConstant.DAY_STUDY_TIME_LENGTH, 0)));
     }
 
@@ -298,10 +316,28 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         super.onDestroyView();
         DownloadService.destroyTimer(getActivity());
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onRefresh(PullToRefreshBase refreshView) {
         fetchData();
+    }
+
+    // EventBus 回调
+    public void onEventMainThread(UserLoginNoticeModule module) {
+        if (module.isLogin) {
+
+        } else {
+
+        }
+    }
+
+    public void onEventMainThread(LenChatUnReadEvent lenChatUnReadEvent) {
+        if (lenChatUnReadEvent.isHasNewInfo()) {
+            chatMessageDot.setVisibility(View.VISIBLE);
+            SharedPreferences mSp = getActivity().getSharedPreferences(CommonConstant.LEAN_CHAT_UNREAD, MODE_PRIVATE);
+            mSp.edit().putBoolean(CommonConstant.LEAN_CHAT_UNREAD_KEY, true).apply();
+        }
     }
 }

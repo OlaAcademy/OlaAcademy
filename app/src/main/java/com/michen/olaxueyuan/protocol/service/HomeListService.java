@@ -4,6 +4,7 @@ import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.protocol.result.MaterialListResult;
 import com.michen.olaxueyuan.protocol.result.OrganizationInfoResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
+import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
 
 import retrofit.Callback;
 import retrofit.http.Field;
@@ -77,4 +78,17 @@ public interface HomeListService {
     @POST("/ola/organization/getOrganizationInfo")
     void getOrganizationInfo(
             Callback<OrganizationInfoResult> cb);
+
+    /**
+     * 用户登录token信息
+     *
+     * @param userId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/token/getTokenInfo")
+    void getTokenInfo(
+            @Field("userId ") String userId,
+            Callback<TokenInfoResult> cb);
+
 }

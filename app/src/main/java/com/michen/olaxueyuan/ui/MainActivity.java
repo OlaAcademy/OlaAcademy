@@ -6,17 +6,32 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Window;
+import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
 import com.baidu.autoupdatesdk.UICheckUpdateCallback;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.StatusBarCompat;
+import com.michen.olaxueyuan.protocol.manager.HomeListManager;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.model.SEUser;
+import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
+import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.sriramramani.droid.inspector.server.ViewServer;
 import com.umeng.analytics.MobclickAgent;
 
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.LCChatKitUser;
 import cn.sharesdk.framework.ShareSDK;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 //public class MainActivity extends BaseSearchActivity {
 public class MainActivity extends FragmentActivity {
@@ -42,6 +57,19 @@ public class MainActivity extends FragmentActivity {
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
         BDAutoUpdateSDK.uiUpdateAction(this, new MyUICheckUpdateCallback());
+        /*// 测试 SDK 是否正常工作的代码
+        AVObject testObject = new AVObject("TestObject");
+        testObject.put("words", "Hello World!");
+        testObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    Logger.e("save----------success!");
+                }
+            }
+        });*/
+        loginChat();
+        getTokenInfo();
     }
 
     @Override
@@ -89,5 +117,63 @@ public class MainActivity extends FragmentActivity {
         if (Build.VERSION.SDK_INT >= 20) {
             StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.common_blue));
         }
+    }
+
+    private LCChatKitUser lcChatKitUser;
+
+    private void loginChat() {
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            LCChatKit.getInstance().open(SEAuthManager.getInstance().getAccessUser().getId(), new AVIMClientCallback() {
+                @Override
+                public void done(AVIMClient avimClient, AVIMException e) {
+                    if (null == e) {
+//                        ToastUtil.showToastShort(UserLoginActivity.this, "登录成功");
+                    } else {
+                        Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            SEUser seUser = SEAuthManager.getInstance().getAccessUser();
+            if (seUser != null) {
+                String avatarUrl = "";
+                if (seUser.getAvator() != null) {
+                    if (seUser.getAvator().contains("http://")) {
+                        avatarUrl = seUser.getAvator();
+                    } else if (seUser.getAvator().contains(".")) {
+                        avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + seUser.getAvator();
+                    } else {
+                        avatarUrl = SEAPP.PIC_BASE_URL + seUser.getAvator();
+                    }
+                }
+                lcChatKitUser = new LCChatKitUser(seUser.getPhone(), seUser.getName(), avatarUrl);
+                CustomUserProvider.getInstance().setpartUsers(lcChatKitUser);
+            }
+        }
+    }
+
+    private void getTokenInfo() {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            return;
+        }
+        String userId = SEAuthManager.getInstance().getAccessUser().getId();
+        HomeListManager.getInstance().getTokenInfo(userId, new Callback<TokenInfoResult>() {
+            @Override
+            public void success(TokenInfoResult tokenInfoResult, Response response) {
+                if (tokenInfoResult != null && tokenInfoResult.getApicode() == 10000) {
+                    if (SEAuthManager.getInstance().getTokenInfoResult() != null) {
+                        String nativeToken = SEAuthManager.getInstance().getTokenInfoResult().getResult().getToken();
+                        if (nativeToken != null && !nativeToken.equals(tokenInfoResult.getResult().getToken())) {
+                            SEAPP.showLoginFromOtherDialog();
+                        } else {
+                            SEAuthManager.getInstance().setTokenInfoResult(tokenInfoResult);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+            }
+        });
     }
 }

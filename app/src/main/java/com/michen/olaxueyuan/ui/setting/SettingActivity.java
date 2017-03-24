@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVUser;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
@@ -149,6 +150,7 @@ public class SettingActivity extends SEBaseActivity implements PlatformActionLis
                     case R.id.yes:
                         SEUserManager.getInstance().logout();
                         EventBus.getDefault().post(new UserLoginNoticeModule(false));//发送通知登录
+                        AVUser.logOut();
                         finish();
                         break;
                 }

@@ -291,8 +291,8 @@
             android:name=".ui.me.activity.UserLoginActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:screenOrientation="portrait"
-            android:theme="@style/popup_dialog_anim"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        <!--android:theme="@style/popup_dialog_anim"-->
 
         <service
             android:name="com.baidu.location.f"
@@ -555,7 +555,13 @@
         <activity
             android:name=".ui.circle.PersonalHomePageActivityTwo"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".util.LoginFromOtherDialogActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyle" />
     </application>
 
 </manifest>

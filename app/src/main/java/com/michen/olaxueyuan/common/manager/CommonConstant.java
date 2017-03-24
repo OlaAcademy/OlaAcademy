@@ -31,4 +31,9 @@ public class CommonConstant {
     public static final String QQ_GROUP_KEY = "u5Whiq-Ik7zFDroIeRRPolENgFYi63PF";//qq群的key
     public static final String QQ_GROUP_URI = "mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D";//qq群的uri
 
+    // appId、appKey 可以在「LeanCloud  控制台 > 设置 > 应用 Key」获取
+    public static final String LeanCloud_APP_ID = "HSXwUCr9cAVKFARwO1hWLeka-gzGzoHsz";
+    public static final String LeanCloud_APP_KEY = "g2oB3U1D1hh2ilVMiT42TU0M";
+    public static final String LEAN_CHAT_UNREAD = "lenchat_unread";
+    public static final String LEAN_CHAT_UNREAD_KEY = "lenchat_unread_key";
 }

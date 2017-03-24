@@ -116,7 +116,9 @@ public class PostCommentAdapter extends BaseAdapter implements MyAudioManager.Pl
         holder.itemCommentTime.setText(list.get(position).getTime());
         if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
             String avatarUrl = "";
-            if (list.get(position).getUserAvatar().contains(".")) {
+            if (list.get(position).getUserAvatar().contains("http://")) {
+                avatarUrl = list.get(position).getUserAvatar();
+            } else if (list.get(position).getUserAvatar().contains(".")) {
                 avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getUserAvatar();
             } else {
                 avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.BaseRecyclerAdapter;
@@ -71,12 +73,22 @@ public class AskQuestionRecyclerAdapter extends BaseRecyclerAdapter<HomeModule.R
             linearParams.setMargins(15, 0, 30, 0);
         holder.rootView.setLayoutParams(linearParams);
         final HomeModule.ResultBean.UserListBean course = list.get(position);
-        holder.name.setText(course.getName());
-        holder.sign.setText(course.getSign());
+        holder.name.setText(course.getIntroduction());
+        holder.sign.setText(course.getName());
 
         try {
-            Picasso.with(context).load(SEAPP.PIC_BASE_URL + course.getAvator()).config(Bitmap.Config.RGB_565)
-                    .placeholder(R.drawable.default_index).error(R.drawable.default_index).into(holder.icAvatar);
+            if (!TextUtils.isEmpty(course.getAvator())) {
+                String avatarUrl = "";
+                if (course.getAvator().contains("http://")) {
+                    avatarUrl = course.getAvator();
+                } else if (course.getAvator().contains(".")) {
+                    avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + course.getAvator();
+                } else {
+                    avatarUrl = SEAPP.PIC_BASE_URL + course.getAvator();
+                }
+                Picasso.with(context).load(avatarUrl).config(Bitmap.Config.RGB_565)
+                        .placeholder(R.drawable.default_index).error(R.drawable.default_index).into(holder.icAvatar);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

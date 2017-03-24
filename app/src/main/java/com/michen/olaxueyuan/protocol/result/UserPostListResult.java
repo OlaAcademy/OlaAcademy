@@ -215,6 +215,7 @@ public class UserPostListResult {
             private String userName;
             private String userAvatar;
             private int videoId;
+            private int isPraised;
             private String time;
 
             @Override
@@ -236,8 +237,17 @@ public class UserPostListResult {
                         ", userName='" + userName + '\'' +
                         ", userAvatar='" + userAvatar + '\'' +
                         ", videoId=" + videoId +
+                        ", isPraised=" + isPraised +
                         ", time='" + time + '\'' +
                         '}';
+            }
+
+            public int getIsPraised() {
+                return isPraised;
+            }
+
+            public void setIsPraised(int isPraised) {
+                this.isPraised = isPraised;
             }
 
             public String getAssignUser() {

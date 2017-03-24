@@ -70,7 +70,9 @@ public class SharePlatformManager {
         });
         ShareModel model = new ShareModel();
 //        if (circle.getUserAvatar().indexOf("jpg") != -1) {
-        if (avatar.contains(".")) {
+        if (avatar.contains("http://")) {
+            model.setImageUrl(avatar);
+        } else if (avatar.contains(".")) {
             model.setImageUrl("http://api.olaxueyuan.com/upload/" + avatar);
         } else {
             model.setImageUrl(SEAPP.PIC_BASE_URL + avatar);

@@ -89,7 +89,9 @@ public class GroupListAdapter extends BaseAdapter {
             holder.avatar.setRectAdius(100);
             String avatarUrl = "";
             if (!TextUtils.isEmpty(list.get(position).getAvatar())) {
-                if (list.get(position).getAvatar().contains(".")) {
+                if (list.get(position).getAvatar().contains("http://")) {
+                    avatarUrl = list.get(position).getAvatar();
+                } else if (list.get(position).getAvatar().contains(".")) {
                     avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getAvatar();
                 } else {
                     avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getAvatar();
