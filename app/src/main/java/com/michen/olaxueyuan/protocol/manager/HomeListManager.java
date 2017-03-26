@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.protocol.manager;
 
+import com.michen.olaxueyuan.protocol.result.AttendListResult;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.protocol.result.MaterialListResult;
 import com.michen.olaxueyuan.protocol.result.OrganizationInfoResult;
@@ -94,5 +95,37 @@ public class HomeListManager {
      */
     public void getTokenInfo(String userId, final Callback<TokenInfoResult> callback) {
         getHomeListService().getTokenInfo(userId, callback);
+    }
+
+    /**
+     * 关注／取消关注
+     *
+     * @param attendId   关注人Id
+     * @param attendedId 被关注人Id
+     * @param type       1 关注 2 取消
+     * @param callback
+     */
+    public void attendUser(String attendId, String attendedId, int type, Callback<SimpleResult> callback) {
+        getHomeListService().attendUser(attendId, attendedId, type, callback);
+    }
+
+    /**
+     * 关注列表
+     *
+     * @param userId
+     * @param callback
+     */
+    public void queryAttentionList(String userId, Callback<AttendListResult> callback) {
+        getHomeListService().queryAttentionList(userId, callback);
+    }
+
+    /**
+     * 粉丝列表
+     *
+     * @param userId
+     * @param callback
+     */
+    public void queryFollowerList(String userId, Callback<AttendListResult> callback) {
+        getHomeListService().queryFollowerList(userId, callback);
     }
 }

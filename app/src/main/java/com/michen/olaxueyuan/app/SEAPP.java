@@ -16,8 +16,8 @@ import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
-import com.michen.olaxueyuan.ui.umeng.CustomNotificationHandler;
 import com.michen.olaxueyuan.ui.umeng.LoginFromOtherDialogActivity;
+import com.michen.olaxueyuan.ui.umeng.MyPushIntentService;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -94,7 +94,9 @@ public class SEAPP extends Application {
 
     private void registerUmeng() {
         mPushAgent = PushAgent.getInstance(this);
-        mPushAgent.setNotificationClickHandler(new CustomNotificationHandler());
+//        mPushAgent.setNotificationClickHandler(new CustomNotificationHandler());
+        mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
+        mPushAgent.setDisplayNotificationNumber(2);
         //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
 

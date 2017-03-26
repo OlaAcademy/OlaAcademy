@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@drawable/selector_white_item_bg">
+
+    <com.michen.olaxueyuan.common.RoundRectImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/dp_52"
+        android:layout_height="@dimen/dp_52"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/dp_10"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_default_avatar" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_toRightOf="@+id/avatar"
+        android:ellipsize="end"
+        android:maxLength="10"
+        android:singleLine="true"
+        android:text="名字"
+        android:textColor="@color/black_272b36"
+        android:textSize="14dp" />
+
+
+    <TextView
+        android:id="@+id/introduce_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/avatar"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="学习了:"
+        android:textColor="@color/black_a4a6a9"
+        android:textSize="12dp" />
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

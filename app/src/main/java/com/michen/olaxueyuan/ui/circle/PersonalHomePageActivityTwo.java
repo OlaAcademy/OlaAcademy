@@ -20,17 +20,22 @@ import com.michen.olaxueyuan.common.manager.DateUtils;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.HomePageDeployPostBean;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.UserPostListResult;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.ui.adapter.PersonalHomePageAdapter;
 import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
+import com.michen.olaxueyuan.ui.me.activity.UserUpdateActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
@@ -104,6 +109,12 @@ public class PersonalHomePageActivityTwo extends SuperActivity implements Platfo
         expandableListView.setGroupIndicator(null);
         adapter = new PersonalHomePageAdapter(this);
         expandableListView.setAdapter(adapter);
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            String myUserId = SEAuthManager.getInstance().getAccessUser().getId();
+            if (myUserId.equals(String.valueOf(userId))) {
+                rightResponse.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -183,9 +194,14 @@ public class PersonalHomePageActivityTwo extends SuperActivity implements Platfo
         numFocus.setText(String.valueOf(result.getAttendNum()));
         numFans.setText(String.valueOf(result.getFollowerNum()));
         lcChatKitUser = new LCChatKitUser(result.getPhone(), result.getName(), avatarUrl);
+        if (result.getAttendStatus() == 0) {
+            focus.setText("关注");
+        } else {
+            focus.setText("取消关注");
+        }
     }
 
-    @OnClick({R.id.left_return, R.id.right_response, R.id.head_image, R.id.focus, R.id.chat})
+    @OnClick({R.id.left_return, R.id.right_response, R.id.head_image, R.id.focus, R.id.chat, R.id.num_focus, R.id.num_fans})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.head_image:
@@ -197,10 +213,28 @@ public class PersonalHomePageActivityTwo extends SuperActivity implements Platfo
                 finish();
                 break;
             case R.id.right_response:
+                startActivity(new Intent(mContext, UserUpdateActivity.class));
                 break;
             case R.id.focus:
+                if (!SEAuthManager.getInstance().isAuthenticated()) {
+                    Intent loginIntent = new Intent(mContext, UserLoginActivity.class);
+                    startActivity(loginIntent);
+                    return;
+                }
+                if (postListResult != null) {
+                    if (postListResult.getResult().getAttendStatus() == 0) {
+                        attendUser(SEUserManager.getInstance().getUserId(), String.valueOf(userId), 1);
+                    } else {
+                        attendUser(SEUserManager.getInstance().getUserId(), String.valueOf(userId), 2);
+                    }
+                }
                 break;
             case R.id.chat:
+                if (!SEAuthManager.getInstance().isAuthenticated()) {
+                    Intent loginIntent = new Intent(mContext, UserLoginActivity.class);
+                    startActivity(loginIntent);
+                    return;
+                }
                 CustomUserProvider.getInstance().setpartUsers(lcChatKitUser);
                 Intent intent = new Intent(mContext, LCIMConversationActivity.class);
 //                intent.putExtra(LCIMConstants.PEER_ID, "378");
@@ -208,7 +242,25 @@ public class PersonalHomePageActivityTwo extends SuperActivity implements Platfo
                 intent.putExtra(LCIMConstants.PEER_ID, lcChatKitUser.getUserId());
                 startActivity(intent);
                 break;
+            case R.id.num_focus:
+                getFocusList(1);//1关注列表
+                break;
+            case R.id.num_fans:
+                getFocusList(2);//2粉丝列表
+                break;
         }
+    }
+
+    private void getFocusList(int type) {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            Intent loginIntent = new Intent(mContext, UserLoginActivity.class);
+            startActivity(loginIntent);
+            return;
+        }
+        Intent intentFocus = new Intent(mContext, FocusedListActivity.class);
+        intentFocus.putExtra("userId", String.valueOf(userId));
+        intentFocus.putExtra("type", type);
+        startActivity(intentFocus);
     }
 
     public void praise(final int groupPosition, final int childPosition) {
@@ -247,6 +299,39 @@ public class PersonalHomePageActivityTwo extends SuperActivity implements Platfo
         });
     }
 
+    private void attendUser(String attendId, String attendedId, final int type) {
+        SEAPP.showCatDialog(this);
+        HomeListManager.getInstance().attendUser(attendId, attendedId, type, new Callback<SimpleResult>() {
+            @Override
+            public void success(SimpleResult simpleResult, Response response) {
+                if (mContext != null && !PersonalHomePageActivityTwo.this.isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
+                    if (simpleResult.getApicode() != 10000) {
+                        ToastUtil.showToastShort(mContext, simpleResult.getMessage());
+                    } else {
+                        switch (type) {
+                            case 1://关注
+                                focus.setText("取消关注");
+                                postListResult.getResult().setAttendStatus(1);
+                                break;
+                            case 2://取消关注
+                                focus.setText("关注");
+                                postListResult.getResult().setAttendStatus(0);
+                                break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (mContext != null && !PersonalHomePageActivityTwo.this.isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
+                    ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+                }
+            }
+        });
+    }
 
     public void share(final int groupPosition, final int childPosition) {
         UserPostListResult.ResultBean.DeployListBean deployListBean = list.get(groupPosition).getChild().get(childPosition);

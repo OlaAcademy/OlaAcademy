@@ -1,17 +1,13 @@
 package com.michen.olaxueyuan.protocol.event;
 
 /**
- * <pre>
- *     author : mingge
- *     time   : 2017/03/24
- *     desc   :
- *     version: 1.0
- * </pre>
+ * Created by mingge on 17/3/24.
  */
-public class LenChatUnReadEvent {
+
+public class LenChatUnReadEvents {
     private boolean isHasNewInfo;
 
-    public LenChatUnReadEvent(boolean isHasNewInfo) {
+    public LenChatUnReadEvents(boolean isHasNewInfo) {
         this.isHasNewInfo = isHasNewInfo;
     }
 
@@ -22,4 +18,5 @@ public class LenChatUnReadEvent {
     public void setHasNewInfo(boolean hasNewInfo) {
         isHasNewInfo = hasNewInfo;
     }
+
 }

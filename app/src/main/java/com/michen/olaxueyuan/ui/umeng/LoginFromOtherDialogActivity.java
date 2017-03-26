@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.avos.avoscloud.AVUser;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
@@ -62,6 +63,7 @@ public class LoginFromOtherDialogActivity extends Activity {
         content.setText("你的账号在另一台手机登录。如非本人操作，则密码可能已经泄露，建议前往修改密码。");
         SEUserManager.getInstance().logout();
         EventBus.getDefault().post(new UserLoginNoticeModule(false));//发送通知登录
+        SEAuthManager.getInstance().setTokenInfoResult(null);
         AVUser.logOut();
     }
 

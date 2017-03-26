@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/study_progress"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -12,13 +13,14 @@
             android:layout_height="16dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="11dp"
+            android:visibility="gone"
             android:background="@color/blue_light" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="10dp"
             android:text="@string/study_progress"
             android:textColor="@color/black_272b36"
             android:textSize="16sp" />
@@ -184,7 +186,7 @@
 
         <View
             android:id="@+id/study_line"
-            style="@style/line_horizontal_margin_15dp"
+            style="@style/line_horizontal_margin_10dp"
             android:layout_below="@+id/persist_center_layout"
             android:layout_marginTop="@dimen/dp_7" />
 
@@ -193,7 +195,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_below="@+id/study_line"
-            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_10"
             android:gravity="center_vertical"
             android:text="本周学友排名" />
 

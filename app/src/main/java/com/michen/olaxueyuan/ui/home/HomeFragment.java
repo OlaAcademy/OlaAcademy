@@ -22,9 +22,10 @@ import com.michen.olaxueyuan.common.AutoScrollViewPager;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.download.DownloadService;
-import com.michen.olaxueyuan.protocol.event.LenChatUnReadEvent;
+import com.michen.olaxueyuan.protocol.event.LenChatUnReadEvents;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -34,6 +35,8 @@ import com.michen.olaxueyuan.ui.MainFragment;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.circle.DeployPostActivity;
+import com.michen.olaxueyuan.ui.circle.FocusedListActivity;
+import com.michen.olaxueyuan.ui.circle.StudyHistoryActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.michen.olaxueyuan.ui.course.commodity.DataLibraryActivity;
 import com.michen.olaxueyuan.ui.course.turtor.OrgEnrolActivity;
@@ -110,6 +113,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     RecyclerView recyclerViewAskQuestion;
     @Bind(R.id.chat_message_dot)
     ImageView chatMessageDot;
+    @Bind(R.id.study_progress_layout)
+    LinearLayout studyProgressLayout;
 
 
     HomeQuestionAdapter homeQuestionAdapter;
@@ -214,7 +219,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     }
 
     @OnClick({R.id.put_question_layout, R.id.find_teacher_layout, R.id.find_data_layout, R.id.find_data_group, R.id.show_all_question
-            , R.id.show_all_direct_broadcast, R.id.show_all_quality_course, R.id.show_all_course_database, R.id.show_all_ask_question})
+            , R.id.show_all_direct_broadcast, R.id.show_all_quality_course, R.id.show_all_course_database, R.id.show_all_ask_question
+            , R.id.study_progress_layout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.put_question_layout:
@@ -258,6 +264,9 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
                 chageIndex(1);
                 break;
             case R.id.show_all_ask_question:
+                break;
+            case R.id.study_progress_layout:
+                startActivity(new Intent(getActivity(), StudyHistoryActivity.class));
                 break;
         }
     }
@@ -333,7 +342,8 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         }
     }
 
-    public void onEventMainThread(LenChatUnReadEvent lenChatUnReadEvent) {
+    public void onEventMainThread(LenChatUnReadEvents lenChatUnReadEvent) {
+        Logger.e("lenChatUnReadEvent.isHasNewInfo()=" + lenChatUnReadEvent.isHasNewInfo());
         if (lenChatUnReadEvent.isHasNewInfo()) {
             chatMessageDot.setVisibility(View.VISIBLE);
             SharedPreferences mSp = getActivity().getSharedPreferences(CommonConstant.LEAN_CHAT_UNREAD, MODE_PRIVATE);

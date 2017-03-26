@@ -32,7 +32,7 @@ public class WebViewActivity extends SEBaseActivity {
         webView = (WebView) findViewById(R.id.webview);
         webView.loadUrl(getIntent().getStringExtra("textUrl"));
     }*/
-    
+
     @Bind(R.id.webview)
     WebView mWebView;
     private String mUrl = "";
@@ -45,6 +45,7 @@ public class WebViewActivity extends SEBaseActivity {
         ButterKnife.bind(this);
         mContext = this;
         mUrl = getIntent().getStringExtra("textUrl");
+        Logger.e("mUrl==" + mUrl);
         initView();
         loadUrl(mUrl);
     }

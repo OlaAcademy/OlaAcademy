@@ -13,9 +13,11 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.ui.course.SystemVideoActivity;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -85,10 +87,15 @@ public class SystemCourseAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (list.get(position).getType().equals("1")) {
-                    Intent intent = new Intent(context, SystemVideoActivity.class);
-                    intent.putExtra("pid", String.valueOf(list.get(position).getId()));
-                    intent.putExtra("ResultEntity", list.get(position));
-                    context.startActivity(intent);
+                    if (SEAuthManager.getInstance().isAuthenticated()) {
+                        Intent intent = new Intent(context, SystemVideoActivity.class);
+                        intent.putExtra("pid", String.valueOf(list.get(position).getId()));
+                        intent.putExtra("ResultEntity", list.get(position));
+                        context.startActivity(intent);
+                    } else {
+                        context.startActivity(new Intent(context, UserLoginActivity.class));
+                    }
+
                 } else {
                     Uri uri = Uri.parse(list.get(position).getUrl());
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
