@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.michen.olaxueyuan.protocol.event.LenChatUnReadEvent;
+import com.michen.olaxueyuan.protocol.event.LenChatUnReadEvents;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 import com.michen.olaxueyuan.ui.course.WebViewActivity;
@@ -34,14 +34,14 @@ public class CustomNotificationHandler extends UmengNotificationClickHandler {
 
     @Override
     public void dismissNotification(Context context, UMessage msg) {
-        UmLog.d(TAG, "dismissNotification");
+        Logger.e("dismissNotification");
         super.dismissNotification(context, msg);
         MobclickAgent.onEvent(context, "dismiss_notification");
     }
 
     @Override
     public void launchApp(Context context, UMessage msg) {
-        UmLog.d(TAG, "launchApp");
+        Logger.e("launchApp");
         super.launchApp(context, msg);
         Map<String, String> map = new HashMap<String, String>();
         map.put("action", "launch_app");
@@ -56,17 +56,20 @@ public class CustomNotificationHandler extends UmengNotificationClickHandler {
             case 2://2课程点击进入课程页面
                 String courseId = msg.extra.get("courseId");
                 Intent intent2 = new Intent(context, CourseVideoActivity.class);
+                intent2.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 intent2.putExtra("pid", courseId);
                 context.startActivity(intent2);
                 break;
             case 3://3web页面，点击进去webview
                 String url = msg.extra.get("url");
                 Intent intent3 = new Intent(context, WebViewActivity.class);
+                intent3.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 intent3.putExtra("textUrl", url);
                 context.startActivity(intent3);
                 break;
             case 4://4套装课程
                 Intent commodityIntent = new Intent(context, CommodityActivity.class);
+                commodityIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 commodityIntent.putExtra("title", "精品课程");
                 commodityIntent.putExtra("type", "1");
                 context.startActivity(commodityIntent);
@@ -79,14 +82,16 @@ public class CustomNotificationHandler extends UmengNotificationClickHandler {
 //                Utils.jumpLoginOrNot(context, InformationListActivity.class);
                 break;
             case 6://6leancloud消息列表
-                EventBus.getDefault().post(new LenChatUnReadEvent(true));
+                EventBus.getDefault().post(new LenChatUnReadEvents(true));
                 if (!SEAuthManager.getInstance().isAuthenticated()) {
                     Intent loginIntent = new Intent(context, UserLoginActivity.class);
                     context.startActivity(loginIntent);
                     return;
                 }
-//                startActivity(new Intent(getActivity(), GroupListActivity.class));
-                context.startActivity(new Intent(context, CommonMessageActivity.class).putExtra("type", 4));
+                Intent intent6 = new Intent(context, CommonMessageActivity.class);
+                intent6.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                intent6.putExtra("type", 4);
+                context.startActivity(intent6);
                 break;
             case 7://7账号异地登录
 //                ToastUtil.showToastShort(context, msg.text);
@@ -99,7 +104,7 @@ public class CustomNotificationHandler extends UmengNotificationClickHandler {
 
     @Override
     public void openActivity(Context context, UMessage msg) {
-        UmLog.d(TAG, "openActivity");
+        Logger.e("openActivity");
         super.openActivity(context, msg);
         Map<String, String> map = new HashMap<String, String>();
         map.put("action", "open_activity");
@@ -108,7 +113,7 @@ public class CustomNotificationHandler extends UmengNotificationClickHandler {
 
     @Override
     public void openUrl(Context context, UMessage msg) {
-        UmLog.d(TAG, "openUrl");
+        Logger.e("openUrl");
         super.openUrl(context, msg);
         Map<String, String> map = new HashMap<String, String>();
         map.put("action", "open_url");
@@ -117,7 +122,7 @@ public class CustomNotificationHandler extends UmengNotificationClickHandler {
 
     @Override
     public void dealWithCustomAction(Context context, UMessage msg) {
-        UmLog.d(TAG, "dealWithCustomAction");
+        Logger.e("dealWithCustomAction");
         super.dealWithCustomAction(context, msg);
         Map<String, String> map = new HashMap<String, String>();
         map.put("action", "custom_action");
@@ -126,7 +131,7 @@ public class CustomNotificationHandler extends UmengNotificationClickHandler {
 
     @Override
     public void autoUpdate(Context context, UMessage msg) {
-        UmLog.d(TAG, "autoUpdate");
+        Logger.e("autoUpdate");
         super.autoUpdate(context, msg);
         Map<String, String> map = new HashMap<String, String>();
         map.put("action", "auto_update");

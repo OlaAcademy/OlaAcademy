@@ -73,12 +73,9 @@ public class QuestionCourseManager {
 
     /**
      * 欧拉圈，获取视频观看历史记录列表(old)
-     * <p/>
-     * {@link #getCircleList(String, String, String, Callback)}
      *
      * @param callback
      */
-    @Deprecated
     public void getHistotyList(String videoId, String pageSize, final Callback<OLaCircleOldModule> callback) {
         getQuestionService().getHistotyList(videoId, pageSize, callback);
     }
@@ -99,7 +96,7 @@ public class QuestionCourseManager {
      *
      * @param postId   couserId或circle中的帖子Id
      * @param type     1 postId为课程 2 postId 为帖子
-     * @param assign     0 全部评论 1 指定回答
+     * @param assign   0 全部评论 1 指定回答
      * @param callback
      */
     public void getCommentList(String postId, String type, String assign, final Callback<CommentModule> callback) {

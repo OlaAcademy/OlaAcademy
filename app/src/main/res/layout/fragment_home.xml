@@ -3,8 +3,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <com.snail.pulltorefresh.PullToRefreshScrollView
-        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <com.snail.pulltorefresh.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,7 +29,9 @@
                 style="@style/line_horizontal"
                 android:layout_height="10dp" />
 
-            <include layout="@layout/home_study_progress" />
+            <include
+                android:id="@+id/study_progress_layout"
+                layout="@layout/home_study_progress" />
 
             <include layout="@layout/fragment_home_ask_question" />
 
@@ -47,13 +48,14 @@
                     android:layout_height="16dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="11dp"
-                    android:background="@color/blue_light" />
+                    android:background="@color/blue_light"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="18dp"
+                    android:layout_marginLeft="@dimen/dp_10"
                     android:text="@string/newest_answer"
                     android:textColor="@color/black_272b36"
                     android:textSize="16sp" />
@@ -138,13 +140,14 @@
                     android:layout_height="16dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="13dp"
-                    android:background="@color/blue_light" />
+                    android:background="@color/blue_light"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="18dp"
+                    android:layout_marginLeft="@dimen/dp_10"
                     android:text="精品课程"
                     android:textColor="@color/black_272b36"
                     android:textSize="16sp" />
@@ -191,13 +194,14 @@
                     android:layout_height="16dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="13dp"
-                    android:background="@color/blue_light" />
+                    android:background="@color/blue_light"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="18dp"
+                    android:layout_marginLeft="@dimen/dp_10"
                     android:text="课程库"
                     android:textColor="@color/black_272b36"
                     android:textSize="16sp" />

@@ -219,7 +219,9 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 
 
     public void initView() {
-        courseId = getIntent().getExtras().getString("pid");
+//        courseId = getIntent().getExtras().getString("pid");
+        courseId = getIntent().getStringExtra("pid");
+        Logger.e("courseId==" + courseId);
         new TitleManager(this, getString(R.string.video_detail), this, true);
         mVideoView.setOnClickListener(this);
         CourseVideoFragmentManger.getInstance().initView(this);
@@ -645,8 +647,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     }
 
     private void recordPlayProgress() {
-        if (!SEAuthManager.getInstance().isAuthenticated()) {
-            startActivity(new Intent(this, UserLoginActivity.class));
+        if (!SEAuthManager.getInstance().isAuthenticated() || courseVideoResult == null) {
             return;
         }
         SECourseManager.getInstance().recordPlayProgress(SEAuthManager.getInstance().getAccessUser().getId()

@@ -269,7 +269,6 @@ public class LCIMConversationFragment extends Fragment {
    * 发送 Intent 跳转到系统拍照页面
    */
   private void dispatchTakePictureIntent() {
-//    localCameraPath = LCIMPathUtils.getPicturePathByCurrentTime(getContext());
     localCameraPath = LCIMPathUtils.getPicturePathByCurrentTime(getActivity());
     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     Uri imageUri = Uri.fromFile(new File(localCameraPath));
@@ -411,7 +410,6 @@ public class LCIMConversationFragment extends Fragment {
   private boolean filterException(Exception e) {
     if (null != e) {
       LCIMLogUtils.logException(e);
-//      Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
       Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
     }
     return (null == e);

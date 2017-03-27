@@ -101,6 +101,7 @@ public class UserLoginActivity extends SEBaseActivity {
                         ToastUtil.showToastLong(mContext, result.message);
                         return;
                     }
+                    SEAuthManager.getInstance().setTokenInfoResult(null);
                     getTokenInfo();
                     loginChat(result);
                     EventBus.getDefault().post(new UserLoginNoticeModule(true));//发送通知登录
@@ -158,9 +159,13 @@ public class UserLoginActivity extends SEBaseActivity {
             public void success(TokenInfoResult tokenInfoResult, Response response) {
                 if (!UserLoginActivity.this.isFinishing()) {
                     if (tokenInfoResult != null && tokenInfoResult.getApicode() == 10000) {
-                        String nativeToken = SEAuthManager.getInstance().getTokenInfoResult().getResult().getToken();
-                        if (nativeToken != null && !nativeToken.equals(tokenInfoResult.getResult().getToken())) {
-                            SEAPP.showLoginFromOtherDialog();
+                        if (SEAuthManager.getInstance().getTokenInfoResult() != null) {
+                            String nativeToken = SEAuthManager.getInstance().getTokenInfoResult().getResult().getToken();
+                            if (nativeToken != null && !nativeToken.equals(tokenInfoResult.getResult().getToken())) {
+                                SEAPP.showLoginFromOtherDialog();
+                            } else {
+                                SEAuthManager.getInstance().setTokenInfoResult(tokenInfoResult);
+                            }
                         } else {
                             SEAuthManager.getInstance().setTokenInfoResult(tokenInfoResult);
                         }

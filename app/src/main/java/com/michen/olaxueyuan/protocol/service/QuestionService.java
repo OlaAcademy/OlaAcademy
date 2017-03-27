@@ -68,11 +68,9 @@ public interface QuestionService {
 
     /**
      * 欧拉圈，获取视频观看历史记录列表(老接口)
-     * {@link #getCircleList(String, String, String, Callback)}}
      *
      * @param cb
      */
-    @Deprecated
     @FormUrlEncoded
     @POST("/ola/cour/getHistoryList")
     void getHistotyList(@Field("videoId") String videoId,

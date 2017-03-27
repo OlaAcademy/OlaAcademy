@@ -203,7 +203,6 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
     public void onResume() {
         super.onResume();
         fetchUserInfo();
-        getTokenInfo();
         getSignStatus();
         getVipPrice();
     }
@@ -369,33 +368,5 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
         getVipPrice();
         fetchUserInfo();
         getSignStatus();
-        getTokenInfo();
-    }
-
-    private void getTokenInfo() {
-        if (!SEAuthManager.getInstance().isAuthenticated()) {
-            return;
-        }
-        String userId = SEAuthManager.getInstance().getAccessUser().getId();
-        HomeListManager.getInstance().getTokenInfo(userId, new Callback<TokenInfoResult>() {
-            @Override
-            public void success(TokenInfoResult tokenInfoResult, Response response) {
-                if (getActivity() != null && !getActivity().isFinishing()) {
-                    if (tokenInfoResult != null && tokenInfoResult.getApicode() == 10000) {
-                        String nativeToken = SEAuthManager.getInstance().getTokenInfoResult().getResult().getToken();
-                        if (nativeToken != null && !nativeToken.equals(tokenInfoResult.getResult().getToken())) {
-                            SEAPP.showLoginFromOtherDialog();
-                        } else {
-                            SEAuthManager.getInstance().setTokenInfoResult(tokenInfoResult);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
     }
 }

@@ -511,9 +511,10 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="3dp"
                 android:layout_toLeftOf="@+id/qq_group_next"
-                android:text="@string/qq_group_num_text"
+                android:text="@string/reward_money"
                 android:textColor="@color/black_a8aaad"
                 android:textSize="13dp" />
+                <!--android:text="@string/qq_group_num_text"-->
 
             <ImageView
                 android:id="@+id/qq_group_next"

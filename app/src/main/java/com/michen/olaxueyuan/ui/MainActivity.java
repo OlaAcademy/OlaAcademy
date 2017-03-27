@@ -151,29 +151,35 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    private void getTokenInfo() {
-        if (!SEAuthManager.getInstance().isAuthenticated()) {
-            return;
-        }
-        String userId = SEAuthManager.getInstance().getAccessUser().getId();
-        HomeListManager.getInstance().getTokenInfo(userId, new Callback<TokenInfoResult>() {
-            @Override
-            public void success(TokenInfoResult tokenInfoResult, Response response) {
-                if (tokenInfoResult != null && tokenInfoResult.getApicode() == 10000) {
-                    if (SEAuthManager.getInstance().getTokenInfoResult() != null) {
-                        String nativeToken = SEAuthManager.getInstance().getTokenInfoResult().getResult().getToken();
-                        if (nativeToken != null && !nativeToken.equals(tokenInfoResult.getResult().getToken())) {
-                            SEAPP.showLoginFromOtherDialog();
+    public static void getTokenInfo() {
+        try {
+            if (!SEAuthManager.getInstance().isAuthenticated()) {
+                return;
+            }
+            String userId = SEAuthManager.getInstance().getAccessUser().getId();
+            HomeListManager.getInstance().getTokenInfo(userId, new Callback<TokenInfoResult>() {
+                @Override
+                public void success(TokenInfoResult tokenInfoResult, Response response) {
+                    if (tokenInfoResult != null && tokenInfoResult.getApicode() == 10000) {
+                        if (SEAuthManager.getInstance().getTokenInfoResult() != null) {
+                            String nativeToken = SEAuthManager.getInstance().getTokenInfoResult().getResult().getToken();
+                            if (nativeToken != null && !nativeToken.equals(tokenInfoResult.getResult().getToken())) {
+                                SEAPP.showLoginFromOtherDialog();
+                            } else {
+                                SEAuthManager.getInstance().setTokenInfoResult(tokenInfoResult);
+                            }
                         } else {
                             SEAuthManager.getInstance().setTokenInfoResult(tokenInfoResult);
                         }
                     }
                 }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-            }
-        });
+                @Override
+                public void failure(RetrofitError error) {
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

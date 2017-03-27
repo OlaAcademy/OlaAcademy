@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.protocol.service;
 
+import com.michen.olaxueyuan.protocol.result.AttendListResult;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.protocol.result.MaterialListResult;
 import com.michen.olaxueyuan.protocol.result.OrganizationInfoResult;
@@ -88,7 +89,47 @@ public interface HomeListService {
     @FormUrlEncoded
     @POST("/ola/token/getTokenInfo")
     void getTokenInfo(
-            @Field("userId ") String userId,
+            @Field("userId") String userId,
             Callback<TokenInfoResult> cb);
+
+    /**
+     * 关注／取消关注
+     *
+     * @param attendId   关注人Id
+     * @param attendedId 被关注人Id
+     * @param type       1 关注 2 取消
+     * @param callback
+     */
+    @FormUrlEncoded
+    @POST("/ola/attention/attendUser")
+    void attendUser(
+            @Field("attendId") String attendId,
+            @Field("attendedId") String attendedId,
+            @Field("type") int type,
+            Callback<SimpleResult> callback);
+
+    /**
+     * 关注列表
+     *
+     * @param userId
+     * @param callback
+     */
+    @FormUrlEncoded
+    @POST("/ola/attention/queryAttentionList")
+    void queryAttentionList(
+            @Field("userId") String userId,
+            Callback<AttendListResult> callback);
+
+    /**
+     * 粉丝列表
+     *
+     * @param userId
+     * @param callback
+     */
+    @FormUrlEncoded
+    @POST("/ola/attention/queryFollowerList")
+    void queryFollowerList(
+            @Field("userId") String userId,
+            Callback<AttendListResult> callback);
 
 }
