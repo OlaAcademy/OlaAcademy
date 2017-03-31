@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 
-import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
-
 public class CommonMessageActivity extends SEBaseActivity {
     private int type;
     FragmentTransaction transaction;
@@ -35,10 +33,6 @@ public class CommonMessageActivity extends SEBaseActivity {
             default:
                 setTitleText("系统消息");
                 transaction.add(R.id.content, new SystemMessageFragment());
-                break;
-            case 4:
-                setTitleText("聊天历史");
-                transaction.add(R.id.content, new LCIMConversationListFragment());
                 break;
         }
         transaction.commitAllowingStateLoss();

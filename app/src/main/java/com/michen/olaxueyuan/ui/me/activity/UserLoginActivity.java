@@ -124,7 +124,7 @@ public class UserLoginActivity extends SEBaseActivity {
 
     private void loginChat(SEUserResult result) {
         if (SEAuthManager.getInstance().isAuthenticated()) {
-            LCChatKit.getInstance().open(SEAuthManager.getInstance().getAccessUser().getId(), new AVIMClientCallback() {
+            LCChatKit.getInstance().open(SEAuthManager.getInstance().getAccessUser().getPhone(), new AVIMClientCallback() {
                 @Override
                 public void done(AVIMClient avimClient, AVIMException e) {
                     if (null == e) {

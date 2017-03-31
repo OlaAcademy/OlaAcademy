@@ -21,13 +21,11 @@ import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.event.ShowBottomTabDotEvent;
-import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
-import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.protocol.result.VipPriceResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
@@ -36,6 +34,7 @@ import com.michen.olaxueyuan.ui.me.activity.CoinHomePageActivity;
 import com.michen.olaxueyuan.ui.me.activity.DownloadListActivity;
 import com.michen.olaxueyuan.ui.me.activity.MyBuyGoodsActivity;
 import com.michen.olaxueyuan.ui.me.activity.MyCourseCollectActivity;
+import com.michen.olaxueyuan.ui.me.activity.MySnackBarActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserUpdateActivity;
 import com.michen.olaxueyuan.ui.me.activity.WrongTopicSetActivity;
@@ -96,6 +95,8 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
     TextView buyVipText;
     @Bind(R.id.qq_group_layout)
     RelativeLayout qqGroupLayout;
+    @Bind(R.id.ceshi_layout)
+    RelativeLayout ceshiLayout;
 
     private final static int EDIT_USER_INFO = 0x1010;
 
@@ -112,6 +113,11 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
         avatar.setRectAdius(100);
         rootScroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         rootScroll.setOnRefreshListener(this);
+        if (SEAPP.debug) {
+            ceshiLayout.setVisibility(View.VISIBLE);
+        } else {
+            ceshiLayout.setVisibility(View.GONE);
+        }
     }
 
 
@@ -131,7 +137,7 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
 
     @OnClick({R.id.right_response, R.id.headLL, R.id.wrong_topic_layout, R.id.buy_vip_layout
             , R.id.my_buy_layout, R.id.my_collect_layout, R.id.my_download_layout
-            , R.id.service_email_layout, R.id.my_coin_layout, R.id.avatar, R.id.qq_group_layout})
+            , R.id.service_email_layout, R.id.my_coin_layout, R.id.avatar, R.id.qq_group_layout, R.id.ceshi_layout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_response:
@@ -169,6 +175,9 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
                 break;
             case R.id.qq_group_layout:
                 joinQQGroup();
+                break;
+            case R.id.ceshi_layout:
+                startActivity(new Intent(getActivity(), MySnackBarActivity.class));
                 break;
             default:
                 break;

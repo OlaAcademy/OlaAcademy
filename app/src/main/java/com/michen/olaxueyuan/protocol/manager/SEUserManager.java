@@ -12,6 +12,7 @@ import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.CoinHistoryResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
+import com.michen.olaxueyuan.protocol.result.SEUserByPhoneResult;
 import com.michen.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.ServiceError;
@@ -403,6 +404,16 @@ public class SEUserManager {
      */
     public void share(String userId, Callback<SimpleResult> cb) {
         _userService.share(userId, cb);
+    }
+
+    /**
+     * 根据手机号查询用户信息
+     *
+     * @param phones
+     * @param callback
+     */
+    public void queryUserByPhoneNumbers(String phones, Callback<SEUserByPhoneResult> callback) {
+        _userService.queryUserByPhoneNumbers(phones, callback);
     }
 }
 

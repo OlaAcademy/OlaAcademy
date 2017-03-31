@@ -52,7 +52,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp_3"
             android:layout_weight="1"
-            android:background="@drawable/selector_gray_item_bg"
+            android:background="@drawable/selector_gray_item_bg2"
             android:gravity="center">
 
             <TextView

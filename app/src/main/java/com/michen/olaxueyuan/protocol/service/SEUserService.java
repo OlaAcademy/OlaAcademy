@@ -6,6 +6,7 @@ import com.michen.olaxueyuan.protocol.result.CoinHistoryResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
 import com.michen.olaxueyuan.protocol.result.SEPasswordResult;
+import com.michen.olaxueyuan.protocol.result.SEUserByPhoneResult;
 import com.michen.olaxueyuan.protocol.result.SEUserInfoResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
@@ -58,6 +59,17 @@ public interface SEUserService {
     @POST("/ola/user/queryUser")
     public void queryUserInfo(@Field("id") String id,
                               Callback<SEUserResult> cb);
+
+    /**
+     * 根据手机号查询用户信息
+     *
+     * @param phones
+     * @param callback
+     */
+    @FormUrlEncoded
+    @POST("/ola/user/queryUserByPhoneNumbers")
+    public void queryUserByPhoneNumbers(@Field("phones") String phones,
+                                        Callback<SEUserByPhoneResult> callback);
 
     /**
      * 找回密码--获取验证码

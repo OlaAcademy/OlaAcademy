@@ -66,11 +66,13 @@ public class CoinHomePageActivity extends SEBaseActivity implements PlatformActi
 
     private Context context;
     private boolean isShowSignDialog;//是否显示签到对话框
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coin_home_page);
+        view = View.inflate(this, R.layout.activity_coin_home_page, null);
+        setContentView(view);
         ButterKnife.bind(this);
         context = this;
         initView();

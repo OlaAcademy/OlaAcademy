@@ -35,7 +35,6 @@ import com.michen.olaxueyuan.ui.MainFragment;
 import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
 import com.michen.olaxueyuan.ui.circle.DeployPostActivity;
-import com.michen.olaxueyuan.ui.circle.FocusedListActivity;
 import com.michen.olaxueyuan.ui.circle.StudyHistoryActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
 import com.michen.olaxueyuan.ui.course.commodity.DataLibraryActivity;
@@ -48,7 +47,7 @@ import com.michen.olaxueyuan.ui.home.data.HeaderImgeManager;
 import com.michen.olaxueyuan.ui.home.data.HomeQuestionAdapter;
 import com.michen.olaxueyuan.ui.home.data.QualityCourseRecyclerAdapter;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
-import com.michen.olaxueyuan.ui.question.CommonMessageActivity;
+import com.michen.olaxueyuan.ui.question.LenCloudMessageActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
@@ -246,7 +245,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
                     return;
                 }
 //                startActivity(new Intent(getActivity(), GroupListActivity.class));
-                startActivity(new Intent(getActivity(), CommonMessageActivity.class).putExtra("type", 4));
+                startActivity(new Intent(getActivity(), LenCloudMessageActivity.class));
                 break;
             case R.id.show_all_question:
                 CircleFragment.type = "2";

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
@@ -90,6 +91,7 @@ public class MainActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         dialog.dismiss();
+        AVUser.logOut();
         ShareSDK.stopSDK(this);
         ViewServer.get(this).removeWindow(this);
     }
@@ -123,7 +125,7 @@ public class MainActivity extends FragmentActivity {
 
     private void loginChat() {
         if (SEAuthManager.getInstance().isAuthenticated()) {
-            LCChatKit.getInstance().open(SEAuthManager.getInstance().getAccessUser().getId(), new AVIMClientCallback() {
+            LCChatKit.getInstance().open(SEAuthManager.getInstance().getAccessUser().getPhone(), new AVIMClientCallback() {
                 @Override
                 public void done(AVIMClient avimClient, AVIMException e) {
                     if (null == e) {

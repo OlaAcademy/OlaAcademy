@@ -576,5 +576,17 @@
             style="@style/line_horizontal"
             android:layout_height="9dp" />
 
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btnShowSnackBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="显示SnackBar" />
+        </android.support.design.widget.CoordinatorLayout>
+
     </LinearLayout>
 </com.snail.pulltorefresh.PullToRefreshScrollView>

@@ -1,17 +1,11 @@
 package com.michen.olaxueyuan.ui.circle;
 
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.ui.activity.SuperActivity;
-import com.michen.olaxueyuan.ui.question.CommentListFragment;
-import com.michen.olaxueyuan.ui.question.PraiseListFragment;
-import com.michen.olaxueyuan.ui.question.SystemMessageFragment;
-
-import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
 
 public class StudyHistoryActivity extends SuperActivity {
     private int type;
