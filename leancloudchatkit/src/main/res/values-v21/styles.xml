@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LCIMKitTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/lcim_common_blue</item>
+        <item name="colorPrimaryDark">@color/lcim_common_blue</item>
+        <item name="colorAccent">@color/lcim_common_blue</item>
+        <item name="actionBarTheme">@style/LCIMActionBarTheme</item>
+    </style>
+
+    <style name="LCIMActionBarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+</resources>

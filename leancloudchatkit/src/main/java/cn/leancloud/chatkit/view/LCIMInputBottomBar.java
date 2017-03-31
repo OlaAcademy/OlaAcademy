@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.event.LCIMInputBottomBarEvent;
-import cn.leancloud.chatkit.event.LCIMInputBottomBarLocationClickEvent;
 import cn.leancloud.chatkit.event.LCIMInputBottomBarRecordEvent;
 import cn.leancloud.chatkit.event.LCIMInputBottomBarTextEvent;
 import cn.leancloud.chatkit.utils.LCIMPathUtils;
@@ -126,7 +125,7 @@ public class LCIMInputBottomBar extends LinearLayout {
       @Override
       public void onClick(View v) {
         moreLayout.setVisibility(View.GONE);
-        LCIMSoftInputUtils.showSoftInput(getContext(), contentEditText);
+//        LCIMSoftInputUtils.showSoftInput(getContext(), contentEditText);
       }
     });
 

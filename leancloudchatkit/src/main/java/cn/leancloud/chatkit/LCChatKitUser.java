@@ -15,6 +15,15 @@ public final class LCChatKitUser {
     this.name = userName;
   }
 
+  @Override
+  public String toString() {
+    return "LCChatKitUser{" +
+            "userId='" + userId + '\'' +
+            ", avatarUrl='" + avatarUrl + '\'' +
+            ", name='" + name + '\'' +
+            '}';
+  }
+
   public String getUserId() {
     return userId;
   }

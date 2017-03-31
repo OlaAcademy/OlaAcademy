@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="cn.leancloud.chatkit">
+    package="cn.leancloud.chatkit">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,16 +12,19 @@
 
     <application>
 
-        <activity android:name="cn.leancloud.chatkit.activity.LCIMConversationActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light"
-            android:launchMode="singleTask">
+        <activity
+            android:name="cn.leancloud.chatkit.activity.LCIMConversationActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/LCIMKitTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
-                <action android:name="cn.leancloud.chatkit.conversation_item_click_action"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="cn.leancloud.chatkit.conversation_item_click_action" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <activity android:name="cn.leancloud.chatkit.activity.LCIMImageActivity"/>
+        <activity android:name="cn.leancloud.chatkit.activity.LCIMImageActivity" />
 
         <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
             <intent-filter>
