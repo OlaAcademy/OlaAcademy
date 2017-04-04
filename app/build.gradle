@@ -175,7 +175,7 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Moments-2.5.8.jar')
     compile project(':ImageChooser')
     compile files('libs/xUtils-2.6.14.jar')
-    compile files('libs/libammsdk.jar')
+    //    compile files('libs/libammsdk.jar')
     compile project(':PhotoUploader')
     compile project(':SegmentedRadios')
     compile project(':AnimtabsView')
@@ -184,11 +184,15 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile project(':BDUpdateSDK')
     compile project(':PushSDK')
-//    compile 'com.android.support:recyclerview-v7:22.0.0'
+    //    compile 'com.android.support:recyclerview-v7:22.0.0'
+
     //    compile 'com.android.support:design:22.2.1'
     compile files('libs/alipaySingle-20160825.jar')
     compile files('libs/tbs_sdk_thirdapp_v2.4.0.1073_36840.jar')
-//    compile 'com.android.support:appcompat-v7:22.2.1'
+    //    compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile project(':leancloudchatkit')
+    compile files('libs/SocialSDK_WeiXin_1.jar')
+    compile files('libs/SocialSDK_WeiXin_2.jar')
+    compile 'org.apache.httpcomponents:httpmime:4.5.3'
 }
