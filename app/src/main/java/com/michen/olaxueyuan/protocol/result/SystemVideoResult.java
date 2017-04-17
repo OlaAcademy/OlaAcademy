@@ -105,6 +105,15 @@ public class SystemVideoResult extends ServiceResult implements Serializable {
         private int isBanner;
         private String pic;
         private boolean isSelected;
+        private String fileSavePath;//本地存储地址
+
+        public String getFileSavePath() {
+            return fileSavePath;
+        }
+
+        public void setFileSavePath(String fileSavePath) {
+            this.fileSavePath = fileSavePath;
+        }
 
         public boolean isSelected() {
             return isSelected;

@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -178,10 +179,9 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        downloadManager = DownloadService.getDownloadManager(context);
         setVideoViewHeight(videoWidth, videoHeight);
         initView();
-
-        downloadManager = DownloadService.getDownloadManager(this);
     }
 
     @Override
@@ -240,7 +240,11 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
     }
 
     public void playVideo(int position) {
-        mVideoView.setVideoPath(videoArrayList.get(position).getAddress());
+        if (!TextUtils.isEmpty(videoArrayList.get(position).getFileSavePath())) {
+            mVideoView.setVideoPath(videoArrayList.get(position).getFileSavePath());
+        } else {
+            mVideoView.setVideoPath(videoArrayList.get(position).getAddress());
+        }
         pdfPosition = position;
     }
 
@@ -274,8 +278,13 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
                         courseVideoResult = result;
                         msec = result.getResult().getPlayProgress() * 1000;
                         videoArrayList = result.getResult().getVideoList();
+                        videoArrayList = downloadManager.getVideoArrayList(videoArrayList);
                         if (videoArrayList != null && videoArrayList.size() > 0) {
-                            mVideoView.setVideoPath(videoArrayList.get(result.getResult().getPlayIndex()).getAddress());
+                            if (!TextUtils.isEmpty(videoArrayList.get(result.getResult().getPlayIndex()).getFileSavePath())) {
+                                mVideoView.setVideoPath(videoArrayList.get(result.getResult().getPlayIndex()).getFileSavePath());
+                            } else {
+                                mVideoView.setVideoPath(videoArrayList.get(result.getResult().getPlayIndex()).getAddress());
+                            }
                             mVideoView.resume();
                             mVideoView.seekTo(result.getResult().getPlayProgress() * 1000);
                             Logger.e("msec===" + msec);

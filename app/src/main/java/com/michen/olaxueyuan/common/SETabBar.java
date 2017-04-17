@@ -202,5 +202,13 @@ public class SETabBar extends FrameLayout {
                 _containerLayout.getPaddingRight(),
                 _containerLayout.getPaddingBottom());
     }
+
+    public void showHomeMessageRedDot(int num) {
+        _itemViews.get(2).showRedDot(num);
+    }
+
+    public void hideHomeMessageRedDot() {
+        _itemViews.get(2).hideRedDot();
+    }
 }
 

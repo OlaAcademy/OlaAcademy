@@ -72,7 +72,7 @@ public class ImageDetailFragment extends Fragment {
                             PictureUtils.saveImageToLocal(PictureUtils.drawable2Bitmap(mImageView.getDrawable()));
                         }
                     }
-                }, arry);
+                }, arry, true);
                 return false;
             }
         });

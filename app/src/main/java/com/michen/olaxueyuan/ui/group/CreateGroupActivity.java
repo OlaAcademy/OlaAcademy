@@ -260,7 +260,7 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
                 groupType = position + 1;
                 noticeHintText.setText(selectArray[position]);
             }
-        }, selectArray);
+        }, selectArray,true);
     }
 
     private void chooseImage() {

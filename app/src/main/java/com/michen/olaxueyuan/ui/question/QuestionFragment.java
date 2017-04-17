@@ -21,13 +21,11 @@ import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.common.manager.Utils;
-import com.michen.olaxueyuan.protocol.event.MessageReadEvent;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.ExamModule;
-import com.michen.olaxueyuan.protocol.result.MessageUnReadResult;
 import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.UnlockSubjectResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
@@ -35,6 +33,7 @@ import com.michen.olaxueyuan.ui.SuperFragment;
 import com.michen.olaxueyuan.ui.adapter.QuestionAdapter;
 import com.michen.olaxueyuan.ui.adapter.QuestionListViewAdapter;
 import com.michen.olaxueyuan.ui.adapter.QuestionViewPagerAdapter;
+import com.michen.olaxueyuan.ui.group.GroupListActivity;
 import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.michen.olaxueyuan.ui.question.module.BottomPopWindowManager;
@@ -63,8 +62,6 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     PullToRefreshExpandableListView expandableListViews;
     @Bind(R.id.pop_line)
     View popLine;
-    @Bind(R.id.red_dot)
-    TextView redDot;
     @Bind(R.id.maths_text)
     TextView mathsText;
     @Bind(R.id.maths_indicator)
@@ -102,7 +99,6 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
     QuestionCourseModule module;
     TitleManager titleManager;
     private String pid = "1";// 1 数学 2 英语 3 逻辑 4 协作
-    private int unReadMessageCount = 0;
     private QuestionViewPagerAdapter viewPagerAdapter;
     private int selectType = 0;//三个条件0,1,2
     private String[] selectArray = {};//
@@ -125,7 +121,6 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             EventBus.getDefault().register(this);
             initView();
             fetchHomeCourseData(1);
-            getUnReadMessageCount();
             return rootView;
         }
     }
@@ -210,26 +205,12 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
     // EventBus 回调
     public void onEventMainThread(UserLoginNoticeModule module) {
-        if (redDot == null) {
-            return;
-        }
         if (selectType == 0) {
             fetchHomeCourseData(2);
         } else {
             fetchExamListData();
         }
-        getUnReadMessageCount();
     }
-
-    /**
-     * {@link SystemMessageFragment#onEventMainThread(MessageReadEvent)}*
-     */
-    public void onEventMainThread(MessageReadEvent event) {
-        if (event.isRefresh) {
-            getUnReadMessageCount();
-        }
-    }
-
 
     @OnClick({R.id.right_response, R.id.red_dot, R.id.maths_layout, R.id.english_layout
             , R.id.logic_layout, R.id.writing_layout, R.id.subject_layout})
@@ -238,7 +219,7 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
             case R.id.right_response:
             case R.id.red_dot:
 //                Utils.jumpLoginOrNot(getActivity(),MessageActivity.class);
-                Utils.jumpLoginOrNot(getActivity(),InformationListActivity.class);
+                Utils.jumpLoginOrNot(getActivity(), GroupListActivity.class);
                 break;
             case R.id.maths_layout:
                 changeTab(true, false, false, false, true, 0);
@@ -397,36 +378,6 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
                     SEAPP.dismissAllowingStateLoss();
                     ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
                 }
-            }
-        });
-    }
-
-    private void getUnReadMessageCount() {
-        String userId = "";
-        if (SEAuthManager.getInstance().isAuthenticated()) {
-            userId = SEAuthManager.getInstance().getAccessUser().getId();
-        } else {
-            return;
-        }
-        QuestionCourseManager.getInstance().getUnreadCount(userId, new Callback<MessageUnReadResult>() {
-            @Override
-            public void success(MessageUnReadResult messageUnReadResult, Response response) {
-                if (messageUnReadResult.getApicode() == 10000) {
-                    if (getActivity() != null && !getActivity().isFinishing()) {
-                        unReadMessageCount = messageUnReadResult.getResult();
-                        redDot.setText(String.valueOf(unReadMessageCount));
-                        if (unReadMessageCount > 0) {
-                            redDot.setVisibility(View.VISIBLE);
-                        } else {
-                            redDot.setVisibility(View.GONE);
-                        }
-//                        Logger.e("unReadMessageCount==" + unReadMessageCount);
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
             }
         });
     }

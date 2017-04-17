@@ -85,9 +85,11 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/avatar"
             android:layout_below="@+id/study_name"
+            android:background="@color/white"
             android:paddingEnd="10dp"
             android:paddingRight="10dp"
-            android:text="次级内容" />
+            android:text="次级内容"
+            android:textIsSelectable="true" />
 
     </RelativeLayout>
 

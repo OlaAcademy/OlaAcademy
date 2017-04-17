@@ -19,13 +19,17 @@
             android:layout_centerHorizontal="true"
             android:textAppearance="@style/TabBarIconTextAppearance" />
 
-        <ImageView
+        <TextView
             android:id="@+id/red_dot_img"
-            android:layout_width="5dp"
-            android:layout_height="5dp"
+            android:layout_width="@dimen/dp_10"
+            android:layout_height="@dimen/dp_10"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/IconImageView"
-            android:src="@drawable/ret_dot_shape"
+            android:background="@drawable/ret_dot_shape"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="8dp"
             android:visibility="gone" />
     </RelativeLayout>
 

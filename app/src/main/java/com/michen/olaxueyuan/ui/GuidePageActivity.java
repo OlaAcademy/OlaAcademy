@@ -41,7 +41,7 @@ public class GuidePageActivity extends Activity {
     private List<ImageView> points = new ArrayList<>();
     private int mCurrentPosterIndex = 0;
     private int mPageCount = 4;
-    private String[] imageNameArray = {"guide_page_one.jpg", "guide_page_two.jpg", "guide_page_three.jpg", "guide_page_four.jpg"};
+    private String[] imageNameArray = {"guide_page_one.png", "guide_page_two.png", "guide_page_three.png", "guide_page_four.jpg"};
     private SharedPreferences mSp;
     private Context mContext;
 

@@ -16,7 +16,9 @@ import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.NoScrollThreeGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.CommonUtil;
 import com.michen.olaxueyuan.common.manager.DateUtils;
+import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.Utils;
 import com.michen.olaxueyuan.protocol.result.OLaCircleModule;
@@ -67,7 +69,7 @@ public class CircleAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             convertView = View.inflate(mContext, R.layout.circle_list_item_v2, null);
             holder = new ViewHolder(convertView);
@@ -159,6 +161,23 @@ public class CircleAdapter extends BaseAdapter {
                 intent.setClass(mContext, PostDetailActivity.class);//
                 intent.putExtra("circleId", list.get(position).getCircleId());
                 mContext.startActivity(intent);
+            }
+        });
+
+        holder.content.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                DialogUtils.showSelectListDialog(mContext, 0, new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        switch (position) {
+                            case 0:
+                                CommonUtil.copText(mContext, holder.title.getText().toString() + "\n" + holder.content.getText().toString());
+                                break;
+                        }
+                    }
+                }, mContext.getResources().getStringArray(R.array.copy_text_select), false);
+                return false;
             }
         });
 

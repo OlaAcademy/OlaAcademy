@@ -249,7 +249,8 @@ public class DialogUtils {
         });
     }
 
-    public static void showSelectListDialog(final Context context, int groupType, final ListView.OnItemClickListener itemClickListener, final String[] selectArray) {
+    public static void showSelectListDialog(final Context context, int groupType, final ListView.OnItemClickListener itemClickListener
+            , final String[] selectArray, final boolean isShowImg) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_select_list, null);
         final Dialog dialog = new AlertDialog.Builder(context).create();
@@ -272,7 +273,7 @@ public class DialogUtils {
                 dialog.dismiss();
             }
         });
-        final DialogSelectAdapter adapter = new DialogSelectAdapter(context, selectArray);
+        final DialogSelectAdapter adapter = new DialogSelectAdapter(context, selectArray, isShowImg);
         listview.setAdapter(adapter);
         adapter.updateStatus(groupType);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -289,10 +290,12 @@ public class DialogUtils {
         Context context;
         int selectPosition = 0;
         String[] selectArray;
+        private boolean isShowImg = false;
 
-        public DialogSelectAdapter(Context context, String[] selectArray) {
+        public DialogSelectAdapter(Context context, String[] selectArray, boolean isShowImg) {
             this.context = context;
             this.selectArray = selectArray;
+            this.isShowImg = isShowImg;
         }
 
         public void updateStatus(int selectPosition) {
@@ -329,7 +332,7 @@ public class DialogUtils {
                 holder = (ViewHolder) convertView.getTag();
             }
             holder.name.setText(selectArray[position]);
-            if (selectPosition == position) {
+            if (isShowImg && selectPosition == position) {
                 holder.selectImg.setVisibility(View.VISIBLE);
             } else {
                 holder.selectImg.setVisibility(View.GONE);

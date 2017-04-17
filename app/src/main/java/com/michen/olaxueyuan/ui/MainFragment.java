@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SETabBar;
+import com.michen.olaxueyuan.protocol.event.ChatNewMessageEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
@@ -133,7 +134,7 @@ public class MainFragment extends Fragment {
         questionFragment = new QuestionFragment();
 //        examFragment = new ExamFragment();
         courseFragment = new CourseFragment();
-        courseVideoFragment=new CourseVideoFragment();
+        courseVideoFragment = new CourseVideoFragment();
         homeFragment = new HomeFragment();
         circleFragment = new CircleFragment();
 //        userFragment = new UserFragment();
@@ -246,6 +247,14 @@ public class MainFragment extends Fragment {
             actionBar.show();
         } else {
             actionBar.hide();
+        }
+    }
+
+    public void onEventMainThread(ChatNewMessageEvent chatNewMessageEvent) {
+        if (chatNewMessageEvent.num > 0) {
+            _tabBar.getItemViewAt(2).showRedDot(chatNewMessageEvent.num);
+        } else {
+            _tabBar.getItemViewAt(2).hideRedDot();
         }
     }
 

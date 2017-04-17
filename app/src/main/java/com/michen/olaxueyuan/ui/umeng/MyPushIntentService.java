@@ -8,25 +8,20 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.michen.olaxueyuan.protocol.event.LenChatUnReadEvents;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.ui.MainActivity;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 import com.michen.olaxueyuan.ui.course.WebViewActivity;
 import com.michen.olaxueyuan.ui.course.commodity.CommodityActivity;
-import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
-import com.michen.olaxueyuan.ui.question.CommonMessageActivity;
 import com.michen.olaxueyuan.ui.question.InformationListActivity;
+import com.michen.olaxueyuan.ui.question.LenCloudMessageActivity;
 import com.umeng.message.UmengMessageService;
 import com.umeng.message.entity.UMessage;
 
 import org.android.agoo.common.AgooConstants;
 import org.json.JSONObject;
-
-import de.greenrobot.event.EventBus;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
@@ -75,12 +70,11 @@ public class MyPushIntentService extends UmengMessageService {
                     intent.setClass(context, InformationListActivity.class);
                     break;
                 case 6://6leancloud消息列表
-                    EventBus.getDefault().post(new LenChatUnReadEvents(true));
+//                    EventBus.getDefault().post(new LenChatUnReadEvents(true));
                     if (!SEAuthManager.getInstance().isAuthenticated()) {
                         isShowNotification = false;
                     } else {
-                        intent.setClass(context, CommonMessageActivity.class);
-                        intent.putExtra("type", 4);
+                        intent.setClass(context, LenCloudMessageActivity.class);
                     }
                     break;
                 case 7://7账号异地登录

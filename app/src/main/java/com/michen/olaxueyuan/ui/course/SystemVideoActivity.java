@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -216,7 +217,11 @@ public class SystemVideoActivity extends FragmentActivity implements View.OnClic
     public void playVideo(SystemVideoResult.ResultBean resultBean, int position, long playProgress) {
         this.resultBean = resultBean;
         this.videoListPosition = position;
-        mVideoView.setVideoPath(resultBean.getAddress());
+        if (!TextUtils.isEmpty(resultBean.getFileSavePath())) {
+            mVideoView.setVideoPath(resultBean.getFileSavePath());
+        } else {
+            mVideoView.setVideoPath(resultBean.getAddress());
+        }
         mVideoView.seekTo(playProgress * 1000);
         msec = playProgress * 1000;
         mDismissHandler.sendEmptyMessage(1);

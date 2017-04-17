@@ -69,9 +69,12 @@
         android:layout_below="@id/avatar"
         android:layout_marginBottom="@dimen/dp_3"
         android:layout_marginTop="@dimen/dp_5"
+        android:background="@color/white"
+        android:editable="false"
         android:lineSpacingExtra="1.2dp"
         android:paddingEnd="10dp"
         android:paddingRight="10dp"
+        android:textIsSelectable="true"
         tools:text="这是原文内容。。。。。。。。。。。。。。。。。。。。。。。。" />
 
     <TextView
@@ -81,9 +84,12 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/avatar"
         android:layout_below="@+id/title"
+        android:background="@color/white"
+        android:editable="false"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容" />
+        android:text="次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容"
+        android:textIsSelectable="true" />
 
     <com.snail.photo.util.NoScrollGridView
         android:id="@+id/image_gridview"

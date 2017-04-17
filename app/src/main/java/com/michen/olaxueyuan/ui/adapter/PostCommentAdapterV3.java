@@ -35,6 +35,8 @@ import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.NoScrollGridAdapter;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
+import com.michen.olaxueyuan.common.manager.CommonUtil;
+import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.MyAudioManager;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
@@ -217,6 +219,22 @@ public class PostCommentAdapterV3 extends BaseAdapter implements MyAudioManager.
                     }
                 }
                 downloadAudio(list.get(position).getAudioUrls(), position);
+            }
+        });
+        holder.itemCommentOriginalContent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                DialogUtils.showSelectListDialog(mContext, 0, new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        switch (position) {
+                            case 0:
+                                CommonUtil.copText(mContext, holder.itemCommentOriginalContent.getText().toString());
+                                break;
+                        }
+                    }
+                }, mContext.getResources().getStringArray(R.array.copy_text_select), false);
+                return false;
             }
         });
 

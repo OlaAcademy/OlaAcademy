@@ -3,18 +3,19 @@ package com.michen.olaxueyuan.ui.home;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
@@ -22,10 +23,9 @@ import com.michen.olaxueyuan.common.AutoScrollViewPager;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
-import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.download.DownloadService;
-import com.michen.olaxueyuan.protocol.event.LenChatUnReadEvents;
+import com.michen.olaxueyuan.protocol.event.ChatNewMessageEvent;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -53,9 +53,14 @@ import com.snail.pulltorefresh.PullToRefreshScrollView;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
+import cn.leancloud.chatkit.event.LCIMIMTypeMessageEvent;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -111,7 +116,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     @Bind(R.id.recycler_view_ask_question)
     RecyclerView recyclerViewAskQuestion;
     @Bind(R.id.chat_message_dot)
-    ImageView chatMessageDot;
+    TextView chatMessageDot;
     @Bind(R.id.study_progress_layout)
     LinearLayout studyProgressLayout;
 
@@ -121,6 +126,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     QualityCourseRecyclerAdapter qualityCourseRecyclerAdapter;
     CourseDatabaseRecyclerAdapter courseDatabaseRecyclerAdapter;
     AskQuestionRecyclerAdapter askQuestionRecyclerAdapter;
+    public int unReadNum = 0;//未读消息数
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -152,13 +158,6 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         recyclerViewCourseDatabase.setAdapter(courseDatabaseRecyclerAdapter);
         askQuestionRecyclerAdapter = new AskQuestionRecyclerAdapter(getActivity());
         recyclerViewAskQuestion.setAdapter(askQuestionRecyclerAdapter);
-
-        SharedPreferences mSp = getActivity().getSharedPreferences(CommonConstant.LEAN_CHAT_UNREAD, MODE_PRIVATE);
-        if (mSp.getBoolean(CommonConstant.LEAN_CHAT_UNREAD_KEY, false)) {
-            chatMessageDot.setVisibility(View.VISIBLE);
-        } else {
-            chatMessageDot.setVisibility(View.GONE);
-        }
     }
 
     private void fetchData() {
@@ -295,6 +294,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     public void onResume() {
         super.onResume();
         onChange();
+        updateUnReadMsg();
     }
 
     @Override
@@ -330,6 +330,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
     @Override
     public void onRefresh(PullToRefreshBase refreshView) {
         fetchData();
+        updateUnReadMsg();
     }
 
     // EventBus 回调
@@ -341,12 +342,39 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
         }
     }
 
-    public void onEventMainThread(LenChatUnReadEvents lenChatUnReadEvent) {
-        Logger.e("lenChatUnReadEvent.isHasNewInfo()=" + lenChatUnReadEvent.isHasNewInfo());
-        if (lenChatUnReadEvent.isHasNewInfo()) {
-            chatMessageDot.setVisibility(View.VISIBLE);
-            SharedPreferences mSp = getActivity().getSharedPreferences(CommonConstant.LEAN_CHAT_UNREAD, MODE_PRIVATE);
-            mSp.edit().putBoolean(CommonConstant.LEAN_CHAT_UNREAD_KEY, true).apply();
-        }
+    /**
+     * 收到聊天消息事件
+     *
+     * @param event
+     */
+    public void onEvent(LCIMIMTypeMessageEvent event) {
+        updateUnReadMsg();
     }
+
+    private void updateUnReadMsg() {
+        unReadNum = 0;
+        List<String> convIdList = LCIMConversationItemCache.getInstance().getSortedConversationList();
+        for (String convId : convIdList) {
+            AVIMConversation conversation = LCChatKit.getInstance().getClient().getConversation(convId);
+            unReadNum = unReadNum + LCIMConversationItemCache.getInstance().getUnreadCount(conversation.getConversationId());
+        }
+        handler.sendEmptyMessage(0);
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    chatMessageDot.setText(String.valueOf(unReadNum));
+                    EventBus.getDefault().post(new ChatNewMessageEvent(unReadNum));
+                    if (unReadNum > 0) {
+                        chatMessageDot.setVisibility(View.VISIBLE);
+                    } else {
+                        chatMessageDot.setVisibility(View.GONE);
+                    }
+                    break;
+            }
+        }
+    };
 }

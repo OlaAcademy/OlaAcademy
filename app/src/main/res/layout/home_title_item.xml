@@ -107,13 +107,17 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/my_lenchat_info_icon" />
 
-            <ImageView
+            <TextView
                 android:id="@+id/chat_message_dot"
-                android:layout_width="@dimen/dp_6"
-                android:layout_height="@dimen/dp_6"
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="@dimen/dp_10"
                 android:layout_gravity="right"
-                android:src="@drawable/ret_dot_shape"
-                android:visibility="invisible" />
+                android:background="@drawable/ret_dot_shape"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="8dp"
+                android:visibility="gone" />
         </FrameLayout>
 
         <TextView

@@ -16,6 +16,8 @@ import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.util.LogUtils;
 import com.michen.olaxueyuan.protocol.event.DownloadSuccessEvent;
+import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
+import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
 import com.snail.svprogresshud.SVProgressHUD;
 
 import java.io.File;
@@ -56,6 +58,40 @@ public class DownloadManager {
 
     public int getDownloadInfoListCount() {
         return downloadInfoList.size();
+    }
+
+    public List<CourseVideoResult.ResultBean.VideoListBean> getVideoArrayList(List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList) {
+        List<DownloadInfo> downloadedList = null;
+        try {
+            downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "=", HttpHandler.State.SUCCESS));
+            for (int i = 0; i < downloadedList.size(); i++) {
+                for (int j = 0; j < videoArrayList.size(); j++) {
+                    if (downloadedList.get(i).getDownloadUrl().equals(videoArrayList.get(j).getAddress())) {
+                        videoArrayList.get(j).setFileSavePath(downloadedList.get(i).getFileSavePath());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return videoArrayList;
+    }
+
+    public List<SystemVideoResult.ResultBean>  getSysVideoArrayList(List<SystemVideoResult.ResultBean> videoArrayList) {
+        List<DownloadInfo> downloadedList = null;
+        try {
+            downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "=", HttpHandler.State.SUCCESS));
+            for (int i = 0; i < downloadedList.size(); i++) {
+                for (int j = 0; j < videoArrayList.size(); j++) {
+                    if (downloadedList.get(i).getDownloadUrl().equals(videoArrayList.get(j).getAddress())) {
+                        videoArrayList.get(j).setFileSavePath(downloadedList.get(i).getFileSavePath());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return videoArrayList;
     }
 
     public List<DownloadInfo> getDownloadedList() {

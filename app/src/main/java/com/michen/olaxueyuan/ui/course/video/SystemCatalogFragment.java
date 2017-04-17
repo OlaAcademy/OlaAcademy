@@ -28,7 +28,6 @@ import com.michen.olaxueyuan.download.DownloadService;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.result.GoodsOrderStatusResult;
-import com.michen.olaxueyuan.protocol.result.SystemCourseResult;
 import com.michen.olaxueyuan.protocol.result.SystemCourseResultEntity;
 import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
@@ -159,6 +158,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
                         SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.getMessage(), 2.0f);
                     } else {
                         videoArrayList = result.getResult();
+                        videoArrayList=downloadManager.getSysVideoArrayList(videoArrayList);
                         playProgress = result.getPlayProgress();
                         ((SystemVideoActivity) getActivity()).setVieoArrayList(videoArrayList);
                         if (videoArrayList != null && videoArrayList.size() > 0) {

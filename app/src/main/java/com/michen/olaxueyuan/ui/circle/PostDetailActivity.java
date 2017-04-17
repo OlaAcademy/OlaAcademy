@@ -41,6 +41,8 @@ import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.AndUtil;
 import com.michen.olaxueyuan.common.manager.AndroidUtil;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
+import com.michen.olaxueyuan.common.manager.CommonUtil;
+import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.MyAudioManager;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
@@ -250,6 +252,22 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                         startActivityForResult(recordIntent, CommonConstant.CODE_REQUEST_VIDEO_RECORD);
                         break;
                 }
+            }
+        });
+        childContent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                DialogUtils.showSelectListDialog(mContext, 0, new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        switch (position) {
+                            case 0:
+                                CommonUtil.copText(mContext, studyName.getText().toString() + "\n" + childContent.getText().toString());
+                                break;
+                        }
+                    }
+                }, mContext.getResources().getStringArray(R.array.copy_text_select), false);
+                return false;
             }
         });
     }

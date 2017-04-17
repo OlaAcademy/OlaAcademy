@@ -156,6 +156,15 @@ public class CourseVideoResult extends ServiceResult implements Serializable {
             private String url;
             private String size;
             private boolean isSelected;
+            private String fileSavePath;//本地存储地址
+
+            public String getFileSavePath() {
+                return fileSavePath;
+            }
+
+            public void setFileSavePath(String fileSavePath) {
+                this.fileSavePath = fileSavePath;
+            }
 
             public String getUrl() {
                 return url;
@@ -198,6 +207,7 @@ public class CourseVideoResult extends ServiceResult implements Serializable {
                         ", url='" + url + '\'' +
                         ", size='" + size + '\'' +
                         ", isSelected=" + isSelected +
+                        ", fileSavePath='" + fileSavePath + '\'' +
                         '}';
             }
 

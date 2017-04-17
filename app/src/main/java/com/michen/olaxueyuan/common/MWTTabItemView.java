@@ -12,7 +12,7 @@ import com.michen.olaxueyuan.R;
 public class MWTTabItemView extends LinearLayout {
 
     private ImageView _iconImageView;
-    private ImageView redDotImageView;
+    private TextView redDotImageView;
     private TextView _titleTextView;
 
     public MWTTabItemView(Context context) {
@@ -32,17 +32,19 @@ public class MWTTabItemView extends LinearLayout {
         super.onFinishInflate();
 
         _iconImageView = (ImageView) findViewById(R.id.IconImageView);
-        redDotImageView = (ImageView) findViewById(R.id.red_dot_img);
+        redDotImageView = (TextView) findViewById(R.id.red_dot_img);
         _titleTextView = (TextView) findViewById(R.id.TitleTextView);
 
     }
 
-    public void showRedDot() {
+    public void showRedDot(int num) {
         redDotImageView.setVisibility(VISIBLE);
+        redDotImageView.setText(String.valueOf(num));
     }
 
     public void hideRedDot() {
         redDotImageView.setVisibility(GONE);
+        redDotImageView.setText(String.valueOf(0));
     }
 
     public void setNormalIcon(Bitmap normalBitmap) {
