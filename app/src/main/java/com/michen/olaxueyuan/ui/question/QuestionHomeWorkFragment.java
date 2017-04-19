@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui.question;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+
+import static android.R.id.list;
 
 /**
  * Created by mingge on 16/8/9.
@@ -101,6 +104,13 @@ public class QuestionHomeWorkFragment extends SuperFragment {
                 try {
                     int progress = (int) animation.getAnimatedValue();
                     circleProgress.setProgress(progress);
+                    if (progress > 0 && progress < 50) {
+                        circleProgress.setProgressColor(Color.parseColor("#EC950D"));
+                    } else if (progress >= 50 && progress < 100) {
+                        circleProgress.setProgressColor(Color.parseColor("#009688"));
+                    } else {
+                        circleProgress.setProgressColor(Color.parseColor("#4285F4"));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -65,7 +65,7 @@ public class AskQuestionRecyclerAdapter extends BaseRecyclerAdapter<HomeModule.R
         LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) holder.rootView.getLayoutParams();
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
-        linearParams.width = dm.widthPixels / 2 - 120;
+        linearParams.width = dm.widthPixels / 2 - 100;
 //        linearParams.height = linearParams.width * 390 / 310;
         if (position % 2 == 0)
             linearParams.setMargins(30, 0, 15, 0);

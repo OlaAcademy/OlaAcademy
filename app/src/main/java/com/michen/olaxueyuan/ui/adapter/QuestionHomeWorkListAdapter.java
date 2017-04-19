@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -98,7 +99,15 @@ public class QuestionHomeWorkListAdapter extends BaseAdapter {
         holder.courseNumText.setText(list.get(position).getCount() + "道小题");
         holder.groupNameText.setText(list.get(position).getGroupName());
         if (list.get(position).getCount() != 0) {
-            holder.circleProgress.setProgress(Integer.parseInt(list.get(position).getFinishedPercent()));
+            int finishPercent = Integer.parseInt(list.get(position).getFinishedPercent());
+            holder.circleProgress.setProgress(finishPercent);
+            if (finishPercent > 0 && finishPercent < 50) {
+                holder.circleProgress.setProgressColor(Color.parseColor("#EC950D"));
+            } else if (finishPercent >= 50 && finishPercent < 100) {
+                holder.circleProgress.setProgressColor(Color.parseColor("#009688"));
+            } else {
+                holder.circleProgress.setProgressColor(Color.parseColor("#4285F4"));
+            }
         } else {
             holder.circleProgress.setProgress(0);
         }

@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="87dp"
+        android:layout_height="70dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
 
@@ -17,8 +17,8 @@
             android:id="@+id/question_add_icon"
             android:layout_width="17dp"
             android:layout_height="17dp"
-            android:layout_marginTop="25dp"
-            android:src="@drawable/question_add_icon"
+            android:layout_marginTop="18dp"
+            android:src="@drawable/selector_add_reduce_icon"
             android:visibility="visible" />
 
         <View

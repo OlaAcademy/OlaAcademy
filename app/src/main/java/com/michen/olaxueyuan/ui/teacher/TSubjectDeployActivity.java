@@ -80,7 +80,7 @@ public class TSubjectDeployActivity extends SEBaseActivity implements PullToRefr
         TeacherHomeManager.getInstance().getTeacherGroupList(userId, new Callback<TeacherGroupListResult>() {
             @Override
             public void success(TeacherGroupListResult teacherGroupListResult, Response response) {
-                if (context != null && TSubjectDeployActivity.this.isFinishing()) {
+                if (context != null && !TSubjectDeployActivity.this.isFinishing()) {
                     listviewGroup.onRefreshComplete();
 //                    SVProgressHUD.dismiss(context);
                     SEAPP.dismissAllowingStateLoss();

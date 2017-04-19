@@ -25,7 +25,7 @@
 
     <!--顺序：知识点、模考、真题-->
     <string-array name="question_select_maths">
-        <item>陈剑数学高分指南</item>
+        <item>高分指南课后习题(视频版)</item>
         <item>数学预测八套卷</item>
         <item>历年真题名家详解</item>
     </string-array>

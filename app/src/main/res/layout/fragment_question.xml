@@ -31,7 +31,7 @@
     <RelativeLayout
         android:id="@+id/subject_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_44"
+        android:layout_height="@dimen/dp_40"
         android:background="@color/line_color"
         android:gravity="center">
 
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"
-            android:text="陈剑数学高分指南"
+            android:text="高分指南课后习题(视频版)"
             android:textColor="@color/black_one"
             android:textSize="@dimen/sp_16" />
 

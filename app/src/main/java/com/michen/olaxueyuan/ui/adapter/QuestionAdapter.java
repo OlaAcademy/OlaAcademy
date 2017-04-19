@@ -86,8 +86,13 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder = (ParentViewHolder) convertView.getTag();
         }
         holder.questionName.setText(list.get(groupPosition).getName());
-        holder.questionKnowledgeAllCount.setText(context.getString(R.string.num_knowledge, list.get(groupPosition).getChild().size()));
+        holder.questionKnowledgeAllCount.setText(context.getString(R.string.num_knowledge, String.valueOf(list.get(groupPosition).getChild().size())));
         holder.questionKnowledgeCount.setText(list.get(groupPosition).getSubNum() + "/" + list.get(groupPosition).getSubAllNum());
+        if (list.get(groupPosition).isExpanded()) {
+            holder.questionAddIcon.setSelected(true);
+        } else {
+            holder.questionAddIcon.setSelected(false);
+        }
         try {
             int subAllNum = list.get(groupPosition).getSubAllNum();
             int subNum = list.get(groupPosition).getSubNum();
@@ -145,7 +150,7 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             holder = (ChildViewHolder) convertView.getTag();
         }
         holder.questionName.setText(list.get(groupPosition).getChild().get(childPosition).getName());
-        holder.questionKnowledgeAllCount.setText("预测"+list.get(groupPosition).getChild().get(childPosition).getPlaycount()+"分");
+        holder.questionKnowledgeAllCount.setText("预测" + list.get(groupPosition).getChild().get(childPosition).getPlaycount() + "分");
         holder.questionKnowledgeCount.setText(list.get(groupPosition).getChild().get(childPosition).getSubNum() + "/" + list.get(groupPosition).getChild().get(childPosition).getSubAllNum());
         try {
             int subAllNum = list.get(groupPosition).getChild().get(childPosition).getSubAllNum();
@@ -173,9 +178,9 @@ public class QuestionAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, QuestionWebActivity.class);
-                intent.putExtra("objectId",courseId);
-                intent.putExtra("outerURL",outerURL);
-                intent.putExtra("type",1);
+                intent.putExtra("objectId", courseId);
+                intent.putExtra("outerURL", outerURL);
+                intent.putExtra("type", 1);
                 context.startActivity(intent);
             }
         });

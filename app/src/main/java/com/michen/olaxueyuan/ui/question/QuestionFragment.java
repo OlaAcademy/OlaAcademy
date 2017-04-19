@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
+import com.michen.olaxueyuan.common.manager.DateUtils;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
@@ -127,8 +128,8 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
     private void initView() {
         selectArray = getActivity().getResources().getStringArray(R.array.question_select_maths);
-        titleManager = new TitleManager("考点", this, rootView, false);
-        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.message_tip_icon);
+        titleManager = new TitleManager("距离考试" + DateUtils.getRemainsDay() + "天", this, rootView, false);
+        titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.create_group_icon);
         expandableListViews.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         expandableListViews.setOnRefreshListener(this);
         expandableListView = expandableListViews.getRefreshableView();

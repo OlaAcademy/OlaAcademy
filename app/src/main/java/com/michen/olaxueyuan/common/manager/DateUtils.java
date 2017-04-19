@@ -233,4 +233,23 @@ public class DateUtils {
                 return year;
         }
     }
+
+    /**
+     * 距离考试还有多少天
+     *
+     * @return
+     */
+    public static long getRemainsDay() {
+        try {
+            String examDate = "2017-12-23";//2017考试时间
+            long examTime = _format.parse(examDate).getTime();
+            long time = examTime - System.currentTimeMillis();
+            long l = time / (24 * 60 * 60 * 1000);
+            Logger.e("examTime=" + examTime + "time=" + time + "l==" + l);
+            return l;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

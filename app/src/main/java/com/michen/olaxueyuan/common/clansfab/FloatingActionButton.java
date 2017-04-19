@@ -179,7 +179,7 @@ public class FloatingActionButton extends Button {
 
     private int getCircleSize() {
         return getResources().getDimensionPixelSize(mFabSize == SIZE_NORMAL
-                ? R.dimen.dp_75 : R.dimen.dp_60);
+                ? R.dimen.dp_65 : R.dimen.dp_55);
     }
 
     private int calculateMeasuredWidth() {

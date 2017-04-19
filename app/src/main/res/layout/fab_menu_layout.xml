@@ -5,8 +5,8 @@
 
     <com.michen.olaxueyuan.common.clansfab.FloatingActionMenu
         android:id="@+id/menu_view"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="45dp"
@@ -26,8 +26,8 @@
         <com.michen.olaxueyuan.common.clansfab.FloatingActionButton
             android:id="@+id/fab_math"
             style="@style/MenuButtonsStyle"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:gravity="center"
             android:text="@string/math"
             android:textColor="@android:color/white" />
@@ -35,8 +35,8 @@
         <com.michen.olaxueyuan.common.clansfab.FloatingActionButton
             android:id="@+id/fab_english"
             style="@style/MenuButtonsStyle"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:gravity="center"
             android:text="@string/english"
             android:textColor="@android:color/white" />
@@ -44,8 +44,8 @@
         <com.michen.olaxueyuan.common.clansfab.FloatingActionButton
             android:id="@+id/fab_logic"
             style="@style/MenuButtonsStyle"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:gravity="center"
             android:text="@string/logic"
             android:textColor="@android:color/white" />
@@ -53,8 +53,8 @@
         <com.michen.olaxueyuan.common.clansfab.FloatingActionButton
             android:id="@+id/fab_write"
             style="@style/MenuButtonsStyle"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:gravity="center"
             android:text="@string/writing"
             android:textColor="@android:color/white" />
