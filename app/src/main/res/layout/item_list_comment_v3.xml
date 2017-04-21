@@ -173,9 +173,8 @@
             android:drawableLeft="@drawable/selector_post_detail_comment_praise"
             android:drawablePadding="@dimen/dp_5"
             android:gravity="center"
-            android:src="@drawable/icon_comment"
             android:text="0"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/num_read"

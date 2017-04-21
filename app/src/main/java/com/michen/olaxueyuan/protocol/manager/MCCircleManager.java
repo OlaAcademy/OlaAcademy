@@ -3,6 +3,7 @@ package com.michen.olaxueyuan.protocol.manager;
 import com.michen.olaxueyuan.protocol.result.AppointTeacherListResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.service.MCCircleService;
 
 import retrofit.Callback;
@@ -50,8 +51,19 @@ public class MCCircleManager {
      * @param circleId
      * @param callback
      */
-    public void praiseCirclePost(String userId,String circleId, Callback<PraiseCirclePostResult> callback) {
-        getCircleService().praiseCirclePost(userId,circleId, callback);
+    public void praiseCirclePost(String userId, String circleId, Callback<PraiseCirclePostResult> callback) {
+        getCircleService().praiseCirclePost(userId, circleId, callback);
+    }
+
+    /**
+     * 帖子评论点赞
+     *
+     * @param userId
+     * @param commentId
+     * @param callback
+     */
+    public void praiseComment(String userId, String commentId, Callback<SimpleResult> callback) {
+        getCircleService().praiseComment(userId, commentId, callback);
     }
 
     /**

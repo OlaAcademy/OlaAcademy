@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/post_detail_comment_selected_praise" android:state_enabled="true" />
-    <item android:drawable="@drawable/post_detail_comment_normal_praise" android:state_enabled="false" />
+    <item android:drawable="@drawable/post_detail_comment_selected_praise" android:state_selected="true" />
+    <item android:drawable="@drawable/post_detail_comment_normal_praise" android:state_selected="false" />
     <item android:drawable="@drawable/post_detail_comment_normal_praise" />
 </selector>

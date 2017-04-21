@@ -99,8 +99,8 @@ public class QuestionCourseManager {
      * @param assign   0 全部评论 1 指定回答
      * @param callback
      */
-    public void getCommentList(String postId, String type, String assign, final Callback<CommentModule> callback) {
-        getQuestionService().getCommentList(postId, type, assign, callback);
+    public void getCommentList(String postId, String type, String assign, String curUserId, final Callback<CommentModule> callback) {
+        getQuestionService().getCommentList(postId, type, assign, curUserId, callback);
     }
 
     /**

@@ -9,6 +9,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -78,6 +81,8 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
     private static final String PAGE_SIZE = "20";//每次加载20条
     CircleAdapter adapter;
     private SharePopupWindow share;
+    private Animation mImageToggleShowAnimation;
+    private Animation mImageToggleHideAnimation;
 
     public CircleFragment() {
         // Required empty public constructor
@@ -102,6 +107,46 @@ public class CircleFragment extends SuperFragment implements PullToRefreshBase.O
         listview.getRefreshableView().setDivider(null);
         listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
+        mImageToggleShowAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_scale_up);
+        mImageToggleHideAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_scale_down);
+        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int lastIndex = 0;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+                    // 滚动之前,手还在屏幕上 记录滚动前的下标
+                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+                        lastIndex = view.getLastVisiblePosition();
+                        break;
+                    // 滚动停止
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+                        // 记录滚动停止后 记录当前item的位置
+                        int scrolled = view.getLastVisiblePosition();
+                        // 滚动后下标大于滚动前 向下滚动了
+                        if (scrolled > lastIndex) {
+//                            menuView.hideMenuButton(true);
+                            if (deployPostIcon.getVisibility() == View.VISIBLE) {
+                                mImageToggleShowAnimation.cancel();
+                                deployPostIcon.startAnimation(mImageToggleHideAnimation);
+                                deployPostIcon.setVisibility(View.GONE);
+                            }
+                        } else {// 向上滚动了
+//                            menuView.showMenuButton(true);
+                            if (deployPostIcon.getVisibility() == View.GONE) {
+                                mImageToggleHideAnimation.cancel();
+                                deployPostIcon.startAnimation(mImageToggleShowAnimation);
+                                deployPostIcon.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
+        });
     }
 
     private void fetchData(final String circleId, String pageSize) {

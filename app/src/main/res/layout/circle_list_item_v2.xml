@@ -85,11 +85,10 @@
         android:layout_alignLeft="@id/avatar"
         android:layout_below="@+id/title"
         android:background="@color/white"
-        android:editable="false"
         android:ellipsize="end"
+        android:lineSpacingExtra="1.3dp"
         android:maxLines="2"
-        android:text="次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容"
-        android:textIsSelectable="true" />
+        android:text="次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容次级内容" />
 
     <com.snail.photo.util.NoScrollGridView
         android:id="@+id/image_gridview"

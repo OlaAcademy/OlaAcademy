@@ -15,6 +15,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.DateUtils;
 import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.common.manager.TitleManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
@@ -75,6 +76,7 @@ public class CircleFragmentOld extends SuperFragment implements PullToRefreshBas
         titleManager.HideImageViews(TitleManager.RIGHT_INDEX_RESPONSE);
         adapter = new CircleAdapter();
         listview.setMode(PullToRefreshBase.Mode.BOTH);
+        listview.getRefreshableView().setDivider(null);
         listview.setOnRefreshListener(this);
     }
 
@@ -181,7 +183,7 @@ public class CircleFragmentOld extends SuperFragment implements PullToRefreshBas
         public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
-                convertView = View.inflate(getActivity(), R.layout.fragment_circle_old_listview_item, null);
+                convertView = View.inflate(getActivity(), R.layout.fragment_circle_old_listview_item_two, null);
                 holder = new ViewHolder(convertView);
                 convertView.setTag(holder);
             } else {
@@ -200,7 +202,9 @@ public class CircleFragmentOld extends SuperFragment implements PullToRefreshBas
                     avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getUserAvatar();
                 }
                 Picasso.with(getActivity()).load(avatarUrl)
-                        .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar).resize(Utils.dip2px(getActivity(), 50), Utils.dip2px(getActivity(), 50))
+                        .placeholder(R.drawable.ic_default_avatar)
+                        .error(R.drawable.ic_default_avatar)
+                        .resize(Utils.dip2px(getActivity(), 50), Utils.dip2px(getActivity(), 50))
                         .into(holder.avatar);
             } else {
                 holder.avatar.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_default_avatar));
@@ -211,7 +215,8 @@ public class CircleFragmentOld extends SuperFragment implements PullToRefreshBas
                     PictureUtils.viewPictures(getActivity(), list.get(position).getUserAvatar());
                 }
             });
-            holder.time.setText(getActivity().getString(R.string.study_record, list.get(position).getTime()));
+//            holder.time.setText(getActivity().getString(R.string.study_record, list.get(position).getTime()));
+            holder.time.setText(DateUtils.formatTime(list.get(position).getTime()));
             holder.studyName.setText(list.get(position).getVideoName());
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override

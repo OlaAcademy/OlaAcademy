@@ -60,13 +60,13 @@
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/time"
             android:gravity="center"
-            android:text="1人浏览"
+            android:text="1人阅读"
             android:textColor="@color/title_hint_text_color"
             android:textSize="11dp" />
 
         <TextView
             android:id="@+id/study_name"
-            style="@style/title_text_15dp_style"
+            style="@style/title_text_17dp_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/avatar"
@@ -86,6 +86,7 @@
             android:layout_alignLeft="@id/avatar"
             android:layout_below="@+id/study_name"
             android:background="@color/white"
+            android:lineSpacingExtra="1.5dp"
             android:paddingEnd="10dp"
             android:paddingRight="10dp"
             android:text="次级内容"
@@ -106,6 +107,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_35"
+        android:layout_marginTop="@dimen/dp_8"
         android:layout_marginLeft="@dimen/dp_60"
         android:layout_marginRight="@dimen/dp_60">
 
@@ -114,7 +116,7 @@
             android:layout_gravity="center" />
 
         <TextView
-            style="@style/hint_text_14dp_style"
+            style="@style/hint_text_12dp_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

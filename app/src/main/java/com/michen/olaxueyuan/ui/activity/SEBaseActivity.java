@@ -100,6 +100,7 @@ public class SEBaseActivity extends FragmentActivity {
     }
 
     public void setRightText(String text) {
+        rightText.setVisibility(View.VISIBLE);
         rightText.setText(text);
     }
 

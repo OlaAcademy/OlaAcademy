@@ -129,7 +129,7 @@ public class DeployPostActivity extends SEBaseActivity {
     private ArrayList<String> courses = new ArrayList<>();//类型
     private ArrayList<String> publics = new ArrayList<>();//是否公开
     private int optionType = 1;//区分选择器返回的类型；1、类型；2、是否公开
-    private int isPublic = 0;//是否公开
+    private int isPublic = 1;//是否公开
     private int assignUser;//指定回答者Id
     private String postType;//
 
@@ -446,7 +446,8 @@ public class DeployPostActivity extends SEBaseActivity {
             }
 
             if (position == Bimp.tempSelectBitmap.size()) {
-                holder.image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon_addpic_unfocused));
+//                holder.image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon_addpic_unfocused));
+                holder.image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon_add_photo));
                 if (position == 9) {
                     holder.image.setVisibility(View.GONE);
                 }

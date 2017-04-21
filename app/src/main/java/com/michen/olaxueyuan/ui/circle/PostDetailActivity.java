@@ -62,6 +62,7 @@ import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
 import com.michen.olaxueyuan.protocol.service.UploadService;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
@@ -272,9 +273,15 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         });
     }
 
+    private List<CommentModule.ResultBean> commentList;
+
     private void getCommentListData() {
         SEAPP.showCatDialog(this);
-        QuestionCourseManager.getInstance().getCommentList(String.valueOf(circleId), "2", String.valueOf(assign), new Callback<CommentModule>() {
+        String curUserId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            curUserId = SEUserManager.getInstance().getUserId();
+        }
+        QuestionCourseManager.getInstance().getCommentList(String.valueOf(circleId), "2", String.valueOf(assign), curUserId, new Callback<CommentModule>() {
             @Override
             public void success(CommentModule commentModule, Response response) {
 //                Logger.json(commentModule);
@@ -282,6 +289,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                 if (commentModule.getApicode() != 10000) {
                     SVProgressHUD.showInViewWithoutIndicator(mContext, commentModule.getMessage(), 2.0f);
                 } else {
+                    commentList = commentModule.getResult();
                     commentAdapter.upDateData(commentModule.getResult());
                 }
             }
@@ -339,7 +347,7 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         time.setText(resultBean.getTime());
         studyName.setText(resultBean.getTitle());
         childContent.setText(resultBean.getContent());
-        numRead.setText(resultBean.getReadNumber() + "人浏览");
+        numRead.setText(resultBean.getReadNumber() + "人阅读");
         if (!TextUtils.isEmpty(resultBean.getImageGids())) {
             ArrayList<String> imageUrls = PictureUtils.getListFromString(resultBean.getImageGids());
             final ArrayList<String> imageList = imageUrls;
@@ -446,6 +454,39 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                     SVProgressHUD.showInViewWithoutIndicator(mContext, mcCommonResult.getMessage(), 2.0f);
                 } else {
                     resultBean.setPraiseNumber(resultBean.getPraiseNumber() + 1);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                SEAPP.dismissAllowingStateLoss();
+                ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+            }
+        });
+    }
+
+    public void commentPraise(final int isPraised, final int position, String commentId) {
+        if (!SEAuthManager.getInstance().isAuthenticated()) {
+            Intent loginIntent = new Intent(PostDetailActivity.this, UserLoginActivity.class);
+            startActivity(loginIntent);
+            return;
+        }
+        SEAPP.showCatDialog(this);
+        MCCircleManager.getInstance().praiseComment(SEUserManager.getInstance().getUserId(), commentId, new Callback<SimpleResult>() {
+            @Override
+            public void success(SimpleResult mcCommonResult, Response response) {
+                SEAPP.dismissAllowingStateLoss();
+                if (mcCommonResult.getApicode() != 10000) {
+                    SVProgressHUD.showInViewWithoutIndicator(mContext, mcCommonResult.getMessage(), 2.0f);
+                } else {
+                    if (isPraised == 1) {
+                        commentList.get(position).setIsPraised(0);
+                        commentList.get(position).setPraiseNumber(Math.abs(commentList.get(position).getPraiseNumber() - 1));
+                    } else {
+                        commentList.get(position).setIsPraised(1);
+                        commentList.get(position).setPraiseNumber(commentList.get(position).getPraiseNumber() + 1);
+                    }
+                    commentAdapter.upDateData(commentList);
                 }
             }
 

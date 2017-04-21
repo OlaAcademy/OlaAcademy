@@ -18,11 +18,14 @@ import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.protocol.result.HomeModule;
 import com.michen.olaxueyuan.ui.BaseRecyclerAdapter;
-import com.michen.olaxueyuan.ui.circle.PersonalHomePageActivityTwo;
+import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.leancloud.chatkit.LCChatKitUser;
+import cn.leancloud.chatkit.activity.LCIMConversationActivity;
+import cn.leancloud.chatkit.utils.LCIMConstants;
 
 /**
  * Created by mingge on 2016/8/24.
@@ -32,6 +35,8 @@ public class AskQuestionRecyclerAdapter extends BaseRecyclerAdapter<HomeModule.R
     public AskQuestionRecyclerAdapter(Context context) {
         super(context);
     }
+
+    private LCChatKitUser lcChatKitUser;
 
     public class AskQuestionItemHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.ic_avatar)
@@ -95,9 +100,13 @@ public class AskQuestionRecyclerAdapter extends BaseRecyclerAdapter<HomeModule.R
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                context.startActivity(new Intent(context, PersonalHomePageActivity.class)
-                context.startActivity(new Intent(context, PersonalHomePageActivityTwo.class)
-                        .putExtra("userId", Integer.parseInt(list.get(position).getId())));
+                lcChatKitUser = new LCChatKitUser(course.getPhone(), course.getName(), course.getAvator());
+                CustomUserProvider.getInstance().setpartUsers(lcChatKitUser);
+                Intent intent = new Intent(context, LCIMConversationActivity.class);
+                intent.putExtra(LCIMConstants.PEER_ID, lcChatKitUser.getUserId());
+                context.startActivity(intent);
+//                context.startActivity(new Intent(context, PersonalHomePageActivityTwo.class)
+//                        .putExtra("userId", Integer.parseInt(list.get(position).getId())));
             }
         });
     }

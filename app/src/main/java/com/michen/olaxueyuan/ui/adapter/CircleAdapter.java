@@ -157,13 +157,21 @@ public class CircleAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(mContext, PostDetailActivity.class);//
-                intent.putExtra("circleId", list.get(position).getCircleId());
-                mContext.startActivity(intent);
+                jumpToPostDetail(list.get(position).getCircleId());
             }
         });
-
+        holder.content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpToPostDetail(list.get(position).getCircleId());
+            }
+        });
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpToPostDetail(list.get(position).getCircleId());
+            }
+        });
         holder.content.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -180,8 +188,14 @@ public class CircleAdapter extends BaseAdapter {
                 return false;
             }
         });
-
         return convertView;
+    }
+
+    private void jumpToPostDetail(int circleId) {
+        Intent intent = new Intent();
+        intent.setClass(mContext, PostDetailActivity.class);//
+        intent.putExtra("circleId", circleId);
+        mContext.startActivity(intent);
     }
 
     class ViewHolder {

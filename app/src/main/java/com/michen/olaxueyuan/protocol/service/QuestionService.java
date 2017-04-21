@@ -107,6 +107,7 @@ public interface QuestionService {
     void getCommentList(@Field("postId") String postId,
                         @Field("type") String type,
                         @Field("assign") String assign,
+                        @Field("curUserId") String curUserId,
                         Callback<CommentModule> cb);
 
     /**

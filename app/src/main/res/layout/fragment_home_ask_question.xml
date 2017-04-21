@@ -39,7 +39,8 @@
             android:paddingRight="10dp"
             android:text="显示全部"
             android:textColor="@color/black_a8aaad"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="invisible" />
 
         <View
             style="@style/line_horizontal_margin_10dp"

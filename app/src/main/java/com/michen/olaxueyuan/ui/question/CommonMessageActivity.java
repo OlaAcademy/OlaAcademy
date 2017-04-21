@@ -26,7 +26,7 @@ public class CommonMessageActivity extends SEBaseActivity {
                 transaction.add(R.id.content, new CommentListFragment());
                 break;
             case 2:
-                setTitleText("赞了");
+                setTitleText("赞过的人");
                 transaction.add(R.id.content, new PraiseListFragment());
                 break;
             case 3:

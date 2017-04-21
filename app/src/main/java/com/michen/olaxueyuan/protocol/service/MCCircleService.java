@@ -3,6 +3,7 @@ package com.michen.olaxueyuan.protocol.service;
 import com.michen.olaxueyuan.protocol.result.AppointTeacherListResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 
 import retrofit.Callback;
 import retrofit.http.Field;
@@ -42,7 +43,7 @@ public interface MCCircleService {
     /**
      * 帖子点赞
      *
-     * @param userId  (必填)
+     * @param userId   (必填)
      * @param circleId
      * @param cb
      */
@@ -52,6 +53,20 @@ public interface MCCircleService {
             @Field("userId") String userId,
             @Field("circleId") String circleId,
             Callback<PraiseCirclePostResult> cb);
+
+    /**
+     * 帖子评论点赞
+     *
+     * @param userId
+     * @param commentId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/comment/praiseComment")
+    void praiseComment(
+            @Field("userId") String userId,
+            @Field("commentId") String commentId,
+            Callback<SimpleResult> cb);
 
     /**
      * 邀请老师回答列表

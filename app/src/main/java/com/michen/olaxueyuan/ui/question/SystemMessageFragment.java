@@ -63,6 +63,7 @@ public class SystemMessageFragment extends BaseFragment implements PullToRefresh
         listview.setMode(PullToRefreshBase.Mode.BOTH);
         listview.setOnRefreshListener(this);
         adapter = new MessageListAdapter(mContext);
+        listview.getRefreshableView().setDivider(null);
         listview.setAdapter(adapter);
     }
 
@@ -143,7 +144,7 @@ public class SystemMessageFragment extends BaseFragment implements PullToRefresh
                 EventBus.getDefault().post(new MessageReadEvent(true));
                 switch (event.type) {//type区分跳转的界面
                     case 1:
-                        
+
                         break;
                     case 2://视频
                         Intent intent2 = new Intent();

@@ -92,6 +92,15 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/voice_btn_icon" />
 
+                <ImageView
+                    android:id="@+id/view_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/add_more_bottom_icon" />
+
                 <EditText
                     android:id="@+id/et_content"
                     android:layout_width="0dp"
@@ -117,24 +126,25 @@
                     android:layout_gravity="center_vertical"
                     android:paddingRight="@dimen/dp_10">
 
-                    <ImageView
+                    <!--<ImageView
                         android:id="@+id/view_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="15dp"
-                        android:background="@drawable/add_more_bottom_icon" />
+                        android:background="@drawable/add_more_bottom_icon" />-->
 
                     <Button
                         android:id="@+id/bt_send"
-                        android:layout_width="50dp"
-                        android:layout_height="30dp"
+                        android:layout_width="60dp"
+                        android:layout_height="28dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/shape_rectangle_corner5_fill_blue"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/shape_rectangle_corner25_fill_blue"
                         android:text="@string/send"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
             </LinearLayout>

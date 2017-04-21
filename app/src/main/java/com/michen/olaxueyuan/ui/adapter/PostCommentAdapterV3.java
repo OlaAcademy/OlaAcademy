@@ -177,11 +177,16 @@ public class PostCommentAdapterV3 extends BaseAdapter implements MyAudioManager.
                 animationDrawable.start();
                 break;
         }
+        if (list.get(position).getIsPraised() == 1) {
+            holder.numPraised.setSelected(true);
+        } else {
+            holder.numPraised.setSelected(false);
+        }
         holder.numPraised.setText(String.valueOf(list.get(position).getPraiseNumber()));
         holder.numPraised.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((PostDetailActivity) (mContext)).praise();
+                ((PostDetailActivity) (mContext)).commentPraise(list.get(position).getIsPraised(), position, list.get(position).getCommentId());
             }
         });
         holder.itemCommentAvatar.setOnClickListener(new View.OnClickListener() {

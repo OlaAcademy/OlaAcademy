@@ -91,7 +91,7 @@ public class CommentModule implements Serializable {
          * videoImgs : movie/2016/12/13/932c92b4-45ee-46b9-a77f-860a0a3767fc.jpg
          */
 
-        private int commentId;
+        private String commentId;
         private int userId;
         private String userName;
         private String userAvatar;
@@ -106,8 +106,17 @@ public class CommentModule implements Serializable {
         private String videoUrls;
         private String videoImgs;
         private int voiceState = 0;
+        private int isPraised = 0;
         private String subCount;
         private String voiceTime;
+
+        public int getIsPraised() {
+            return isPraised;
+        }
+
+        public void setIsPraised(int isPraised) {
+            this.isPraised = isPraised;
+        }
 
         public String getVoiceTime() {
             return voiceTime;
@@ -133,11 +142,11 @@ public class CommentModule implements Serializable {
             this.voiceState = voiceState;
         }
 
-        public int getCommentId() {
+        public String getCommentId() {
             return commentId;
         }
 
-        public void setCommentId(int commentId) {
+        public void setCommentId(String commentId) {
             this.commentId = commentId;
         }
 

@@ -91,7 +91,7 @@
     <string name="pay_now">立即支付</string>
     <string name="title_activity_doadload_list">DoadloadListActivity</string>
 
-    <string name="title_activity_deploy_post">欧拉分享</string>
+    <string name="title_activity_deploy_post">欧拉动态</string>
     <string name="publish">发布</string>
     <string name="hint_deploy_title">标题 2-15个字</string>
     <string name="hint_deploy_content">说说您的备考经验</string>
