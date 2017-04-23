@@ -446,8 +446,8 @@ public class DeployPostActivity extends SEBaseActivity {
             }
 
             if (position == Bimp.tempSelectBitmap.size()) {
-//                holder.image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon_addpic_unfocused));
-                holder.image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon_add_photo));
+                holder.image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon_addpic_unfocused));
+//                holder.image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon_add_photo));
                 if (position == 9) {
                     holder.image.setVisibility(View.GONE);
                 }

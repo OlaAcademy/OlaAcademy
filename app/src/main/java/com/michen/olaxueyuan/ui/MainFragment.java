@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.SETabBar;
-import com.michen.olaxueyuan.protocol.event.ChatNewMessageEvent;
+import com.michen.olaxueyuan.protocol.event.ChatNewsMessageEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.circle.CircleFragment;
@@ -250,7 +250,7 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public void onEventMainThread(ChatNewMessageEvent chatNewMessageEvent) {
+    public void onEventMainThread(ChatNewsMessageEvent chatNewMessageEvent) {
         if (chatNewMessageEvent.num > 0) {
             _tabBar.getItemViewAt(2).showRedDot(chatNewMessageEvent.num);
         } else {

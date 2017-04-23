@@ -8,10 +8,10 @@ package com.michen.olaxueyuan.protocol.event;
  *     version: 1.0
  * </pre>
  */
-public class ChatNewMessageEvent {
+public class ChatNewsMessageEvent {
     public int num = 0;
 
-    public ChatNewMessageEvent(int num) {
+    public ChatNewsMessageEvent(int num) {
         this.num = num;
     }
 }

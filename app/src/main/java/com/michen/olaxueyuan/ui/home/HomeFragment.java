@@ -25,7 +25,7 @@ import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.download.DownloadService;
-import com.michen.olaxueyuan.protocol.event.ChatNewMessageEvent;
+import com.michen.olaxueyuan.protocol.event.ChatNewsMessageEvent;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -367,7 +367,7 @@ public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnR
             switch (msg.what) {
                 case 0:
                     chatMessageDot.setText(String.valueOf(unReadNum));
-                    EventBus.getDefault().post(new ChatNewMessageEvent(unReadNum));
+                    EventBus.getDefault().post(new ChatNewsMessageEvent(unReadNum));
                     if (unReadNum > 0) {
                         chatMessageDot.setVisibility(View.VISIBLE);
                     } else {
