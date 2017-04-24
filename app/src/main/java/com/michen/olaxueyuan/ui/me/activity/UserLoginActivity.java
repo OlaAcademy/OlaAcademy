@@ -70,7 +70,7 @@ public class UserLoginActivity extends SEBaseActivity {
         setContentView(R.layout.activity_user_login);
         ButterKnife.bind(this);
         mController = UMServiceFactory.getUMSocialService("com.umeng.login");
-        setTitleText("登录欧拉学院");
+        setTitleText("登录");
         setLeftImageInvisibility();
         setRightImageInvisibility();
 

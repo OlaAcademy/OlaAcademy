@@ -51,10 +51,19 @@ public class AttendListResult {
          */
 
         private int id;
+        private int isAttend;
         private String name;
         private String phone;
         private String avator;
         private String sign;
+
+        public int getIsAttend() {
+            return isAttend;
+        }
+
+        public void setIsAttend(int isAttend) {
+            this.isAttend = isAttend;
+        }
 
         public int getId() {
             return id;

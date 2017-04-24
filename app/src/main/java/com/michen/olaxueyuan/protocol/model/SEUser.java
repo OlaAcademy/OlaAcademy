@@ -25,6 +25,10 @@ public class SEUser implements Serializable {
     private String email;
     private String local;
 
+    public void set_isDataDirty(boolean _isDataDirty) {
+        this._isDataDirty = _isDataDirty;
+    }
+
     public int getCoin() {
         return coin;
     }

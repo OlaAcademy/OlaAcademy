@@ -2,21 +2,17 @@ package com.michen.olaxueyuan.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.app.SEAPP;
-import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.manager.DateUtils;
-import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.protocol.result.PraiseListResult;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +64,8 @@ public class PraiseListAdapter extends BaseAdapter {
         }
         holder.title.setText(list.get(position).getUserName());
         holder.time.setText(DateUtils.formatTime(list.get(position).getTime()));
-        if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
+        PictureUtils.loadAvatar(mContext,holder.avatar,list.get(position).getUserAvatar(),52);
+        /*if (!TextUtils.isEmpty(list.get(position).getUserAvatar())) {
             String avatarUrl = "";
             if (list.get(position).getUserAvatar().contains("http://")) {
                 avatarUrl = list.get(position).getUserAvatar();
@@ -84,7 +81,7 @@ public class PraiseListAdapter extends BaseAdapter {
                     .into(holder.avatar);
         } else {
             holder.avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
-        }
+        }*/
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -12,10 +12,14 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.widget.ImageView;
 
+import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.ui.story.activity.ImagePagerActivity;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -338,4 +342,31 @@ public class PictureUtils {
         }
     }
 
+    /**
+     * 加载头像
+     *
+     * @param mContext  context
+     * @param imageView 加载头像的imageView
+     * @param imageUrl  头像地址
+     * @param resize    头像压缩大小，单位dp
+     */
+    public static void loadAvatar(Context mContext, ImageView imageView, String imageUrl, int resize) {
+        if (!TextUtils.isEmpty(imageUrl)) {
+            String avatarUrl = "";
+            if (imageUrl.contains("http://")) {
+                avatarUrl = imageUrl;
+            } else if (imageUrl.contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + imageUrl;
+            } else {
+                avatarUrl = SEAPP.PIC_BASE_URL + imageUrl;
+            }
+            Picasso.with(mContext).load(avatarUrl)
+                    .placeholder(R.drawable.ic_default_avatar)
+                    .error(R.drawable.ic_default_avatar)
+                    .resize(Utils.dip2px(mContext, resize), Utils.dip2px(mContext, resize))
+                    .into(imageView);
+        } else {
+            imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
+        }
+    }
 }

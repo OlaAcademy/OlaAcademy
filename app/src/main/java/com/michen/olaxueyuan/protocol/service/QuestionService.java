@@ -249,11 +249,13 @@ public interface QuestionService {
      * 个人主页
      *
      * @param userId   (必填)
+     * @param curUserId   当前用户userId
      * @param callback
      */
     @FormUrlEncoded
     @POST("/ola/circle/getUserPostList")
     void getUserPostList(
             @Field("userId") String userId,
+            @Field("curUserId") String curUserId,
             Callback<UserPostListResult> callback);
 }

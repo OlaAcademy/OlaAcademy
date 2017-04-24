@@ -221,7 +221,7 @@ public class SEUserManager {
         });
     }
 
-    public void modifyUserMe(String name, String realName, String avator, String local, String sex, String descript,
+    public void modifyUserMe(String name, String realName, String avator, String local, String sex, String descript, String examtype,
                              final SECallBack callback) {
         SEAuthManager am = SEAuthManager.getInstance();
         if (!am.isAuthenticated()) {
@@ -235,7 +235,7 @@ public class SEUserManager {
             avator = currentUser.getAvator();
         }
 
-        _userService.updateUser(currentUser.getId(), name, realName, avator, local, sex, descript, new Callback<MCCommonResult>() {
+        _userService.updateUser(currentUser.getId(), name, realName, avator, local, sex, descript, examtype, new Callback<MCCommonResult>() {
             @Override
             public void success(MCCommonResult result, Response response) {
                 if (result == null) {
@@ -414,6 +414,17 @@ public class SEUserManager {
      */
     public void queryUserByPhoneNumbers(String phones, Callback<SEUserByPhoneResult> callback) {
         _userService.queryUserByPhoneNumbers(phones, callback);
+    }
+
+    /**
+     * 入群送50欧拉币
+     *
+     * @param userId
+     * @param type   type传10
+     * @param cb
+     */
+    public void presentOlaCoin(String userId, String type, Callback<SimpleResult> callback) {
+        _userService.presentOlaCoin(userId, type, callback);
     }
 }
 

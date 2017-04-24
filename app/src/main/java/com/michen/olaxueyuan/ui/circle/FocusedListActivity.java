@@ -6,12 +6,14 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
-import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.result.AttendListResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.FocusListAdapter;
 import com.snail.pulltorefresh.PullToRefreshBase;
 import com.snail.pulltorefresh.PullToRefreshListView;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,6 +28,7 @@ public class FocusedListActivity extends SEBaseActivity implements PullToRefresh
     private FocusListAdapter adapter;
     private String userId = "";
     private int type = 1;//1关注列表,2粉丝列表
+    private List<AttendListResult.ResultBean> attendList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,7 @@ public class FocusedListActivity extends SEBaseActivity implements PullToRefresh
     private void initView() {
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.setOnRefreshListener(this);
-        adapter = new FocusListAdapter(this);
+        adapter = new FocusListAdapter(this, type);
         listview.setAdapter(adapter);
     }
 
@@ -93,7 +96,8 @@ public class FocusedListActivity extends SEBaseActivity implements PullToRefresh
                     if (attendListResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(mContext, attendListResult.getMessage());
                     } else {
-                        adapter.updateData(attendListResult.getResult());
+                        attendList = attendListResult.getResult();
+                        adapter.updateData(attendList);
                     }
                 }
             }
@@ -126,5 +130,38 @@ public class FocusedListActivity extends SEBaseActivity implements PullToRefresh
     protected void onPause() {
         super.onPause();
         SEAPP.dismissAllowingStateLoss();
+    }
+
+    public void attendUser(String attendId, String attendedId, final int type, final int position) {
+        SEAPP.showCatDialog(this);
+        HomeListManager.getInstance().attendUser(attendId, attendedId, type, new Callback<SimpleResult>() {
+            @Override
+            public void success(SimpleResult simpleResult, Response response) {
+                if (mContext != null && !FocusedListActivity.this.isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
+                    if (simpleResult.getApicode() != 10000) {
+                        ToastUtil.showToastShort(mContext, simpleResult.getMessage());
+                    } else {
+                        switch (type) {
+                            case 1://关注
+                                attendList.get(position).setIsAttend(1);
+                                break;
+                            case 2://取消关注
+                                attendList.get(position).setIsAttend(0);
+                                break;
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (mContext != null && !FocusedListActivity.this.isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
+                    ToastUtil.showToastShort(mContext, R.string.data_request_fail);
+                }
+            }
+        });
     }
 }

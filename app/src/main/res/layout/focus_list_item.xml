@@ -10,7 +10,6 @@
         android:layout_height="@dimen/dp_52"
         android:layout_centerVertical="true"
         android:layout_margin="@dimen/dp_10"
-        android:scaleType="centerInside"
         android:src="@drawable/ic_default_avatar" />
 
     <TextView
@@ -41,6 +40,18 @@
         android:text="学习了:"
         android:textColor="@color/black_a4a6a9"
         android:textSize="12dp" />
+
+    <Button
+        android:id="@+id/focus_fans"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/blue_side_text_bg"
+        android:text="关注"
+        android:textColor="@color/common_blue"
+        android:textSize="10dp" />
 
     <View
         style="@style/line_horizontal"

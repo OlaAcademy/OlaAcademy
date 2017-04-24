@@ -218,9 +218,10 @@ public class QuestionCourseManager {
      * 个人主页
      *
      * @param userId   (必填)
+     * @param curUserId   当前用户userId
      * @param callback
      */
-    public void getUserPostList(String userId, Callback<UserPostListResult> callback) {
-        getQuestionService().getUserPostList(userId, callback);
+    public void getUserPostList(String userId, String curUserId, Callback<UserPostListResult> callback) {
+        getQuestionService().getUserPostList(userId, curUserId, callback);
     }
 }

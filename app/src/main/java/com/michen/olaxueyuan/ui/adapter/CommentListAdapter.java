@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.RoundRectImageView;
+import com.michen.olaxueyuan.common.manager.DateUtils;
+import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.protocol.result.CircleMessageListResult;
 import com.michen.olaxueyuan.ui.circle.PostDetailActivity;
 
@@ -52,33 +55,37 @@ public class CommentListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.comment_list_listview_item, null);
+            convertView = View.inflate(mContext, R.layout.praise_list_listview_item, null);
             holder = new ViewHolder(convertView);
+            holder.avatar.setRectAdius(100);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.userName.setText(list.get(position).getUserName() + " 评论了回答：");
-        holder.title.setText(list.get(position).getTitle());
-//        holder.content.setText(list.get(position).getContent());
+        holder.title.setText(list.get(position).getUserName());
+        holder.study.setText("评论了回答: " + list.get(position).getTitle());
+        holder.time.setText(DateUtils.formatTime(list.get(position).getTime()));
+        PictureUtils.loadAvatar(mContext, holder.avatar, list.get(position).getUserAvatar(), 52);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 list.get(position).setIsRead(1);
-                mContext.startActivity(new Intent(mContext, PostDetailActivity.class).putExtra("circleId", list.get(position).getPostId()));
                 notifyDataSetChanged();
+                mContext.startActivity(new Intent(mContext, PostDetailActivity.class).putExtra("circleId", list.get(position).getPostId()));
             }
         });
         return convertView;
     }
 
     class ViewHolder {
-        @Bind(R.id.user_name)
-        TextView userName;
+        @Bind(R.id.avatar)
+        RoundRectImageView avatar;
         @Bind(R.id.title)
         TextView title;
-        @Bind(R.id.content)
-        TextView content;
+        @Bind(R.id.time)
+        TextView time;
+        @Bind(R.id.study)
+        TextView study;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

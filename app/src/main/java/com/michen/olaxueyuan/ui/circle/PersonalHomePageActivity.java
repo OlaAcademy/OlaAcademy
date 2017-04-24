@@ -95,7 +95,7 @@ public class PersonalHomePageActivity extends SEBaseActivity implements PullToRe
 
     private void fetchData() {
         SEAPP.showCatDialog(this);
-        QuestionCourseManager.getInstance().getUserPostList(String.valueOf(userId), new Callback<UserPostListResult>() {
+        QuestionCourseManager.getInstance().getUserPostList(String.valueOf(userId),"", new Callback<UserPostListResult>() {
             @Override
             public void success(UserPostListResult userPostListResult, Response response) {
                 if (mContext != null && !PersonalHomePageActivity.this.isFinishing()) {

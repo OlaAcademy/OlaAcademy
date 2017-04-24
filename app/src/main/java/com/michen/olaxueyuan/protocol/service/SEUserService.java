@@ -109,6 +109,7 @@ public interface SEUserService {
                            @Part("local") String local,
                            @Part("sex") String sex,
                            @Part("descript") String descript,
+                           @Part("examtype") String examtype,
                            Callback<MCCommonResult> cb);
 
     /**
@@ -293,6 +294,21 @@ public interface SEUserService {
     void coinGetHistoryList(
             @Field("userId") String userId,
             Callback<CoinHistoryResult> cb);
+
+    /**
+     * 入群送50欧拉币
+     *
+     * @param userId
+     * @param type   type传10
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/coin/presentOlaCoin")
+    void presentOlaCoin(
+            @Field("userId") String userId,
+            @Field("type") String type,
+            Callback<SimpleResult> cb);
+
 
     /**
      * 分享

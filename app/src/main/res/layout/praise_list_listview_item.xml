@@ -40,6 +40,9 @@
         android:layout_below="@+id/time"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/avatar"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
         android:text="赞了你的评论" />
 
     <View

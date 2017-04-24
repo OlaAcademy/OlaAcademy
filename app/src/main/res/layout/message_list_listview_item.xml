@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="72dp"
     android:background="@drawable/selector_white_item_bg">
 
     <com.michen.olaxueyuan.common.RoundRectImageView
@@ -40,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/time"
+        android:layout_marginBottom="@dimen/dp_5"
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/avatar"
         android:ellipsize="end"

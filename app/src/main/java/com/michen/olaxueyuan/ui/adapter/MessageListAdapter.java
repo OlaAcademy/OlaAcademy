@@ -9,10 +9,9 @@ import android.widget.TextView;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.common.RoundRectImageView;
-import com.michen.olaxueyuan.common.manager.Utils;
+import com.michen.olaxueyuan.common.manager.PictureUtils;
 import com.michen.olaxueyuan.protocol.event.MessageReadEvent;
 import com.michen.olaxueyuan.protocol.result.MessageListResult;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,27 +63,13 @@ public class MessageListAdapter extends BaseAdapter {
         }
         holder.avatar.setRectAdius(100);
         holder.title.setText(list.get(position).getTitle());
-//        if (!TextUtils.isEmpty(list.get(position).getImageUrl())) {
-//            String avatarUrl = "";
-//            if (list.get(position).getImageUrl().indexOf("jpg") != -1) {
-//                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + list.get(position).getImageUrl();
-//            } else {
-//                avatarUrl = SEAPP.PIC_BASE_URL + list.get(position).getImageUrl();
-//            }
-        String avatarUrl = list.get(position).getImageUrl();
-        Picasso.with(mContext).load(avatarUrl)
-                .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar).resize(Utils.dip2px(mContext, 50), Utils.dip2px(mContext, 50))
-                .into(holder.avatar);
-//        } else {
-//            holder.avatar.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_default_avatar));
-//        }
-        if (list.get(position).getTime().length()>10) {
+        PictureUtils.loadAvatar(mContext, holder.avatar, list.get(position).getImageUrl(), 50);
+        if (list.get(position).getTime().length() > 10) {
             holder.time.setText(list.get(position).getTime().substring(0, 10));
         }
-        holder.content.setText(list.get(position).getContent());
-        if (list.get(position).getStatus()==1){
+        if (list.get(position).getStatus() == 1) {
             holder.bulletIV.setVisibility(View.GONE);
-        }else {
+        } else {
             holder.bulletIV.setVisibility(View.VISIBLE);
         }
 

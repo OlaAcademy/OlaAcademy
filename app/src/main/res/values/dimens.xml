@@ -43,6 +43,7 @@
     <dimen name="dp_46">46dp</dimen>
     <dimen name="dp_45">45dp</dimen>
     <dimen name="dp_44">44dp</dimen>
+    <dimen name="dp_42">42dp</dimen>
     <dimen name="dp_40">40dp</dimen>
     <dimen name="dp_38">38dp</dimen>
     <dimen name="dp_35">35dp</dimen>
@@ -76,6 +77,7 @@
     <dimen name="dp_3">3dp</dimen>
     <dimen name="dp_2">2dp</dimen>
     <dimen name="dp_1">1dp</dimen>
+    <dimen name="dp_0.7">0.7dp</dimen>
     <dimen name="dp_0">0dp</dimen>
 
     <!--长度px-->

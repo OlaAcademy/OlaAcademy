@@ -26,9 +26,11 @@ import com.michen.olaxueyuan.protocol.manager.SEUserManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.CheckinStatusResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
+import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.protocol.result.VipPriceResult;
 import com.michen.olaxueyuan.ui.SuperFragment;
+import com.michen.olaxueyuan.ui.circle.PersonalHomePageActivityTwo;
 import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.CoinHomePageActivity;
 import com.michen.olaxueyuan.ui.me.activity.DownloadListActivity;
@@ -36,7 +38,6 @@ import com.michen.olaxueyuan.ui.me.activity.MyBuyGoodsActivity;
 import com.michen.olaxueyuan.ui.me.activity.MyCourseCollectActivity;
 import com.michen.olaxueyuan.ui.me.activity.MySnackBarActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
-import com.michen.olaxueyuan.ui.me.activity.UserUpdateActivity;
 import com.michen.olaxueyuan.ui.me.activity.WrongTopicSetActivity;
 import com.michen.olaxueyuan.ui.setting.SettingActivity;
 import com.snail.pulltorefresh.PullToRefreshBase;
@@ -188,13 +189,33 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
         Intent intent = new Intent();
         intent.setData(Uri.parse(CommonConstant.QQ_GROUP_URI + CommonConstant.QQ_GROUP_KEY));
         // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面
-        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
             startActivity(intent);
+            presentOlaCoin();
             return true;
         } catch (Exception e) {
             ToastUtil.showToastShort(getActivity(), "未安装手Q或安装的版本不支持");
             return false;
+        }
+    }
+
+    private void presentOlaCoin() {
+        String userId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            userId = SEAuthManager.getInstance().getAccessUser().getId();
+            SEUserManager.getInstance().presentOlaCoin(userId, "10", new Callback<SimpleResult>() {
+                @Override
+                public void success(SimpleResult coinHistoryResult, Response response) {
+//                    if (getActivity() != null && !getActivity().isFinishing()) {
+//                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+
+                }
+            });
         }
     }
 
@@ -248,8 +269,10 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
             intent.putExtra("isVisitor", 1);
             startActivity(intent);
         } else {
-            Intent intent = new Intent(getActivity(), UserUpdateActivity.class);
-            startActivityForResult(intent, EDIT_USER_INFO);
+//            Intent intent = new Intent(getActivity(), UserUpdateActivity.class);
+//            startActivityForResult(intent, EDIT_USER_INFO);
+            startActivity(new Intent(getActivity(), PersonalHomePageActivityTwo.class)
+                    .putExtra("userId", Integer.parseInt(user.getId())));
         }
     }
 

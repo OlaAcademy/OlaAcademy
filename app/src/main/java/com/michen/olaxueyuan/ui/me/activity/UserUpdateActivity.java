@@ -70,7 +70,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
     private final static int MENU_AVATAR_FROM_GALLERY = 0x456;
 
     private LinearLayout updateLL;
-    private EditText nicknameET, reallyNameEt, signatureET, emailET;
+    private EditText nicknameET, reallyNameEt, signatureET, emailET, etFocusArea;
     private TextView phoneTV, loaclTV;
     private Button _avatarButton;
     private RoundRectImageView avatarImageView;
@@ -124,6 +124,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         String reallyName = reallyNameEt.getText().toString();
         String local = loaclTV.getText().toString();
         String mail = emailET.getText().toString();
+        String focusArea = etFocusArea.getText().toString();
         if (name.equals("")) {
             SVProgressHUD.showInViewWithoutIndicator(this, "请填写昵称", 2);
             return;
@@ -133,6 +134,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         currentUser.setName(name);
         currentUser.setRealName(reallyName);
         currentUser.setLocal(local);
+        currentUser.setExamtype(focusArea);
         currentUser.setSex(sex + "");
         currentUser.setSign(signature);
         if (!TextUtils.isEmpty(_imageName))
@@ -141,7 +143,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
 
 //        SVProgressHUD.showInView(this, "保存中，请稍候...", true);
         SEAPP.showCatDialog(this);
-        SEUserManager.getInstance().modifyUserMe(name, reallyName, _imageName, local, sex + "", signature, new SECallBack() {
+        SEUserManager.getInstance().modifyUserMe(name, reallyName, _imageName, local, sex + "", signature, focusArea, new SECallBack() {
             @Override
             public void success() {
                 if (!UserUpdateActivity.this.isFinishing()) {
@@ -180,6 +182,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
         reallyNameEt = (EditText) findViewById(R.id.et_really_name);
         loaclTV = (TextView) findViewById(R.id.tv_local);
         emailET = (EditText) findViewById(R.id.et_email);
+        etFocusArea = (EditText) findViewById(R.id.et_focus_area);
         phoneTV = (TextView) findViewById(R.id.tv_phone);
 
         //选项选择器
@@ -314,6 +317,7 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
             reallyNameEt.setText(_user.getRealName());
             loaclTV.setText(_user.getLocal());
             emailET.setText(_user.getEmail());
+            etFocusArea.setText(_user.getExamtype());
             phoneTV.setText(_user.getPhone());
             if (_user.getSex() != null && _user.getSex().equals("1")) {
                 iv_switch_man.setVisibility(View.INVISIBLE);

@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,6 +85,12 @@ public class PersonalHomePageActivityTwo extends SuperActivity implements Platfo
     TextView focus;
     @Bind(R.id.chat)
     TextView chat;
+    @Bind(R.id.bottom_view_line)
+    View bottomViewLine;
+    @Bind(R.id.bottom_view)
+    LinearLayout bottomView;
+    @Bind(R.id.top_view)
+    LinearLayout topView;
     private int userId;
     private UserPostListResult postListResult;
     private String avatarUrl = "";
@@ -113,6 +120,9 @@ public class PersonalHomePageActivityTwo extends SuperActivity implements Platfo
             String myUserId = SEAuthManager.getInstance().getAccessUser().getId();
             if (myUserId.equals(String.valueOf(userId))) {
                 rightResponse.setVisibility(View.VISIBLE);
+                bottomViewLine.setVisibility(View.GONE);
+                bottomView.setVisibility(View.GONE);
+                topView.setPadding(0, 0, 0, 0);
             }
         }
     }
@@ -123,8 +133,12 @@ public class PersonalHomePageActivityTwo extends SuperActivity implements Platfo
     }
 
     private void fetchData() {
+        String curUserId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            curUserId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
         SEAPP.showCatDialog(this);
-        QuestionCourseManager.getInstance().getUserPostList(String.valueOf(userId), new Callback<UserPostListResult>() {
+        QuestionCourseManager.getInstance().getUserPostList(String.valueOf(userId), curUserId, new Callback<UserPostListResult>() {
             @Override
             public void success(UserPostListResult userPostListResult, Response response) {
                 if (mContext != null && !PersonalHomePageActivityTwo.this.isFinishing()) {

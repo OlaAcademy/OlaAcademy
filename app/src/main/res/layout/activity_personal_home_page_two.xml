@@ -6,10 +6,11 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/top_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dp_48"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_48">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,8 +93,8 @@
                     android:layout_marginTop="@dimen/dp_5"
                     android:background="@drawable/shape_rectangle_bg_light_green_25_dp"
                     android:paddingBottom="@dimen/dp_2"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:paddingRight="@dimen/dp_5"
+                    android:paddingLeft="@dimen/dp_12"
+                    android:paddingRight="@dimen/dp_12"
                     android:paddingTop="@dimen/dp_2"
                     android:text="学霸"
                     android:textColor="@color/white"
@@ -131,7 +132,7 @@
                     style="@style/title_text_20dp_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_5"
+                    android:layout_marginBottom="@dimen/dp_2"
                     android:layout_marginLeft="@dimen/dp_5"
                     android:layout_toLeftOf="@+id/center_line"
                     android:gravity="center"
@@ -140,8 +141,9 @@
                 <View
                     android:id="@+id/center_line"
                     android:layout_width="1dp"
-                    android:layout_height="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_25"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp_5"
                     android:background="@color/line_color" />
 
                 <TextView
@@ -159,6 +161,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/num_focus"
+                    android:layout_marginBottom="@dimen/dp_4"
                     android:layout_marginLeft="@dimen/dp_5"
                     android:layout_toLeftOf="@+id/center_line"
                     android:gravity="center"
@@ -185,11 +188,15 @@
     </LinearLayout>
 
     <View
-        style="@style/line_horizontal"
+        android:id="@+id/bottom_view_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/dp_48" />
+        android:layout_marginBottom="@dimen/dp_48"
+        android:background="@color/line_color" />
 
     <LinearLayout
+        android:id="@+id/bottom_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_48"
         android:layout_gravity="bottom"
@@ -200,19 +207,22 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColor="@color/orange"
             android:gravity="center"
-            android:text="关注" />
+            android:text="关注"
+            android:textColor="@color/orange" />
 
-        <View style="@style/line_vertical" />
+        <View
+            android:layout_width="0.7dp"
+            android:layout_height="match_parent"
+            android:background="@color/line_color" />
 
         <TextView
             android:id="@+id/chat"
             android:layout_width="0dp"
-            android:textColor="@color/orangered"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="聊天" />
+            android:text="私聊"
+            android:textColor="@color/orangered" />
     </LinearLayout>
 </FrameLayout>
