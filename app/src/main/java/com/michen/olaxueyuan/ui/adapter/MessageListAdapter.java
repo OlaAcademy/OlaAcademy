@@ -63,6 +63,7 @@ public class MessageListAdapter extends BaseAdapter {
         }
         holder.avatar.setRectAdius(100);
         holder.title.setText(list.get(position).getTitle());
+        holder.content.setText(list.get(position).getContent());
         PictureUtils.loadAvatar(mContext, holder.avatar, list.get(position).getImageUrl(), 50);
         if (list.get(position).getTime().length() > 10) {
             holder.time.setText(list.get(position).getTime().substring(0, 10));

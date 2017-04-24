@@ -109,6 +109,24 @@ public interface HomeListService {
             Callback<SimpleResult> callback);
 
     /**
+     * 关注／取消关注
+     *
+     * @param attendId   关注人Id
+     * @param attendedId 被关注人Id
+     * @param type       1 关注 2 取消
+     * @param curUserId  当前用户userID
+     * @param callback
+     */
+    @FormUrlEncoded
+    @POST("/ola/attention/attendUser")
+    void attendUser(
+            @Field("attendId") String attendId,
+            @Field("attendedId") String attendedId,
+            @Field("curUserId") String curUserId,
+            @Field("type") int type,
+            Callback<SimpleResult> callback);
+
+    /**
      * 关注列表
      *
      * @param userId
