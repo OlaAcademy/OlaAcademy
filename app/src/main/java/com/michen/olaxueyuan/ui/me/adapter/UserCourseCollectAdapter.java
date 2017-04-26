@@ -67,7 +67,7 @@ public class UserCourseCollectAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.name.setText(list.get(position).getVideoName());
-        Picasso.with(context).load(list.get(position).getCoursePic()).config(Bitmap.Config.RGB_565)
+        Picasso.with(context).load(list.get(position).getVideoPic()).config(Bitmap.Config.RGB_565)
                 .placeholder(R.drawable.system_wu).into(holder.iconCollect);
         holder.courseTime.setText(list.get(position).getTotalTime());
         holder.buyCount.setText(context.getString(R.string.num_buy, list.get(position).getSubAllNum()));

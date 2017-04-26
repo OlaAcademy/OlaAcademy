@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,7 +129,9 @@ public class QuestionFragment extends SuperFragment implements PullToRefreshBase
 
     private void initView() {
         selectArray = getActivity().getResources().getStringArray(R.array.question_select_maths);
-        titleManager = new TitleManager("距离考试" + DateUtils.getRemainsDay() + "天", this, rootView, false);
+        String titleName = String.format("距离考试<font color=\"#4285f4\">%s</font>天", String.valueOf(DateUtils.getRemainsDay()));
+//        titleManager = new TitleManager("距离考试" + DateUtils.getRemainsDay() + "天", this, rootView, false);
+        titleManager = new TitleManager(Html.fromHtml(titleName), this, rootView, false);
         titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.create_group_icon);
         expandableListViews.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         expandableListViews.setOnRefreshListener(this);

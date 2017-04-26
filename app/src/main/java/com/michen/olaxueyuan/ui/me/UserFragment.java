@@ -282,7 +282,7 @@ public class UserFragment extends SuperFragment implements PullToRefreshBase.OnR
         } else {
             try {
                 name.setText(userInfo.getName() != null ? userInfo.getName() : "小欧");
-                remainDays.setText("会员" + userInfo.getVipTime() + "天");
+                remainDays.setText(userInfo.getVipTime() + "天会员");
                 if (userInfo.getAvator() != null) {
                     String avatarUrl = "";
                     //                if (userInfo.getAvator().contains("jpg")||userInfo.getAvator().contains("gif")) {

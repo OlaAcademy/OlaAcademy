@@ -222,7 +222,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/coin_daily_task_bg"
                         android:orientation="vertical"
-                        android:padding="@dimen/dp_20">
+                        android:padding="@dimen/dp_10">
 
                         <TextView
                             style="@style/normal_text_13dp_style"
@@ -259,7 +259,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/coin_daily_task_bg"
                         android:orientation="vertical"
-                        android:padding="@dimen/dp_20">
+                        android:padding="@dimen/dp_10">
 
                         <TextView
                             style="@style/normal_text_13dp_style"
@@ -296,7 +296,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/coin_daily_task_bg"
                         android:orientation="vertical"
-                        android:padding="@dimen/dp_20">
+                        android:padding="@dimen/dp_10">
 
                         <TextView
                             style="@style/normal_text_13dp_style"

@@ -55,10 +55,19 @@ public class UserCourseCollectResult extends ServiceResult {
         private int videoId;
         private String videoName;
         private String videoUrl;
+        private String videoPic;
         private int courseId;
         private String coursePic;
         private String totalTime;
         private int subAllNum;
+
+        public String getVideoPic() {
+            return videoPic;
+        }
+
+        public void setVideoPic(String videoPic) {
+            this.videoPic = videoPic;
+        }
 
         public void setVideoId(int videoId) {
             this.videoId = videoId;

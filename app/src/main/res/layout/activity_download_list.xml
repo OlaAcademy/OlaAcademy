@@ -67,10 +67,23 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:id="@+id/download_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="#F0F0F0" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/download_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#F0F0F0" />
+
+        <ImageView
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerInside"
+            android:src="@drawable/no_data_icon" />
+    </LinearLayout>
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.michen.olaxueyuan.R;
@@ -39,6 +40,8 @@ public class MyCourseCollectActivity extends SEBaseActivity implements PullToRef
     Button btnLogin;
     @Bind(R.id.login_view)
     LinearLayout loginView;
+    @Bind(R.id.empty)
+    ImageView empty;
     private UserCourseCollectAdapter adapter;
     public static boolean isRefreshCourseCollectList;//是否刷新用户收藏列表
     private Context mContext;
@@ -73,6 +76,7 @@ public class MyCourseCollectActivity extends SEBaseActivity implements PullToRef
         setTitleText(getString(R.string.my_collect_text));
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.setOnRefreshListener(this);
+        listview.setEmptyView(empty);
         adapter = new UserCourseCollectAdapter(mContext);
         listview.setAdapter(adapter);
         isLoginView();

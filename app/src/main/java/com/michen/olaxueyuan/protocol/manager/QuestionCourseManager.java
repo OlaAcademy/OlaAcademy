@@ -1,5 +1,7 @@
 package com.michen.olaxueyuan.protocol.manager;
 
+import android.text.TextUtils;
+
 import com.michen.olaxueyuan.protocol.result.CircleMessageListResult;
 import com.michen.olaxueyuan.protocol.result.CommentModule;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
@@ -217,8 +219,8 @@ public class QuestionCourseManager {
     /**
      * 个人主页
      *
-     * @param userId   (必填)
-     * @param curUserId   当前用户userId
+     * @param userId    (必填)
+     * @param curUserId 当前用户userId
      * @param callback
      */
     public void getUserPostList(String userId, String curUserId, Callback<UserPostListResult> callback) {

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.michen.olaxueyuan.R;
@@ -34,12 +35,15 @@ import retrofit.client.Response;
 public class MyBuyGoodsActivity extends SEBaseActivity implements PullToRefreshBase.OnRefreshListener {
     @Bind(R.id.listview)
     PullToRefreshListView listview;
-    UserBuyGoodsAdapter adapter;
-    UserBuyGoodsResult module;
+    @Bind(R.id.empty)
+    ImageView empty;
     @Bind(R.id.btn_login)
     Button btnLogin;
     @Bind(R.id.login_view)
     LinearLayout loginView;
+
+    UserBuyGoodsAdapter adapter;
+    UserBuyGoodsResult module;
     private Context mContext;
 
     @Override
@@ -85,6 +89,7 @@ public class MyBuyGoodsActivity extends SEBaseActivity implements PullToRefreshB
         setTitleText(getString(R.string.my_buy_text));
         listview.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listview.setOnRefreshListener(this);
+        listview.setEmptyView(empty);
         adapter = new UserBuyGoodsAdapter(mContext);
         listview.setAdapter(adapter);
         isLoginView();

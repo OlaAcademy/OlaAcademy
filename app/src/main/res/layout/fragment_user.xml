@@ -113,7 +113,7 @@
                     android:layout_toRightOf="@+id/tips"
                     android:maxLines="1"
                     android:paddingTop="2dp"
-                    android:text="会员0天"
+                    android:text="0天会员"
                     android:textColor="@color/white"
                     android:textSize="13dp" />
 

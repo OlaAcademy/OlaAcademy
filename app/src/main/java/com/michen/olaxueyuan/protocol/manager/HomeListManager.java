@@ -110,19 +110,6 @@ public class HomeListManager {
     }
 
     /**
-     * 关注／取消关注
-     *
-     * @param attendId   关注人Id
-     * @param attendedId 被关注人Id
-     * @param type       1 关注 2 取消
-     * @param curUserId  当前用户userID
-     * @param callback
-     */
-    public void attendUser(String attendId, String attendedId, String curUserId, int type, Callback<SimpleResult> callback) {
-        getHomeListService().attendUser(attendId, attendedId, type, callback);
-    }
-
-    /**
      * 关注列表
      *
      * @param userId
@@ -138,7 +125,7 @@ public class HomeListManager {
      * @param userId
      * @param callback
      */
-    public void queryFollowerList(String userId, Callback<AttendListResult> callback) {
-        getHomeListService().queryFollowerList(userId, callback);
+    public void queryFollowerList(String userId, String curUserId, Callback<AttendListResult> callback) {
+        getHomeListService().queryFollowerList(userId, curUserId, callback);
     }
 }

@@ -27,7 +27,7 @@ public class TitleManager {
     public ImageView right_share;
     public TextView right_text;
 
-    public TitleManager(Activity activity, String title,
+    public TitleManager(Activity activity, CharSequence title,
                         View.OnClickListener listener, boolean showLeftIcon) {
         title_tv = (TextView) activity.findViewById(R.id.title_tv);
         title_tv.setText(title);
@@ -67,7 +67,7 @@ public class TitleManager {
         }
     }
 
-    public TitleManager(String title, View.OnClickListener listener, View view, boolean showLeftIcon) {
+    public TitleManager(CharSequence title, View.OnClickListener listener, View view, boolean showLeftIcon) {
         title_tv = (TextView) view.findViewById(R.id.title_tv);
         title_tv.setText(title);
         title_tv.setOnClickListener(listener);

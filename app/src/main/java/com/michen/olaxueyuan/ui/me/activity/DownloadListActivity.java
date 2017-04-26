@@ -61,6 +61,8 @@ public class DownloadListActivity extends SEBaseActivity {
     View downloadingIndicator;
     @Bind(R.id.downloading_layout)
     RelativeLayout downloadingLayout;
+    @Bind(R.id.empty)
+    ImageView empty;
     @ViewInject(R.id.download_list)
     private SwipeMenuListView downloadList;
 
@@ -84,6 +86,7 @@ public class DownloadListActivity extends SEBaseActivity {
 
         downloadListAdapter = new DownloadListAdapter(mAppContext);
         downloadListAdapter.updateData(downloadManager.getDownloadedList());
+        downloadList.setEmptyView(empty);
         downloadList.setAdapter(downloadListAdapter);
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {

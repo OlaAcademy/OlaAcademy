@@ -104,12 +104,17 @@ public class QuestionHomeWorkFragment extends SuperFragment {
                 try {
                     int progress = (int) animation.getAnimatedValue();
                     circleProgress.setProgress(progress);
-                    if (progress > 0 && progress < 50) {
+                    if (progress == 0) {
+                        circleProgress.setProgressBackgroundColor(Color.parseColor("#FE1600"));
+                    } else if (progress > 0 && progress < 50) {
                         circleProgress.setProgressColor(Color.parseColor("#EC950D"));
+                        circleProgress.setProgressBackgroundColor(Color.parseColor("#ffd3d3d5"));
                     } else if (progress >= 50 && progress < 100) {
                         circleProgress.setProgressColor(Color.parseColor("#009688"));
+                        circleProgress.setProgressBackgroundColor(Color.parseColor("#ffd3d3d5"));
                     } else {
                         circleProgress.setProgressColor(Color.parseColor("#4285F4"));
+                        circleProgress.setProgressBackgroundColor(Color.parseColor("#ffd3d3d5"));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

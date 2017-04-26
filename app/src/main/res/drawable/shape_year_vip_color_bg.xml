@@ -3,7 +3,7 @@
     android:shape="rectangle">
     <solid android:color="@color/white" />
     <stroke
-        android:width="1px"
+        android:width="1.5px"
         android:color="@color/year_vip_text_color" />
     <corners android:radius="5dp" />
 </shape>

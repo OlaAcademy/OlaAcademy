@@ -6,6 +6,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.AttendListResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
@@ -86,8 +87,12 @@ public class FocusedListActivity extends SEBaseActivity implements PullToRefresh
     }
 
     private void queryFollowerList() {
+        String curUserId = "";
+        if (SEAuthManager.getInstance().isAuthenticated()) {
+            curUserId = SEAuthManager.getInstance().getAccessUser().getId();
+        }
         SEAPP.showCatDialog(this);
-        HomeListManager.getInstance().queryFollowerList(userId, new Callback<AttendListResult>() {
+        HomeListManager.getInstance().queryFollowerList(userId, curUserId, new Callback<AttendListResult>() {
             @Override
             public void success(AttendListResult attendListResult, Response response) {
                 if (mContext != null && !FocusedListActivity.this.isFinishing()) {

@@ -101,12 +101,17 @@ public class QuestionHomeWorkListAdapter extends BaseAdapter {
         if (list.get(position).getCount() != 0) {
             int finishPercent = Integer.parseInt(list.get(position).getFinishedPercent());
             holder.circleProgress.setProgress(finishPercent);
-            if (finishPercent > 0 && finishPercent < 50) {
+            if (finishPercent == 0) {
+                holder.circleProgress.setProgressBackgroundColor(Color.parseColor("#FE1600"));
+            } else if (finishPercent > 0 && finishPercent < 50) {
                 holder.circleProgress.setProgressColor(Color.parseColor("#EC950D"));
+                holder.circleProgress.setProgressBackgroundColor(Color.parseColor("#ffd3d3d5"));
             } else if (finishPercent >= 50 && finishPercent < 100) {
                 holder.circleProgress.setProgressColor(Color.parseColor("#009688"));
+                holder.circleProgress.setProgressBackgroundColor(Color.parseColor("#ffd3d3d5"));
             } else {
                 holder.circleProgress.setProgressColor(Color.parseColor("#4285F4"));
+                holder.circleProgress.setProgressBackgroundColor(Color.parseColor("#ffd3d3d5"));
             }
         } else {
             holder.circleProgress.setProgress(0);

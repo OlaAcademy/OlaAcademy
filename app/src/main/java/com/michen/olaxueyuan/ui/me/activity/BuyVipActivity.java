@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -345,10 +346,19 @@ public class BuyVipActivity extends SEBaseActivity implements PullToRefreshBase.
                     if (vipPriceResult.getApicode() != 10000) {
                         ToastUtil.showToastShort(mContext, vipPriceResult.getMessage());
                     } else {
-                        monthCurrentMoney.setText(getString(R.string.month_vip_price, vipPriceResult.getResult().getMonthPrice()));
-                        seasonCurrentMoney.setText(getString(R.string.season_vip_price, vipPriceResult.getResult().getSeasonPrice()));
-                        yearCurrentMoney.setText(getString(R.string.half_year_vip_price, vipPriceResult.getResult().getHalfYearPrice()));
-                        allYearCurrentMoney.setText(getString(R.string.all_year_vip_price, vipPriceResult.getResult().getYearPrice()));
+                        String strMonth = String.format("月度黄金会员<font color=\"#E57B19\">%s</font>元", vipPriceResult.getResult().getMonthPrice());
+                        String strSeason = String.format("季度黄金会员<font color=\"#E57B19\">%s</font>元", vipPriceResult.getResult().getSeasonPrice());
+                        String strHalfYear = String.format("半年黄金会员<font color=\"#E57B19\">%s</font>元", vipPriceResult.getResult().getHalfYearPrice());
+                        String strYear = String.format("一年黄金会员<font color=\"#E57B19\">%s</font>元", vipPriceResult.getResult().getYearPrice());
+                        monthCurrentMoney.setText(Html.fromHtml(strMonth));
+                        seasonCurrentMoney.setText(Html.fromHtml(strSeason));
+                        yearCurrentMoney.setText(Html.fromHtml(strHalfYear));
+                        allYearCurrentMoney.setText(Html.fromHtml(strYear));
+
+//                        monthCurrentMoney.setText(getString(R.string.month_vip_price, vipPriceResult.getResult().getMonthPrice()));
+//                        seasonCurrentMoney.setText(getString(R.string.season_vip_price, vipPriceResult.getResult().getSeasonPrice()));
+//                        yearCurrentMoney.setText(getString(R.string.half_year_vip_price, vipPriceResult.getResult().getHalfYearPrice()));
+//                        allYearCurrentMoney.setText(getString(R.string.all_year_vip_price, vipPriceResult.getResult().getYearPrice()));
                     }
                 }
             }
