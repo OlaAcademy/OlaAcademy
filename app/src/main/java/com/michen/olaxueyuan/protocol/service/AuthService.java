@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.protocol.service;
 
+import com.michen.olaxueyuan.protocol.model.SEThirdLoginUser;
 import com.michen.olaxueyuan.protocol.result.AccessTokenResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
@@ -47,5 +48,21 @@ public interface AuthService {
     public void authWithUsernamePassword(@Field("phone") String phone,
                                          @Field("passwd") String passwd,
                                          Callback<SEUserResult> cb);
+
+    /**
+     * 第三方登录
+     *
+     * @param source
+     * @param sourceId
+     * @param unionId
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/user/loginBySDK")
+    public void thirdLogin(
+            @Field("source") String source,//QQ  wechat  sinaMicroblog
+            @Field("sourceId") String sourceId,
+            @Field("unionId") String unionId,
+            Callback<SEThirdLoginUser> cb);
 }
 

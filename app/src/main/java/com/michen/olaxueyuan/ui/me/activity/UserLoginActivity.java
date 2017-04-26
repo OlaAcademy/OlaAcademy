@@ -19,6 +19,7 @@ import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.model.SEThirdLoginUser;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
@@ -224,7 +225,8 @@ public class UserLoginActivity extends SEBaseActivity {
 
     private void thirdLoginWeChat() {
         // 添加微信平台
-        UMWXHandler wxHandler = new UMWXHandler(UserLoginActivity.this, Constants.APP_ID, Constants.API_KEY);
+//        UMWXHandler wxHandler = new UMWXHandler(UserLoginActivity.this, Constants.APP_ID, Constants.API_KEY);
+        UMWXHandler wxHandler = new UMWXHandler(UserLoginActivity.this, Constants.APP_ID, Constants.API_SECRET);
         wxHandler.addToSocialSDK();
         mController.doOauthVerify(UserLoginActivity.this, SHARE_MEDIA.WEIXIN, new SocializeListeners.UMAuthListener() {
             @Override
@@ -273,7 +275,7 @@ public class UserLoginActivity extends SEBaseActivity {
                             source = "wechat";
                             sourceId = value.getString("uid");
                             Logger.e("uid======================================" + value.getString("uid"));
-//                            bindingPhoneOrNot(source, unionId, sourceId);
+                            bindingPhoneOrNot(source, unionId, sourceId);
                             Logger.e("==========" + sb.toString());
                         } else {
                             Logger.e("==========发生错误：" + status);
@@ -285,6 +287,20 @@ public class UserLoginActivity extends SEBaseActivity {
             @Override
             public void onCancel(SHARE_MEDIA platform) {
                 Toast.makeText(UserLoginActivity.this, "授权取消", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void bindingPhoneOrNot(String source, String unionId, String sourceId) {
+        SEAuthManager.getInstance().thirdLogin(source, unionId, sourceId, new Callback<SEThirdLoginUser>() {
+            @Override
+            public void success(SEThirdLoginUser thirdLoginUser, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
             }
         });
     }

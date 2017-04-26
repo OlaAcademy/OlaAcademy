@@ -78,7 +78,7 @@
         android:layout_above="@+id/bottomRL"
         android:layout_centerHorizontal="true"
         android:src="@drawable/weixin"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <ImageView
         android:layout_width="match_parent"

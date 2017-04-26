@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.protocol.manager;
 
 import android.content.Context;
 
+import com.michen.olaxueyuan.protocol.model.SEThirdLoginUser;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
 import com.michen.olaxueyuan.protocol.service.AuthService;
@@ -233,5 +234,17 @@ public class SEAuthManager {
         } catch (IOException e) {
         } catch (ClassNotFoundException e) {
         }
+    }
+
+    /**
+     * 第三方登录
+     *
+     * @param source
+     * @param sourceId
+     * @param unionId
+     * @param callback
+     */
+    public void thirdLogin(String source, String unionId, String sourceId, Callback<SEThirdLoginUser> callback) {
+        _authService.thirdLogin(source, unionId, sourceId, callback);
     }
 }
