@@ -2,6 +2,7 @@ package com.michen.olaxueyuan.ui.me.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,11 +27,14 @@ import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
 import com.michen.olaxueyuan.ui.course.pay.weixin.Constants;
+import com.michen.olaxueyuan.ui.umeng.SinaSsoHandler;
+import com.snail.svprogresshud.SVProgressHUD;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.listener.SocializeListeners;
 import com.umeng.socialize.exception.SocializeException;
+import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 
@@ -51,6 +55,10 @@ public class UserLoginActivity extends SEBaseActivity {
 
     @Bind(R.id.login_weixin)
     ImageView loginWeixin;
+    @Bind(R.id.login_qq)
+    ImageView loginQq;
+    @Bind(R.id.login_weibo)
+    ImageView loginWeibo;
     private EditText phoneET;
     private EditText passET;
     private Button loginBtn;
@@ -274,11 +282,11 @@ public class UserLoginActivity extends SEBaseActivity {
                             }
                             source = "wechat";
                             sourceId = value.getString("uid");
-                            Logger.e("uid======================================" + value.getString("uid"));
+                            Logger.e("uid" + value.getString("uid"));
                             bindingPhoneOrNot(source, unionId, sourceId);
-                            Logger.e("==========" + sb.toString());
+                            Logger.e("wechat_sb=" + sb.toString());
                         } else {
-                            Logger.e("==========发生错误：" + status);
+                            Logger.e("发生错误：" + status);
                         }
                     }
                 });
@@ -291,25 +299,163 @@ public class UserLoginActivity extends SEBaseActivity {
         });
     }
 
-    private void bindingPhoneOrNot(String source, String unionId, String sourceId) {
-        SEAuthManager.getInstance().thirdLogin(source, unionId, sourceId, new Callback<SEThirdLoginUser>() {
+    private void thirdLoginQQ() {
+        // 添加QQ支持, 并且设置QQ分享内容的target url
+        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(UserLoginActivity.this, Constants.QQ_APP_ID, Constants.QQ_APP_KEY);
+        qqSsoHandler.addToSocialSDK();
+        mController.doOauthVerify(UserLoginActivity.this, SHARE_MEDIA.QQ, new SocializeListeners.UMAuthListener() {
             @Override
-            public void success(SEThirdLoginUser thirdLoginUser, Response response) {
+            public void onStart(SHARE_MEDIA share_media) {
 
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onComplete(final Bundle value, SHARE_MEDIA share_media) {
+                if (value != null && !TextUtils.isEmpty(value.getString("uid"))) {
+                    SEAPP.showCatDialog(UserLoginActivity.this, "登录中,请稍候...");
+                    mController.getPlatformInfo(UserLoginActivity.this, SHARE_MEDIA.QQ, new SocializeListeners.UMDataListener() {
+                        @Override
+                        public void onStart() {
+
+                        }
+
+                        @Override
+                        public void onComplete(int status, Map<String, Object> info) {
+                            SEAPP.dismissAllowingStateLoss();
+                            if (status == 200 && info != null) {
+                                StringBuilder sb = new StringBuilder();
+                                Set<String> keys = info.keySet();
+                                for (String key : keys) {
+                                    sb.append(key + "=" + info.get(key).toString() + "\r\n");
+                                    if ("profile_image_url".equals(key)) {
+                                        headUrl = info.get(key).toString();
+                                    }
+                                    if ("gender".equals(key)) {
+                                        gender = info.get(key).toString();
+                                    }
+                                }
+                                Logger.e("qq_sb=" + sb.toString());
+                                source = "QQ";
+                                sourceId = value.getString("uid");
+                                bindingPhoneOrNot(source, unionId, sourceId);
+
+                            } else {
+                                Logger.e("发生错误：" + status);
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(UserLoginActivity.this, "授权失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(SocializeException e, SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media) {
 
             }
         });
     }
 
-    @OnClick({R.id.login_weixin})
+    private void thirdLoginSina() {
+        //设置新浪SSO handler
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+        mController.doOauthVerify(UserLoginActivity.this, SHARE_MEDIA.SINA, new SocializeListeners.UMAuthListener() {
+            @Override
+            public void onError(SocializeException e, SHARE_MEDIA platform) {
+            }
+
+            @Override
+            public void onComplete(final Bundle value, SHARE_MEDIA platform) {
+//                if (value != null && !TextUtils.isEmpty(value.getString("uid"))) {
+                Toast.makeText(UserLoginActivity.this, "授权成功.", Toast.LENGTH_SHORT).show();
+                mController.getPlatformInfo(UserLoginActivity.this, SHARE_MEDIA.SINA, new SocializeListeners.UMDataListener() {
+                    @Override
+                    public void onStart() {
+                        Toast.makeText(UserLoginActivity.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onComplete(int status, Map<String, Object> info) {
+                        if (status == 200 && info != null) {
+                            StringBuilder sb = new StringBuilder();
+                            Set<String> keys = info.keySet();
+                            for (String key : keys) {
+                                sb.append(key + "=" + info.get(key).toString() + "\r\n");
+                                if ("profile_image_url".equals(key)) {
+                                    headUrl = info.get(key).toString();
+                                }
+                                if ("gender".equals(key)) {
+                                    if ("1".equals(info.get(key).toString())) {
+                                        gender = "男";
+                                    } else if ("2".equals(info.get(key).toString())) {
+                                        gender = "女";
+                                    } else {
+                                        gender = "";
+                                    }
+                                }
+                                if ("access_token".equals(key)) {
+                                    sourceId = info.get(key).toString();
+                                }
+                            }
+                            Logger.e("sb=" + sb.toString());
+                            source = "sinaMicroblog";
+//                                sourceId = value.getString("uid");
+                            Logger.e("uid======================================" + value.getString("uid"));
+                            bindingPhoneOrNot(source, unionId, sourceId);
+                            Logger.e("sina_sb=" + sb.toString());
+                        } else {
+                            Logger.e("发生错误：" + status);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform) {
+            }
+
+            @Override
+            public void onStart(SHARE_MEDIA platform) {
+            }
+        });
+    }
+
+    private void bindingPhoneOrNot(String source, String unionId, String sourceId) {
+        SEAPP.showCatDialog(this, "正在检查是否绑定过手机号");
+        SEAuthManager.getInstance().thirdLogin(source, unionId, sourceId, new Callback<SEThirdLoginUser>() {
+            @Override
+            public void success(SEThirdLoginUser thirdLoginUser, Response response) {
+                if (mContext != null && !UserLoginActivity.this.isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (mContext != null && !UserLoginActivity.this.isFinishing()) {
+                    SEAPP.dismissAllowingStateLoss();
+
+                }
+            }
+        });
+    }
+
+    @OnClick({R.id.login_weixin, R.id.login_qq, R.id.login_weibo})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.login_qq:
+                thirdLoginQQ();
+                break;
             case R.id.login_weixin:
                 thirdLoginWeChat();
+                break;
+            case R.id.login_weibo:
+                thirdLoginSina();
                 break;
         }
     }

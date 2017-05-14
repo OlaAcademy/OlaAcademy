@@ -8,6 +8,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.protocol.model.AccessToken;
+import com.michen.olaxueyuan.protocol.result.UploadImageResult;
+import com.michen.olaxueyuan.protocol.result.UploadMediaResult;
 import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
 import com.michen.olaxueyuan.protocol.service.UploadService;
 import com.snail.photo.upload.UploadResult;
@@ -63,7 +65,8 @@ public class UploadMediaManager {
             }
         };
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(SEAPP.MEDIA_BASE_URL)
+//                .setEndpoint(SEAPP.MEDIA_BASE_URL)
+                .setEndpoint(SEAPP.API_BASE_URL)
                 .setErrorHandler(errorHandler)
                 .setRequestInterceptor(requestInterceptor)
                 .setConverter(new GsonConverter(gson))
@@ -89,6 +92,8 @@ public class UploadMediaManager {
      * @param movData
      * @param movType mp3、mp4
      * @param cb
+     * @see {{@link #uploadMedia(TypedFile, String, Callback)}}
+     * @deprecated
      */
     public void movieUpload(TypedFile movData, String movType, Callback<VideoUploadResult> cb) {
         getUploadService().movieUpload(movData, movType, cb);
@@ -103,8 +108,33 @@ public class UploadMediaManager {
      * @param height
      * @param picType
      * @param callback
+     * @see {{@link #uploadImage(TypedFile, String, Callback)}}
+     * @deprecated
      */
     public void uploadImage(TypedFile imgData, int imgAngle, int width, int height, String picType, Callback<UploadResult> callback) {
         getUploadService().uploadImage(imgData, imgAngle, width, height, picType, callback);
     }
+
+    /**
+     * 上传图片
+     *
+     * @param imgData
+     * @param picType
+     * @param callback
+     */
+    public void uploadImage(TypedFile imgData, String picType, Callback<UploadImageResult> callback) {
+        getUploadService().uploadImage(imgData, picType, callback);
+    }
+
+    /**
+     * 上传音频和视频
+     *
+     * @param movData
+     * @param movType mp3、mp4
+     * @param cb
+     */
+    public void uploadMedia(TypedFile movData, String movType, Callback<UploadMediaResult> cb) {
+        getUploadService().updaloadMedia(movData, movType, cb);
+    }
+
 }

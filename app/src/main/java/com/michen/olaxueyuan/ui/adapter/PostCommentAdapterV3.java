@@ -139,7 +139,13 @@ public class PostCommentAdapterV3 extends BaseAdapter implements MyAudioManager.
         }
         if (!TextUtils.isEmpty(list.get(position).getVideoUrls())) {
             holder.videoView.setVisibility(View.VISIBLE);
-            Picasso.with(mContext).load(SEAPP.MEDIA_BASE_URL + "/" + list.get(position).getVideoImgs()).placeholder(R.drawable.system_wu)
+            String avatarUrl = "";
+            if (list.get(position).getUserAvatar().contains("http://")) {
+                avatarUrl = list.get(position).getVideoImgs();
+            } else {
+                avatarUrl = SEAPP.MEDIA_BASE_URL + "/" + list.get(position).getVideoImgs();
+            }
+            Picasso.with(mContext).load(avatarUrl).placeholder(R.drawable.system_wu)
                     .error(R.drawable.system_wu).resize(Utils.dip2px(mContext, 241), Utils.dip2px(mContext, 132)).into(holder.videoImage);
         } else {
             holder.videoView.setVisibility(View.GONE);
@@ -204,7 +210,8 @@ public class PostCommentAdapterV3 extends BaseAdapter implements MyAudioManager.
                 if (!TextUtils.isEmpty(videoUrl)) {
                     String extension = MimeTypeMap.getFileExtensionFromUrl(videoUrl);
                     String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-                    playIntent.setDataAndType(Uri.parse(SEAPP.MEDIA_BASE_URL + "/" + videoUrl), mimeType);
+//                    playIntent.setDataAndType(Uri.parse(SEAPP.MEDIA_BASE_URL + "/" + videoUrl), mimeType);
+                    playIntent.setDataAndType(Uri.parse(videoUrl), mimeType);
 
                 } else {
                     ToastUtil.showToastShort(mContext, "播放地址不存在");
@@ -352,7 +359,8 @@ public class PostCommentAdapterV3 extends BaseAdapter implements MyAudioManager.
             notifyDataSetChanged();
             return;
         }
-        handler = http.download(SEAPP.MEDIA_BASE_URL + "/" + url, mFilePath,
+//        handler = http.download(SEAPP.MEDIA_BASE_URL + "/" + url, mFilePath,
+        handler = http.download(url, mFilePath,
                 true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
                 true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
                 new RequestCallBack<File>() {

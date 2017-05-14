@@ -63,6 +63,8 @@ import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
 import com.michen.olaxueyuan.protocol.result.PostDetailModule;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
+import com.michen.olaxueyuan.protocol.result.UploadImageResult;
+import com.michen.olaxueyuan.protocol.result.UploadMediaResult;
 import com.michen.olaxueyuan.protocol.result.VideoUploadResult;
 import com.michen.olaxueyuan.protocol.service.UploadService;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
@@ -532,22 +534,22 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
         service.submit(new Runnable() {
             @Override
             public void run() {
-                UploadMediaManager.getInstance().movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
+                UploadMediaManager.getInstance().uploadMedia(typeFile, type, new Callback<UploadMediaResult>() {
                     //                uploadService.movieUpload(typeFile, type, new Callback<VideoUploadResult>() {
                     @Override
-                    public void success(VideoUploadResult uploadResult, Response response) {
-                        if (uploadResult.getCode() != 1) {
+                    public void success(UploadMediaResult uploadResult, Response response) {
+                        if (uploadResult.getApicode() != 10000) {
                             SEAPP.dismissAllowingStateLoss();
                             SVProgressHUD.showInViewWithoutIndicator(mContext, uploadResult.getMessage(), 2.0f);
                         } else {
                             Logger.e("type==" + type);
                             if (type.equals("amr")) {
                                 mVoiceFilePath = "";
-                                audioUrls = uploadResult.getUrl();
+                                audioUrls = uploadResult.getMediaUrl();
                                 addComment();
                             } else if (type.equals("mp4")) {
-                                videoUrls = uploadResult.getUrl();
-                                videoImages = uploadResult.getPic();
+                                videoUrls = uploadResult.getMediaUrl();
+                                videoImages = uploadResult.getThumbUrl();
                                 handler.sendEmptyMessage(VIDEO_SEND_SUCCESS);
                             }
                         }
@@ -570,33 +572,17 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
 
             @Override
             public void run() {
-                UploadMediaManager.getInstance().uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
-                    @Override
-                    public void success(UploadResult result, Response response) {
-                        uploadNum++;
-                        if (result.code != 1) {
-                            SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, result.message, 2.0f);
-                            return;
-                        }
-                        imageIds = imageIds + result.imgGid + ",";
-                        int imageNum = 0;
-                        for (int i = 0; i < tempSelectBitmap.size(); i++) {
-                            if (tempSelectBitmap.get(i).tag.type.equals("1")) {
-                                imageNum++;
-                            }
-                        }
-                        if (uploadNum == imageNum) {
-                            addComment();
-                        }
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        uploadNum++;
-                        if (uploadNum == Bimp.tempSelectBitmap.size()) {
-                            Bimp.tempSelectBitmap.clear();
-                            if (imageIds.equals("")) {
-                                SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, "图片上传失败", 2.0f);
+                UploadMediaManager.getInstance().uploadImage(photo,
+//                       angle, 480, 320,
+                        "jpg", new Callback<UploadImageResult>() {
+                            @Override
+                            public void success(UploadImageResult result, Response response) {
+                                uploadNum++;
+                                if (result.getApicode() != 10000) {
+                                    SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, result.getMessage(), 2.0f);
+                                    return;
+                                }
+                                imageIds = imageIds + result.getResult() + ",";
                                 int imageNum = 0;
                                 for (int i = 0; i < tempSelectBitmap.size(); i++) {
                                     if (tempSelectBitmap.get(i).tag.type.equals("1")) {
@@ -607,9 +593,27 @@ public class PostDetailActivity extends SEBaseActivity implements MyAudioManager
                                     addComment();
                                 }
                             }
-                        }
-                    }
-                });
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                uploadNum++;
+                                if (uploadNum == Bimp.tempSelectBitmap.size()) {
+                                    Bimp.tempSelectBitmap.clear();
+                                    if (imageIds.equals("")) {
+                                        SVProgressHUD.showInViewWithoutIndicator(PostDetailActivity.this, "图片上传失败", 2.0f);
+                                        int imageNum = 0;
+                                        for (int i = 0; i < tempSelectBitmap.size(); i++) {
+                                            if (tempSelectBitmap.get(i).tag.type.equals("1")) {
+                                                imageNum++;
+                                            }
+                                        }
+                                        if (uploadNum == imageNum) {
+                                            addComment();
+                                        }
+                                    }
+                                }
+                            }
+                        });
             }
 
         });

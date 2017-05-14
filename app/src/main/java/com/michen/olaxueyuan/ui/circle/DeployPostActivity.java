@@ -40,8 +40,10 @@ import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.MCCircleManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
+import com.michen.olaxueyuan.protocol.manager.UploadMediaManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
+import com.michen.olaxueyuan.protocol.result.UploadImageResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.circle.upload.AlbumActivity;
 import com.michen.olaxueyuan.ui.circle.upload.GalleryActivity;
@@ -143,7 +145,8 @@ public class DeployPostActivity extends SEBaseActivity {
         ButterKnife.bind(this);
 
         Init();
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://upload.olaxueyuan.com").build();
+//        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://upload.olaxueyuan.com").build();
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(SEAPP.API_BASE_URL).build();
         uploadService = restAdapter.create(UploadService.class);
         setTitleText(getResources().getString(R.string.title_activity_deploy_post));
         setRightText(getResources().getString(R.string.publish));
@@ -278,15 +281,18 @@ public class DeployPostActivity extends SEBaseActivity {
             @Override
             public void run() {
 
-                uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
+//                uploadService.uploadImage(photo
+                UploadMediaManager.getInstance().uploadImage(photo
+//                        , angle, 480, 320
+                        , "jpg", new Callback<UploadImageResult>() {
                     @Override
-                    public void success(UploadResult result, Response response) {
+                    public void success(UploadImageResult result, Response response) {
                         uploadNum++;
-                        if (result.code != 1) {
-                            SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.message, 2.0f);
+                        if (result.getApicode() != 10000) {
+                            SVProgressHUD.showInViewWithoutIndicator(DeployPostActivity.this, result.getMessage(), 2.0f);
                             return;
                         }
-                        imageGids = imageGids + result.imgGid + ",";
+                        imageGids = imageGids + result.getResult() + ",";
                         if (uploadNum == Bimp.tempSelectBitmap.size()) {
                             Bimp.tempSelectBitmap.clear();
                             saveInfo(imageGids);

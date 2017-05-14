@@ -7,16 +7,16 @@
         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
     </style>
 
-     <style name="MyAppCompatTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-         <!-- Customize your theme here. -->
-         <item name="colorPrimary">@color/white_light</item>
-         <item name="colorPrimaryDark">@color/common_blue</item>
-         <item name="colorAccent">@color/common_blue</item>
-         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
-         <item name="android:textColorHighlight">#990090ff</item>
-         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
-         <item name="windowActionBar">true</item>
-     </style>
+    <style name="MyAppCompatTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white_light</item>
+        <item name="colorPrimaryDark">@color/common_blue</item>
+        <item name="colorAccent">@color/common_blue</item>
+        <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
+        <item name="android:textColorHighlight">#990090ff</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="windowActionBar">true</item>
+    </style>
 
     <style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/ActionBarBackgroundColor</item>
@@ -498,4 +498,34 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+    <style name="Theme.UMDefault" parent="android:style/Theme.NoTitleBar" />
+
+    <style name="Theme.UMDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="umeng_socialize_popup_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+
+    <style name="umeng_socialize_divider">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/umeng_socialize_divider</item>
+    </style>
+
+    <style name="umeng_socialize_dialog_animations">
+        <item name="android:windowEnterAnimation">@anim/umeng_socialize_slide_in_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/umeng_socialize_slide_out_from_bottom</item>
+    </style>
+
 </resources>

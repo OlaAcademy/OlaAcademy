@@ -26,7 +26,9 @@ import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.event.PublishHomeWorkSuccessEvent;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.TeacherHomeManager;
+import com.michen.olaxueyuan.protocol.manager.UploadMediaManager;
 import com.michen.olaxueyuan.protocol.result.CreateGroupResult;
+import com.michen.olaxueyuan.protocol.result.UploadImageResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.snail.imagechooser.api.ChooserType;
 import com.snail.imagechooser.api.ChosenImage;
@@ -357,16 +359,18 @@ public class CreateGroupActivity extends SEBaseActivity implements ImageChooserL
             @Override
             public void run() {
 
-                uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
+                UploadMediaManager.getInstance().uploadImage(photo,
+//                        angle, 480, 320,
+                        "jpg", new Callback<UploadImageResult>() {
                     @Override
-                    public void success(UploadResult result, Response response) {
+                    public void success(UploadImageResult result, Response response) {
                         if (context != null && !CreateGroupActivity.this.isFinishing()) {
-                            if (result.code != 1) {
-                                SVProgressHUD.showInViewWithoutIndicator(context, result.message, 2.0f);
+                            if (result.getApicode() != 10000) {
+                                SVProgressHUD.showInViewWithoutIndicator(context, result.getMessage(), 2.0f);
                                 return;
                             }
                             SVProgressHUD.showInViewWithoutIndicator(context, getString(R.string.upload_avatar_success), 2);
-                            _imageName = result.imgGid;
+                            _imageName = result.getResult();
                             saveGroupInfo(userId, name, profile);
                         }
                     }

@@ -296,12 +296,22 @@ public class PictureUtils {
         ArrayList imageUrlList = new ArrayList();
         String[] imageUrlArray = images.split(",");
         for (String imgUrl : imageUrlArray) {
-            if (imgUrl.contains(".")) {
-                imgUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + imgUrl;
+//            if (imgUrl.contains(".")) {
+//                imgUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + imgUrl;
+//            } else {
+//                imgUrl = SEAPP.PIC_BASE_URL + imgUrl;
+//            }
+            String avatarUrl = "";
+            if (imgUrl.contains("http://")) {
+                avatarUrl = imgUrl;
+            } else if (imgUrl.contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + imgUrl;
             } else {
-                imgUrl = SEAPP.PIC_BASE_URL + imgUrl;
+                avatarUrl = SEAPP.PIC_BASE_URL + imgUrl;
             }
-            imageUrlList.add(imgUrl);
+
+            imageUrlList.add(avatarUrl);
+//            imageUrlList.add(imgUrl);
         }
         return imageUrlList;
     }

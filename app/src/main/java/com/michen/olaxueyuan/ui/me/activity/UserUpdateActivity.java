@@ -28,9 +28,11 @@ import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.SECallBack;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
+import com.michen.olaxueyuan.protocol.manager.UploadMediaManager;
 import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.MCUploadResult;
 import com.michen.olaxueyuan.protocol.result.ServiceError;
+import com.michen.olaxueyuan.protocol.result.UploadImageResult;
 import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.helper.SAXPraserHelper;
 import com.snail.imagechooser.api.ChooserType;
@@ -486,14 +488,17 @@ public class UserUpdateActivity extends SEBaseActivity implements ImageChooserLi
 
             @Override
             public void run() {
-                uploadService.uploadImage(photo, angle, 480, 320, "jpg", new Callback<UploadResult>() {
+//                uploadService.uploadImage(photo,
+                UploadMediaManager.getInstance().uploadImage(photo,
+//                        angle, 480, 320,
+                        "jpg", new Callback<UploadImageResult>() {
                     @Override
-                    public void success(UploadResult result, Response response) {
-                        if (result.code != 1) {
-                            SVProgressHUD.showInViewWithoutIndicator(UserUpdateActivity.this, result.message, 2.0f);
+                    public void success(UploadImageResult result, Response response) {
+                        if (result.getApicode() != 10000) {
+                            SVProgressHUD.showInViewWithoutIndicator(UserUpdateActivity.this, result.getMessage(), 2.0f);
                             return;
                         } else {
-                            _imageName = result.imgGid;
+                            _imageName = result.getResult();
                             Logger.e("_imageName==" + _imageName);
                         }
                     }

@@ -10,6 +10,10 @@ public class Constants {
     public static final String API_KEY = "di06U47zKP7vAvIF3PQQ14PScAWWIoO1";
 
     public static final String API_SECRET = "f309138a94cb8f3948fdf7b1082bcd29";
+    /*QQ*/
+    public static final String QQ_APP_ID = "1105208558";
+    public static final String QQ_APP_KEY = "mPbbHTGbuubreKZT";
+    /**/
 
     public static class ShowMsgActivity {
         public static final String STitle = "showmsg_title";

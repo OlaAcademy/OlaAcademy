@@ -5,8 +5,10 @@ import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.PraiseCirclePostResult;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.service.MCCircleService;
+import com.snail.photo.upload.UploadResult;
 
 import retrofit.Callback;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by tianxiaopeng on 16/7/10.
