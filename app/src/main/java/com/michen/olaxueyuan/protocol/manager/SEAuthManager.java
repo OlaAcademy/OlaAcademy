@@ -2,17 +2,16 @@ package com.michen.olaxueyuan.protocol.manager;
 
 import android.content.Context;
 
-import com.michen.olaxueyuan.protocol.model.SEThirdLoginUser;
-import com.michen.olaxueyuan.protocol.model.SEUser;
-import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
-import com.michen.olaxueyuan.protocol.service.AuthService;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.protocol.SECallBack;
 import com.michen.olaxueyuan.protocol.model.AccessToken;
+import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.AccessTokenResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.ServiceError;
+import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
+import com.michen.olaxueyuan.protocol.service.AuthService;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -244,7 +243,7 @@ public class SEAuthManager {
      * @param unionId
      * @param callback
      */
-    public void thirdLogin(String source, String unionId, String sourceId, Callback<SEThirdLoginUser> callback) {
+    public void thirdLogin(String source, String unionId, String sourceId, Callback<SEUserResult> callback) {
         _authService.thirdLogin(source, unionId, sourceId, callback);
     }
 }

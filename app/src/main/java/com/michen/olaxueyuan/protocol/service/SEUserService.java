@@ -322,4 +322,28 @@ public interface SEUserService {
             @Field("userId") String userId,
             Callback<SimpleResult> cb);
 
+    /**
+     * 第三方登录绑定手机号
+     *
+     * @param source  微信传值 wechat；   qq传值 QQ； 微博传值 sinaMicroblog
+     * @param sourceId  qq 微博 的openId   微信 unionId
+     * @param name
+     * @param phone
+     * @param code
+     * @param avator
+     * @param sex
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST("/ola/user/bindPhoneWithSDK")
+    void bindPhoneWithSDK(
+            @Field("source") String source,
+            @Field("sourceId") String sourceId,
+            @Field("name") String name,
+            @Field("phone") String phone,
+            @Field("code") String code,
+            @Field("avator") String avator,
+            @Field("sex") String sex,
+            Callback<SEUserResult> cb);
+
 }

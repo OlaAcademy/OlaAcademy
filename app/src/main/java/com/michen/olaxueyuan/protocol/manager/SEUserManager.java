@@ -36,8 +36,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
-import static com.michen.olaxueyuan.ui.circle.CircleFragment.type;
-
 /**
  * Created by tianxiaopeng on 15-1-10.
  */
@@ -425,6 +423,23 @@ public class SEUserManager {
      */
     public void presentOlaCoin(String userId, String type, Callback<SimpleResult> callback) {
         _userService.presentOlaCoin(userId, type, callback);
+    }
+
+    /**
+     * 第三方登录绑定手机号
+     *
+     * @param source   微信传值 wechat；   qq传值 QQ； 微博传值 sinaMicroblog
+     * @param sourceId qq 微博 的openId   微信 unionId
+     * @param name
+     * @param phone
+     * @param code
+     * @param avator
+     * @param sex
+     * @param callback
+     */
+    public void bindPhoneWithSDK(String source, String sourceId, String name, String phone, String code
+            , String avator, String sex, Callback<SEUserResult> callback) {
+        _userService.bindPhoneWithSDK(source, sourceId, name, phone, code, avator, sex, callback);
     }
 }
 

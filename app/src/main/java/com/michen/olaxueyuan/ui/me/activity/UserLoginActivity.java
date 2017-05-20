@@ -20,7 +20,7 @@ import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.HomeListManager;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
-import com.michen.olaxueyuan.protocol.model.SEThirdLoginUser;
+import com.michen.olaxueyuan.protocol.model.SEUser;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
 import com.michen.olaxueyuan.protocol.result.TokenInfoResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
@@ -28,7 +28,6 @@ import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
 import com.michen.olaxueyuan.ui.course.pay.weixin.Constants;
 import com.michen.olaxueyuan.ui.umeng.SinaSsoHandler;
-import com.snail.svprogresshud.SVProgressHUD;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -66,12 +65,14 @@ public class UserLoginActivity extends SEBaseActivity {
 
     public static int PASS_FOREGT = 0x0101;
     public static int USER_REG = 0x0202;
+    public static int BIND_PHONE = 0x0203;
     private UMSocialService mController;
     private String source;
     private String sourceId;
     private String unionId = "";
     private String headUrl;
     private String gender;
+    private String nickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +138,7 @@ public class UserLoginActivity extends SEBaseActivity {
                     }
                     SEAuthManager.getInstance().setTokenInfoResult(null);
                     getTokenInfo();
-                    loginChat(result);
+                    loginChat(result.data);
                     EventBus.getDefault().post(new UserLoginNoticeModule(true));//发送通知登录
 //                    SVProgressHUD.dismiss(UserLoginActivity.this);
                     finish();
@@ -156,7 +157,7 @@ public class UserLoginActivity extends SEBaseActivity {
 
     private LCChatKitUser lcChatKitUser;
 
-    private void loginChat(SEUserResult result) {
+    private void loginChat(SEUser result) {
         if (SEAuthManager.getInstance().isAuthenticated()) {
             LCChatKit.getInstance().open(SEAuthManager.getInstance().getAccessUser().getPhone(), new AVIMClientCallback() {
                 @Override
@@ -170,16 +171,16 @@ public class UserLoginActivity extends SEBaseActivity {
             });
         }
         String avatarUrl = "";
-        if (result.data.getAvator() != null) {
-            if (result.data.getAvator().contains("http://")) {
-                avatarUrl = result.data.getAvator();
-            } else if (result.data.getAvator().contains(".")) {
-                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + result.data.getAvator();
+        if (result.getAvator() != null) {
+            if (result.getAvator().contains("http://")) {
+                avatarUrl = result.getAvator();
+            } else if (result.getAvator().contains(".")) {
+                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + result.getAvator();
             } else {
-                avatarUrl = SEAPP.PIC_BASE_URL + result.data.getAvator();
+                avatarUrl = SEAPP.PIC_BASE_URL + result.getAvator();
             }
         }
-        lcChatKitUser = new LCChatKitUser(result.data.getPhone(), result.data.getName(), avatarUrl);
+        lcChatKitUser = new LCChatKitUser(result.getPhone(), result.getName(), avatarUrl);
         CustomUserProvider.getInstance().setpartUsers(lcChatKitUser);
     }
 
@@ -224,6 +225,15 @@ public class UserLoginActivity extends SEBaseActivity {
             phoneET.setText(data.getStringExtra("phone"));
             passET.setText(data.getStringExtra("password"));
             login();
+        } else if (requestCode == BIND_PHONE) {
+            if (!SEAuthManager.getInstance().isAuthenticated()) {
+                return;
+            }
+            SEAuthManager.getInstance().setTokenInfoResult(null);
+            getTokenInfo();
+            loginChat(SEAuthManager.getInstance().getAccessUser());
+            EventBus.getDefault().post(new UserLoginNoticeModule(true));//发送通知登录
+            finish();
         }
         UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode);
         if (ssoHandler != null) {
@@ -279,6 +289,9 @@ public class UserLoginActivity extends SEBaseActivity {
                                 if ("unionid".equals(key)) {
                                     unionId = info.get(key).toString();
                                 }
+                                if ("nickname".equals(key)) {
+                                    nickname = info.get(key).toString();
+                                }
                             }
                             source = "wechat";
                             sourceId = value.getString("uid");
@@ -333,11 +346,14 @@ public class UserLoginActivity extends SEBaseActivity {
                                     if ("gender".equals(key)) {
                                         gender = info.get(key).toString();
                                     }
+                                    if ("screen_name".equals(key)) {
+                                        nickname = info.get(key).toString();
+                                    }
                                 }
                                 Logger.e("qq_sb=" + sb.toString());
                                 source = "QQ";
                                 sourceId = value.getString("uid");
-                                bindingPhoneOrNot(source, unionId, sourceId);
+                                bindingPhoneOrNot(source, sourceId, sourceId);
 
                             } else {
                                 Logger.e("发生错误：" + status);
@@ -390,23 +406,24 @@ public class UserLoginActivity extends SEBaseActivity {
                                     headUrl = info.get(key).toString();
                                 }
                                 if ("gender".equals(key)) {
-                                    if ("1".equals(info.get(key).toString())) {
+                                    if ("m".equals(info.get(key).toString())) {
                                         gender = "男";
-                                    } else if ("2".equals(info.get(key).toString())) {
-                                        gender = "女";
                                     } else {
-                                        gender = "";
+                                        gender = "女";
                                     }
                                 }
                                 if ("access_token".equals(key)) {
                                     sourceId = info.get(key).toString();
+                                }
+                                if ("screen_name".equals(key)) {
+                                    nickname = info.get(key).toString();
                                 }
                             }
                             Logger.e("sb=" + sb.toString());
                             source = "sinaMicroblog";
 //                                sourceId = value.getString("uid");
                             Logger.e("uid======================================" + value.getString("uid"));
-                            bindingPhoneOrNot(source, unionId, sourceId);
+                            bindingPhoneOrNot(source, sourceId, sourceId);
                             Logger.e("sina_sb=" + sb.toString());
                         } else {
                             Logger.e("发生错误：" + status);
@@ -425,13 +442,36 @@ public class UserLoginActivity extends SEBaseActivity {
         });
     }
 
-    private void bindingPhoneOrNot(String source, String unionId, String sourceId) {
+    private void bindingPhoneOrNot(final String source, final String unionId, final String sourceId) {
         SEAPP.showCatDialog(this, "正在检查是否绑定过手机号");
-        SEAuthManager.getInstance().thirdLogin(source, unionId, sourceId, new Callback<SEThirdLoginUser>() {
+        SEAuthManager.getInstance().thirdLogin(source, unionId, sourceId, new Callback<SEUserResult>() {
             @Override
-            public void success(SEThirdLoginUser thirdLoginUser, Response response) {
+            public void success(SEUserResult thirdLoginUser, Response response) {
+                Logger.e("thirdLoginUser=" + thirdLoginUser.toString());
                 if (mContext != null && !UserLoginActivity.this.isFinishing()) {
                     SEAPP.dismissAllowingStateLoss();
+                    SEUser data = thirdLoginUser.data;
+                    if (data == null || TextUtils.isEmpty(data.getId())) {
+                        Intent intent = new Intent(UserLoginActivity.this, BindMobileActivity.class);
+                        intent.putExtra("source", source);
+                        intent.putExtra("sourceId", sourceId);
+                        intent.putExtra("unionId", unionId);
+                        intent.putExtra("headUrl", headUrl);
+                        intent.putExtra("gender", gender);
+                        intent.putExtra("nickname", nickname);
+                        startActivityForResult(intent, BIND_PHONE);
+                    } else {
+                        if (!thirdLoginUser.apicode.equals("10000")) {
+                            ToastUtil.showToastLong(mContext, thirdLoginUser.message);
+                            return;
+                        }
+                        SEAuthManager.getInstance().setTokenInfoResult(null);
+                        SEAuthManager.getInstance().updateUserInfo(thirdLoginUser.data);
+                        getTokenInfo();
+                        loginChat(thirdLoginUser.data);
+                        EventBus.getDefault().post(new UserLoginNoticeModule(true));//发送通知登录
+                        finish();
+                    }
                 }
             }
 

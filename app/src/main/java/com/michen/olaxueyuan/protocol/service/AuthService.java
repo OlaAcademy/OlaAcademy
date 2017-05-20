@@ -1,6 +1,5 @@
 package com.michen.olaxueyuan.protocol.service;
 
-import com.michen.olaxueyuan.protocol.model.SEThirdLoginUser;
 import com.michen.olaxueyuan.protocol.result.AccessTokenResult;
 import com.michen.olaxueyuan.protocol.result.MCCommonResult;
 import com.michen.olaxueyuan.protocol.result.SEUserResult;
@@ -63,6 +62,6 @@ public interface AuthService {
             @Field("source") String source,//QQ  wechat  sinaMicroblog
             @Field("sourceId") String sourceId,
             @Field("unionId") String unionId,
-            Callback<SEThirdLoginUser> cb);
+            Callback<SEUserResult> cb);
 }
 

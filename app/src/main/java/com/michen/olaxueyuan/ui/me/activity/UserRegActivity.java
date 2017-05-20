@@ -153,7 +153,6 @@ public class UserRegActivity extends SEBaseActivity implements View.OnClickListe
         }
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
