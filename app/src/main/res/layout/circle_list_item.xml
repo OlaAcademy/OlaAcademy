@@ -16,10 +16,7 @@
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginRight="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_5"
-        android:background="@drawable/ic_default_avatar"
-        app:siBorderAlpha="0"
-        app:siBorderWidth="0dp"
-        app:siRadius="5dp" />
+        android:background="@drawable/ic_default_avatar" />
 
     <TextView
         android:id="@+id/name"

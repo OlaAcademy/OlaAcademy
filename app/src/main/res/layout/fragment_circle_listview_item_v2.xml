@@ -20,10 +20,7 @@
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_5"
-            android:background="@drawable/ic_default_avatar"
-            app:siBorderAlpha="0"
-            app:siBorderWidth="0dp"
-            app:siRadius="5dp" />
+            android:background="@drawable/ic_default_avatar" />
 
         <TextView
             android:id="@+id/title"
@@ -107,9 +104,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_35"
-        android:layout_marginTop="@dimen/dp_8"
         android:layout_marginLeft="@dimen/dp_60"
-        android:layout_marginRight="@dimen/dp_60">
+        android:layout_marginRight="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_8">
 
         <View
             style="@style/line_horizontal"
