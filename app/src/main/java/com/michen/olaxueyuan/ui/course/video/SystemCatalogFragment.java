@@ -76,12 +76,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
 	ImageView videoShareBtn;
 	@Bind(R.id.bottom_download_view)
 	RelativeLayout bottomDownloadView;
-	@Bind(R.id.update_item_count)
-	TextView updateItemCount;
-	@Bind(R.id.batch_download)
-	TextView batchDownload;
-	@Bind(R.id.reverse_course)
-	TextView reverseCourse;
+
 	private SystemVideoListAdapter adapter;
 	private String courseId;
 	private String userId;
@@ -163,10 +158,8 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
 				if (getActivity() != null && !getActivity().isFinishing()) {
 					if (result.getApicode() != 10000) {
 						SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.getMessage(), 2.0f);
-						updateItemCountText(0);
 					} else {
 						videoArrayList = result.getResult();
-						updateItemCountText(videoArrayList.size());
 						videoArrayList = downloadManager.getSysVideoArrayList(videoArrayList);
 						playProgress = result.getPlayProgress();
 						((SystemVideoActivity) getActivity()).setVieoArrayList(videoArrayList);
@@ -189,10 +182,6 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
 				}
 			}
 		});
-	}
-
-	private void updateItemCountText(int count) {
-		updateItemCount.setText("已更新" + count + "条音频");
 	}
 
 	private void initListViewItemClick() {
@@ -258,8 +247,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
 		ButterKnife.unbind(this);
 	}
 
-	@OnClick({R.id.btn_buy, R.id.video_download_btn, R.id.video_share_btn, R.id.batch_download
-			, R.id.reverse_course})
+	@OnClick({R.id.btn_buy, R.id.video_download_btn, R.id.video_share_btn})
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.btn_buy:
@@ -271,14 +259,7 @@ public class SystemCatalogFragment extends BaseFragment implements PlatformActio
 			case R.id.video_share_btn:
 				shareCourse(videoArrayList.get(playPosition));
 				break;
-			case R.id.batch_download:
-				break;
-			case R.id.reverse_course:
-				Collections.reverse(videoArrayList);
-				adapter.updateData(videoArrayList);
-				break;
 		}
-
 	}
 
 	private void downloadCourse(SystemVideoResult.ResultBean videoInfo) {

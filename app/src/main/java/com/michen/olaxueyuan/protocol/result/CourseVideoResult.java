@@ -7,297 +7,356 @@ import java.util.List;
  * Created by mingge on 2016/5/24.
  */
 public class CourseVideoResult extends ServiceResult implements Serializable {
-    /**
-     * message : 成功
-     * result : {"pointId":"54","isCollect":"1","videoList":[{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/01_gainian_01.mp4","content":"古典概率","id":1,"isfree":1,"name":"课时1：实数的概念","orgname":"幂学","pic":"","playCount":40,"timeSpan":"0:02:02","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/02_feifu_01.mp4","content":"事件的独立性","id":2,"isfree":1,"name":"课时2：非负性的应用Ⅰ","orgname":"幂学","pic":"","playCount":6,"timeSpan":"0:02:39","tname":"陈剑","weight":"20"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/03_feifu_02.mp4","content":"事件的独立性真题","id":3,"isfree":1,"name":"课时3：非负性的应用Ⅱ","orgname":"幂学","pic":"","playCount":8,"timeSpan":"0:06:09","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/04_zhishu_01.mp4","content":"平均值、方差、标准差概念","id":4,"isfree":1,"name":"课时4：质数与合数","orgname":"幂学","pic":"","playCount":8,"timeSpan":"0:10:09","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/05_zhishu_02.mp4","content":"","id":5,"isfree":1,"name":"课时5：质数的性质","orgname":"","pic":"http://www.mykepu.com:8080/pic/videopic/logo_chenxing.png","playCount":5,"timeSpan":"0:02:45","tname":"","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/06_jishu_01.mp4","content":"幂学教育","id":6,"isfree":1,"name":"课时6：奇数和偶数","orgname":"幂学","pic":"http://www.mykepu.com:8080/pic/videopic/logo_mixue.png","playCount":973,"timeSpan":"0:07:38","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/07_fenshu_01.mp4","content":"晨星成长计划","id":7,"isfree":1,"name":"课时7：分数与小数","orgname":"","pic":"http://www.mykepu.com:8080/pic/videopic/logo_chenxing.png","playCount":62,"timeSpan":"0:06:15","tname":"","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/08_yueshu_01.mp4","content":"大纲词汇分析01","id":8,"isfree":1,"name":"课时8：约数与公倍数","orgname":"幂学","pic":"","playCount":695,"timeSpan":"0:08:09","tname":"何敬","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/09_yueshu_02.mp4","content":"大纲词汇分析02","id":9,"isfree":1,"name":"课时9：约数与倍数的应用","orgname":"幂学","pic":"","playCount":198,"timeSpan":"0:07:15","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/10_yueshu_03.mp4","content":"大纲词汇分析03","id":10,"isfree":1,"name":"课时10：公约数的应用方法","orgname":"幂学","pic":"","playCount":105,"timeSpan":"0:01:32","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/11_juedui_1.mp4","content":"大纲词汇分析04","id":11,"isfree":1,"name":"课时11：绝对值","orgname":"幂学","pic":"","playCount":117,"timeSpan":"0:15:48","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/12_juedui_2.mp4","content":"大纲词汇分析05","id":12,"isfree":1,"name":"课时12：绝对值的基本应用","orgname":"幂学","pic":"","playCount":92,"timeSpan":"0:03:35","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/13_juedui_3.mp4","content":"大纲词汇分析06","id":13,"isfree":1,"name":"课时13：绝对值的非负性","orgname":"幂学","pic":"","playCount":116,"timeSpan":"0:08:36","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/14_bili_01.mp4","content":"大纲词汇分析07","id":14,"isfree":1,"name":"课时14：比和比例的概念","orgname":"幂学","pic":"","playCount":145,"timeSpan":"0:05:39","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/15_bili_02.mp4","content":"大纲词汇分析08","id":15,"isfree":1,"name":"课时15：正比和反比的应用","orgname":"幂学","pic":"","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/18_pingjun_01.mp4","content":"大纲词汇分析11","id":18,"isfree":1,"name":"课时18：平均值的概念","orgname":"幂学","pic":"","playCount":140,"timeSpan":"0:07:31","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/19_pingjun_02.mp4","content":"大纲词汇分析12","id":19,"isfree":1,"name":"课时19：平均值的定理","orgname":"幂学","pic":"","playCount":290,"timeSpan":"0:08:36","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/20_chfen_1.mp4","content":"大纲词汇分析13","id":20,"isfree":1,"name":"课时20：条件充分性判定","orgname":"幂学","pic":"","playCount":103,"timeSpan":"0:16:51","tname":"何敬","weight":""}]}
-     * apicode : 10000
-     */
+	/**
+	 * message : 成功
+	 * result : {"pointId":"54","isCollect":"1","videoList":[{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/01_gainian_01.mp4","content":"古典概率","id":1,"isfree":1,"name":"课时1：实数的概念","orgname":"幂学","pic":"","playCount":40,"timeSpan":"0:02:02","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/02_feifu_01.mp4","content":"事件的独立性","id":2,"isfree":1,"name":"课时2：非负性的应用Ⅰ","orgname":"幂学","pic":"","playCount":6,"timeSpan":"0:02:39","tname":"陈剑","weight":"20"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/03_feifu_02.mp4","content":"事件的独立性真题","id":3,"isfree":1,"name":"课时3：非负性的应用Ⅱ","orgname":"幂学","pic":"","playCount":8,"timeSpan":"0:06:09","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/04_zhishu_01.mp4","content":"平均值、方差、标准差概念","id":4,"isfree":1,"name":"课时4：质数与合数","orgname":"幂学","pic":"","playCount":8,"timeSpan":"0:10:09","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/05_zhishu_02.mp4","content":"","id":5,"isfree":1,"name":"课时5：质数的性质","orgname":"","pic":"http://www.mykepu.com:8080/pic/videopic/logo_chenxing.png","playCount":5,"timeSpan":"0:02:45","tname":"","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/06_jishu_01.mp4","content":"幂学教育","id":6,"isfree":1,"name":"课时6：奇数和偶数","orgname":"幂学","pic":"http://www.mykepu.com:8080/pic/videopic/logo_mixue.png","playCount":973,"timeSpan":"0:07:38","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/07_fenshu_01.mp4","content":"晨星成长计划","id":7,"isfree":1,"name":"课时7：分数与小数","orgname":"","pic":"http://www.mykepu.com:8080/pic/videopic/logo_chenxing.png","playCount":62,"timeSpan":"0:06:15","tname":"","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/08_yueshu_01.mp4","content":"大纲词汇分析01","id":8,"isfree":1,"name":"课时8：约数与公倍数","orgname":"幂学","pic":"","playCount":695,"timeSpan":"0:08:09","tname":"何敬","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/09_yueshu_02.mp4","content":"大纲词汇分析02","id":9,"isfree":1,"name":"课时9：约数与倍数的应用","orgname":"幂学","pic":"","playCount":198,"timeSpan":"0:07:15","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/10_yueshu_03.mp4","content":"大纲词汇分析03","id":10,"isfree":1,"name":"课时10：公约数的应用方法","orgname":"幂学","pic":"","playCount":105,"timeSpan":"0:01:32","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/11_juedui_1.mp4","content":"大纲词汇分析04","id":11,"isfree":1,"name":"课时11：绝对值","orgname":"幂学","pic":"","playCount":117,"timeSpan":"0:15:48","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/12_juedui_2.mp4","content":"大纲词汇分析05","id":12,"isfree":1,"name":"课时12：绝对值的基本应用","orgname":"幂学","pic":"","playCount":92,"timeSpan":"0:03:35","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/13_juedui_3.mp4","content":"大纲词汇分析06","id":13,"isfree":1,"name":"课时13：绝对值的非负性","orgname":"幂学","pic":"","playCount":116,"timeSpan":"0:08:36","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/14_bili_01.mp4","content":"大纲词汇分析07","id":14,"isfree":1,"name":"课时14：比和比例的概念","orgname":"幂学","pic":"","playCount":145,"timeSpan":"0:05:39","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/15_bili_02.mp4","content":"大纲词汇分析08","id":15,"isfree":1,"name":"课时15：正比和反比的应用","orgname":"幂学","pic":"","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/18_pingjun_01.mp4","content":"大纲词汇分析11","id":18,"isfree":1,"name":"课时18：平均值的概念","orgname":"幂学","pic":"","playCount":140,"timeSpan":"0:07:31","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/19_pingjun_02.mp4","content":"大纲词汇分析12","id":19,"isfree":1,"name":"课时19：平均值的定理","orgname":"幂学","pic":"","playCount":290,"timeSpan":"0:08:36","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/20_chfen_1.mp4","content":"大纲词汇分析13","id":20,"isfree":1,"name":"课时20：条件充分性判定","orgname":"幂学","pic":"","playCount":103,"timeSpan":"0:16:51","tname":"何敬","weight":""}]}
+	 * apicode : 10000
+	 */
 
-    private String message;
+	private String message;
 
-    @Override
-    public String toString() {
-        return "CourseVideoResult{" +
-                "message='" + message + '\'' +
-                ", result=" + result +
-                ", apicode=" + apicode +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "CourseVideoResult{" +
+				"message='" + message + '\'' +
+				", result=" + result +
+				", apicode=" + apicode +
+				'}';
+	}
 
-    /**
-     * pointId : 54
-     * isCollect : 1
-     * videoList : [{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/01_gainian_01.mp4","content":"古典概率","id":1,"isfree":1,"name":"课时1：实数的概念","orgname":"幂学","pic":"","playCount":40,"timeSpan":"0:02:02","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/02_feifu_01.mp4","content":"事件的独立性","id":2,"isfree":1,"name":"课时2：非负性的应用Ⅰ","orgname":"幂学","pic":"","playCount":6,"timeSpan":"0:02:39","tname":"陈剑","weight":"20"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/03_feifu_02.mp4","content":"事件的独立性真题","id":3,"isfree":1,"name":"课时3：非负性的应用Ⅱ","orgname":"幂学","pic":"","playCount":8,"timeSpan":"0:06:09","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/04_zhishu_01.mp4","content":"平均值、方差、标准差概念","id":4,"isfree":1,"name":"课时4：质数与合数","orgname":"幂学","pic":"","playCount":8,"timeSpan":"0:10:09","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/05_zhishu_02.mp4","content":"","id":5,"isfree":1,"name":"课时5：质数的性质","orgname":"","pic":"http://www.mykepu.com:8080/pic/videopic/logo_chenxing.png","playCount":5,"timeSpan":"0:02:45","tname":"","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/06_jishu_01.mp4","content":"幂学教育","id":6,"isfree":1,"name":"课时6：奇数和偶数","orgname":"幂学","pic":"http://www.mykepu.com:8080/pic/videopic/logo_mixue.png","playCount":973,"timeSpan":"0:07:38","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/07_fenshu_01.mp4","content":"晨星成长计划","id":7,"isfree":1,"name":"课时7：分数与小数","orgname":"","pic":"http://www.mykepu.com:8080/pic/videopic/logo_chenxing.png","playCount":62,"timeSpan":"0:06:15","tname":"","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/08_yueshu_01.mp4","content":"大纲词汇分析01","id":8,"isfree":1,"name":"课时8：约数与公倍数","orgname":"幂学","pic":"","playCount":695,"timeSpan":"0:08:09","tname":"何敬","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/09_yueshu_02.mp4","content":"大纲词汇分析02","id":9,"isfree":1,"name":"课时9：约数与倍数的应用","orgname":"幂学","pic":"","playCount":198,"timeSpan":"0:07:15","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/10_yueshu_03.mp4","content":"大纲词汇分析03","id":10,"isfree":1,"name":"课时10：公约数的应用方法","orgname":"幂学","pic":"","playCount":105,"timeSpan":"0:01:32","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/11_juedui_1.mp4","content":"大纲词汇分析04","id":11,"isfree":1,"name":"课时11：绝对值","orgname":"幂学","pic":"","playCount":117,"timeSpan":"0:15:48","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/12_juedui_2.mp4","content":"大纲词汇分析05","id":12,"isfree":1,"name":"课时12：绝对值的基本应用","orgname":"幂学","pic":"","playCount":92,"timeSpan":"0:03:35","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/13_juedui_3.mp4","content":"大纲词汇分析06","id":13,"isfree":1,"name":"课时13：绝对值的非负性","orgname":"幂学","pic":"","playCount":116,"timeSpan":"0:08:36","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/14_bili_01.mp4","content":"大纲词汇分析07","id":14,"isfree":1,"name":"课时14：比和比例的概念","orgname":"幂学","pic":"","playCount":145,"timeSpan":"0:05:39","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/15_bili_02.mp4","content":"大纲词汇分析08","id":15,"isfree":1,"name":"课时15：正比和反比的应用","orgname":"幂学","pic":"","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/18_pingjun_01.mp4","content":"大纲词汇分析11","id":18,"isfree":1,"name":"课时18：平均值的概念","orgname":"幂学","pic":"","playCount":140,"timeSpan":"0:07:31","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/19_pingjun_02.mp4","content":"大纲词汇分析12","id":19,"isfree":1,"name":"课时19：平均值的定理","orgname":"幂学","pic":"","playCount":290,"timeSpan":"0:08:36","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/20_chfen_1.mp4","content":"大纲词汇分析13","id":20,"isfree":1,"name":"课时20：条件充分性判定","orgname":"幂学","pic":"","playCount":103,"timeSpan":"0:16:51","tname":"何敬","weight":""}]
-     */
+	/**
+	 * pointId : 54
+	 * isCollect : 1
+	 * videoList : [{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/01_gainian_01.mp4","content":"古典概率","id":1,"isfree":1,"name":"课时1：实数的概念","orgname":"幂学","pic":"","playCount":40,"timeSpan":"0:02:02","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/02_feifu_01.mp4","content":"事件的独立性","id":2,"isfree":1,"name":"课时2：非负性的应用Ⅰ","orgname":"幂学","pic":"","playCount":6,"timeSpan":"0:02:39","tname":"陈剑","weight":"20"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/03_feifu_02.mp4","content":"事件的独立性真题","id":3,"isfree":1,"name":"课时3：非负性的应用Ⅱ","orgname":"幂学","pic":"","playCount":8,"timeSpan":"0:06:09","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/04_zhishu_01.mp4","content":"平均值、方差、标准差概念","id":4,"isfree":1,"name":"课时4：质数与合数","orgname":"幂学","pic":"","playCount":8,"timeSpan":"0:10:09","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/05_zhishu_02.mp4","content":"","id":5,"isfree":1,"name":"课时5：质数的性质","orgname":"","pic":"http://www.mykepu.com:8080/pic/videopic/logo_chenxing.png","playCount":5,"timeSpan":"0:02:45","tname":"","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/06_jishu_01.mp4","content":"幂学教育","id":6,"isfree":1,"name":"课时6：奇数和偶数","orgname":"幂学","pic":"http://www.mykepu.com:8080/pic/videopic/logo_mixue.png","playCount":973,"timeSpan":"0:07:38","tname":"陈剑","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/07_fenshu_01.mp4","content":"晨星成长计划","id":7,"isfree":1,"name":"课时7：分数与小数","orgname":"","pic":"http://www.mykepu.com:8080/pic/videopic/logo_chenxing.png","playCount":62,"timeSpan":"0:06:15","tname":"","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/08_yueshu_01.mp4","content":"大纲词汇分析01","id":8,"isfree":1,"name":"课时8：约数与公倍数","orgname":"幂学","pic":"","playCount":695,"timeSpan":"0:08:09","tname":"何敬","weight":"10"},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/09_yueshu_02.mp4","content":"大纲词汇分析02","id":9,"isfree":1,"name":"课时9：约数与倍数的应用","orgname":"幂学","pic":"","playCount":198,"timeSpan":"0:07:15","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/10_yueshu_03.mp4","content":"大纲词汇分析03","id":10,"isfree":1,"name":"课时10：公约数的应用方法","orgname":"幂学","pic":"","playCount":105,"timeSpan":"0:01:32","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/11_juedui_1.mp4","content":"大纲词汇分析04","id":11,"isfree":1,"name":"课时11：绝对值","orgname":"幂学","pic":"","playCount":117,"timeSpan":"0:15:48","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/12_juedui_2.mp4","content":"大纲词汇分析05","id":12,"isfree":1,"name":"课时12：绝对值的基本应用","orgname":"幂学","pic":"","playCount":92,"timeSpan":"0:03:35","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/13_juedui_3.mp4","content":"大纲词汇分析06","id":13,"isfree":1,"name":"课时13：绝对值的非负性","orgname":"幂学","pic":"","playCount":116,"timeSpan":"0:08:36","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/14_bili_01.mp4","content":"大纲词汇分析07","id":14,"isfree":1,"name":"课时14：比和比例的概念","orgname":"幂学","pic":"","playCount":145,"timeSpan":"0:05:39","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/15_bili_02.mp4","content":"大纲词汇分析08","id":15,"isfree":1,"name":"课时15：正比和反比的应用","orgname":"幂学","pic":"","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/18_pingjun_01.mp4","content":"大纲词汇分析11","id":18,"isfree":1,"name":"课时18：平均值的概念","orgname":"幂学","pic":"","playCount":140,"timeSpan":"0:07:31","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/19_pingjun_02.mp4","content":"大纲词汇分析12","id":19,"isfree":1,"name":"课时19：平均值的定理","orgname":"幂学","pic":"","playCount":290,"timeSpan":"0:08:36","tname":"何敬","weight":""},{"address":"http://olamath.ufile.ucloud.com.cn/2016suanshu/20_chfen_1.mp4","content":"大纲词汇分析13","id":20,"isfree":1,"name":"课时20：条件充分性判定","orgname":"幂学","pic":"","playCount":103,"timeSpan":"0:16:51","tname":"何敬","weight":""}]
+	 */
 
-    private ResultBean result;
-    private int apicode;
+	private ResultBean result;
+	private int apicode;
 
-    public String getMessage() {
-        return message;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public ResultBean getResult() {
-        return result;
-    }
+	public ResultBean getResult() {
+		return result;
+	}
 
-    public void setResult(ResultBean result) {
-        this.result = result;
-    }
+	public void setResult(ResultBean result) {
+		this.result = result;
+	}
 
-    public int getApicode() {
-        return apicode;
-    }
+	public int getApicode() {
+		return apicode;
+	}
 
-    public void setApicode(int apicode) {
-        this.apicode = apicode;
-    }
+	public void setApicode(int apicode) {
+		this.apicode = apicode;
+	}
 
-    public static class ResultBean implements Serializable {
-        private String pointId;
-        private String isCollect;
-        private int playIndex;
-        private int orderStatus;
-        private long playProgress;
+	public static class ResultBean implements Serializable {
+		private String pointId;
+		private String isCollect;
+		private int playIndex;
+		private int orderStatus;
+		private long playProgress;
+		private String userPhone;
+		private String teacherName;
+		private String teacherAvatar;
+		private String teacherProfile;
+		private String courseName;
+		private String courseProfile;
 
-        public int getPlayIndex() {
-            return playIndex;
-        }
+		public String getUserPhone() {
+			return userPhone;
+		}
 
-        public void setPlayIndex(int playIndex) {
-            this.playIndex = playIndex;
-        }
+		public void setUserPhone(String userPhone) {
+			this.userPhone = userPhone;
+		}
 
-        public int getOrderStatus() {
-            return orderStatus;
-        }
+		public String getTeacherName() {
+			return teacherName;
+		}
 
-        public void setOrderStatus(int orderStatus) {
-            this.orderStatus = orderStatus;
-        }
+		public void setTeacherName(String teacherName) {
+			this.teacherName = teacherName;
+		}
 
-        public long getPlayProgress() {
-            return playProgress;
-        }
+		public String getTeacherAvatar() {
+			return teacherAvatar;
+		}
 
-        public void setPlayProgress(long playProgress) {
-            this.playProgress = playProgress;
-        }
+		public void setTeacherAvatar(String teacherAvatar) {
+			this.teacherAvatar = teacherAvatar;
+		}
 
-        @Override
-        public String toString() {
-            return "ResultBean{" +
-                    "pointId='" + pointId + '\'' +
-                    ", isCollect='" + isCollect + '\'' +
-                    ", playIndex=" + playIndex +
-                    ", isCollect=" + isCollect +
-                    ", orderStatus=" + orderStatus +
-                    ", playProgress=" + playProgress +
-                    ", videoList=" + videoList +
-                    '}';
-        }
+		public String getTeacherProfile() {
+			return teacherProfile;
+		}
 
-        /**
-         * address : http://olamath.ufile.ucloud.com.cn/2016suanshu/01_gainian_01.mp4
-         * content : 古典概率
-         * id : 1
-         * isfree : 1
-         * name : 课时1：实数的概念
-         * orgname : 幂学
-         * pic :
-         * playCount : 40
-         * timeSpan : 0:02:02
-         * tname : 陈剑
-         * weight : 10
-         */
+		public void setTeacherProfile(String teacherProfile) {
+			this.teacherProfile = teacherProfile;
+		}
 
-        private List<VideoListBean> videoList;
+		public String getCourseName() {
+			return courseName;
+		}
 
-        public String getPointId() {
-            return pointId;
-        }
+		public void setCourseName(String courseName) {
+			this.courseName = courseName;
+		}
 
-        public void setPointId(String pointId) {
-            this.pointId = pointId;
-        }
+		public String getCourseProfile() {
+			return courseProfile;
+		}
 
-        public String getIsCollect() {
-            return isCollect;
-        }
+		public void setCourseProfile(String courseProfile) {
+			this.courseProfile = courseProfile;
+		}
 
-        public void setIsCollect(String isCollect) {
-            this.isCollect = isCollect;
-        }
+		public int getPlayIndex() {
+			return playIndex;
+		}
 
-        public List<VideoListBean> getVideoList() {
-            return videoList;
-        }
+		public void setPlayIndex(int playIndex) {
+			this.playIndex = playIndex;
+		}
 
-        public void setVideoList(List<VideoListBean> videoList) {
-            this.videoList = videoList;
-        }
+		public int getOrderStatus() {
+			return orderStatus;
+		}
 
-        public static class VideoListBean implements Serializable {
-            private String address;
-            private String content;
-            private long id;
-            private int isfree;
-            private String name;
-            private String orgname;
-            private String pic;
-            private int playCount;
-            private String timeSpan;
-            private String tname;
-            private String weight;
-            private String url;
-            private String size;
-            private boolean isSelected;
-            private String fileSavePath;//本地存储地址
+		public void setOrderStatus(int orderStatus) {
+			this.orderStatus = orderStatus;
+		}
 
-            public String getFileSavePath() {
-                return fileSavePath;
-            }
+		public long getPlayProgress() {
+			return playProgress;
+		}
 
-            public void setFileSavePath(String fileSavePath) {
-                this.fileSavePath = fileSavePath;
-            }
+		public void setPlayProgress(long playProgress) {
+			this.playProgress = playProgress;
+		}
 
-            public String getUrl() {
-                return url;
-            }
+		@Override
+		public String toString() {
+			return "ResultBean{" +
+					"pointId='" + pointId + '\'' +
+					", isCollect='" + isCollect + '\'' +
+					", playIndex=" + playIndex +
+					", orderStatus=" + orderStatus +
+					", playProgress=" + playProgress +
+					", userPhone='" + userPhone + '\'' +
+					", teacherName='" + teacherName + '\'' +
+					", teacherAvatar='" + teacherAvatar + '\'' +
+					", teacherProfile='" + teacherProfile + '\'' +
+					", courseName='" + courseName + '\'' +
+					", courseProfile='" + courseProfile + '\'' +
+					", videoList=" + videoList +
+					'}';
+		}
 
-            public void setUrl(String url) {
-                this.url = url;
-            }
+		/**
+		 * address : http://olamath.ufile.ucloud.com.cn/2016suanshu/01_gainian_01.mp4
+		 * content : 古典概率
+		 * id : 1
+		 * isfree : 1
+		 * name : 课时1：实数的概念
+		 * orgname : 幂学
+		 * pic :
+		 * playCount : 40
+		 * timeSpan : 0:02:02
+		 * tname : 陈剑
+		 * weight : 10
+		 */
 
-            public String getSize() {
-                return size;
-            }
+		private List<VideoListBean> videoList;
 
-            public void setSize(String size) {
-                this.size = size;
-            }
+		public String getPointId() {
+			return pointId;
+		}
 
-            public boolean isSelected() {
-                return isSelected;
-            }
+		public void setPointId(String pointId) {
+			this.pointId = pointId;
+		}
 
-            public void setSelected(boolean selected) {
-                isSelected = selected;
-            }
+		public String getIsCollect() {
+			return isCollect;
+		}
 
-            @Override
-            public String toString() {
-                return "VideoListBean{" +
-                        "address='" + address + '\'' +
-                        ", content='" + content + '\'' +
-                        ", id=" + id +
-                        ", isfree=" + isfree +
-                        ", name='" + name + '\'' +
-                        ", orgname='" + orgname + '\'' +
-                        ", pic='" + pic + '\'' +
-                        ", playCount=" + playCount +
-                        ", timeSpan='" + timeSpan + '\'' +
-                        ", tname='" + tname + '\'' +
-                        ", weight='" + weight + '\'' +
-                        ", url='" + url + '\'' +
-                        ", size='" + size + '\'' +
-                        ", isSelected=" + isSelected +
-                        ", fileSavePath='" + fileSavePath + '\'' +
-                        '}';
-            }
+		public void setIsCollect(String isCollect) {
+			this.isCollect = isCollect;
+		}
 
-            public String getAddress() {
-                return address;
-            }
+		public List<VideoListBean> getVideoList() {
+			return videoList;
+		}
 
-            public void setAddress(String address) {
-                this.address = address;
-            }
+		public void setVideoList(List<VideoListBean> videoList) {
+			this.videoList = videoList;
+		}
 
-            public String getContent() {
-                return content;
-            }
+		public static class VideoListBean implements Serializable {
+			private String address;
+			private String content;
+			private long id;
+			private int isfree;
+			private String name;
+			private String orgname;
+			private String pic;
+			private int playCount;
+			private String timeSpan;
+			private String tname;
+			private String weight;
+			private String url;
+			private String size;
+			private boolean isSelected;
+			private String fileSavePath;//本地存储地址
 
-            public void setContent(String content) {
-                this.content = content;
-            }
+			public String getFileSavePath() {
+				return fileSavePath;
+			}
 
-            public long getId() {
-                return id;
-            }
+			public void setFileSavePath(String fileSavePath) {
+				this.fileSavePath = fileSavePath;
+			}
 
-            public void setId(long id) {
-                this.id = id;
-            }
+			public String getUrl() {
+				return url;
+			}
 
-            public int getIsfree() {
-                return isfree;
-            }
+			public void setUrl(String url) {
+				this.url = url;
+			}
 
-            public void setIsfree(int isfree) {
-                this.isfree = isfree;
-            }
+			public String getSize() {
+				return size;
+			}
 
-            public String getName() {
-                return name;
-            }
+			public void setSize(String size) {
+				this.size = size;
+			}
 
-            public void setName(String name) {
-                this.name = name;
-            }
+			public boolean isSelected() {
+				return isSelected;
+			}
 
-            public String getOrgname() {
-                return orgname;
-            }
+			public void setSelected(boolean selected) {
+				isSelected = selected;
+			}
 
-            public void setOrgname(String orgname) {
-                this.orgname = orgname;
-            }
+			@Override
+			public String toString() {
+				return "VideoListBean{" +
+						"address='" + address + '\'' +
+						", content='" + content + '\'' +
+						", id=" + id +
+						", isfree=" + isfree +
+						", name='" + name + '\'' +
+						", orgname='" + orgname + '\'' +
+						", pic='" + pic + '\'' +
+						", playCount=" + playCount +
+						", timeSpan='" + timeSpan + '\'' +
+						", tname='" + tname + '\'' +
+						", weight='" + weight + '\'' +
+						", url='" + url + '\'' +
+						", size='" + size + '\'' +
+						", isSelected=" + isSelected +
+						", fileSavePath='" + fileSavePath + '\'' +
+						'}';
+			}
 
-            public String getPic() {
-                return pic;
-            }
+			public String getAddress() {
+				return address;
+			}
 
-            public void setPic(String pic) {
-                this.pic = pic;
-            }
+			public void setAddress(String address) {
+				this.address = address;
+			}
 
-            public int getPlayCount() {
-                return playCount;
-            }
+			public String getContent() {
+				return content;
+			}
 
-            public void setPlayCount(int playCount) {
-                this.playCount = playCount;
-            }
+			public void setContent(String content) {
+				this.content = content;
+			}
 
-            public String getTimeSpan() {
-                return timeSpan;
-            }
+			public long getId() {
+				return id;
+			}
 
-            public void setTimeSpan(String timeSpan) {
-                this.timeSpan = timeSpan;
-            }
+			public void setId(long id) {
+				this.id = id;
+			}
 
-            public String getTname() {
-                return tname;
-            }
+			public int getIsfree() {
+				return isfree;
+			}
 
-            public void setTname(String tname) {
-                this.tname = tname;
-            }
+			public void setIsfree(int isfree) {
+				this.isfree = isfree;
+			}
 
-            public String getWeight() {
-                return weight;
-            }
+			public String getName() {
+				return name;
+			}
 
-            public void setWeight(String weight) {
-                this.weight = weight;
-            }
-        }
-    }
+			public void setName(String name) {
+				this.name = name;
+			}
+
+			public String getOrgname() {
+				return orgname;
+			}
+
+			public void setOrgname(String orgname) {
+				this.orgname = orgname;
+			}
+
+			public String getPic() {
+				return pic;
+			}
+
+			public void setPic(String pic) {
+				this.pic = pic;
+			}
+
+			public int getPlayCount() {
+				return playCount;
+			}
+
+			public void setPlayCount(int playCount) {
+				this.playCount = playCount;
+			}
+
+			public String getTimeSpan() {
+				return timeSpan;
+			}
+
+			public void setTimeSpan(String timeSpan) {
+				this.timeSpan = timeSpan;
+			}
+
+			public String getTname() {
+				return tname;
+			}
+
+			public void setTname(String tname) {
+				this.tname = tname;
+			}
+
+			public String getWeight() {
+				return weight;
+			}
+
+			public void setWeight(String weight) {
+				this.weight = weight;
+			}
+		}
+	}
 }

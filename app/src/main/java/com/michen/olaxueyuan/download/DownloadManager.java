@@ -35,47 +35,47 @@ import de.greenrobot.event.EventBus;
  */
 public class DownloadManager {
 
-    private List<DownloadInfo> downloadInfoList;
+	private List<DownloadInfo> downloadInfoList;
 
-    private int maxDownloadThread = 3;
+	private int maxDownloadThread = 3;
 
-    private Context mContext;
-    private DbUtils db;
+	private Context mContext;
+	private DbUtils db;
 
-    /*package*/ DownloadManager(Context appContext) {
-        ColumnConverterFactory.registerColumnConverter(HttpHandler.State.class, new HttpHandlerStateConverter());
-        mContext = appContext;
-        db = DbUtils.create(mContext);
-        try {
-            downloadInfoList = db.findAll(Selector.from(DownloadInfo.class));
-        } catch (DbException e) {
-            LogUtils.e(e.getMessage(), e);
-        }
-        if (downloadInfoList == null) {
-            downloadInfoList = new ArrayList<DownloadInfo>();
-        }
-    }
+	/*package*/ DownloadManager(Context appContext) {
+		ColumnConverterFactory.registerColumnConverter(HttpHandler.State.class, new HttpHandlerStateConverter());
+		mContext = appContext;
+		db = DbUtils.create(mContext);
+		try {
+			downloadInfoList = db.findAll(Selector.from(DownloadInfo.class));
+		} catch (DbException e) {
+			LogUtils.e(e.getMessage(), e);
+		}
+		if (downloadInfoList == null) {
+			downloadInfoList = new ArrayList<DownloadInfo>();
+		}
+	}
 
-    public int getDownloadInfoListCount() {
-        return downloadInfoList.size();
-    }
+	public int getDownloadInfoListCount() {
+		return downloadInfoList.size();
+	}
 
-    public List<CourseVideoResult.ResultBean.VideoListBean> getVideoArrayList(List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList) {
-        List<DownloadInfo> downloadedList = null;
-        try {
-            downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "=", HttpHandler.State.SUCCESS));
-            for (int i = 0; i < downloadedList.size(); i++) {
-                for (int j = 0; j < videoArrayList.size(); j++) {
-                    if (downloadedList.get(i).getDownloadUrl().equals(videoArrayList.get(j).getAddress())) {
-                        videoArrayList.get(j).setFileSavePath(downloadedList.get(i).getFileSavePath());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return videoArrayList;
-    }
+	public List<CourseVideoResult.ResultBean.VideoListBean> getVideoArrayList(List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList) {
+		List<DownloadInfo> downloadedList = null;
+		try {
+			downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "=", HttpHandler.State.SUCCESS));
+			for (int i = 0; i < downloadedList.size(); i++) {
+				for (int j = 0; j < videoArrayList.size(); j++) {
+					if (downloadedList.get(i).getDownloadUrl().equals(videoArrayList.get(j).getAddress())) {
+						videoArrayList.get(j).setFileSavePath(downloadedList.get(i).getFileSavePath());
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return videoArrayList;
+	}
 
     public List<SystemVideoResult.ResultBean>  getSysVideoArrayList(List<SystemVideoResult.ResultBean> videoArrayList) {
         List<DownloadInfo> downloadedList = null;
@@ -94,294 +94,294 @@ public class DownloadManager {
         return videoArrayList;
     }
 
-    public List<DownloadInfo> getDownloadedList() {
-        List<DownloadInfo> downloadedList = null;
-        try {
-            downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "=", HttpHandler.State.SUCCESS));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return downloadedList == null ? new ArrayList<DownloadInfo>() : downloadedList;
-    }
+	public List<DownloadInfo> getDownloadedList() {
+		List<DownloadInfo> downloadedList = null;
+		try {
+			downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "=", HttpHandler.State.SUCCESS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return downloadedList == null ? new ArrayList<DownloadInfo>() : downloadedList;
+	}
 
-    public List<DownloadInfo> getDownloadingList() {
-        List<DownloadInfo> downloadedList = null;
-        try {
-            downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "<>", HttpHandler.State.SUCCESS));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return downloadedList == null ? new ArrayList<DownloadInfo>() : downloadedList;
-    }
+	public List<DownloadInfo> getDownloadingList() {
+		List<DownloadInfo> downloadedList = null;
+		try {
+			downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "<>", HttpHandler.State.SUCCESS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return downloadedList == null ? new ArrayList<DownloadInfo>() : downloadedList;
+	}
 
-    public DownloadInfo getDownloadInfo(int index) {
-        try {
-            return downloadInfoList.get(index);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return downloadInfoList.get(0);
-        }
-    }
+	public DownloadInfo getDownloadInfo(int index) {
+		try {
+			return downloadInfoList.get(index);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return downloadInfoList.get(0);
+		}
+	}
 
-    public void addNewDownload(String url, String fileName, String pic, String target,
-                               boolean autoResume, boolean autoRename,
-                               final RequestCallBack<File> callback) throws DbException {
-        if (db.findAll(Selector.from(DownloadInfo.class).where("downloadUrl", "=", url)) != null
-                && db.findAll(Selector.from(DownloadInfo.class).where("downloadUrl", "=", url)).size() > 0) {
-            SVProgressHUD.showInViewWithoutIndicator(mContext, "缓存列表已存在", 2.0f);
-            return;
-        }
-        final DownloadInfo downloadInfo = new DownloadInfo();
-        downloadInfo.setDownloadUrl(url);
-        downloadInfo.setAutoRename(autoRename);
-        downloadInfo.setAutoResume(autoResume);
-        downloadInfo.setFileName(fileName);
-        downloadInfo.setFileImage(pic);
-        downloadInfo.setFileSavePath(target);
-        HttpUtils http = new HttpUtils();
-        http.configRequestThreadPoolSize(maxDownloadThread);
-        HttpHandler<File> handler = http.download(url, target, autoResume, autoRename, new ManagerCallBack(downloadInfo, callback));
-        downloadInfo.setHandler(handler);
-        downloadInfo.setState(handler.getState());
-        downloadInfoList.add(downloadInfo);
-        db.saveBindingId(downloadInfo);
-        SVProgressHUD.showInViewWithoutIndicator(mContext, "成功添加至缓存列表", 2.0f);
-    }
+	public void addNewDownload(String url, String fileName, String pic, String target,
+							   boolean autoResume, boolean autoRename,
+							   final RequestCallBack<File> callback) throws DbException {
+		if (db.findAll(Selector.from(DownloadInfo.class).where("downloadUrl", "=", url)) != null
+				&& db.findAll(Selector.from(DownloadInfo.class).where("downloadUrl", "=", url)).size() > 0) {
+			SVProgressHUD.showInViewWithoutIndicator(mContext, "缓存列表已存在", 2.0f);
+			return;
+		}
+		final DownloadInfo downloadInfo = new DownloadInfo();
+		downloadInfo.setDownloadUrl(url);
+		downloadInfo.setAutoRename(autoRename);
+		downloadInfo.setAutoResume(autoResume);
+		downloadInfo.setFileName(fileName);
+		downloadInfo.setFileImage(pic);
+		downloadInfo.setFileSavePath(target);
+		HttpUtils http = new HttpUtils();
+		http.configRequestThreadPoolSize(maxDownloadThread);
+		HttpHandler<File> handler = http.download(url, target, autoResume, autoRename, new ManagerCallBack(downloadInfo, callback));
+		downloadInfo.setHandler(handler);
+		downloadInfo.setState(handler.getState());
+		downloadInfoList.add(downloadInfo);
+		db.saveBindingId(downloadInfo);
+		SVProgressHUD.showInViewWithoutIndicator(mContext, "成功添加至缓存列表", 2.0f);
+	}
 
-    public void resumeDownload(int index, final RequestCallBack<File> callback) throws DbException {
-        final DownloadInfo downloadInfo = downloadInfoList.get(index);
-        resumeDownload(downloadInfo, callback);
-    }
+	public void resumeDownload(int index, final RequestCallBack<File> callback) throws DbException {
+		final DownloadInfo downloadInfo = downloadInfoList.get(index);
+		resumeDownload(downloadInfo, callback);
+	}
 
-    public void resumeDownload(DownloadInfo downloadInfo, final RequestCallBack<File> callback) throws DbException {
-        HttpUtils http = new HttpUtils();
-        http.configRequestThreadPoolSize(maxDownloadThread);
-        HttpHandler<File> handler = http.download(
-                downloadInfo.getDownloadUrl(),
-                downloadInfo.getFileSavePath(),
-                downloadInfo.isAutoResume(),
-                downloadInfo.isAutoRename(),
-                new ManagerCallBack(downloadInfo, callback));
-        downloadInfo.setHandler(handler);
-        downloadInfo.setState(handler.getState());
-        db.saveOrUpdate(downloadInfo);
-    }
+	public void resumeDownload(DownloadInfo downloadInfo, final RequestCallBack<File> callback) throws DbException {
+		HttpUtils http = new HttpUtils();
+		http.configRequestThreadPoolSize(maxDownloadThread);
+		HttpHandler<File> handler = http.download(
+				downloadInfo.getDownloadUrl(),
+				downloadInfo.getFileSavePath(),
+				downloadInfo.isAutoResume(),
+				downloadInfo.isAutoRename(),
+				new ManagerCallBack(downloadInfo, callback));
+		downloadInfo.setHandler(handler);
+		downloadInfo.setState(handler.getState());
+		db.saveOrUpdate(downloadInfo);
+	}
 
-    public void removeDownload(int index) throws DbException {
-        DownloadInfo downloadInfo = downloadInfoList.get(index);
-        removeDownload(downloadInfo);
-    }
+	public void removeDownload(int index) throws DbException {
+		DownloadInfo downloadInfo = downloadInfoList.get(index);
+		removeDownload(downloadInfo);
+	}
 
-    public void removeDownload(DownloadInfo downloadInfo) throws DbException {
-        HttpHandler<File> handler = downloadInfo.getHandler();
-        if (handler != null && !handler.isCancelled()) {
-            handler.cancel();
-        }
-        deleteFile(downloadInfo.getFileSavePath());
-        downloadInfoList.remove(downloadInfo);
-        db.delete(downloadInfo);
-    }
+	public void removeDownload(DownloadInfo downloadInfo) throws DbException {
+		HttpHandler<File> handler = downloadInfo.getHandler();
+		if (handler != null && !handler.isCancelled()) {
+			handler.cancel();
+		}
+		deleteFile(downloadInfo.getFileSavePath());
+		downloadInfoList.remove(downloadInfo);
+		db.delete(downloadInfo);
+	}
 
-    public void stopDownload(int index) throws DbException {
-        DownloadInfo downloadInfo = downloadInfoList.get(index);
-        stopDownload(downloadInfo);
-    }
+	public void stopDownload(int index) throws DbException {
+		DownloadInfo downloadInfo = downloadInfoList.get(index);
+		stopDownload(downloadInfo);
+	}
 
-    public void stopDownload(DownloadInfo downloadInfo) throws DbException {
-        HttpHandler<File> handler = downloadInfo.getHandler();
-        if (handler != null && !handler.isCancelled()) {
-            handler.cancel();
-        } else {
-            downloadInfo.setState(HttpHandler.State.CANCELLED);
-        }
-        db.saveOrUpdate(downloadInfo);
-    }
+	public void stopDownload(DownloadInfo downloadInfo) throws DbException {
+		HttpHandler<File> handler = downloadInfo.getHandler();
+		if (handler != null && !handler.isCancelled()) {
+			handler.cancel();
+		} else {
+			downloadInfo.setState(HttpHandler.State.CANCELLED);
+		}
+		db.saveOrUpdate(downloadInfo);
+	}
 
-    public void stopAllDownload() throws DbException {
-        for (DownloadInfo downloadInfo : downloadInfoList) {
-            HttpHandler<File> handler = downloadInfo.getHandler();
-            if (handler != null && !handler.isCancelled()) {
-                handler.cancel();
-            } else {
-                downloadInfo.setState(HttpHandler.State.CANCELLED);
-            }
-        }
-        db.saveOrUpdateAll(downloadInfoList);
-    }
+	public void stopAllDownload() throws DbException {
+		for (DownloadInfo downloadInfo : downloadInfoList) {
+			HttpHandler<File> handler = downloadInfo.getHandler();
+			if (handler != null && !handler.isCancelled()) {
+				handler.cancel();
+			} else {
+				downloadInfo.setState(HttpHandler.State.CANCELLED);
+			}
+		}
+		db.saveOrUpdateAll(downloadInfoList);
+	}
 
-    public void backupDownloadInfoList() throws DbException {
-        for (DownloadInfo downloadInfo : downloadInfoList) {
-            HttpHandler<File> handler = downloadInfo.getHandler();
-            if (handler != null) {
-                downloadInfo.setState(handler.getState());
-            }
-        }
-        db.saveOrUpdateAll(downloadInfoList);
-    }
+	public void backupDownloadInfoList() throws DbException {
+		for (DownloadInfo downloadInfo : downloadInfoList) {
+			HttpHandler<File> handler = downloadInfo.getHandler();
+			if (handler != null) {
+				downloadInfo.setState(handler.getState());
+			}
+		}
+		db.saveOrUpdateAll(downloadInfoList);
+	}
 
-    public int getMaxDownloadThread() {
-        return maxDownloadThread;
-    }
+	public int getMaxDownloadThread() {
+		return maxDownloadThread;
+	}
 
-    public void setMaxDownloadThread(int maxDownloadThread) {
-        this.maxDownloadThread = maxDownloadThread;
-    }
+	public void setMaxDownloadThread(int maxDownloadThread) {
+		this.maxDownloadThread = maxDownloadThread;
+	}
 
-    public class ManagerCallBack extends RequestCallBack<File> {
-        private DownloadInfo downloadInfo;
-        private RequestCallBack<File> baseCallBack;
+	public class ManagerCallBack extends RequestCallBack<File> {
+		private DownloadInfo downloadInfo;
+		private RequestCallBack<File> baseCallBack;
 
-        public RequestCallBack<File> getBaseCallBack() {
-            return baseCallBack;
-        }
+		public RequestCallBack<File> getBaseCallBack() {
+			return baseCallBack;
+		}
 
-        public void setBaseCallBack(RequestCallBack<File> baseCallBack) {
-            this.baseCallBack = baseCallBack;
-        }
+		public void setBaseCallBack(RequestCallBack<File> baseCallBack) {
+			this.baseCallBack = baseCallBack;
+		}
 
-        private ManagerCallBack(DownloadInfo downloadInfo, RequestCallBack<File> baseCallBack) {
-            this.baseCallBack = baseCallBack;
-            this.downloadInfo = downloadInfo;
-        }
+		private ManagerCallBack(DownloadInfo downloadInfo, RequestCallBack<File> baseCallBack) {
+			this.baseCallBack = baseCallBack;
+			this.downloadInfo = downloadInfo;
+		}
 
-        @Override
-        public Object getUserTag() {
-            if (baseCallBack == null) return null;
-            return baseCallBack.getUserTag();
-        }
+		@Override
+		public Object getUserTag() {
+			if (baseCallBack == null) return null;
+			return baseCallBack.getUserTag();
+		}
 
-        @Override
-        public void setUserTag(Object userTag) {
-            if (baseCallBack == null) return;
-            baseCallBack.setUserTag(userTag);
-        }
+		@Override
+		public void setUserTag(Object userTag) {
+			if (baseCallBack == null) return;
+			baseCallBack.setUserTag(userTag);
+		}
 
-        @Override
-        public void onStart() {
-            HttpHandler<File> handler = downloadInfo.getHandler();
-            if (handler != null) {
-                downloadInfo.setState(handler.getState());
-            }
-            try {
-                db.saveOrUpdate(downloadInfo);
-            } catch (DbException e) {
-                LogUtils.e(e.getMessage(), e);
-            }
-            if (baseCallBack != null) {
-                baseCallBack.onStart();
-            }
-        }
+		@Override
+		public void onStart() {
+			HttpHandler<File> handler = downloadInfo.getHandler();
+			if (handler != null) {
+				downloadInfo.setState(handler.getState());
+			}
+			try {
+				db.saveOrUpdate(downloadInfo);
+			} catch (DbException e) {
+				LogUtils.e(e.getMessage(), e);
+			}
+			if (baseCallBack != null) {
+				baseCallBack.onStart();
+			}
+		}
 
-        @Override
-        public void onCancelled() {
-            HttpHandler<File> handler = downloadInfo.getHandler();
-            if (handler != null) {
-                downloadInfo.setState(handler.getState());
-            }
-            try {
-                db.saveOrUpdate(downloadInfo);
-            } catch (DbException e) {
-                LogUtils.e(e.getMessage(), e);
-            }
-            if (baseCallBack != null) {
-                baseCallBack.onCancelled();
-            }
-        }
+		@Override
+		public void onCancelled() {
+			HttpHandler<File> handler = downloadInfo.getHandler();
+			if (handler != null) {
+				downloadInfo.setState(handler.getState());
+			}
+			try {
+				db.saveOrUpdate(downloadInfo);
+			} catch (DbException e) {
+				LogUtils.e(e.getMessage(), e);
+			}
+			if (baseCallBack != null) {
+				baseCallBack.onCancelled();
+			}
+		}
 
-        @Override
-        public void onLoading(long total, long current, boolean isUploading) {
-            HttpHandler<File> handler = downloadInfo.getHandler();
-            if (handler != null) {
-                downloadInfo.setState(handler.getState());
-            }
-            downloadInfo.setFileLength(total);
-            downloadInfo.setProgress(current);
-            try {
-                db.saveOrUpdate(downloadInfo);
-            } catch (DbException e) {
-                LogUtils.e(e.getMessage(), e);
-            }
-            if (baseCallBack != null) {
-                baseCallBack.onLoading(total, current, isUploading);
-            }
-        }
+		@Override
+		public void onLoading(long total, long current, boolean isUploading) {
+			HttpHandler<File> handler = downloadInfo.getHandler();
+			if (handler != null) {
+				downloadInfo.setState(handler.getState());
+			}
+			downloadInfo.setFileLength(total);
+			downloadInfo.setProgress(current);
+			try {
+				db.saveOrUpdate(downloadInfo);
+			} catch (DbException e) {
+				LogUtils.e(e.getMessage(), e);
+			}
+			if (baseCallBack != null) {
+				baseCallBack.onLoading(total, current, isUploading);
+			}
+		}
 
-        @Override
-        public void onSuccess(ResponseInfo<File> responseInfo) {
-            HttpHandler<File> handler = downloadInfo.getHandler();
-            if (handler != null) {
-                downloadInfo.setState(handler.getState());
-            }
-            try {
-                db.saveOrUpdate(downloadInfo);
-                EventBus.getDefault().post(new DownloadSuccessEvent(true));
-            } catch (DbException e) {
-                LogUtils.e(e.getMessage(), e);
-            }
-            if (baseCallBack != null) {
-                baseCallBack.onSuccess(responseInfo);
-            }
-        }
+		@Override
+		public void onSuccess(ResponseInfo<File> responseInfo) {
+			HttpHandler<File> handler = downloadInfo.getHandler();
+			if (handler != null) {
+				downloadInfo.setState(handler.getState());
+			}
+			try {
+				db.saveOrUpdate(downloadInfo);
+				EventBus.getDefault().post(new DownloadSuccessEvent(true));
+			} catch (DbException e) {
+				LogUtils.e(e.getMessage(), e);
+			}
+			if (baseCallBack != null) {
+				baseCallBack.onSuccess(responseInfo);
+			}
+		}
 
-        @Override
-        public void onFailure(HttpException error, String msg) {
-            HttpHandler<File> handler = downloadInfo.getHandler();
-            if (handler != null) {
-                downloadInfo.setState(handler.getState());
-            }
-            try {
-                db.saveOrUpdate(downloadInfo);
-            } catch (DbException e) {
-                LogUtils.e(e.getMessage(), e);
-            }
-            if (baseCallBack != null) {
-                baseCallBack.onFailure(error, msg);
-            }
-        }
-    }
+		@Override
+		public void onFailure(HttpException error, String msg) {
+			HttpHandler<File> handler = downloadInfo.getHandler();
+			if (handler != null) {
+				downloadInfo.setState(handler.getState());
+			}
+			try {
+				db.saveOrUpdate(downloadInfo);
+			} catch (DbException e) {
+				LogUtils.e(e.getMessage(), e);
+			}
+			if (baseCallBack != null) {
+				baseCallBack.onFailure(error, msg);
+			}
+		}
+	}
 
-    private class HttpHandlerStateConverter implements ColumnConverter<HttpHandler.State> {
+	private class HttpHandlerStateConverter implements ColumnConverter<HttpHandler.State> {
 
-        @Override
-        public HttpHandler.State getFieldValue(Cursor cursor, int index) {
-            return HttpHandler.State.valueOf(cursor.getInt(index));
-        }
+		@Override
+		public HttpHandler.State getFieldValue(Cursor cursor, int index) {
+			return HttpHandler.State.valueOf(cursor.getInt(index));
+		}
 
-        @Override
-        public HttpHandler.State getFieldValue(String fieldStringValue) {
-            if (fieldStringValue == null) return null;
-            return HttpHandler.State.valueOf(fieldStringValue);
-        }
+		@Override
+		public HttpHandler.State getFieldValue(String fieldStringValue) {
+			if (fieldStringValue == null) return null;
+			return HttpHandler.State.valueOf(fieldStringValue);
+		}
 
-        @Override
-        public Object fieldValue2ColumnValue(HttpHandler.State fieldValue) {
-            return fieldValue.value();
-        }
+		@Override
+		public Object fieldValue2ColumnValue(HttpHandler.State fieldValue) {
+			return fieldValue.value();
+		}
 
-        @Override
-        public ColumnDbType getColumnDbType() {
-            return ColumnDbType.INTEGER;
-        }
-    }
+		@Override
+		public ColumnDbType getColumnDbType() {
+			return ColumnDbType.INTEGER;
+		}
+	}
 
-    private int maxDeleteThread = 3;
-    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(maxDeleteThread);
+	private int maxDeleteThread = 3;
+	private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(maxDeleteThread);
 
-    /**
-     * 删除磁盘文件
-     *
-     * @param path
-     */
-    private void deleteFile(String path) {
-        final File file = new File(path);
-        if (file.exists()) {
-            fixedThreadPool.submit(new Runnable() {
-                @Override
-                public void run() {
-                    file.delete();
-                }
-            });
-        }
+	/**
+	 * 删除磁盘文件
+	 *
+	 * @param path
+	 */
+	private void deleteFile(String path) {
+		final File file = new File(path);
+		if (file.exists()) {
+			fixedThreadPool.submit(new Runnable() {
+				@Override
+				public void run() {
+					file.delete();
+				}
+			});
+		}
 
-    }
+	}
 }
