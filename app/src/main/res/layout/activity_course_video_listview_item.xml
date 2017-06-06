@@ -19,16 +19,16 @@
 
         <TextView
             android:id="@+id/video_name"
-            android:layout_toRightOf="@+id/play_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_5"
             android:layout_toLeftOf="@+id/video_length"
+            android:layout_toRightOf="@+id/play_icon"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="课程一"
-            android:textColor="@color/video_list_color"
+            android:textColor="@color/video_list_text_color"
             android:textSize="14dp" />
 
         <TextView
