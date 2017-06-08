@@ -394,7 +394,7 @@
     <color name="light_green">#50E3C2</color>
     <color name="title_gray">#EFEFEF</color>
     <color name="video_title_text_color">#6F6F6F</color>
-    <color name="video_list_text_color">#ADADAD</color>
+    <color name="video_list_text_colors">#ADADAD</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>

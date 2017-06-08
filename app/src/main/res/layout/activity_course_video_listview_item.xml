@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -15,35 +16,56 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:paddingLeft="@dimen/dp_10"
-            android:src="@drawable/video_play_item_icon" />
+            android:src="@drawable/video_play_item_icon"/>
 
         <TextView
             android:id="@+id/video_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:layout_toLeftOf="@+id/video_length"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_13"
+            android:layout_toLeftOf="@+id/pdf_view_img"
             android:layout_toRightOf="@+id/play_icon"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="课程一"
             android:textColor="@color/video_list_text_color"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
 
         <TextView
             android:id="@+id/video_length"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_13"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_toLeftOf="@+id/pdf_view_img"
+            android:layout_toRightOf="@+id/play_icon"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="时长 0:49  未下载"
+            android:textColor="@color/video_list_text_color"
+            android:textSize="13dp"/>
+
+        <ImageView
+            android:id="@+id/pdf_view_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/video_download_item_img"
+            android:src="@drawable/video_pdf_item_icon"/>
+
+        <ImageView
+            android:id="@+id/video_download_item_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="09:49"
-            android:textColor="@color/title_hint_text_color"
-            android:textSize="13dp" />
+            android:src="@drawable/video_download_item_icon"/>
     </RelativeLayout>
 
-    <View style="@style/line_horizontal" />
+    <View style="@style/line_horizontal"/>
 </LinearLayout>
