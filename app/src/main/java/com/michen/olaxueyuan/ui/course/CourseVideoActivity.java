@@ -48,6 +48,7 @@ import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
+import com.michen.olaxueyuan.ui.course.video.CourseVideoDetailActivity;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoFragmentManger;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoPopupWindowManager;
 import com.michen.olaxueyuan.ui.course.video.HandOutVideoFragment;
@@ -137,8 +138,6 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 	public LinearLayout titleLayout;
 	@Bind(R.id.root)
 	public LinearLayout root;
-	@Bind(R.id.video_download_btn)
-	ImageView videoDownloadBtn;
 	@Bind(R.id.video_collect_btn)
 	TextView videoCollectBtn;
 	@Bind(R.id.bottom_view)
@@ -167,6 +166,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 	TextView lecture;
 	@Bind(R.id.popDownLine)
 	public View popDownLine;
+	@Bind(R.id.collect_icon)
+	ImageView collectIcon;
 
 	private String courseId;
 	private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;
@@ -387,8 +388,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 	}
 
 	@OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return, R.id.mediacontroller_speed_text
-			, R.id.video_download_btn, R.id.video_collect_btn, R.id.video_share_btn, R.id.catalog_layout, R.id.handout_layout,
-			R.id.batch_download, R.id.course_detail, R.id.communicate_with_teacher})
+			, R.id.video_collect_btn, R.id.video_share_btn, R.id.catalog_layout, R.id.handout_layout,
+			R.id.batch_download, R.id.course_detail, R.id.communicate_with_teacher, R.id.collect_icon})
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.left_return:
@@ -406,16 +407,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 					VideoManager.getInstance().setLandScape();
 				}
 				break;
-			case R.id.video_download_btn:
-				if (courseVideoResult != null && courseVideoResult.getResult().getVideoList().size() > 0) {
-					for (CourseVideoResult.ResultBean.VideoListBean videoInfo : courseVideoResult.getResult().getVideoList()) {
-						if (videoInfo.isSelected()) {
-							downloadCourse(videoInfo);
-						}
-					}
-				}
-				break;
 			case R.id.video_collect_btn:
+			case R.id.collect_icon:
 				if (SEAuthManager.getInstance().getAccessUser() == null) {
 					loginDialog();
 				} else {
@@ -490,6 +483,14 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 				}
 				break;
 			case R.id.course_detail:
+				if (courseVideoResult != null) {
+					startActivity(new Intent(this, CourseVideoDetailActivity.class)
+							.putExtra("courseName", courseVideoResult.getResult().getCourseName())
+							.putExtra("teacherProfile", courseVideoResult.getResult().getTeacherProfile())
+							.putExtra("teacherAvatar", courseVideoResult.getResult().getTeacherAvatar())
+							.putExtra("teacherName", courseVideoResult.getResult().getTeacherName())
+					);
+				}
 				break;
 			case R.id.communicate_with_teacher:
 				if (!SEAuthManager.getInstance().isAuthenticated()) {
@@ -705,7 +706,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 		} else {
 			drawable = context.getResources().getDrawable(R.drawable.video_collect_icon);
 		}
-		videoCollectBtn.setCompoundDrawables(drawable, null, null, null);
+//		videoCollectBtn.setCompoundDrawables(drawable, null, null, null);
+		collectIcon.setImageDrawable(drawable);
 	}
 
 	public void downloadCourse(CourseVideoResult.ResultBean.VideoListBean videoInfo) {

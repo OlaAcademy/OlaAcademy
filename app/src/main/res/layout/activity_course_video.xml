@@ -242,7 +242,7 @@
             android:id="@+id/batch_download"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/video_collect_btn"
+            android:layout_toLeftOf="@+id/collect_icon"
             android:background="@drawable/selector_white_item_bg"
             android:drawableLeft="@drawable/video_batch_download_icon"
             android:drawablePadding="@dimen/dp_5"
@@ -254,6 +254,16 @@
             android:textColor="@color/video_title_text_color"
             android:textSize="@dimen/dp_13"/>
 
+        <ImageView
+            android:id="@+id/collect_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/video_collect_btn"
+            android:paddingLeft="@dimen/dp_15"
+            android:scaleType="centerInside"
+            android:src="@drawable/video_collect_icon"/>
+
         <TextView
             android:id="@+id/video_collect_btn"
             android:layout_width="wrap_content"
@@ -261,11 +271,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/selector_white_item_bg"
-            android:drawableLeft="@drawable/video_collect_icon"
-            android:drawablePadding="@dimen/dp_5"
             android:gravity="center"
             android:paddingEnd="@dimen/dp_15"
-            android:paddingLeft="@dimen/dp_15"
+            android:paddingLeft="@dimen/dp_5"
             android:paddingRight="@dimen/dp_15"
             android:text="收藏"
             android:textColor="@color/video_title_text_color"
@@ -288,14 +296,6 @@
         android:orientation="vertical">
 
         <View style="@style/line_horizontal"/>
-
-        <ImageView
-            android:id="@+id/video_download_btn"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_toLeftOf="@+id/video_share_btn"
-            android:scaleType="centerInside"
-            android:src="@drawable/video_download_icon"/>
 
         <ImageView
             android:id="@+id/video_share_btn"
