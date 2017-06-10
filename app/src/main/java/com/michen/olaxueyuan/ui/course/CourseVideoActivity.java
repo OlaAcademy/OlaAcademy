@@ -47,7 +47,9 @@ import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
+import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoFragmentManger;
+import com.michen.olaxueyuan.ui.course.video.CourseVideoPopupWindowManager;
 import com.michen.olaxueyuan.ui.course.video.HandOutVideoFragment;
 import com.michen.olaxueyuan.ui.course.video.VideoManager;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
@@ -61,6 +63,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.leancloud.chatkit.LCChatKitUser;
+import cn.leancloud.chatkit.activity.LCIMConversationActivity;
+import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.utils.UIHandler;
@@ -160,6 +165,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 	RoundRectImageView lectureAvatar;
 	@Bind(R.id.lecture)
 	TextView lecture;
+	@Bind(R.id.popDownLine)
+	public View popDownLine;
 
 	private String courseId;
 	private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;
@@ -181,6 +188,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 	public int pdfPosition;
 	private int videoWidth = 16;
 	private int videoHeight = 9;
+	private LCChatKitUser lcChatKitUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -239,6 +247,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 		mVideoView.setOnClickListener(this);
 		lectureAvatar.setRectAdius(100);
 		CourseVideoFragmentManger.getInstance().initView(this);
+		CourseVideoPopupWindowManager.getInstance().initView(this);
 	}
 
 	public void initData() {
@@ -290,6 +299,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 					} else {
 						EventBus.getDefault().post(result);
 						courseVideoResult = result;
+						lcChatKitUser = new LCChatKitUser(result.getResult().getUserPhone(), result.getResult().getTeacherName(),
+								PictureUtils.getAvatarPath(result.getResult().getTeacherAvatar()));
 						lecture.setText(result.getResult().getTeacherName());
 						PictureUtils.loadAvatar(context, lectureAvatar, result.getResult().getTeacherAvatar(), 30);
 						msec = result.getResult().getPlayProgress() * 1000;
@@ -377,7 +388,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 
 	@OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return, R.id.mediacontroller_speed_text
 			, R.id.video_download_btn, R.id.video_collect_btn, R.id.video_share_btn, R.id.catalog_layout, R.id.handout_layout,
-			R.id.batch_download, R.id.course_detail})
+			R.id.batch_download, R.id.course_detail, R.id.communicate_with_teacher})
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.left_return:
@@ -474,8 +485,25 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 				}
 				break;
 			case R.id.batch_download:
+				if (courseVideoResult != null) {
+					CourseVideoPopupWindowManager.getInstance().downLoadPopupWindow(courseVideoResult.getResult().getVideoList(), courseVideoResult.getResult().getCourseName());
+				}
 				break;
 			case R.id.course_detail:
+				break;
+			case R.id.communicate_with_teacher:
+				if (!SEAuthManager.getInstance().isAuthenticated()) {
+					Intent loginIntent = new Intent(context, UserLoginActivity.class);
+					startActivity(loginIntent);
+					return;
+				}
+				if (lcChatKitUser == null) {
+					return;
+				}
+				CustomUserProvider.getInstance().setpartUsers(lcChatKitUser);
+				Intent intent = new Intent(context, LCIMConversationActivity.class);
+				intent.putExtra(LCIMConstants.PEER_ID, lcChatKitUser.getUserId());
+				startActivity(intent);
 				break;
 			default:
 				break;
@@ -680,7 +708,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 		videoCollectBtn.setCompoundDrawables(drawable, null, null, null);
 	}
 
-	private void downloadCourse(CourseVideoResult.ResultBean.VideoListBean videoInfo) {
+	public void downloadCourse(CourseVideoResult.ResultBean.VideoListBean videoInfo) {
 		String target = "/sdcard/OlaAcademy/" + videoInfo.getId() + ".mp4";
 		try {
 			downloadManager.addNewDownload(videoInfo.getAddress(),

@@ -205,4 +205,11 @@
     <string name="my_information">我的消息</string>
     <string name="reward_money">入群送50欧拉币</string>
     <string name="no_data">暂无数据</string>
+    <string name="ask_now">立即咨询</string>
+    <string name="all_select">全选</string>
+    <string name="cancel_select_all">取消全选</string>
+    <string name="download_counts">下载(%s)</string>
+    <string name="not_found_download_video_url">找不到%s视频下载路径</string>
+    <string name="no_select_download_video">您还未选中要下载的视频</string>
+
 </resources>

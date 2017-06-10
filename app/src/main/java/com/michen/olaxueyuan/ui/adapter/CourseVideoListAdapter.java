@@ -4,10 +4,14 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
 import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.protocol.event.VideoPdfEvent;
+import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
+import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
+import com.michen.olaxueyuan.ui.course.video.CourseVideoPopupWindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,64 +23,84 @@ import butterknife.ButterKnife;
  * Created by mingge on 2016/5/24.
  */
 public class CourseVideoListAdapter extends BaseAdapter {
-    private Context context;
-    private List<CourseVideoResult.ResultBean.VideoListBean> videoList = new ArrayList<>();
+	private Context context;
+	private List<CourseVideoResult.ResultBean.VideoListBean> videoList = new ArrayList<>();
 
-    public CourseVideoListAdapter(Context context) {
-        super();
-        this.context = context;
-    }
+	public CourseVideoListAdapter(Context context) {
+		super();
+		this.context = context;
+	}
 
-    public void updateData(List<CourseVideoResult.ResultBean.VideoListBean> videoList) {
-        if (videoList != null) {
-            this.videoList = videoList;
-        }
-        notifyDataSetChanged();
-    }
+	public void updateData(List<CourseVideoResult.ResultBean.VideoListBean> videoList) {
+		if (videoList != null) {
+			this.videoList = videoList;
+		}
+		notifyDataSetChanged();
+	}
 
-    @Override
-    public int getCount() {
-        return videoList.size();
-    }
+	@Override
+	public int getCount() {
+		return videoList.size();
+	}
 
-    @Override
-    public Object getItem(int position) {
-        return videoList.get(position);
-    }
+	@Override
+	public Object getItem(int position) {
+		return videoList.get(position);
+	}
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
 
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            convertView = View.inflate(context, R.layout.activity_course_video_listview_item, null);
-            holder = new ViewHolder(convertView);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-        holder.videoName.setText(videoList.get(position).getName());
-        holder.videoLength.setText(videoList.get(position).getTimeSpan());
-        if (videoList.get(position).isSelected()) {
-            holder.videoName.setSelected(true);
-        } else {
-            holder.videoName.setSelected(false);
-        }
-        return convertView;
-    }
+	@Override
+	public View getView(final int position, View convertView, ViewGroup parent) {
+		ViewHolder holder;
+		if (convertView == null) {
+			convertView = View.inflate(context, R.layout.activity_course_video_listview_item, null);
+			holder = new ViewHolder(convertView);
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+		}
+		holder.videoName.setText(videoList.get(position).getName());
+		holder.videoLength.setText(videoList.get(position).getTimeSpan() + "  未下载");
+		if (videoList.get(position).isSelected()) {
+			holder.videoName.setSelected(true);
+		} else {
+			holder.videoName.setSelected(false);
+		}
+		holder.pdfViewImg.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CourseVideoPopupWindowManager.getInstance().showHandOutPop
+						(context, new VideoPdfEvent(videoList.get(position).getUrl()
+								, videoList.get(position).getId(), 1, position, videoList.get(position).getName()));
+			}
+		});
+		holder.videoDownloadItemImg.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				((CourseVideoActivity) context).downloadCourse(videoList.get(position));
+			}
+		});
+		return convertView;
+	}
 
-    class ViewHolder {
-        @Bind(R.id.video_name)
-        TextView videoName;
-        @Bind(R.id.video_length)
-        TextView videoLength;
+	class ViewHolder {
+		@Bind(R.id.play_icon)
+		ImageView playIcon;
+		@Bind(R.id.video_name)
+		TextView videoName;
+		@Bind(R.id.video_length)
+		TextView videoLength;
+		@Bind(R.id.pdf_view_img)
+		ImageView pdfViewImg;
+		@Bind(R.id.video_download_item_img)
+		ImageView videoDownloadItemImg;
 
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
+		ViewHolder(View view) {
+			ButterKnife.bind(this, view);
+		}
+	}
 }

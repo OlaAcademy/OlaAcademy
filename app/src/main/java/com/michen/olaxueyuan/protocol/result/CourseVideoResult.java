@@ -216,6 +216,15 @@ public class CourseVideoResult extends ServiceResult implements Serializable {
 			private String size;
 			private boolean isSelected;
 			private String fileSavePath;//本地存储地址
+			private boolean isSelectedDownload;//是否被选中下载
+
+			public boolean isSelectedDownload() {
+				return isSelectedDownload;
+			}
+
+			public void setSelectedDownload(boolean selectedDownload) {
+				isSelectedDownload = selectedDownload;
+			}
 
 			public String getFileSavePath() {
 				return fileSavePath;
@@ -267,6 +276,7 @@ public class CourseVideoResult extends ServiceResult implements Serializable {
 						", size='" + size + '\'' +
 						", isSelected=" + isSelected +
 						", fileSavePath='" + fileSavePath + '\'' +
+						", isSelectedDownload=" + isSelectedDownload +
 						'}';
 			}
 

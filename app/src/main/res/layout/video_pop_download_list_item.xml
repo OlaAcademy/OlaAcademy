@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/selector_white_item_bg"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <ImageView
+        android:id="@+id/download_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/download_item_bg" />
+
+    <TextView
+        android:id="@+id/title_item_index"
+        style="@style/normal_text_12dp_style"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/download_img"
+        android:gravity="center"
+        android:maxLength="5"
+        android:paddingLeft="13dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/title_item"
+        style="@style/normal_text_12dp_style"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/download_size"
+        android:layout_toRightOf="@+id/title_item_index"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingLeft="13dp"
+        android:singleLine="true"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/download_size"
+        style="@style/normal_text_12dp_style"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:ellipsize="end"
+        android:gravity="right|center_vertical"
+        android:singleLine="true"
+        android:text="" />
+</RelativeLayout>
