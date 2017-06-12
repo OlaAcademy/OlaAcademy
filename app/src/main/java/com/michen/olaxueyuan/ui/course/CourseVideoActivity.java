@@ -55,7 +55,6 @@ import com.michen.olaxueyuan.ui.course.video.HandOutVideoFragment;
 import com.michen.olaxueyuan.ui.course.video.VideoManager;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.svprogresshud.SVProgressHUD;
-import com.squareup.picasso.Picasso;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
@@ -168,6 +167,10 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 	public View popDownLine;
 	@Bind(R.id.collect_icon)
 	ImageView collectIcon;
+	@Bind(R.id.previous_video)
+	ImageView previousVideo;
+	@Bind(R.id.next_video)
+	ImageView nextVideo;
 
 	private String courseId;
 	private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;
@@ -389,7 +392,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 
 	@OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return, R.id.mediacontroller_speed_text
 			, R.id.video_collect_btn, R.id.video_share_btn, R.id.catalog_layout, R.id.handout_layout,
-			R.id.batch_download, R.id.course_detail, R.id.communicate_with_teacher, R.id.collect_icon})
+			R.id.batch_download, R.id.course_detail, R.id.communicate_with_teacher, R.id.collect_icon
+			, R.id.previous_video, R.id.next_video})
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.left_return:
@@ -505,6 +509,10 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 				Intent intent = new Intent(context, LCIMConversationActivity.class);
 				intent.putExtra(LCIMConstants.PEER_ID, lcChatKitUser.getUserId());
 				startActivity(intent);
+				break;
+			case R.id.previous_video:
+				break;
+			case R.id.next_video:
 				break;
 			default:
 				break;

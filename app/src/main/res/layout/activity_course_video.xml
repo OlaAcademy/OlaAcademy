@@ -256,11 +256,11 @@
 
         <ImageView
             android:id="@+id/collect_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_15"
             android:layout_toLeftOf="@+id/video_collect_btn"
-            android:paddingLeft="@dimen/dp_15"
             android:scaleType="centerInside"
             android:src="@drawable/video_collect_icon"/>
 
@@ -296,6 +296,24 @@
         android:orientation="vertical">
 
         <View style="@style/line_horizontal"/>
+
+        <ImageView
+            android:id="@+id/previous_video"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="@dimen/dp_5"
+            android:scaleType="centerInside"
+            android:src="@drawable/video_pre_icon"/>
+
+        <ImageView
+            android:id="@+id/next_video"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/previous_video"
+            android:scaleType="centerInside"
+            android:src="@drawable/video_next_icon"/>
 
         <ImageView
             android:id="@+id/video_share_btn"

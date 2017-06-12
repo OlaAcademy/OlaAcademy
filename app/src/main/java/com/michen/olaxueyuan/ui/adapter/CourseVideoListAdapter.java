@@ -7,11 +7,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.protocol.event.VideoPdfEvent;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoPopupWindowManager;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +69,12 @@ public class CourseVideoListAdapter extends BaseAdapter {
 		holder.videoLength.setText(videoList.get(position).getTimeSpan() + "  未下载");
 		if (videoList.get(position).isSelected()) {
 			holder.videoName.setSelected(true);
+			holder.videoLength.setSelected(true);
+			Glide.with(context).load(R.drawable.video_play_item_icon_gif).asGif().into(holder.playIcon);
 		} else {
 			holder.videoName.setSelected(false);
+			holder.videoLength.setSelected(false);
+			Glide.with(context).load(R.drawable.video_play_item_icon).centerCrop().into(holder.playIcon);
 		}
 		holder.pdfViewImg.setOnClickListener(new View.OnClickListener() {
 			@Override
