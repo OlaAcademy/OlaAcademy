@@ -1,6 +1,9 @@
 package com.michen.olaxueyuan.ui.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,9 +13,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.protocol.event.VideoPdfEvent;
+import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoPopupWindowManager;
+import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
+import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -87,6 +93,27 @@ public class CourseVideoListAdapter extends BaseAdapter {
 		holder.videoDownloadItemImg.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (videoList.get(position).getIsfree() == 0) {
+					if (!SEAuthManager.getInstance().isAuthenticated()) {
+						context.startActivity(new Intent(context, UserLoginActivity.class));
+					} else {
+						new AlertDialog.Builder(context)
+								.setTitle("友情提示")
+								.setMessage("购买会员后即可拥有")
+								.setPositiveButton("去购买", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int which) {
+										context.startActivity(new Intent(context, BuyVipActivity.class));
+									}
+								})
+								.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int which) {
+										// do nothing
+									}
+								})
+								.show();
+					}
+					return;
+				}
 				((CourseVideoActivity) context).downloadCourse(videoList.get(position));
 			}
 		});

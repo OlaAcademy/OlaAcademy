@@ -94,8 +94,6 @@ public class CatalogVideoFragment extends BaseFragment {
 		videoArrayList = result.getResult().getVideoList();
 		if (videoArrayList != null && videoArrayList.size() > 0) {
 			videoArrayList.get(result.getResult().getPlayIndex()).setSelected(true);
-			adapter = new CourseVideoListAdapter(getActivity());
-			listview.setAdapter(adapter);
 			initListViewItemClick();
 			adapter.updateData(videoArrayList);
 		}

@@ -1,6 +1,8 @@
 package com.michen.olaxueyuan.ui.course;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
@@ -54,6 +56,7 @@ import com.michen.olaxueyuan.ui.course.video.CourseVideoFragmentManger;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoPopupWindowManager;
 import com.michen.olaxueyuan.ui.course.video.HandOutVideoFragment;
 import com.michen.olaxueyuan.ui.course.video.VideoManager;
+import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.UserLoginActivity;
 import com.snail.svprogresshud.SVProgressHUD;
 import com.umeng.analytics.MobclickAgent;
@@ -235,6 +238,31 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 		initData();
 	}
 
+	public void onEventMainThread(CourseVideoResult result) {
+		courseVideoResult = result;
+		this.videoArrayList = result.getResult().getVideoList();
+		if (videoArrayList != null && videoArrayList.size() > 0) {
+			updateItemCountText(videoArrayList.size());
+			if (!TextUtils.isEmpty(videoArrayList.get(result.getResult().getPlayIndex()).getFileSavePath())) {
+				mVideoView.setVideoPath(videoArrayList.get(result.getResult().getPlayIndex()).getFileSavePath());
+			} else {
+				mVideoView.setVideoPath(videoArrayList.get(result.getResult().getPlayIndex()).getAddress());
+			}
+			mVideoView.resume();
+			mVideoView.seekTo(result.getResult().getPlayProgress() * 1000);
+			Logger.e("msec===" + msec);
+			Logger.e("result.getPlayProgress() * 1000===" + result.getResult().getPlayProgress() * 1000);
+			mDismissHandler.sendEmptyMessage(1);
+			if (result.getResult().getIsCollect().equals("1")) {
+				setCollectDrawable(true);
+//								videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
+			} else {
+				setCollectDrawable(false);
+//								videoCollectBtn.setImageResource(R.drawable.video_collect_icon);
+			}
+		}
+	}
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -279,6 +307,27 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 			position = videoArrayList.size() - 1;
 		} else if (position > videoArrayList.size() - 1) {
 			position = 0;
+		}
+		if (videoArrayList.get(position).getIsfree() == 0) {
+			if (!SEAuthManager.getInstance().isAuthenticated()) {
+				startActivity(new Intent(context, UserLoginActivity.class));
+			} else {
+				new AlertDialog.Builder(context)
+						.setTitle("友情提示")
+						.setMessage("购买会员后即可拥有")
+						.setPositiveButton("去购买", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								startActivity(new Intent(context, BuyVipActivity.class));
+							}
+						})
+						.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								// do nothing
+							}
+						})
+						.show();
+			}
+			return;
 		}
 		((CatalogVideoFragment) (CourseVideoFragmentManger.getInstance().adapter.getItem(0))).listview.smoothScrollToPosition(position);
 		if (!TextUtils.isEmpty(videoArrayList.get(position).getFileSavePath())) {
@@ -330,27 +379,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 						PictureUtils.loadAvatar(context, lectureAvatar, result.getResult().getTeacherAvatar(), 30);
 						msec = result.getResult().getPlayProgress() * 1000;
 						videoArrayList = result.getResult().getVideoList();
-						videoArrayList = downloadManager.getVideoArrayList(videoArrayList);
-						if (videoArrayList != null && videoArrayList.size() > 0) {
-							updateItemCountText(videoArrayList.size());
-							if (!TextUtils.isEmpty(videoArrayList.get(result.getResult().getPlayIndex()).getFileSavePath())) {
-								mVideoView.setVideoPath(videoArrayList.get(result.getResult().getPlayIndex()).getFileSavePath());
-							} else {
-								mVideoView.setVideoPath(videoArrayList.get(result.getResult().getPlayIndex()).getAddress());
-							}
-							mVideoView.resume();
-							mVideoView.seekTo(result.getResult().getPlayProgress() * 1000);
-							Logger.e("msec===" + msec);
-							Logger.e("result.getPlayProgress() * 1000===" + result.getResult().getPlayProgress() * 1000);
-							mDismissHandler.sendEmptyMessage(1);
-							if (result.getResult().getIsCollect().equals("1")) {
-								setCollectDrawable(true);
-//								videoCollectBtn.setImageResource(R.drawable.video_collect_icon_selected);
-							} else {
-								setCollectDrawable(false);
-//								videoCollectBtn.setImageResource(R.drawable.video_collect_icon);
-							}
-						}
+						downloadManager.getVideoArrayList(CourseVideoActivity.this, result);
 					}
 				}
 			}

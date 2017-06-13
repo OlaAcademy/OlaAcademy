@@ -1,5 +1,6 @@
 package com.michen.olaxueyuan.download;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -15,6 +16,7 @@ import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.util.LogUtils;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.protocol.event.DownloadSuccessEvent;
 import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
 import com.michen.olaxueyuan.protocol.result.SystemVideoResult;
@@ -60,7 +62,38 @@ public class DownloadManager {
 		return downloadInfoList.size();
 	}
 
-	public List<CourseVideoResult.ResultBean.VideoListBean> getVideoArrayList(List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList) {
+	List<DownloadInfo> downloadedList = null;
+
+	public void getVideoArrayList(final Activity activity, final CourseVideoResult result) {
+		final List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList = result.getResult().getVideoList();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "=", HttpHandler.State.SUCCESS));
+					for (int i = 0; i < downloadedList.size(); i++) {
+						for (int j = 0; j < videoArrayList.size(); j++) {
+							if (downloadedList.get(i).getDownloadUrl().equals(videoArrayList.get(j).getAddress())) {
+								videoArrayList.get(j).setFileSavePath(downloadedList.get(i).getFileSavePath());
+								Logger.e("url=" + downloadedList.get(i).getFileSavePath());
+							}
+						}
+					}
+					activity.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Logger.e("getVideoArrayList=");
+							EventBus.getDefault().post(result);
+						}
+					});
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+	public List<SystemVideoResult.ResultBean> getSysVideoArrayList(List<SystemVideoResult.ResultBean> videoArrayList) {
 		List<DownloadInfo> downloadedList = null;
 		try {
 			downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "=", HttpHandler.State.SUCCESS));
@@ -76,23 +109,6 @@ public class DownloadManager {
 		}
 		return videoArrayList;
 	}
-
-    public List<SystemVideoResult.ResultBean>  getSysVideoArrayList(List<SystemVideoResult.ResultBean> videoArrayList) {
-        List<DownloadInfo> downloadedList = null;
-        try {
-            downloadedList = db.findAll(Selector.from(DownloadInfo.class).where("state", "=", HttpHandler.State.SUCCESS));
-            for (int i = 0; i < downloadedList.size(); i++) {
-                for (int j = 0; j < videoArrayList.size(); j++) {
-                    if (downloadedList.get(i).getDownloadUrl().equals(videoArrayList.get(j).getAddress())) {
-                        videoArrayList.get(j).setFileSavePath(downloadedList.get(i).getFileSavePath());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return videoArrayList;
-    }
 
 	public List<DownloadInfo> getDownloadedList() {
 		List<DownloadInfo> downloadedList = null;
