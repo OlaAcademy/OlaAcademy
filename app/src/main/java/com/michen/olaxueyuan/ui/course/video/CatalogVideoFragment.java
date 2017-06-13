@@ -31,9 +31,9 @@ import de.greenrobot.event.EventBus;
 public class CatalogVideoFragment extends BaseFragment {
 	View view;
 	@Bind(R.id.listview)
-	ListView listview;
+	public ListView listview;
 
-	private CourseVideoListAdapter adapter;
+	public CourseVideoListAdapter adapter;
 	private List<CourseVideoResult.ResultBean.VideoListBean> videoArrayList;
 	CourseVideoResult courseVideoResult;
 

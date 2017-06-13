@@ -48,6 +48,7 @@ import com.michen.olaxueyuan.protocol.result.UserLoginNoticeModule;
 import com.michen.olaxueyuan.sharesdk.ShareModel;
 import com.michen.olaxueyuan.sharesdk.SharePopupWindow;
 import com.michen.olaxueyuan.ui.circle.chat.CustomUserProvider;
+import com.michen.olaxueyuan.ui.course.video.CatalogVideoFragment;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoDetailActivity;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoFragmentManger;
 import com.michen.olaxueyuan.ui.course.video.CourseVideoPopupWindowManager;
@@ -193,6 +194,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 	private int videoWidth = 16;
 	private int videoHeight = 9;
 	private LCChatKitUser lcChatKitUser;
+	private TitleManager titleManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -247,7 +249,8 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 //        courseId = getIntent().getExtras().getString("pid");
 		courseId = getIntent().getStringExtra("pid");
 		Logger.e("courseId==" + courseId);
-		new TitleManager(this, getString(R.string.video_detail), this, true);
+		titleManager = new TitleManager(this, getString(R.string.video_detail), this, true);
+		titleManager.changeImageRes(TitleManager.RIGHT_INDEX_RESPONSE, R.drawable.video_share_icon);
 		mVideoView.setOnClickListener(this);
 		lectureAvatar.setRectAdius(100);
 		CourseVideoFragmentManger.getInstance().initView(this);
@@ -266,13 +269,31 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 		performRefresh();
 	}
 
+	int position = 0;
+
 	public void playVideo(int position) {
+		if (videoArrayList == null || videoArrayList.size() == 0) {
+			return;
+		}
+		if (position < 0) {
+			position = videoArrayList.size() - 1;
+		} else if (position > videoArrayList.size() - 1) {
+			position = 0;
+		}
+		((CatalogVideoFragment) (CourseVideoFragmentManger.getInstance().adapter.getItem(0))).listview.smoothScrollToPosition(position);
 		if (!TextUtils.isEmpty(videoArrayList.get(position).getFileSavePath())) {
 			mVideoView.setVideoPath(videoArrayList.get(position).getFileSavePath());
 		} else {
 			mVideoView.setVideoPath(videoArrayList.get(position).getAddress());
 		}
 		pdfPosition = position;
+
+		for (int i = 0; i < videoArrayList.size(); i++) {
+			videoArrayList.get(i).setSelected(false);
+		}
+		videoArrayList.get(position).setSelected(true);
+		((CatalogVideoFragment) (CourseVideoFragmentManger.getInstance().adapter.getItem(0))).adapter.updateData(videoArrayList);
+		this.position = position;
 	}
 
 	public void setDownloadPdfPosition(int position) {
@@ -391,9 +412,9 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 	}
 
 	@OnClick({R.id.left_return, R.id.title_tv, R.id.set_full_screen, R.id.video_view_return, R.id.mediacontroller_speed_text
-			, R.id.video_collect_btn, R.id.video_share_btn, R.id.catalog_layout, R.id.handout_layout,
+			, R.id.video_collect_btn, R.id.catalog_layout, R.id.handout_layout,
 			R.id.batch_download, R.id.course_detail, R.id.communicate_with_teacher, R.id.collect_icon
-			, R.id.previous_video, R.id.next_video})
+			, R.id.previous_video, R.id.next_video, R.id.right_response})
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.left_return:
@@ -436,7 +457,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 					}
 				}
 				break;
-			case R.id.video_share_btn:
+			case R.id.right_response:
 				if (courseVideoResult != null && courseVideoResult.getResult().getVideoList().size() > 0) {
 					for (CourseVideoResult.ResultBean.VideoListBean videoInfo : courseVideoResult.getResult().getVideoList()) {
 						if (videoInfo.isSelected()) {
@@ -511,8 +532,10 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 				startActivity(intent);
 				break;
 			case R.id.previous_video:
+				playVideo(position - 1);
 				break;
 			case R.id.next_video:
+				playVideo(position + 1);
 				break;
 			default:
 				break;
