@@ -499,7 +499,7 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="Theme.UMDefault" parent="android:style/Theme.NoTitleBar" />
+    <style name="Theme.UMDefault" parent="android:style/Theme.NoTitleBar"/>
 
     <style name="Theme.UMDialog" parent="android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
@@ -528,4 +528,12 @@
         <item name="android:windowExitAnimation">@anim/umeng_socialize_slide_out_from_bottom</item>
     </style>
 
+    <style name="SeaAppTheme" parent="Base.Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">#616369</item>
+        <item name="colorAccent">#FF4081</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

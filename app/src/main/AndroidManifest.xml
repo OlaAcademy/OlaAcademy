@@ -598,7 +598,7 @@
             android:name=".ui.me.activity.MySnackBarActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/MyAppCompatTheme"/>
+            android:theme="@style/SeaAppTheme"/>
         <activity
             android:name=".ui.me.activity.BindMobileActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"

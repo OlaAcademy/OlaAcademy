@@ -38,6 +38,7 @@ import com.michen.olaxueyuan.protocol.result.CourseVideoResult;
 import com.michen.olaxueyuan.ui.course.CourseVideoActivity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -231,8 +232,14 @@ public class CourseVideoPopupWindowManager {
 	 * @param list
 	 * @param title
 	 */
-	public void downLoadPopupWindow(final List<CourseVideoResult.ResultBean.VideoListBean> list, final String title) {
-		this.list = list;
+	public void downLoadPopupWindow(final List<CourseVideoResult.ResultBean.VideoListBean> videoList, final String title) {
+		List<CourseVideoResult.ResultBean.VideoListBean> lists = new ArrayList<>();
+		for (int i = 0; i < videoList.size(); i++) {
+			if (videoList.get(i).getIsfree() != 0 && TextUtils.isEmpty(videoList.get(i).getFileSavePath())) {
+				lists.add(videoList.get(i));
+			}
+		}
+		this.list = lists;
 		downloadManager = DownloadService.getDownloadManager(activity);
 		View popView = LayoutInflater.from(activity).inflate(R.layout.video_pop_download_view, null);
 		popView.setFocusable(true);

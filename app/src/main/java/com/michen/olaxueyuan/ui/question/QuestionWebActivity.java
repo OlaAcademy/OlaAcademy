@@ -10,6 +10,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -68,6 +69,7 @@ public class QuestionWebActivity extends SuperActivity implements View.OnClickLi
         contentWebView.setWebChromeClient(new WebChromeClient());
         // 启用javascript
         contentWebView.getSettings().setJavaScriptEnabled(true);
+        contentWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         indexTV = (TextView) findViewById(R.id.tv_index);
         articleTV = (EditText) findViewById(R.id.tv_article);

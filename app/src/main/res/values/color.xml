@@ -395,6 +395,7 @@
     <color name="title_gray">#EFEFEF</color>
     <color name="video_title_text_color">#6F6F6F</color>
     <color name="video_list_text_colors">#ADADAD</color>
+    <color name="snackbar_blue">#50A5FC</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>

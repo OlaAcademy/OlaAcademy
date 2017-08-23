@@ -72,7 +72,11 @@ public class CourseVideoListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		holder.videoName.setText(videoList.get(position).getName());
-		holder.videoLength.setText(videoList.get(position).getTimeSpan() + "  未下载");
+		if (videoList.get(position).isSelectedDownload()) {
+			holder.videoLength.setText(videoList.get(position).getTimeSpan() + "  已下载");
+		} else {
+			holder.videoLength.setText(videoList.get(position).getTimeSpan() + "  未下载");
+		}
 		if (videoList.get(position).isSelected()) {
 			holder.videoName.setSelected(true);
 			holder.videoLength.setSelected(true);
