@@ -1,10 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/question_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/title_layout" />
+    <include
+        layout="@layout/title_layout"
+        android:visibility="gone"/>
 
     <ImageView
         android:layout_width="match_parent"
@@ -12,21 +15,21 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@drawable/ic_head_question"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <include
         android:id="@+id/indicator_view"
-        layout="@layout/fragment_question_indicator" />
+        layout="@layout/fragment_question_indicator"/>
 
     <View
         style="@style/line_horizontal"
-        android:layout_height="@dimen/dp_10" />
+        android:layout_height="@dimen/dp_10"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="@color/white" />
+        android:background="@color/white"/>
 
     <RelativeLayout
         android:id="@+id/subject_layout"
@@ -43,14 +46,14 @@
             android:layout_marginRight="@dimen/dp_10"
             android:text="高分指南课后习题(视频版)"
             android:textColor="@color/black_one"
-            android:textSize="@dimen/sp_16" />
+            android:textSize="@dimen/sp_16"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/subject_name"
-            android:src="@drawable/subject_pulldown_icon" />
+            android:src="@drawable/subject_pulldown_icon"/>
     </RelativeLayout>
 
     <FrameLayout
@@ -58,20 +61,20 @@
         android:layout_height="match_parent">
 
         <com.snail.pulltorefresh.PullToRefreshExpandableListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/expandableListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:visibility="visible"
-            ptr:ptrAnimationStyle="flip" />
+                                                                 android:id="@+id/expandableListView"
+                                                                 android:layout_width="match_parent"
+                                                                 android:layout_height="match_parent"
+                                                                 android:background="@color/white"
+                                                                 android:visibility="visible"
+                                                                 ptr:ptrAnimationStyle="flip"/>
 
         <com.snail.pulltorefresh.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/listview_question"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:visibility="visible"
-            ptr:ptrAnimationStyle="flip" />
+                                                       android:id="@+id/listview_question"
+                                                       android:layout_width="match_parent"
+                                                       android:layout_height="match_parent"
+                                                       android:background="@color/white"
+                                                       android:visibility="visible"
+                                                       ptr:ptrAnimationStyle="flip"/>
     </FrameLayout>
 
 </LinearLayout>

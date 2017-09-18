@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_white_item_bg">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_toLeftOf="@+id/time"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingTop="@dimen/dp_15"
+        android:singleLine="true"
+        android:text="2018年复习大纲2018年复习大纲2018年复习大纲"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/title"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/dp_5"
+        android:paddingRight="@dimen/dp_15"
+        android:text="30分钟"
+        android:textSize="13dp"/>
+
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="@dimen/dp_10"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/dp_15"
+        android:singleLine="true"
+        android:text="5章  欧拉学院"
+        android:textSize="11dp"/>
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_below="@id/author"
+        android:layout_marginTop="@dimen/dp_15"/>
+</RelativeLayout>

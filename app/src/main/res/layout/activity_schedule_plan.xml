@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_layout"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/set_schedule_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="98dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="制定计划"
+                    android:textColor="@color/color_4A4F5E"
+                    android:textSize="23dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="根据你的日常学习时间，制定各科目学习计划"
+                    android:textColor="@color/color_83888B"
+                    android:textSize="13dp"/>
+
+                <ListView
+                    android:id="@+id/list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="33dp"
+                    android:scrollbars="none"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/time_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="提醒时间"
+                    android:textColor="@color/color_4A4F5E"
+                    android:textSize="23dp"/>
+
+                <LinearLayout
+                    android:id="@+id/set_time_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="每天"
+                        android:textColor="@color/color_4A505E"
+                        android:textSize="23dp"/>
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="9:30"
+                        android:textColor="@color/color_33ADF4"
+                        android:textSize="23dp"/>
+                </LinearLayout>
+
+                <View
+                    style="@style/line_horizontal"
+                    android:layout_width="225dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="18dp"/>
+            </LinearLayout>
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/shape_rectangle_corner25_fill_gray"
+            android:text="下一步"
+            android:textColor="@color/white"
+            android:textSize="16dp"/>
+    </FrameLayout>
+</LinearLayout>

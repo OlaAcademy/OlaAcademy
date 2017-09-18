@@ -607,6 +607,12 @@
             android:name=".ui.course.video.CourseVideoDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.plan.activity.SchedulePlanActivity">
+        </activity>
+        <activity android:name=".ui.plan.activity.CorrectRateActivity">
+        </activity>
+        <activity android:name=".ui.plan.activity.CompleteScheduleActivity">
+        </activity>
     </application>
 
 </manifest>

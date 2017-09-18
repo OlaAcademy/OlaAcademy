@@ -396,6 +396,11 @@
     <color name="video_title_text_color">#6F6F6F</color>
     <color name="video_list_text_colors">#ADADAD</color>
     <color name="snackbar_blue">#50A5FC</color>
+    <color name="color_4A4F5E">#4A4F5E</color>
+    <color name="color_83888B">#83888B</color>
+    <color name="color_4A505E">#4A505E</color>
+    <color name="color_33ADF4">#33ADF4</color>
+    <color name="color_9C8686">#9C8686</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>
@@ -409,4 +414,5 @@
     <drawable name="blue_light">#1B9BFC</drawable>
     <drawable name="common_blue">#4285f4</drawable>
     <drawable name="black_one">#51545D</drawable>
+    <drawable name="drawable_D3D9DC">#D3D9DC</drawable>
 </resources>

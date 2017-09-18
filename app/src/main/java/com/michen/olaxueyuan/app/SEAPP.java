@@ -40,10 +40,11 @@ public class SEAPP extends Application {
 	public static final String MEDIA_BASE_URL = "http://upload.olaxueyuan.com";
 	private String versionNames;
 	private static CatLoadingView catLoadingView;
-	public static boolean debug = false;
+	public static boolean debug = true;
 	//    public static final String API_BASE_URL = "http://english.olaxueyuan.com";
-	public static final String API_BASE_URL = "http://api.olaxueyuan.com";
-//        final String API_BASE_URL = "http://123.59.129.137:8080";
+	public static final String API_BASE_URL = "https://api.olaxueyuan.com";
+	//        final String API_BASE_URL = "http://123.59.129.137:8080";
+//	public static final String API_BASE_URL = "http://test.olaxueyuan.com";//这个是测试环境地址
 
 	@Override
 	public void onCreate() {

@@ -369,7 +369,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 			public void success(CourseVideoResult result, Response response) {
 				if (!CourseVideoActivity.this.isFinishing()) {
 					if (result.getApicode() != 10000) {
-						SVProgressHUD.showInViewWithoutIndicator(CourseVideoActivity.this, result.getMessage(), 2.0f);
+						ToastUtil.showToastShort(context,result.getMessage());
 					} else {
 						EventBus.getDefault().post(result);
 						courseVideoResult = result;
@@ -734,7 +734,7 @@ public class CourseVideoActivity extends FragmentActivity implements View.OnClic
 			public void success(CourseCollectResult result, Response response) {
 				if (!CourseVideoActivity.this.isFinishing()) {
 					if (result.getApicode() != 10000) {
-						SVProgressHUD.showInViewWithoutIndicator(CourseVideoActivity.this, result.getMessage(), 2.0f);
+						ToastUtil.showToastShort(context,result.getMessage());
 					} else {
 						ToastUtil.showToastShort(CourseVideoActivity.this, result.getMessage());
 						if (state.equals("1")) {

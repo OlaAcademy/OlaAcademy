@@ -27,6 +27,7 @@ import com.michen.olaxueyuan.ui.examination.ExamFragment;
 import com.michen.olaxueyuan.ui.home.HomeFragment;
 import com.michen.olaxueyuan.ui.home.data.ChangeIndexEvent;
 import com.michen.olaxueyuan.ui.me.UserFragment;
+import com.michen.olaxueyuan.ui.plan.PlanHomeFragment;
 import com.michen.olaxueyuan.ui.question.QuestionFragment;
 import com.michen.olaxueyuan.ui.teacher.TeacherHomeFragment;
 
@@ -38,247 +39,249 @@ import de.greenrobot.event.EventBus;
 
 
 public class MainFragment extends Fragment {
-    private SETabBar _tabBar;
-    private static Activity mActivity;
+	private SETabBar _tabBar;
+	private static Activity mActivity;
 
-    public static MainFragment newInstance() {
-        MainFragment fragment = new MainFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+	public static MainFragment newInstance() {
+		MainFragment fragment = new MainFragment();
+		Bundle args = new Bundle();
+		fragment.setArguments(args);
+		return fragment;
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
 //        setupActionBar();
-        register();
-        View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
-        EventBus.getDefault().register(this);
-        _tabBar = (SETabBar) fragmentView.findViewById(R.id.TabBar);
+		register();
+		View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
+		EventBus.getDefault().register(this);
+		_tabBar = (SETabBar) fragmentView.findViewById(R.id.TabBar);
 
-        addChildFragment();
+		addChildFragment();
 
-        _tabBar.getItemViewAt(0).setNormalIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_point_normal));
-        _tabBar.getItemViewAt(1).setNormalIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_course_normal));
-        _tabBar.getItemViewAt(2).setNormalIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_home_selected));
-        _tabBar.getItemViewAt(3).setNormalIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_circle_normal));
-        _tabBar.getItemViewAt(4).setNormalIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_user_normal));
+		_tabBar.getItemViewAt(0).setNormalIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_point_normal));
+		_tabBar.getItemViewAt(1).setNormalIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_course_normal));
+		_tabBar.getItemViewAt(2).setNormalIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_home_selected));
+		_tabBar.getItemViewAt(3).setNormalIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_circle_normal));
+		_tabBar.getItemViewAt(4).setNormalIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_user_normal));
 
-        _tabBar.getItemViewAt(0).setTitleText("考点");
-        _tabBar.getItemViewAt(1).setTitleText("题库");
-        _tabBar.getItemViewAt(2).setTitleText("主页");
-        _tabBar.getItemViewAt(3).setTitleText("欧拉圈");
-        _tabBar.getItemViewAt(4).setTitleText("我的");
+		_tabBar.getItemViewAt(0).setTitleText("考点");
+		_tabBar.getItemViewAt(1).setTitleText("题库");
+		_tabBar.getItemViewAt(2).setTitleText("主页");
+		_tabBar.getItemViewAt(3).setTitleText("欧拉圈");
+		_tabBar.getItemViewAt(4).setTitleText("我的");
 
-        _tabBar.setOnTabSelectionEventListener(new SETabBar.OnTabSelectionEventListener() {
-            @Override
-            public boolean onWillSelectTab(int tabIndex) {
-                return handleOnWillSelectTab(tabIndex);
-            }
+		_tabBar.setOnTabSelectionEventListener(new SETabBar.OnTabSelectionEventListener() {
+			@Override
+			public boolean onWillSelectTab(int tabIndex) {
+				return handleOnWillSelectTab(tabIndex);
+			}
 
-            @Override
-            public void onDidSelectTab(int tabIndex) {
-                handleOnDidSelectTab(tabIndex);
-            }
-        });
-        _tabBar.limitTabNum(5);
-        return fragmentView;
-    }
+			@Override
+			public void onDidSelectTab(int tabIndex) {
+				handleOnDidSelectTab(tabIndex);
+			}
+		});
+		_tabBar.limitTabNum(5);
+		return fragmentView;
+	}
 
-    private void handleOnDidSelectTab(int tabIndex) {
-        switchToPage(tabIndex);
-    }
+	private void handleOnDidSelectTab(int tabIndex) {
+		switchToPage(tabIndex);
+	}
 
-    public void switchToPage(int tabIndex) {
-        switch (tabIndex) {
-            case 0:
-                isTeacher(true);
-                break;
-            case 1:
-                changeFragment(courseVideoFragment, teacherHomeFragment, questionFragment, homeFragment, circleFragment, userFragment);
-                break;
-            case 2:
-                changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseVideoFragment, circleFragment, userFragment);
-                break;
-            case 3:
-                changeFragment(circleFragment, teacherHomeFragment, questionFragment, courseVideoFragment, homeFragment, userFragment);
-                break;
-            case 4:
-                changeFragment(userFragment, teacherHomeFragment, questionFragment, courseVideoFragment, homeFragment, circleFragment);
-                break;
-            default:
-                break;
-        }
-    }
+	public void switchToPage(int tabIndex) {
+		switch (tabIndex) {
+			case 0:
+				isTeacher(true);
+				break;
+			case 1:
+				changeFragment(courseVideoFragment, teacherHomeFragment, planHomeFragment, homeFragment, circleFragment, userFragment);
+				break;
+			case 2:
+				changeFragment(homeFragment, teacherHomeFragment, planHomeFragment, courseVideoFragment, circleFragment, userFragment);
+				break;
+			case 3:
+				changeFragment(circleFragment, teacherHomeFragment, planHomeFragment, courseVideoFragment, homeFragment, userFragment);
+				break;
+			case 4:
+				changeFragment(userFragment, teacherHomeFragment, planHomeFragment, courseVideoFragment, homeFragment, circleFragment);
+				break;
+			default:
+				break;
+		}
+	}
 
-    /**
-     * {@link com.michen.olaxueyuan.ui.home.HomeFragment#chageIndex(int)}
-     */
-    public void onEventMainThread(ChangeIndexEvent changeIndexEvent) {
-        if (changeIndexEvent.isChange) {
-            _tabBar.setSelectedTabIndex(changeIndexEvent.position);
-        }
-    }
+	/**
+	 * {@link com.michen.olaxueyuan.ui.home.HomeFragment#chageIndex(int)}
+	 */
+	public void onEventMainThread(ChangeIndexEvent changeIndexEvent) {
+		if (changeIndexEvent.isChange) {
+			_tabBar.setSelectedTabIndex(changeIndexEvent.position);
+		}
+	}
 
-    private QuestionFragment questionFragment;
-    private ExamFragment examFragment;
-    private CourseFragment courseFragment;
-    private CircleFragment circleFragment;
-    private HomeFragment homeFragment;
-    private TeacherHomeFragment teacherHomeFragment;
-    private UserFragment userFragment;
-    private CourseVideoFragment courseVideoFragment;
+	private QuestionFragment questionFragment;
+	private ExamFragment examFragment;
+	private CourseFragment courseFragment;
+	private CircleFragment circleFragment;
+	private HomeFragment homeFragment;
+	private TeacherHomeFragment teacherHomeFragment;
+	private UserFragment userFragment;
+	private CourseVideoFragment courseVideoFragment;
+	private PlanHomeFragment planHomeFragment;
 
-    private void addChildFragment() {
-        questionFragment = new QuestionFragment();
+	private void addChildFragment() {
+		planHomeFragment = new PlanHomeFragment();
+		questionFragment = new QuestionFragment();
 //        examFragment = new ExamFragment();
-        courseFragment = new CourseFragment();
-        courseVideoFragment = new CourseVideoFragment();
-        homeFragment = new HomeFragment();
-        circleFragment = new CircleFragment();
+		courseFragment = new CourseFragment();
+		courseVideoFragment = new CourseVideoFragment();
+		homeFragment = new HomeFragment();
+		circleFragment = new CircleFragment();
 //        userFragment = new UserFragment();
-        teacherHomeFragment = new TeacherHomeFragment();
-        userFragment = new UserFragment();
-        changeFragment(homeFragment, teacherHomeFragment, questionFragment, courseVideoFragment, circleFragment, userFragment);
-    }
+		teacherHomeFragment = new TeacherHomeFragment();
+		userFragment = new UserFragment();
+		changeFragment(homeFragment, teacherHomeFragment, planHomeFragment, courseVideoFragment, circleFragment, userFragment);
+	}
 
-    private void changeFragment(Fragment targetFragment, Fragment... fragments) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        if (!targetFragment.isAdded()) {
-            transaction.add(R.id.main_content_view, targetFragment, targetFragment.getClass().getName());
-        }
-        transaction.show(targetFragment);
-        for (int i = 0; i < fragments.length; i++) {
-            transaction.hide(fragments[i]);
-        }
-        transaction.commitAllowingStateLoss();
-    }
+	private void changeFragment(Fragment targetFragment, Fragment... fragments) {
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		if (!targetFragment.isAdded()) {
+			transaction.add(R.id.main_content_view, targetFragment, targetFragment.getClass().getName());
+		}
+		transaction.show(targetFragment);
+		for (int i = 0; i < fragments.length; i++) {
+			transaction.hide(fragments[i]);
+		}
+		transaction.commitAllowingStateLoss();
+	}
 
-    private void isTeacher(boolean flag) {
-        if (SEAuthManager.getInstance() != null && SEAuthManager.getInstance().getAccessUser() != null
-                && SEAuthManager.getInstance().getAccessUser().getIsActive() == 2) {
-            if (flag || questionFragment.isVisible()) {
-                changeFragment(teacherHomeFragment, questionFragment, courseVideoFragment, homeFragment, circleFragment, userFragment);
-            }
-        } else {
-            if (flag || teacherHomeFragment.isVisible()) {
-                changeFragment(questionFragment, teacherHomeFragment, courseVideoFragment, homeFragment, circleFragment, userFragment);
-            }
-        }
-    }
+	private void isTeacher(boolean flag) {
+		if (SEAuthManager.getInstance() != null && SEAuthManager.getInstance().getAccessUser() != null
+				&& SEAuthManager.getInstance().getAccessUser().getIsActive() == 2) {
+			if (flag || planHomeFragment.isVisible()) {
+				changeFragment(teacherHomeFragment, planHomeFragment, courseVideoFragment, homeFragment, circleFragment, userFragment);
+			}
+		} else {
+			if (flag || teacherHomeFragment.isVisible()) {
+				changeFragment(planHomeFragment, teacherHomeFragment, courseVideoFragment, homeFragment, circleFragment, userFragment);
+			}
+		}
+	}
 
-    // EventBus 回调
-    public void onEventMainThread(UserLoginNoticeModule module) {
-        isTeacher(false);
-    }
+	// EventBus 回调
+	public void onEventMainThread(UserLoginNoticeModule module) {
+		isTeacher(false);
+	}
 
-    private void register() {
-        IntentFilter filter1 = new IntentFilter("com.swiftacademy.screen.changed");
-        getActivity().registerReceiver(screenReceirver, filter1);
+	private void register() {
+		IntentFilter filter1 = new IntentFilter("com.swiftacademy.screen.changed");
+		getActivity().registerReceiver(screenReceirver, filter1);
 
-        IntentFilter filter = new IntentFilter("com.swiftacademy.tab.change");
-        getActivity().registerReceiver(changeTabReceiver, filter);
-    }
+		IntentFilter filter = new IntentFilter("com.swiftacademy.tab.change");
+		getActivity().registerReceiver(changeTabReceiver, filter);
+	}
 
-    private void unregister() {
-        getActivity().unregisterReceiver(changeTabReceiver);
-        getActivity().unregisterReceiver(screenReceirver);
-    }
+	private void unregister() {
+		getActivity().unregisterReceiver(changeTabReceiver);
+		getActivity().unregisterReceiver(screenReceirver);
+	}
 
-    private BroadcastReceiver changeTabReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switchToPage(2);
-        }
-    };
+	private BroadcastReceiver changeTabReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			switchToPage(2);
+		}
+	};
 
-    // 监听视频横竖屏
-    private BroadcastReceiver screenReceirver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            boolean enterFullScreen = intent.getBooleanExtra("enterFullScreen", false);
-            if (enterFullScreen) {
-                _tabBar.setVisibility(View.GONE);
-            } else {
-                _tabBar.setVisibility(View.VISIBLE);
-            }
-        }
-    };
+	// 监听视频横竖屏
+	private BroadcastReceiver screenReceirver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			boolean enterFullScreen = intent.getBooleanExtra("enterFullScreen", false);
+			if (enterFullScreen) {
+				_tabBar.setVisibility(View.GONE);
+			} else {
+				_tabBar.setVisibility(View.VISIBLE);
+			}
+		}
+	};
 
-    private void setupActionBar() {
-        ActionBar actionBar = mActivity.getActionBar();
-        try {
-            actionBar.getClass().getDeclaredMethod("setShowHideAnimationEnabled", boolean.class).invoke(actionBar, false);
-        } catch (Exception exception) {
-            // Too bad, the animation will be run ;(
-        }
-    }
+	private void setupActionBar() {
+		ActionBar actionBar = mActivity.getActionBar();
+		try {
+			actionBar.getClass().getDeclaredMethod("setShowHideAnimationEnabled", boolean.class).invoke(actionBar, false);
+		} catch (Exception exception) {
+			// Too bad, the animation will be run ;(
+		}
+	}
 
-    private void handlePageSelected(int index) {
-        _tabBar.setSelectedTabIndex(index);
-    }
+	private void handlePageSelected(int index) {
+		_tabBar.setSelectedTabIndex(index);
+	}
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 1:
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+			case 1:
 //                MWTAuthManager am = MWTAuthManager.getInstance();
 //                if (am.isAuthenticated())
 //                {
 //                    _tabBar.setSelectedTabIndex(4);
 //                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-                break;
-        }
-    }
+				break;
+			default:
+				super.onActivityResult(requestCode, resultCode, data);
+				break;
+		}
+	}
 
-    private void setActionBarVisible(boolean actionBarVisible) {
-        ActionBar actionBar = mActivity.getActionBar();
-        try {
-            actionBar.getClass().getDeclaredMethod("setShowHideAnimationEnabled", boolean.class).invoke(actionBar, false);
-        } catch (Exception exception) {
-            // Too bad, the animation will be run ;(
-        }
+	private void setActionBarVisible(boolean actionBarVisible) {
+		ActionBar actionBar = mActivity.getActionBar();
+		try {
+			actionBar.getClass().getDeclaredMethod("setShowHideAnimationEnabled", boolean.class).invoke(actionBar, false);
+		} catch (Exception exception) {
+			// Too bad, the animation will be run ;(
+		}
 
-        if (actionBarVisible) {
-            actionBar.show();
-        } else {
-            actionBar.hide();
-        }
-    }
+		if (actionBarVisible) {
+			actionBar.show();
+		} else {
+			actionBar.hide();
+		}
+	}
 
-    public void onEventMainThread(ChatNewsMessageEvent chatNewMessageEvent) {
-        if (chatNewMessageEvent.num > 0) {
-            _tabBar.getItemViewAt(2).showRedDot(chatNewMessageEvent.num);
-        } else {
-            _tabBar.getItemViewAt(2).hideRedDot();
-        }
-    }
+	public void onEventMainThread(ChatNewsMessageEvent chatNewMessageEvent) {
+		if (chatNewMessageEvent.num > 0) {
+			_tabBar.getItemViewAt(2).showRedDot(chatNewMessageEvent.num);
+		} else {
+			_tabBar.getItemViewAt(2).hideRedDot();
+		}
+	}
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
-    }
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mActivity = activity;
+	}
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
+	@Override
+	public void onDetach() {
+		super.onDetach();
+	}
 
-    private boolean handleOnWillSelectTab(int tabIndex) {
+	private boolean handleOnWillSelectTab(int tabIndex) {
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregister();
-        EventBus.getDefault().unregister(this);
-    }
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		unregister();
+		EventBus.getDefault().unregister(this);
+	}
 }
 
