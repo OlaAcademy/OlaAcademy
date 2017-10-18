@@ -110,18 +110,18 @@ public class VideoManager {
                 if (Math.abs(distanceX) > Math.abs(distanceY)) {// 横向移动大于纵向移动
                     if (distanceX >= Utils.dip2px(activity, STEP_PROGRESS)) {// 快退，用步长控制改变速度，可微调
                         activity.gesture_iv_progress.setImageResource(R.drawable.souhu_player_backward);
-                        if (palyerCurrentPosition > 2 * 1000) {// 避免为负
-                            palyerCurrentPosition -= 2 * 1000;// scroll方法执行一次快退3秒
+                        if (palyerCurrentPosition > 12 * 1000) {// 避免为负
+                            palyerCurrentPosition -= 12 * 1000;// scroll方法执行一次快退3秒
                         } else {
-                            palyerCurrentPosition = 2 * 1000;
-                            palyerCurrentPosition = Math.abs((long) (mOldX - x) * 1000);
+                            palyerCurrentPosition = 12 * 1000;
+                            palyerCurrentPosition = Math.abs((long) (mOldX - x) * 10000);
                         }
                     } else if (distanceX <= -Utils.dip2px(activity, STEP_PROGRESS)) {// 快进
                         activity.gesture_iv_progress.setImageResource(R.drawable.souhu_player_forward);
-                        if (palyerCurrentPosition < playerDuration - 2 * 1000) {// 避免超过总时长
-                            palyerCurrentPosition += 2 * 1000;// scroll执行一次快进3秒
+                        if (palyerCurrentPosition < playerDuration - 12 * 1000) {// 避免超过总时长
+                            palyerCurrentPosition += 12 * 1000;// scroll执行一次快进3秒
                         } else {
-                            palyerCurrentPosition = playerDuration - Math.abs((long) (mOldX - x) * 1000);
+                            palyerCurrentPosition = playerDuration - Math.abs((long) (mOldX - x) * 10000);
                         }
                     }
                     activity.geture_tv_progress_time.setText(Utils.converLongTimeToStr(palyerCurrentPosition)

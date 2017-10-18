@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_white_item_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/knowledge_handout_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20">
+
+        <ImageView
+            android:id="@+id/child_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/icon_plan_pdf"/>
+
+        <TextView
+            android:id="@+id/child_title"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/child_icon"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_4A505E"
+            android:textSize="14dp"
+            tools:text="知识点讲义"/>
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/video_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20">
+
+        <RelativeLayout
+            android:id="@+id/video_child_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10">
+
+            <View
+                android:id="@+id/top_video_child_line"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/video_child_icon"
+                android:layout_centerHorizontal="true"
+                android:background="@color/color_4A505E"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/video_child_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:layout_marginTop="@dimen/dp_4"
+                android:src="@drawable/icon_plan_video"/>
+
+            <View
+                android:id="@+id/bottom_video_child_line"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/video_child_icon"
+                android:layout_centerHorizontal="true"
+                android:background="@color/color_4A505E"
+                android:visibility="visible"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/video_child_title"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/video_child_layout"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_4A505E"
+            android:textSize="14dp"
+            tools:text="质数、奇数、偶数的性质"/>
+
+        <TextView
+            android:id="@+id/video_child_time"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/text_grey"
+            android:textSize="11dp"
+            tools:text="83分钟"/>
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_alignLeft="@+id/video_child_title"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/specical_exercises_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20">
+
+        <RelativeLayout
+            android:id="@+id/specical_exercises_child_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10">
+
+            <View
+                android:id="@+id/top_specical_exercises_child_line"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/specical_exercises_child_icon"
+                android:layout_centerHorizontal="true"
+                android:background="@color/color_4A505E"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/specical_exercises_child_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:layout_marginTop="@dimen/dp_4"
+                android:src="@drawable/icon_plan_folder"/>
+
+            <View
+                android:id="@+id/bottom_specical_exercises_child_line"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/specical_exercises_child_icon"
+                android:layout_centerHorizontal="true"
+                android:background="@color/color_4A505E"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/specical_exercises_child_title"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/specical_exercises_child_layout"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_4A505E"
+            android:textSize="14dp"
+            tools:text="知识点专项练习"/>
+
+        <TextView
+            android:id="@+id/specical_exercises_child_course_count"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/text_grey"
+            android:textSize="11dp"
+            tools:text="4道小题"/>
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_alignLeft="@+id/specical_exercises_child_layout"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</LinearLayout>

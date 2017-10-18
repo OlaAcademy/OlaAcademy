@@ -21,6 +21,7 @@ import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.UnlockSubjectResult;
 import com.michen.olaxueyuan.protocol.result.UserPlanDetailResult;
+import com.michen.olaxueyuan.protocol.result.UserPlanFinishedDetailResult;
 import com.michen.olaxueyuan.protocol.result.UserPostListResult;
 import com.michen.olaxueyuan.protocol.service.QuestionService;
 
@@ -270,5 +271,29 @@ public class QuestionCourseManager {
 	 */
 	public void getUserPlanDetail(String userId, String date, Callback<UserPlanDetailResult> callback) {
 		getQuestionService().getUserPlanDetail(userId, date, callback);
+	}
+
+	/**
+	 * 计划完成每日详情
+	 *
+	 * @param userId
+	 * @param callback
+	 */
+	public void getPlanFinishedDetailList(String userId, Callback<UserPlanFinishedDetailResult> callback) {
+		getQuestionService().getPlanFinishedDetailList(userId, callback);
+	}
+
+	/**
+	 * 添加／移除备学库（以后再学列表）
+	 *
+	 * @param userId
+	 * @param detailId 知识点Id
+	 * @param planDate 所在计划的日期（哪天学习该知识点）
+	 * @param type     1 添加 0 删除
+	 * @param callback
+	 */
+	public void collectPlanDetail(String userId, String detailId, String planDate, String type
+			, Callback<SimpleResult> callback) {
+		getQuestionService().collectPlanDetail(userId, detailId, planDate, type, callback);
 	}
 }

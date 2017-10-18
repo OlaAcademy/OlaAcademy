@@ -7,14 +7,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -41,8 +45,8 @@
                     android:layout_marginBottom="@dimen/dp_22"
                     android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginRight="@dimen/dp_20"
-                    android:progress="50"
-                    android:progressDrawable="@drawable/progress_white_bg"/>
+                    android:progress="20"
+                    android:progressDrawable="@drawable/progressbg_white"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -50,47 +54,107 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <View
+                    android:id="@+id/system_status_inflate_view"
+                    android:layout_width="1px"
+                    android:layout_height="25dp"
+                    android:visibility="visible"/>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="@dimen/dp_14"
-                    android:paddingLeft="@dimen/dp_20"
-                    android:paddingTop="@dimen/dp_14">
+                    android:layout_height="@dimen/dp_48">
 
-                    <com.michen.olaxueyuan.common.RoundRectImageView
-                        android:layout_width="@dimen/dp_7"
-                        android:layout_height="@dimen/dp_7"
-                        android:src="@color/color_33ADF4"/>
+                    <ImageView
+                        android:id="@+id/left_close"
+                        android:layout_width="60dp"
+                        android:layout_height="48dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/arrow_white_left_icon"/>
 
                     <TextView
+                        android:id="@+id/day_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_5"
-                        android:text="已完成"
-                        android:textColor="@color/text_grey"
-                        android:textSize="12dp"/>
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dp_17"
+                        tools:text="第1/21天"/>
 
-                    <com.michen.olaxueyuan.common.RoundRectImageView
-                        android:layout_width="@dimen/dp_7"
-                        android:layout_height="@dimen/dp_7"
-                        android:layout_marginLeft="@dimen/dp_19"
-                        android:src="@color/color_9C8686"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_5"
-                        android:text="未完成"
-                        android:textColor="@color/text_grey"
-                        android:textSize="12dp"/>
-                </LinearLayout>
+                    <ImageView
+                        android:id="@+id/right_share"
+                        android:layout_width="60dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentRight="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/icon_more_white"/>
+                </RelativeLayout>
             </LinearLayout>
+        </FrameLayout>
 
-            <ExpandableListView
-                android:id="@+id/examListView"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.loonggg.weekcalendar.view.WeekCalendar
+                android:id="@+id/week_calendar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:paddingBottom="10dp"
+                app:daysSelectedBackground="@drawable/green_oval_bg"
+                app:isCornerMark="true"
+                app:isShowMonth="false"
+                app:monthBackgroundColor="#8F83F1"
+                app:weekTextColor="#099088"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/dp_14"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_14">
+
+                <com.michen.olaxueyuan.common.RoundRectImageView
+                    android:layout_width="@dimen/dp_7"
+                    android:layout_height="@dimen/dp_7"
+                    android:src="@color/color_33ADF4"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:text="已完成"
+                    android:textColor="@color/text_grey"
+                    android:textSize="12dp"/>
+
+                <com.michen.olaxueyuan.common.RoundRectImageView
+                    android:layout_width="@dimen/dp_7"
+                    android:layout_height="@dimen/dp_7"
+                    android:layout_marginLeft="@dimen/dp_19"
+                    android:src="@color/color_9C8686"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:text="未完成"
+                    android:textColor="@color/text_grey"
+                    android:textSize="12dp"/>
+            </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:background="@color/color_F0F2F5"/>
+
+        <ExpandableListView
+            android:id="@+id/expandableListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <!--</ScrollView>-->
 </LinearLayout>

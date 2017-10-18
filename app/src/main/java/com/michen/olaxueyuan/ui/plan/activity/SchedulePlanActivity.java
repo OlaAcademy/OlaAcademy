@@ -129,6 +129,7 @@ public class SchedulePlanActivity extends SuperActivity {
 		if (am.isAuthenticated()) {
 			userId = am.getAccessUser().getId();
 		}
+//		userId = "381";
 		String plan = "";
 		List<PlanConditionResult.ResultBean> result = conditionResult.getResult();
 		JSONObject jsonObject = new JSONObject();

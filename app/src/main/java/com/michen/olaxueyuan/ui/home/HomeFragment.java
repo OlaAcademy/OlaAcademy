@@ -23,6 +23,7 @@ import com.michen.olaxueyuan.common.AutoScrollViewPager;
 import com.michen.olaxueyuan.common.RoundRectImageView;
 import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.CommonConstant;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.download.DownloadService;
 import com.michen.olaxueyuan.protocol.event.ChatNewsMessageEvent;
@@ -72,309 +73,309 @@ import static android.content.Context.MODE_PRIVATE;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends SuperFragment implements PullToRefreshBase.OnRefreshListener {
-    View view;
-    @Bind(R.id.img_viewpager_home)
-    AutoScrollViewPager imgViewpagerHome;
-    @Bind(R.id.pointer_layout_home)
-    LinearLayout pointerLayoutHome;
-    @Bind(R.id.put_question_layout)
-    LinearLayout putQuestionLayout;
-    @Bind(R.id.find_teacher_layout)
-    LinearLayout findTeacherLayout;
-    @Bind(R.id.find_data_layout)
-    LinearLayout findDataLayout;
-    @Bind(R.id.find_data_group)
-    LinearLayout findDataGroup;
-    @Bind(R.id.show_all_question)
-    TextView showAllQuestion;
-    @Bind(R.id.questionList_listview)
-    SubListView questionListListview;
-    @Bind(R.id.scroll)
-    PullToRefreshScrollView scroll;
-    @Bind(R.id.show_all_direct_broadcast)
-    TextView showAllDirectBroadcast;
-    @Bind(R.id.recycler_view)
-    RecyclerView recyclerView;
-    @Bind(R.id.show_all_quality_course)
-    TextView showAllQualityCourse;
-    @Bind(R.id.recycler_view_quality_course)
-    RecyclerView recyclerViewQualityCourse;
-    @Bind(R.id.show_all_course_database)
-    TextView showAllCourseDatabase;
-    @Bind(R.id.recycler_view_course_database)
-    RecyclerView recyclerViewCourseDatabase;
-    @Bind(R.id.study_time_length_text)
-    TextView studyTimeLengthText;
-    @Bind(R.id.complete_num_subject_text)
-    TextView completeNumSubjectText;
-    @Bind(R.id.persist_text)
-    TextView persistText;
-    @Bind(R.id.defeat_text)
-    TextView defeatText;
-    @Bind(R.id.user_avatar)
-    RoundRectImageView userAvatar;
-    @Bind(R.id.recycler_view_ask_question)
-    RecyclerView recyclerViewAskQuestion;
-    @Bind(R.id.chat_message_dot)
-    TextView chatMessageDot;
-    @Bind(R.id.study_progress_layout)
-    LinearLayout studyProgressLayout;
+	View view;
+	@Bind(R.id.img_viewpager_home)
+	AutoScrollViewPager imgViewpagerHome;
+	@Bind(R.id.pointer_layout_home)
+	LinearLayout pointerLayoutHome;
+	@Bind(R.id.put_question_layout)
+	LinearLayout putQuestionLayout;
+	@Bind(R.id.find_teacher_layout)
+	LinearLayout findTeacherLayout;
+	@Bind(R.id.find_data_layout)
+	LinearLayout findDataLayout;
+	@Bind(R.id.find_data_group)
+	LinearLayout findDataGroup;
+	@Bind(R.id.show_all_question)
+	TextView showAllQuestion;
+	@Bind(R.id.questionList_listview)
+	SubListView questionListListview;
+	@Bind(R.id.scroll)
+	PullToRefreshScrollView scroll;
+	@Bind(R.id.show_all_direct_broadcast)
+	TextView showAllDirectBroadcast;
+	@Bind(R.id.recycler_view)
+	RecyclerView recyclerView;
+	@Bind(R.id.show_all_quality_course)
+	TextView showAllQualityCourse;
+	@Bind(R.id.recycler_view_quality_course)
+	RecyclerView recyclerViewQualityCourse;
+	@Bind(R.id.show_all_course_database)
+	TextView showAllCourseDatabase;
+	@Bind(R.id.recycler_view_course_database)
+	RecyclerView recyclerViewCourseDatabase;
+	@Bind(R.id.study_time_length_text)
+	TextView studyTimeLengthText;
+	@Bind(R.id.complete_num_subject_text)
+	TextView completeNumSubjectText;
+	@Bind(R.id.persist_text)
+	TextView persistText;
+	@Bind(R.id.defeat_text)
+	TextView defeatText;
+	@Bind(R.id.user_avatar)
+	RoundRectImageView userAvatar;
+	@Bind(R.id.recycler_view_ask_question)
+	RecyclerView recyclerViewAskQuestion;
+	@Bind(R.id.chat_message_dot)
+	TextView chatMessageDot;
+	@Bind(R.id.study_progress_layout)
+	LinearLayout studyProgressLayout;
 
 
-    HomeQuestionAdapter homeQuestionAdapter;
-    DirectBroadCastRecyclerAdapter directBroadCastRecyclerAdapter;
-    QualityCourseRecyclerAdapter qualityCourseRecyclerAdapter;
-    CourseDatabaseRecyclerAdapter courseDatabaseRecyclerAdapter;
-    AskQuestionRecyclerAdapter askQuestionRecyclerAdapter;
-    public int unReadNum = 0;//未读消息数
+	HomeQuestionAdapter homeQuestionAdapter;
+	DirectBroadCastRecyclerAdapter directBroadCastRecyclerAdapter;
+	QualityCourseRecyclerAdapter qualityCourseRecyclerAdapter;
+	CourseDatabaseRecyclerAdapter courseDatabaseRecyclerAdapter;
+	AskQuestionRecyclerAdapter askQuestionRecyclerAdapter;
+	public int unReadNum = 0;//未读消息数
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_home, container, false);
-        ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
-        initView();
-        fetchData();
-        return view;
-    }
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.fragment_home, container, false);
+		ButterKnife.bind(this, view);
+		EventBus.getDefault().register(this);
+		initView();
+		fetchData();
+		return view;
+	}
 
-    private void initView() {
-        DownloadService.startTimer(getActivity());
-        scroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
-        scroll.setOnRefreshListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewQualityCourse.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewCourseDatabase.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewAskQuestion.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        userAvatar.setRectAdius(100);
+	private void initView() {
+		DownloadService.startTimer(getActivity());
+		scroll.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+		scroll.setOnRefreshListener(this);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+		recyclerViewQualityCourse.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+		recyclerViewCourseDatabase.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+		recyclerViewAskQuestion.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+		userAvatar.setRectAdius(100);
 
-        homeQuestionAdapter = new HomeQuestionAdapter(getActivity());
-        questionListListview.setAdapter(homeQuestionAdapter);
-        directBroadCastRecyclerAdapter = new DirectBroadCastRecyclerAdapter(getActivity());
-        recyclerView.setAdapter(directBroadCastRecyclerAdapter);
-        qualityCourseRecyclerAdapter = new QualityCourseRecyclerAdapter(getActivity());
-        recyclerViewQualityCourse.setAdapter(qualityCourseRecyclerAdapter);
-        courseDatabaseRecyclerAdapter = new CourseDatabaseRecyclerAdapter(getActivity());
-        recyclerViewCourseDatabase.setAdapter(courseDatabaseRecyclerAdapter);
-        askQuestionRecyclerAdapter = new AskQuestionRecyclerAdapter(getActivity());
-        recyclerViewAskQuestion.setAdapter(askQuestionRecyclerAdapter);
-    }
+		homeQuestionAdapter = new HomeQuestionAdapter(getActivity());
+		questionListListview.setAdapter(homeQuestionAdapter);
+		directBroadCastRecyclerAdapter = new DirectBroadCastRecyclerAdapter(getActivity());
+		recyclerView.setAdapter(directBroadCastRecyclerAdapter);
+		qualityCourseRecyclerAdapter = new QualityCourseRecyclerAdapter(getActivity());
+		recyclerViewQualityCourse.setAdapter(qualityCourseRecyclerAdapter);
+		courseDatabaseRecyclerAdapter = new CourseDatabaseRecyclerAdapter(getActivity());
+		recyclerViewCourseDatabase.setAdapter(courseDatabaseRecyclerAdapter);
+		askQuestionRecyclerAdapter = new AskQuestionRecyclerAdapter(getActivity());
+		recyclerViewAskQuestion.setAdapter(askQuestionRecyclerAdapter);
+	}
 
-    private void fetchData() {
-        SEAPP.showCatDialog(this);
-        HomeListManager.getInstance().fetchHomeCourseList(SEUserManager.getInstance().getUserId(), new Callback<HomeModule>() {
-            @Override
-            public void success(HomeModule result, Response response) {
+	private void fetchData() {
+		SEAPP.showCatDialog(this);
+		HomeListManager.getInstance().fetchHomeCourseList(SEUserManager.getInstance().getUserId(), new Callback<HomeModule>() {
+			@Override
+			public void success(HomeModule result, Response response) {
 //                Logger.json(result);
-                if (getActivity() != null && !getActivity().isFinishing()) {
-                    SEAPP.dismissAllowingStateLoss();
-                    scroll.onRefreshComplete();
-                    if (result.getApicode() != 10000) {
-                        SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.getMessage(), 2.0f);
-                    } else {
-                        initData(result);
-                    }
-                }
-            }
+				if (getActivity() != null && !getActivity().isFinishing()) {
+					SEAPP.dismissAllowingStateLoss();
+					scroll.onRefreshComplete();
+					if (result.getApicode() != 10000) {
+						SVProgressHUD.showInViewWithoutIndicator(getActivity(), result.getMessage(), 2.0f);
+					} else {
+						initData(result);
+					}
+				}
+			}
 
-            @Override
-            public void failure(RetrofitError error) {
-                if (getActivity() != null && !getActivity().isFinishing()) {
-                    SEAPP.dismissAllowingStateLoss();
-                    scroll.onRefreshComplete();
-                    ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
-                }
-            }
-        });
-    }
+			@Override
+			public void failure(RetrofitError error) {
+				if (getActivity() != null && !getActivity().isFinishing()) {
+					SEAPP.dismissAllowingStateLoss();
+					scroll.onRefreshComplete();
+					ToastUtil.showToastShort(getActivity(), R.string.data_request_fail);
+				}
+			}
+		});
+	}
 
-    private void initData(HomeModule result) {
-        new HeaderImgeManager(getActivity(), imgViewpagerHome, pointerLayoutHome, result.getResult().getBannerList());
-        homeQuestionAdapter.updateData(result.getResult().getQuestionList());
+	private void initData(HomeModule result) {
+		new HeaderImgeManager(getActivity(), imgViewpagerHome, pointerLayoutHome, result.getResult().getBannerList());
+		homeQuestionAdapter.updateData(result.getResult().getQuestionList());
 
-        directBroadCastRecyclerAdapter.updateData(result.getResult().getGoodsList());
-        qualityCourseRecyclerAdapter.updateData(result.getResult().getGoodsList());
-        courseDatabaseRecyclerAdapter.updateData(result.getResult().getCourseList());
-        askQuestionRecyclerAdapter.updateData(result.getResult().getUserList());
-        studyTimeLengthText.setText(String.valueOf(getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, MODE_PRIVATE)
-                .getInt(CommonConstant.DAY_STUDY_TIME_LENGTH, 0)));
-        completeNumSubjectText.setText(result.getResult().getFinishCount());
-        persistText.setText(result.getResult().getStudyDay());
-        defeatText.setText(result.getResult().getDefeatPercent());
-        if (SEAuthManager.getInstance().getAccessUser() != null && !TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
-            String avatarUrl;
-            if (SEAuthManager.getInstance().getAccessUser().getAvator().contains("http://")) {
-                avatarUrl = SEAuthManager.getInstance().getAccessUser().getAvator();
-            } else if (SEAuthManager.getInstance().getAccessUser().getAvator().contains(".")) {
-                avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + SEAuthManager.getInstance().getAccessUser().getAvator();
-            } else {
-                avatarUrl = SEAPP.PIC_BASE_URL + SEAuthManager.getInstance().getAccessUser().getAvator();
-            }
-            Picasso.with(getActivity()).load(avatarUrl)
-                    .placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar)
-                    .resize(60, 60).into(userAvatar);
-        }
-    }
+		directBroadCastRecyclerAdapter.updateData(result.getResult().getGoodsList());
+		qualityCourseRecyclerAdapter.updateData(result.getResult().getGoodsList());
+		courseDatabaseRecyclerAdapter.updateData(result.getResult().getCourseList());
+		askQuestionRecyclerAdapter.updateData(result.getResult().getUserList());
+		studyTimeLengthText.setText(String.valueOf(getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, MODE_PRIVATE)
+				.getInt(CommonConstant.DAY_STUDY_TIME_LENGTH, 0)));
+		completeNumSubjectText.setText(result.getResult().getFinishCount());
+		persistText.setText(result.getResult().getStudyDay());
+		defeatText.setText(result.getResult().getDefeatPercent());
+		if (SEAuthManager.getInstance().getAccessUser() != null && !TextUtils.isEmpty(SEAuthManager.getInstance().getAccessUser().getAvator())) {
+			String avatarUrl;
+			if (SEAuthManager.getInstance().getAccessUser().getAvator().contains("http://")) {
+				avatarUrl = SEAuthManager.getInstance().getAccessUser().getAvator();
+			} else if (SEAuthManager.getInstance().getAccessUser().getAvator().contains(".")) {
+				avatarUrl = SEConfig.getInstance().getAPIBaseURL() + "/upload/" + SEAuthManager.getInstance().getAccessUser().getAvator();
+			} else {
+				avatarUrl = SEAPP.PIC_BASE_URL + SEAuthManager.getInstance().getAccessUser().getAvator();
+			}
+			Picasso.with(getActivity()).load(avatarUrl)
+					.placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar)
+					.resize(60, 60).into(userAvatar);
+		}
+	}
 
-    @OnClick({R.id.put_question_layout, R.id.find_teacher_layout, R.id.find_data_layout, R.id.find_data_group, R.id.show_all_question
-            , R.id.show_all_direct_broadcast, R.id.show_all_quality_course, R.id.show_all_course_database, R.id.show_all_ask_question
-            , R.id.study_progress_layout})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.put_question_layout:
-                if (!SEAuthManager.getInstance().isAuthenticated()) {
-                    Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
-                    startActivity(loginIntent);
-                    return;
-                }
-                Intent intent = new Intent(getActivity(), DeployPostActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.find_teacher_layout:
-                showTurtorView();
-                break;
-            case R.id.find_data_layout:
+	@OnClick({R.id.put_question_layout, R.id.find_teacher_layout, R.id.find_data_layout, R.id.find_data_group, R.id.show_all_question
+			, R.id.show_all_direct_broadcast, R.id.show_all_quality_course, R.id.show_all_course_database, R.id.show_all_ask_question
+			, R.id.study_progress_layout})
+	public void onClick(View view) {
+		switch (view.getId()) {
+			case R.id.put_question_layout:
+				if (!SEAuthManager.getInstance().isAuthenticated()) {
+					Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
+					startActivity(loginIntent);
+					return;
+				}
+				Intent intent = new Intent(getActivity(), DeployPostActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.find_teacher_layout:
+				showTurtorView();
+				break;
+			case R.id.find_data_layout:
 //                showCommodityView();
-                startActivity(new Intent(getActivity(), DataLibraryActivity.class));
-                break;
-            case R.id.find_data_group:
-                if (!SEAuthManager.getInstance().isAuthenticated()) {
-                    Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
-                    startActivity(loginIntent);
-                    return;
-                }
+				startActivity(new Intent(getActivity(), DataLibraryActivity.class));
+				break;
+			case R.id.find_data_group:
+				if (!SEAuthManager.getInstance().isAuthenticated()) {
+					Intent loginIntent = new Intent(getActivity(), UserLoginActivity.class);
+					startActivity(loginIntent);
+					return;
+				}
 //                startActivity(new Intent(getActivity(), GroupListActivity.class));
-                startActivity(new Intent(getActivity(), LenCloudMessageActivity.class));
-                break;
-            case R.id.show_all_question:
-                CircleFragment.type = "2";
-                chageIndex(3);
-                break;
-            case R.id.show_all_direct_broadcast:
-                break;
-            case R.id.show_all_quality_course:
-                Intent commodityIntent = new Intent(getActivity(), CommodityActivity.class);
-                commodityIntent.putExtra("title", "精品课程");
-                commodityIntent.putExtra("type", "1");
-                getActivity().startActivity(commodityIntent);
-                break;
-            case R.id.show_all_course_database:
-                chageIndex(1);
-                break;
-            case R.id.show_all_ask_question:
-                break;
-            case R.id.study_progress_layout:
-                startActivity(new Intent(getActivity(), StudyHistoryActivity.class));
-                break;
-        }
-    }
+				startActivity(new Intent(getActivity(), LenCloudMessageActivity.class));
+				break;
+			case R.id.show_all_question:
+				CircleFragment.type = "2";
+				chageIndex(3);
+				break;
+			case R.id.show_all_direct_broadcast:
+				break;
+			case R.id.show_all_quality_course:
+				Intent commodityIntent = new Intent(getActivity(), CommodityActivity.class);
+				commodityIntent.putExtra("title", "精品课程");
+				commodityIntent.putExtra("type", "1");
+				getActivity().startActivity(commodityIntent);
+				break;
+			case R.id.show_all_course_database:
+				chageIndex(1);
+				break;
+			case R.id.show_all_ask_question:
+				break;
+			case R.id.study_progress_layout:
+				startActivity(new Intent(getActivity(), StudyHistoryActivity.class));
+				break;
+		}
+	}
 
-    private void chageIndex(int position) {
-        /**
-         *{@link MainFragment#onEventMainThread(ChangeIndexEvent)}
-         * {@link CircleFragment#onEventMainThread(ChangeIndexEvent)}
-         */
-        EventBus.getDefault().post(new ChangeIndexEvent(position, true));
-    }
+	private void chageIndex(int position) {
+		/**
+		 *{@link MainFragment#onEventMainThread(ChangeIndexEvent)}
+		 * {@link CircleFragment#onEventMainThread(ChangeIndexEvent)}
+		 */
+		EventBus.getDefault().post(new ChangeIndexEvent(position, true));
+	}
 
-    private void showTurtorView() {
-        Intent turtorIntent = new Intent(getActivity(), OrgEnrolActivity.class);
+	private void showTurtorView() {
+		Intent turtorIntent = new Intent(getActivity(), OrgEnrolActivity.class);
 //        Intent turtorIntent = new Intent(getActivity(), TurtorActivity.class);  //不跳转这个界面了
-        startActivity(turtorIntent);
-    }
+		startActivity(turtorIntent);
+	}
 
-    private void showCommodityView() {
-        Intent commodityIntent = new Intent(getActivity(), CommodityActivity.class);
-        commodityIntent.putExtra("title", "资料库");
-        commodityIntent.putExtra("type", "2");
-        startActivity(commodityIntent);
-    }
+	private void showCommodityView() {
+		Intent commodityIntent = new Intent(getActivity(), CommodityActivity.class);
+		commodityIntent.putExtra("title", "资料库");
+		commodityIntent.putExtra("type", "2");
+		startActivity(commodityIntent);
+	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        onChange();
-        updateUnReadMsg();
-    }
+	@Override
+	public void onResume() {
+		super.onResume();
+		onChange();
+		updateUnReadMsg();
+	}
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!isHidden()) {
-            onChange();
-        }
-    }
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!isHidden()) {
+			onChange();
+		}
+	}
 
-    private void onChange() {
-        imgViewpagerHome.startAutoScroll();
-        studyTimeLengthText.setText(String.valueOf(CommonConstant.DAY_STUDY_TIME
-                + getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, MODE_PRIVATE)
-                .getInt(CommonConstant.DAY_STUDY_TIME_LENGTH, 0)));
-    }
+	private void onChange() {
+		imgViewpagerHome.startAutoScroll();
+		studyTimeLengthText.setText(String.valueOf(CommonConstant.DAY_STUDY_TIME
+				+ getActivity().getSharedPreferences(CommonConstant.DAY_STUDY_PREFERENCE, MODE_PRIVATE)
+				.getInt(CommonConstant.DAY_STUDY_TIME_LENGTH, 0)));
+	}
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        imgViewpagerHome.stopAutoScroll();
-        SEAPP.dismissAllowingStateLoss();
-    }
+	@Override
+	public void onPause() {
+		super.onPause();
+		imgViewpagerHome.stopAutoScroll();
+		SEAPP.dismissAllowingStateLoss();
+	}
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        DownloadService.destroyTimer(getActivity());
-        ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
-    }
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		DownloadService.destroyTimer(getActivity());
+		ButterKnife.unbind(this);
+		EventBus.getDefault().unregister(this);
+	}
 
-    @Override
-    public void onRefresh(PullToRefreshBase refreshView) {
-        fetchData();
-        updateUnReadMsg();
-    }
+	@Override
+	public void onRefresh(PullToRefreshBase refreshView) {
+		fetchData();
+		updateUnReadMsg();
+	}
 
-    // EventBus 回调
-    public void onEventMainThread(UserLoginNoticeModule module) {
-        if (module.isLogin) {
+	// EventBus 回调
+	public void onEventMainThread(UserLoginNoticeModule module) {
+		if (module.isLogin) {
 
-        } else {
+		} else {
 
-        }
-    }
+		}
+	}
 
-    /**
-     * 收到聊天消息事件
-     *
-     * @param event
-     */
-    public void onEvent(LCIMIMTypeMessageEvent event) {
-        updateUnReadMsg();
-    }
+	/**
+	 * 收到聊天消息事件
+	 *
+	 * @param event
+	 */
+	public void onEvent(LCIMIMTypeMessageEvent event) {
+		updateUnReadMsg();
+	}
 
-    private void updateUnReadMsg() {
-        unReadNum = 0;
-        List<String> convIdList = LCIMConversationItemCache.getInstance().getSortedConversationList();
-        for (String convId : convIdList) {
-            AVIMConversation conversation = LCChatKit.getInstance().getClient().getConversation(convId);
-            unReadNum = unReadNum + LCIMConversationItemCache.getInstance().getUnreadCount(conversation.getConversationId());
-        }
-        handler.sendEmptyMessage(0);
-    }
+	private void updateUnReadMsg() {
+		unReadNum = 0;
+		List<String> convIdList = LCIMConversationItemCache.getInstance().getSortedConversationList();
+		for (String convId : convIdList) {
+			AVIMConversation conversation = LCChatKit.getInstance().getClient().getConversation(convId);
+			unReadNum = unReadNum + LCIMConversationItemCache.getInstance().getUnreadCount(conversation.getConversationId());
+		}
+		handler.sendEmptyMessage(0);
+	}
 
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    chatMessageDot.setText(String.valueOf(unReadNum));
-                    EventBus.getDefault().post(new ChatNewsMessageEvent(unReadNum));
-                    if (unReadNum > 0) {
-                        chatMessageDot.setVisibility(View.VISIBLE);
-                    } else {
-                        chatMessageDot.setVisibility(View.GONE);
-                    }
-                    break;
-            }
-        }
-    };
+	Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+				case 0:
+					chatMessageDot.setText(String.valueOf(unReadNum));
+					EventBus.getDefault().post(new ChatNewsMessageEvent(unReadNum));
+					if (unReadNum > 0) {
+						chatMessageDot.setVisibility(View.VISIBLE);
+					} else {
+						chatMessageDot.setVisibility(View.GONE);
+					}
+					break;
+			}
+		}
+	};
 }

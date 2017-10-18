@@ -613,6 +613,8 @@
         </activity>
         <activity android:name=".ui.plan.activity.CompleteScheduleActivity">
         </activity>
+        <activity android:name=".ui.plan.activity.DailyPlanDetailActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -272,4 +272,14 @@ public class DateUtils {
 		Logger.d("现在的日期是：" + currdate + "num=" + num + ";增加天数以后的日期：" + enddate);
 		return enddate;
 	}
+
+	/**
+	 * 返回当前日期,格式yyyy-MM-dd
+	 *
+	 * @return
+	 */
+	public static String getCurrentDate() {
+		String dates = _format.format(new Date());
+		return dates;
+	}
 }

@@ -401,6 +401,8 @@
     <color name="color_4A505E">#4A505E</color>
     <color name="color_33ADF4">#33ADF4</color>
     <color name="color_9C8686">#9C8686</color>
+    <color name="color_F0F2F5">#F0F2F5</color>
+    <color name="color_green">#6bbe39</color>
 
     <!--drawable-->
     <drawable name="tab_indicator_pressed_bg">#28ffffff</drawable>

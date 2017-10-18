@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/white"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dp_20"
+    android:paddingRight="@dimen/dp_20">
+    <!--android:background="@drawable/selector_white_item_bg"-->
+
+    <TextView
+        android:id="@+id/date_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon_tips"
+        android:paddingBottom="@dimen/dp_15"
+        android:paddingTop="@dimen/dp_15"
+        android:textColor="@color/color_83888B"
+        android:textSize="14dp"
+        tools:text="6月3日"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/icon_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_25"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scaleType="centerInside"
+            android:singleLine="true"
+            android:src="@drawable/plan_icon_edit"/>
+
+        <TextView
+            android:id="@+id/complete_course_num"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_25"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_toRightOf="@+id/icon_tips"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_4A505E"
+            android:textSize="14dp"
+            tools:text="完成0道题"/>
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_alignLeft="@+id/complete_course_num"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/dp_15"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/icon_knowledge_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_25"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/dp_15"
+            android:scaleType="centerInside"
+            android:singleLine="true"
+            android:src="@drawable/plan_icon_info_point"/>
+
+        <TextView
+            android:id="@+id/complete_knowledge_posint_num"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_25"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_toRightOf="@+id/icon_knowledge_tips"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_4A505E"
+            android:textSize="14dp"
+            tools:text="完成0道题"/>
+
+        <View
+            style="@style/line_horizontal"
+            android:layout_alignLeft="@+id/icon_knowledge_tips"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/dp_15"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -7,7 +7,7 @@ import java.util.List;
  * Created by wangfangming on 2017/8/26.
  */
 
-public class PlanHomeData implements Serializable{
+public class PlanHomeData implements Serializable {
 	/**
 	 * message : 成功
 	 * result : {"plan":{"id":1,"content":"学习计划","beginDate":"2017-07-01","endDate":"2017-08-31","total":62,"day":42},"progress":"0","statisticsList":[{"sequence":1,"date":"2017-08-07","progress":0},{"sequence":2,"date":"2017-08-08","progress":0},{"sequence":3,"date":"2017-08-09","progress":0},{"sequence":4,"date":"2017-08-10","progress":0},{"sequence":5,"date":"2017-08-11","progress":0},{"sequence":6,"date":"2017-08-12","progress":0},{"sequence":7,"date":"2017-08-13","progress":0}],"userList":[{"id":754,"name":"微何","avator":"http://qz-picture.oss-cn-beijing.aliyuncs.com/2016/12/c1ff4c1d-e93f-448f-9f23-d225af924706.jpg"}],"collectionList":[{"videoId":662,"videoName":"课时1：因式定理","videoPic":"http://math.ufile.ucloud.com.cn/basicmath4.jpg","videoUrl":"http://olamath.ufile.ucloud.cn/gongyi/z_1_540p.mp4","courseId":185,"coursePic":"http://cospic.ufile.ucloud.com.cn/201708.png","totalTime":"102分钟","subAllNum":11,"type":1},{"videoId":763,"videoName":"课时1：完型填空","videoPic":"http://math.ufile.ucloud.com.cn/guide3.jpg","videoUrl":"http://olamba.ufile.ucloud.cn/daoxue/laojiang_1_2.mp4","courseId":191,"coursePic":"http://cospic.ufile.ucloud.com.cn/201708.png","totalTime":"33分钟","subAllNum":4,"type":1},{"videoId":831,"videoName":"2017年最新数学大纲解析","videoPic":"http://cospic.ufile.ucloud.com.cn/1.jpg","videoUrl":"http://olamba.ufile.ucloud.cn/daoxue/shuxue_360p.mp4","courseId":188,"coursePic":"http://cospic.ufile.ucloud.com.cn/201708.png","totalTime":"40分钟","subAllNum":1,"type":1},{"videoId":787,"videoName":"课时1：强化题型之路程问题","videoPic":"http://math.ufile.ucloud.com.cn/basicmath6.jpg","videoUrl":"http://olamath.ufile.ucloud.cn/2016xt/xt_2_1_480p.mp4","courseId":206,"coursePic":"http://cospic.ufile.ucloud.com.cn/201708.png","totalTime":"300分钟","subAllNum":8,"type":1},{"videoId":231,"videoName":"课时1：排序组队【1】","videoPic":"http://math.ufile.ucloud.com.cn/analysis2.png","videoUrl":"http://olamba.ufile.ucloud.cn/luoji/ywj/jc_2_3.mp4","courseId":92,"coursePic":"http://cospic.ufile.ucloud.com.cn/201702.png","totalTime":"31分钟","subAllNum":3,"type":1},{"videoId":1271,"videoName":"2018年写作总体复习规划","videoPic":"","videoUrl":"http://olamba.ufile.ucloud.cn/daoxue/2018_xiezuo.mp4","courseId":309,"coursePic":"http://cospic.ufile.ucloud.com.cn/201708.png","totalTime":"92分钟","subAllNum":1,"type":1},{"videoId":1150,"videoName":"课时4：绝对值的概念与应用","videoPic":"","videoUrl":"http://mbamath.ufile.ucloud.cn/2017jichu/jc_1_9.mp4","courseId":300,"coursePic":"http://cospic.ufile.ucloud.com.cn/201708.png","totalTime":"240分钟","subAllNum":22,"type":1},{"videoId":797,"videoName":"课时2：联言与选言命题Ⅰ","videoPic":"http://commodity.ufile.ucloud.com.cn/logic2.jpg","videoUrl":"http://olamba.ufile.ucloud.cn/goods/logic/rsz_2.mp4","courseId":17,"coursePic":"http://cospic.ufile.ucloud.com.cn/201701.jpg","totalTime":"960分钟","subAllNum":11,"type":2},{"videoId":1129,"videoName":"课时1：英语真题密训第一讲","videoPic":"","videoUrl":"http://olamba.ufile.ucloud.cn/goods/english/zhenti_1.mp4","courseId":23,"coursePic":"http://cospic.ufile.ucloud.com.cn/90.jpg","totalTime":"1200分钟","subAllNum":12,"type":2}],"recommendList":[{"id":3,"name":"写作","objectId":"","pic":"http://qz-picture.oss-cn-beijing.aliyuncs.com/banner/TIANRAN.png","type":1,"url":"https://detail.tmall.com/item.htm?id=551458132157&price=21.8&sourceType=item&suid=38dd8fd0-420b-40ff-b3b3-7c8a04d564be&ut_sk=1.VyBzak8XJ10DACaJNjYIb48I_12278902_1496629824740.Copy.1&un=a9ddc5c0b925b0d88a195baaa22d8f6a&share_crt_v=1&cpp=1&shareurl=true&spm=a313p.22.1mm.42868104651&short_name=h.ihxxNz&app=chrome"},{"id":4,"name":"逻辑","objectId":"","pic":"http://qz-picture.oss-cn-beijing.aliyuncs.com/banner/tushu.jpg","type":1,"url":"https://weidian.com/?userid=1226047158&wfr=wx_profile&from=groupmessage&isappinstalled=0"}]}
@@ -51,7 +51,7 @@ public class PlanHomeData implements Serializable{
 		this.apicode = apicode;
 	}
 
-	public static class ResultBean implements Serializable{
+	public static class ResultBean implements Serializable {
 		@Override
 		public String toString() {
 			return "ResultBean{" +
@@ -128,16 +128,18 @@ public class PlanHomeData implements Serializable{
 			this.recommendList = recommendList;
 		}
 
-		public static class PlanBean implements Serializable{
+		public static class PlanBean implements Serializable {
 			@Override
 			public String toString() {
 				return "PlanBean{" +
-						"id=" + id +
+						"id='" + id + '\'' +
 						", content='" + content + '\'' +
 						", beginDate='" + beginDate + '\'' +
 						", endDate='" + endDate + '\'' +
 						", total=" + total +
 						", day=" + day +
+						", progress=" + progress +
+						", pointCount=" + pointCount +
 						'}';
 			}
 
@@ -150,18 +152,36 @@ public class PlanHomeData implements Serializable{
 			 * day : 42
 			 */
 
-			private int id;
+			private String id;
 			private String content;
 			private String beginDate;
 			private String endDate;
 			private int total;
 			private int day;
+			private float progress;
+			private int pointCount;
 
-			public int getId() {
+			public float getProgress() {
+				return progress;
+			}
+
+			public void setProgress(float progress) {
+				this.progress = progress;
+			}
+
+			public int getPointCount() {
+				return pointCount;
+			}
+
+			public void setPointCount(int pointCount) {
+				this.pointCount = pointCount;
+			}
+
+			public String getId() {
 				return id;
 			}
 
-			public void setId(int id) {
+			public void setId(String id) {
 				this.id = id;
 			}
 
@@ -206,7 +226,7 @@ public class PlanHomeData implements Serializable{
 			}
 		}
 
-		public static class StatisticsListBean implements Serializable{
+		public static class StatisticsListBean implements Serializable {
 			@Override
 			public String toString() {
 				return "StatisticsListBean{" +
@@ -224,7 +244,7 @@ public class PlanHomeData implements Serializable{
 
 			private int sequence;
 			private String date;
-			private int progress;
+			private String progress;
 
 			public int getSequence() {
 				return sequence;
@@ -242,16 +262,16 @@ public class PlanHomeData implements Serializable{
 				this.date = date;
 			}
 
-			public int getProgress() {
+			public String getProgress() {
 				return progress;
 			}
 
-			public void setProgress(int progress) {
+			public void setProgress(String progress) {
 				this.progress = progress;
 			}
 		}
 
-		public static class UserListBean implements Serializable{
+		public static class UserListBean implements Serializable {
 			@Override
 			public String toString() {
 				return "UserListBean{" +
@@ -296,7 +316,7 @@ public class PlanHomeData implements Serializable{
 			}
 		}
 
-		public static class CollectionListBean implements Serializable{
+		public static class CollectionListBean implements Serializable {
 			@Override
 			public String toString() {
 				return "CollectionListBean{" +
@@ -407,7 +427,7 @@ public class PlanHomeData implements Serializable{
 			}
 		}
 
-		public static class RecommendListBean implements Serializable{
+		public static class RecommendListBean implements Serializable {
 			@Override
 			public String toString() {
 				return "RecommendListBean{" +
@@ -431,7 +451,7 @@ public class PlanHomeData implements Serializable{
 			 * url : https://detail.tmall.com/item.htm?id=551458132157&price=21.8&sourceType=item&suid=38dd8fd0-420b-40ff-b3b3-7c8a04d564be&ut_sk=1.VyBzak8XJ10DACaJNjYIb48I_12278902_1496629824740.Copy.1&un=a9ddc5c0b925b0d88a195baaa22d8f6a&share_crt_v=1&cpp=1&shareurl=true&spm=a313p.22.1mm.42868104651&short_name=h.ihxxNz&app=chrome
 			 */
 
-			private String  id;
+			private String id;
 			private String introduction;
 			private String name;
 			private String objectId;

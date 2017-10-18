@@ -142,11 +142,15 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':vitamio')
     // 分段listview
+
     // 滑动删除listview
+
     //自定义形状 ImageView
 
     // segment control
+
     // 时间 城市选择
+
     // pdf viewer
     compile project(':SVProgressHUD')
     compile files('libs/umeng-analytics-v5.2.4.jar')
@@ -202,4 +206,5 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    compile project(':weekcalendarlib')
 }

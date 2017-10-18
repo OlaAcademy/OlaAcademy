@@ -19,6 +19,7 @@ import com.michen.olaxueyuan.protocol.result.QuestionCourseModule;
 import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.protocol.result.UnlockSubjectResult;
 import com.michen.olaxueyuan.protocol.result.UserPlanDetailResult;
+import com.michen.olaxueyuan.protocol.result.UserPlanFinishedDetailResult;
 import com.michen.olaxueyuan.protocol.result.UserPostListResult;
 
 import retrofit.Callback;
@@ -312,4 +313,34 @@ public interface QuestionService {
 			@Field("userId") String userId,
 			@Field("date") String date,
 			Callback<UserPlanDetailResult> callback);
+
+	/**
+	 * 计划完成每日详情
+	 *
+	 * @param userId
+	 * @param callback
+	 */
+	@FormUrlEncoded
+	@POST("/ola/planrecord/getPlanFinishedDetailList")
+	void getPlanFinishedDetailList(
+			@Field("userId") String userId,
+			Callback<UserPlanFinishedDetailResult> callback);
+
+	/**
+	 * 添加／移除备学库（以后再学列表）
+	 *
+	 * @param userId
+	 * @param detailId 知识点Id
+	 * @param planDate 所在计划的日期（哪天学习该知识点）
+	 * @param type     1 添加 0 删除
+	 * @param callback
+	 */
+	@FormUrlEncoded
+	@POST("/ola/plancollect/collectPlanDetail")
+	void collectPlanDetail(
+			@Field("userId") String userId,
+			@Field("detailId") String detailId,
+			@Field("planDate") String planDate,
+			@Field("type") String type,
+			Callback<SimpleResult> callback);
 }

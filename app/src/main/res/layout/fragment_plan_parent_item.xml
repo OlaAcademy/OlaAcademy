@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_white_item_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_5">
+
+        <ImageView
+            android:id="@+id/parent_icon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_delete_plan_course"/>
+
+        <TextView
+            android:id="@+id/parent_title"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_vertical"
+            android:text="20/29"
+            android:textColor="@color/color_83888B"
+            android:textSize="12dp"/>
+    </RelativeLayout>
+
+    <View
+        style="@style/line_horizontal"
+        android:layout_marginLeft="@dimen/dp_20"/>
+
+</LinearLayout>
