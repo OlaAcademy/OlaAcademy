@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -19,6 +20,7 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
 import com.michen.olaxueyuan.common.manager.AndUtil;
 import com.michen.olaxueyuan.common.manager.DateUtils;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.SystemBarTintManager;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.QuestionCourseManager;
@@ -58,9 +60,13 @@ public class CompleteScheduleActivity extends SuperActivity {
 	View systemStatusInflateView;
 	@Bind(R.id.week_calendar)
 	WeekCalendar weekCalendar;
+	@Bind(R.id.empty_text)
+	TextView emptyText;
 	private CompleteScheduleAdapter adapter;
 	private String currentTime;
-	List<String> list = new ArrayList<>();
+	List<String> completeList = new ArrayList<>();
+	List<String> noCompleteList = new ArrayList<>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -88,41 +94,43 @@ public class CompleteScheduleActivity extends SuperActivity {
 		expandableListView.setDivider(null);
 		expandableListView.setGroupIndicator(null);
 		expandableListView.setItemsCanFocus(false);
+		expandableListView.setEmptyView(emptyText);
 		currentTime = DateUtils.getCurrentDate();
 		getUserPlanDetail(DateUtils.getCurrentDate());
 		adapter = new CompleteScheduleAdapter(mContext, this);
 		expandableListView.setAdapter(adapter);
 
-		list.add("2017-10-11");
-		list.add("2017-10-12");
-		list.add("2017-10-13");
-		list.add("2017-10-14");
-		list.add("2017-10-16");
-//		weekCalendar.setSelectDates(list);
+		completeList.add("2017-10-11");
+		completeList.add("2017-10-12");
+		completeList.add("2017-10-18");
+		completeList.add("2017-10-19");
+		completeList.add("2017-10-20");
+//		weekCalendar.setSelectDates(completeList);
 
-		weekCalendar.setCompletedDates(list);
-//		weekCalendar.setNoCompletedDates(list);
+//		weekCalendar.setCompletedDates(completeList);
+//		weekCalendar.setNoCompletedDates(completeList);
 		//设置日历点击事件
 		weekCalendar.setOnDateClickListener(new WeekCalendar.OnDateClickListener() {
 			@Override
 			public void onDateClick(String time) {
 				currentTime = time;
 				getUserPlanDetail(time);
-				Toast.makeText(CompleteScheduleActivity.this, time, Toast.LENGTH_SHORT).show();
+				Logger.e("times=" + time);
 			}
 		});
 
 		weekCalendar.setOnCurrentMonthDateListener(new WeekCalendar.OnCurrentMonthDateListener() {
 			@Override
 			public void onCallbackMonthDate(String year, String month) {
-				Toast.makeText(CompleteScheduleActivity.this, year + "-" + month, Toast.LENGTH_SHORT).show();
+				Logger.e(" year + \"-\" + month=" + year + "-" + month);
 			}
 		});
 
 		weekCalendar.setOnCurrentWeekChangeListener(new WeekCalendar.OnCurrentWeekChangeListener() {
 			@Override
 			public void OnCurrentWeekChange(String time) {
-				Toast.makeText(CompleteScheduleActivity.this, time, Toast.LENGTH_SHORT).show();
+				getUserPlanDetail(time);
+				Logger.e("time=" + time);
 			}
 		});
 	}
@@ -157,10 +165,6 @@ public class CompleteScheduleActivity extends SuperActivity {
 		});
 	}
 
-	private void setData(UserPlanDetailResult.ResultBean result) {
-
-	}
-
 	private void getUserPlanDetail(String time) {
 		String userId = "";
 		if (SEAuthManager.getInstance().isAuthenticated()) {
@@ -176,19 +180,34 @@ public class CompleteScheduleActivity extends SuperActivity {
 						SEAPP.dismissAllowingStateLoss();
 						ToastUtil.showToastShort(mContext, userPlanDetailResult.getMessage());
 					} else {
-						if (userPlanDetailResult.getResult() != null && userPlanDetailResult.getResult().toString().length() > 2) {
+						if (userPlanDetailResult.getResult() != null) {
 							try {
-//								Logger.e("==" + userPlanDetailResult.getResult().toString());
-								setData(userPlanDetailResult.getResult());
-								adapter.updateList(userPlanDetailResult);
-								for (int i = 0; i < userPlanDetailResult.getResult().getPlanList().size(); i++) {
-									expandableListView.expandGroup(i);
+								completeList.clear();
+								noCompleteList.clear();
+								if (userPlanDetailResult.getResult().getPlanList() != null) {
+									List<UserPlanDetailResult.ResultBean.StatisticsListBean> statisticsList = userPlanDetailResult.getResult().getStatisticsList();
+									for (int i = 0; i < statisticsList.size(); i++) {
+										if (statisticsList.get(i).getProgress() == 0) {
+											noCompleteList.add(statisticsList.get(i).getDate());
+										} else {
+											completeList.add(statisticsList.get(i).getDate());
+										}
+									}
 								}
-								SEAPP.dismissAllowingStateLoss();
+								weekCalendar.setdDates(completeList, noCompleteList);
+//								Logger.e("==" + userPlanDetailResult.getResult().toString());
+								dayTitle.setText("第" + userPlanDetailResult.getResult().getDay() + "/" + userPlanDetailResult.getResult().getTotal() + "天");
+								adapter.updateList(userPlanDetailResult);
+								if (userPlanDetailResult.getResult().getPlanList() != null) {
+									for (int i = 0; i < userPlanDetailResult.getResult().getPlanList().size(); i++) {
+										expandableListView.expandGroup(i);
+									}
+								}
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 						}
+						SEAPP.dismissAllowingStateLoss();
 					}
 				}
 			}

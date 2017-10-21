@@ -87,7 +87,8 @@
                         android:layout_height="48dp"
                         android:layout_alignParentRight="true"
                         android:scaleType="centerInside"
-                        android:src="@drawable/icon_more_white"/>
+                        android:src="@drawable/icon_more_white"
+                        android:visibility="gone"/>
                 </RelativeLayout>
             </LinearLayout>
         </FrameLayout>
@@ -155,6 +156,15 @@
             android:id="@+id/expandableListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/empty_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="暂无计划"
+            android:textSize="24dp"/>
     </LinearLayout>
     <!--</ScrollView>-->
 </LinearLayout>

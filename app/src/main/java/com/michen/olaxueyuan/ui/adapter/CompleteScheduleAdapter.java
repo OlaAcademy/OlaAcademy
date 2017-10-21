@@ -40,8 +40,8 @@ public class CompleteScheduleAdapter extends BaseExpandableListAdapter {
 
 	public void updateList(UserPlanDetailResult userPlanDetailResult) {
 		this.userPlanDetailResult = userPlanDetailResult;
+		list.clear();
 		if (userPlanDetailResult.getResult().getPlanList() != null) {
-			list.clear();
 			list.addAll(userPlanDetailResult.getResult().getPlanList());
 		}
 		notifyDataSetChanged();
