@@ -1,12 +1,17 @@
 package com.michen.olaxueyuan.ui.plan.activity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEAPP;
@@ -21,10 +26,14 @@ import com.michen.olaxueyuan.protocol.result.SimpleResult;
 import com.michen.olaxueyuan.ui.activity.SuperActivity;
 import com.michen.olaxueyuan.ui.plan.data.SetScheduleListAdapter;
 
+import android.provider.CalendarContract.Calendars;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -187,9 +196,11 @@ public class SchedulePlanActivity extends SuperActivity {
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.left_return:
-				finish();
+				addCalendar();
+//				finish();
 				break;
 			case R.id.set_time_layout:
+				addCalendar();
 				break;
 			case R.id.next:
 				if (isShowTime) {
@@ -201,5 +212,55 @@ public class SchedulePlanActivity extends SuperActivity {
 				}
 				break;
 		}
+	}
+
+	private String calanderURL = "content://com.android.calendar/calendars";
+	private String calanderEventURL = "content://com.android.calendar/events";
+	private String calanderRemiderURL = "content://com.android.calendar/reminders";
+
+	public void addCalendar() {
+		// 获取要出入的gmail账户的id
+		String calId = "";
+		Cursor userCursor = getContentResolver().query(Uri.parse(calanderURL), null, null, null, null);
+		if (userCursor.getCount() > 0) {
+//			userCursor.moveToLast();  //注意：是向最后一个账户添加，开发者可以根据需要改变添加事件 的账户
+			userCursor.moveToFirst();
+			calId = userCursor.getString(userCursor.getColumnIndex("_id"));
+		} else {
+			Toast.makeText(this, "没有账户，请先添加账户", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		ContentValues event = new ContentValues();
+		event.put("title", "【欧拉MBA】 计划课程日·坚持=成功");//标题
+		event.put("description", "欧拉MBA学习提醒");//描述
+		// 插入账户
+		event.put("calendar_id", calId);
+		System.out.println("calId: " + calId);
+		event.put("eventLocation", "");//地址，可导航
+
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.set(Calendar.HOUR_OF_DAY, 11);
+		mCalendar.set(Calendar.MINUTE, 45);
+		long start = mCalendar.getTime().getTime();
+		mCalendar.set(Calendar.HOUR_OF_DAY, 12);
+		long end = mCalendar.getTime().getTime();
+
+		event.put("dtstart", start);
+		event.put("dtend", end);
+		event.put("hasAlarm", 1);
+
+		event.put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Shanghai");  //这个是时区，必须有，
+		//添加事件
+		Uri newEvent = getContentResolver().insert(Uri.parse(calanderEventURL), event);
+		//事件提醒的设定
+		long id = Long.parseLong(newEvent.getLastPathSegment());
+		ContentValues values = new ContentValues();
+		values.put("event_id", id);
+		// 提前10分钟有提醒
+		values.put("minutes", 10);
+		getContentResolver().insert(Uri.parse(calanderRemiderURL), values);
+
+//		Toast.makeText(mContext, "插入事件成功", Toast.LENGTH_LONG).show();
 	}
 }

@@ -17,6 +17,7 @@ import com.michen.olaxueyuan.protocol.result.UserPlanDetailResult;
 import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.PDFViewActivity;
 import com.michen.olaxueyuan.ui.plan.activity.CompleteScheduleActivity;
+import com.michen.olaxueyuan.ui.plan.activity.PlanWebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,6 +185,12 @@ public class CompleteScheduleAdapter extends BaseExpandableListAdapter {
 						}
 						break;
 					case 2:
+						Intent planIntent = new Intent(context, PlanWebActivity.class);
+						planIntent.putExtra("objectId", commonListBean.getId());
+						planIntent.putExtra("url", commonListBean.getUrl());
+						planIntent.putExtra("type", commonListBean.getType());
+						planIntent.putExtra("name", commonListBean.getName());
+						context.startActivity(planIntent);
 						break;
 					case 3:
 						Intent intent = new Intent(context, PDFViewActivity.class);

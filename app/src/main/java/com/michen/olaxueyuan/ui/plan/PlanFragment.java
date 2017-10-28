@@ -267,6 +267,7 @@ public class PlanFragment extends SuperFragment implements PullToRefreshBase.OnR
 				getActivity().startActivity(new Intent(getActivity(), SchedulePlanActivity.class));
 				break;
 			case R.id.add_course:
+				getActivity().startActivity(new Intent(getActivity(), SchedulePlanActivity.class));
 				chageIndex(1);
 				break;
 			case R.id.my_course_more:

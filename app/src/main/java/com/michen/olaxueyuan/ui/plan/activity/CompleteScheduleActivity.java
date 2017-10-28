@@ -99,16 +99,6 @@ public class CompleteScheduleActivity extends SuperActivity {
 		getUserPlanDetail(DateUtils.getCurrentDate());
 		adapter = new CompleteScheduleAdapter(mContext, this);
 		expandableListView.setAdapter(adapter);
-
-		completeList.add("2017-10-11");
-		completeList.add("2017-10-12");
-		completeList.add("2017-10-18");
-		completeList.add("2017-10-19");
-		completeList.add("2017-10-20");
-//		weekCalendar.setSelectDates(completeList);
-
-//		weekCalendar.setCompletedDates(completeList);
-//		weekCalendar.setNoCompletedDates(completeList);
 		//设置日历点击事件
 		weekCalendar.setOnDateClickListener(new WeekCalendar.OnDateClickListener() {
 			@Override
@@ -140,7 +130,7 @@ public class CompleteScheduleActivity extends SuperActivity {
 		if (SEAuthManager.getInstance().isAuthenticated()) {
 			userId = SEAuthManager.getInstance().getAccessUser().getId();
 		}
-		userId = "754";
+//		userId = "754";
 		SEAPP.showCatDialog(this);
 		QuestionCourseManager.getInstance().collectPlanDetail(userId, detailId, currentTime, type, new Callback<SimpleResult>() {
 			@Override
@@ -170,7 +160,7 @@ public class CompleteScheduleActivity extends SuperActivity {
 		if (SEAuthManager.getInstance().isAuthenticated()) {
 			userId = SEAuthManager.getInstance().getAccessUser().getId();
 		}
-		userId = "754";
+//		userId = "754";
 		SEAPP.showCatDialog(this);
 		QuestionCourseManager.getInstance().getUserPlanDetail(userId, time, new Callback<UserPlanDetailResult>() {
 			@Override
