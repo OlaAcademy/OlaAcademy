@@ -60,6 +60,7 @@ public class PlanWebActivity extends SuperActivity implements View.OnClickListen
 	private String currentSubjectId;
 	private boolean add_delete;
 	private int objectId;
+	private String title;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -94,7 +95,8 @@ public class PlanWebActivity extends SuperActivity implements View.OnClickListen
 		nextBtn.setOnClickListener(this);
 
 		type = getIntent().getExtras().getInt("type");
-		tvTitle.setText("专项练习");
+		title = getIntent().getExtras().getString("name");
+		tvTitle.setText(title);
 		objectId = getIntent().getExtras().getInt("objectId");
 
 		//支持js
@@ -123,7 +125,7 @@ public class PlanWebActivity extends SuperActivity implements View.OnClickListen
 			@Override
 			public void onReceivedError(WebView webView, int i, String s, String s1) {
 				super.onReceivedError(webView, i, s, s1);
-				ToastUtil.showToastShort(mContext,"加载失败");
+				ToastUtil.showToastShort(mContext, "加载失败");
 			}
 		});
 	}

@@ -125,6 +125,7 @@ public class PlanFragment extends SuperFragment implements PullToRefreshBase.OnR
 		scroll.setOnRefreshListener(this);
 		scroll.setRefreshing();
 		userAvatar.setRectAdius(100);
+		chartProgress.setClickable(false);
 		planRecommendAdapter = new PlanRecommendAdapter(getActivity());
 		dailyRecommendListview.setAdapter(planRecommendAdapter);
 		planMyCourseAdapter = new PlanMyCourseAdapter(getActivity());
@@ -225,6 +226,7 @@ public class PlanFragment extends SuperFragment implements PullToRefreshBase.OnR
 
 		setChartData(7);
 		chartProgress.setFitBars(true);
+		chartProgress.setClickable(false);
 	}
 
 	private void setChartData(int count) {

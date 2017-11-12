@@ -40,7 +40,7 @@ public class SEAPP extends Application {
 	public static final String MEDIA_BASE_URL = "http://upload.olaxueyuan.com";
 	private String versionNames;
 	private static CatLoadingView catLoadingView;
-	public static boolean debug = true;
+	public static boolean debug = false;
 	//    public static final String API_BASE_URL = "http://english.olaxueyuan.com";
 	public static final String API_BASE_URL = "https://api.olaxueyuan.com";
 	//        final String API_BASE_URL = "http://123.59.129.137:8080";
