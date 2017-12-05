@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.app.SEConfig;
 import com.michen.olaxueyuan.common.manager.DialogUtils;
+import com.michen.olaxueyuan.common.manager.Logger;
 import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SEUserManager;
@@ -61,6 +62,10 @@ public class PlanWebActivity extends SuperActivity implements View.OnClickListen
 	private boolean add_delete;
 	private int objectId;
 	private String title;
+	private String subjectIds;
+	private String planId;
+	private String planCurrentTime;
+
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -96,6 +101,9 @@ public class PlanWebActivity extends SuperActivity implements View.OnClickListen
 
 		type = getIntent().getExtras().getInt("type");
 		title = getIntent().getExtras().getString("name");
+		subjectIds = getIntent().getExtras().getString("subjectIds");
+		planId = getIntent().getExtras().getString("planId");
+		planCurrentTime = getIntent().getExtras().getString("planCurrentTime");
 		tvTitle.setText(title);
 		objectId = getIntent().getExtras().getInt("objectId");
 
@@ -113,13 +121,13 @@ public class PlanWebActivity extends SuperActivity implements View.OnClickListen
 			return;
 		}
 
-		contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/question.html?objectId=" + objectId + "&type=" + type + "&userId=" + userId);
-
+		contentWebView.loadUrl(SEConfig.getInstance().getAPIBaseURL() + "/plan_question.html?subjectIds=" + subjectIds + "&userId=" + userId);
+		Logger.e(SEConfig.getInstance().getAPIBaseURL() + "/plan_question.html?subjectIds=" + subjectIds + "&userId=" + userId);
 		contentWebView.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageFinished(WebView webView, String s) {
 				super.onPageFinished(webView, s);
-
+				contentWebView.loadUrl("javascript:loadQuestion('0')");
 			}
 
 			@Override
@@ -272,9 +280,11 @@ public class PlanWebActivity extends SuperActivity implements View.OnClickListen
 					break;
 				case 5:
 					nextBtn.setEnabled(false);
-					Intent intent = new Intent(PlanWebActivity.this, QuestionResultActivity.class);
+					Intent intent = new Intent(PlanWebActivity.this, CompleteScheduleQuestionResultActivity.class);
 					intent.putExtra("answerArray", msg.obj.toString());
 					intent.putExtra("objectId", objectId);
+					intent.putExtra("planId", planId);
+					intent.putExtra("planCurrentTime", planCurrentTime);
 					intent.putExtra("type", type);
 					if (type == 1) {
 						intent.putExtra("outerURL", getIntent().getStringExtra("outerURL"));

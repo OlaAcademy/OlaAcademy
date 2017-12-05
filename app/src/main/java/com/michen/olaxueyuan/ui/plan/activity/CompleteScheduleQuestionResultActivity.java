@@ -1,4 +1,4 @@
-package com.michen.olaxueyuan.ui.question;
+package com.michen.olaxueyuan.ui.plan.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,7 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.michen.olaxueyuan.R;
+import com.michen.olaxueyuan.common.NoScrollGridView;
+import com.michen.olaxueyuan.common.SubListView;
 import com.michen.olaxueyuan.common.manager.Logger;
+import com.michen.olaxueyuan.common.manager.ToastUtil;
 import com.michen.olaxueyuan.protocol.manager.SEAuthManager;
 import com.michen.olaxueyuan.protocol.manager.SECourseManager;
 import com.michen.olaxueyuan.protocol.result.CommentSucessResult;
@@ -21,11 +25,6 @@ import com.michen.olaxueyuan.ui.activity.SEBaseActivity;
 import com.michen.olaxueyuan.ui.adapter.QuestionResultAdapter;
 import com.michen.olaxueyuan.ui.adapter.QuestionResultListAdapter;
 import com.michen.olaxueyuan.ui.question.module.QuestionResultNoticeClose;
-import com.michen.olaxueyuan.R;
-import com.michen.olaxueyuan.common.NoScrollGridView;
-import com.michen.olaxueyuan.common.SubListView;
-import com.michen.olaxueyuan.common.manager.ToastUtil;
-import com.snail.svprogresshud.SVProgressHUD;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +40,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class QuestionResultActivity extends SEBaseActivity {
+public class CompleteScheduleQuestionResultActivity extends SEBaseActivity {
 	@Bind(R.id.correct_num_tv)
 	TextView correctNumTv;
 	@Bind(R.id.answer_all_number_tv)
@@ -81,11 +80,11 @@ public class QuestionResultActivity extends SEBaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_question_result);
+		setContentView(R.layout.activity_complete_schedule_question_result);
 		ButterKnife.bind(this);
 		setTitleText("答题报告");
 		initView();
-		performRefresh();
+//		performRefresh();
 	}
 
 	public void initView() {
@@ -133,11 +132,11 @@ public class QuestionResultActivity extends SEBaseActivity {
 				for (int i = 0; i < 10; i++) {
 					limitArray.put(i, array.get(i));
 				}
-				resultAdapter = new QuestionResultAdapter(limitArray, QuestionResultActivity.this);
+				resultAdapter = new QuestionResultAdapter(limitArray, CompleteScheduleQuestionResultActivity.this);
 				upDownIcon.setVisibility(View.VISIBLE);
 				upDownIcon.setImageResource(R.drawable.down_arrow_icon);
 			} else {
-				resultAdapter = new QuestionResultAdapter(array, QuestionResultActivity.this);
+				resultAdapter = new QuestionResultAdapter(array, CompleteScheduleQuestionResultActivity.this);
 			}
 			gridAnswer.setSelector(new ColorDrawable(Color.TRANSPARENT));
 			gridAnswer.setAdapter(resultAdapter);
@@ -246,11 +245,11 @@ public class QuestionResultActivity extends SEBaseActivity {
 			@Override
 			public void success(CourseVideoResult result, Response response) {
 				if (result.getApicode() != 10000) {
-					SVProgressHUD.showInViewWithoutIndicator(QuestionResultActivity.this, result.getMessage(), 2.0f);
+					ToastUtil.showToastShort(mContext, result.getMessage());
 				} else {
 					videoArrayList = result.getResult().getVideoList();
 					if (videoArrayList != null && videoArrayList.size() > 0) {
-						listAdapter = new QuestionResultListAdapter(QuestionResultActivity.this);
+						listAdapter = new QuestionResultListAdapter(CompleteScheduleQuestionResultActivity.this);
 						listKnowledge.setAdapter(listAdapter);
 						listAdapter.updateData(videoArrayList, result, String.valueOf(objectId));
 					}
@@ -259,7 +258,7 @@ public class QuestionResultActivity extends SEBaseActivity {
 
 			@Override
 			public void failure(RetrofitError error) {
-				ToastUtil.showToastShort(QuestionResultActivity.this, R.string.get_knowledge_fail);
+				ToastUtil.showToastShort(mContext, R.string.get_knowledge_fail);
 			}
 		});
 	}

@@ -3,19 +3,24 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AnimtabsView/AnimtabsView.iml" filepath="$PROJECT_DIR$/AnimtabsView/AnimtabsView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BDUpdateSDK/BDUpdateSDK.iml" filepath="$PROJECT_DIR$/BDUpdateSDK/BDUpdateSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/CircularImageView/CircularImageView.iml" filepath="$PROJECT_DIR$/CircularImageView/CircularImageView.iml" />
       <module fileurl="file://$PROJECT_DIR$/IconicDroid/IconicDroid.iml" filepath="$PROJECT_DIR$/IconicDroid/IconicDroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/ImageChooser/ImageChooser.iml" filepath="$PROJECT_DIR$/ImageChooser/ImageChooser.iml" />
       <module fileurl="file://$PROJECT_DIR$/ImageViewer/ImageViewer.iml" filepath="$PROJECT_DIR$/ImageViewer/ImageViewer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/OlaAcademy.iml" filepath="$PROJECT_DIR$/OlaAcademy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OlaAcademys.iml" filepath="$PROJECT_DIR$/OlaAcademys.iml" />
       <module fileurl="file://$PROJECT_DIR$/PhotoUploader/PhotoUploader.iml" filepath="$PROJECT_DIR$/PhotoUploader/PhotoUploader.iml" />
       <module fileurl="file://$PROJECT_DIR$/PullToRefresh/PullToRefresh.iml" filepath="$PROJECT_DIR$/PullToRefresh/PullToRefresh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PushSDK/PushSDK.iml" filepath="$PROJECT_DIR$/PushSDK/PushSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/SVProgressHUD/SVProgressHUD.iml" filepath="$PROJECT_DIR$/SVProgressHUD/SVProgressHUD.iml" />
       <module fileurl="file://$PROJECT_DIR$/SegmentedRadios/SegmentedRadios.iml" filepath="$PROJECT_DIR$/SegmentedRadios/SegmentedRadios.iml" />
       <module fileurl="file://$PROJECT_DIR$/SortListView/SortListView.iml" filepath="$PROJECT_DIR$/SortListView/SortListView.iml" />
       <module fileurl="file://$PROJECT_DIR$/StaggeredGridVIew/StaggeredGridVIew.iml" filepath="$PROJECT_DIR$/StaggeredGridVIew/StaggeredGridVIew.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/leancloudchatkit/leancloudchatkit.iml" filepath="$PROJECT_DIR$/leancloudchatkit/leancloudchatkit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/olaenglish/olaenglish.iml" filepath="$PROJECT_DIR$/olaenglish/olaenglish.iml" />
       <module fileurl="file://$PROJECT_DIR$/vitamio/vitamio.iml" filepath="$PROJECT_DIR$/vitamio/vitamio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/weekcalendarlib/weekcalendarlib.iml" filepath="$PROJECT_DIR$/weekcalendarlib/weekcalendarlib.iml" />
     </modules>
   </component>
 </project>

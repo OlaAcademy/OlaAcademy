@@ -1,12 +1,12 @@
-apply plugin: 'android-library'
-
+//apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 android {
     compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '22.0.1'
 
     sourceSets {
         main {

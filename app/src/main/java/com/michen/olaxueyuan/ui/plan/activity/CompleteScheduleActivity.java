@@ -187,7 +187,7 @@ public class CompleteScheduleActivity extends SuperActivity {
 								weekCalendar.setdDates(completeList, noCompleteList);
 //								Logger.e("==" + userPlanDetailResult.getResult().toString());
 								dayTitle.setText("第" + userPlanDetailResult.getResult().getDay() + "/" + userPlanDetailResult.getResult().getTotal() + "天");
-								adapter.updateList(userPlanDetailResult);
+								adapter.updateList(userPlanDetailResult,userPlanDetailResult.getResult().getId(),currentTime);
 								if (userPlanDetailResult.getResult().getPlanList() != null) {
 									for (int i = 0; i < userPlanDetailResult.getResult().getPlanList().size(); i++) {
 										expandableListView.expandGroup(i);

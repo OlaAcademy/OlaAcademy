@@ -16,8 +16,11 @@ import com.michen.olaxueyuan.R;
 import com.michen.olaxueyuan.protocol.result.UserPlanDetailResult;
 import com.michen.olaxueyuan.ui.me.activity.BuyVipActivity;
 import com.michen.olaxueyuan.ui.me.activity.PDFViewActivity;
+import com.michen.olaxueyuan.ui.me.activity.VideoPlayActivity;
 import com.michen.olaxueyuan.ui.plan.activity.CompleteScheduleActivity;
+import com.michen.olaxueyuan.ui.plan.activity.CompleteScheduleVideoPlayActivity;
 import com.michen.olaxueyuan.ui.plan.activity.PlanWebActivity;
+import com.michen.olaxueyuan.ui.question.QuestionWebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,19 +36,23 @@ public class CompleteScheduleAdapter extends BaseExpandableListAdapter {
 	UserPlanDetailResult userPlanDetailResult;
 	List<UserPlanDetailResult.ResultBean.PlanListBean> list = new ArrayList<>();
 	CompleteScheduleActivity activity;
+	private String id;
+	private String currentTime;
 
 	public CompleteScheduleAdapter(Context context, CompleteScheduleActivity activity) {
 		this.context = context;
 		this.activity = activity;
 	}
 
-	public void updateList(UserPlanDetailResult userPlanDetailResult) {
+	public void updateList(UserPlanDetailResult userPlanDetailResult, String id, String currentTime) {
 		this.userPlanDetailResult = userPlanDetailResult;
 		list.clear();
 		if (userPlanDetailResult.getResult().getPlanList() != null) {
 			list.addAll(userPlanDetailResult.getResult().getPlanList());
 		}
 		notifyDataSetChanged();
+		this.id = id;
+		this.currentTime = currentTime;
 	}
 
 	@Override
@@ -134,7 +141,7 @@ public class CompleteScheduleAdapter extends BaseExpandableListAdapter {
 				holder.specicalExercisesLayout.setVisibility(View.GONE);
 				holder.videoChildTitle.setText(commonListBean.getName());
 				holder.videoChildTime.setText(commonListBean.getTime());
-				if (commonListBean.getIsfree().equals("1")) {
+				if (commonListBean.getIsfree().equals("0")) {
 					holder.videoChildIcon.setImageResource(R.drawable.icon_plan_lock);
 				} else {
 					holder.videoChildIcon.setImageResource(R.drawable.icon_plan_video);
@@ -165,7 +172,7 @@ public class CompleteScheduleAdapter extends BaseExpandableListAdapter {
 			public void onClick(View view) {
 				switch (commonListBean.getType()) {
 					case 1:
-						if (commonListBean.getIsfree().equals("1")) {
+						if (commonListBean.getIsfree().equals("0")) {
 							new AlertDialog.Builder(context)
 									.setTitle("友情提示")
 									.setMessage("购买会员后即可拥有")
@@ -181,14 +188,19 @@ public class CompleteScheduleAdapter extends BaseExpandableListAdapter {
 									})
 									.show();
 						} else {
-
+							Intent intent = new Intent(context, CompleteScheduleVideoPlayActivity.class);
+							intent.putExtra("videoPath", commonListBean.getUrl());
+							context.startActivity(intent);
 						}
 						break;
 					case 2:
 						Intent planIntent = new Intent(context, PlanWebActivity.class);
+						planIntent.putExtra("subjectIds", commonListBean.getUrl());
 						planIntent.putExtra("objectId", commonListBean.getId());
-						planIntent.putExtra("url", commonListBean.getUrl());
-						planIntent.putExtra("type", commonListBean.getType());
+						planIntent.putExtra("type", 11);
+						planIntent.putExtra("planId", id);
+						planIntent.putExtra("planCurrentTime", currentTime);
+//						planIntent.putExtra("type", commonListBean.getType());
 						planIntent.putExtra("name", commonListBean.getName());
 						context.startActivity(planIntent);
 						break;

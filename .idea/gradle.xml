@@ -3,46 +3,33 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="LOCAL" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="E:\android\android-studio\gradle\gradle-2.10" />
-        <option name="gradleJvm" value="1.7" />
+        <option name="gradleHome" value="$APPLICATION_HOME_DIR$/gradle/gradle-3.2" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/AnimtabsView" />
+            <option value="$PROJECT_DIR$/BDUpdateSDK" />
             <option value="$PROJECT_DIR$/CircularImageView" />
             <option value="$PROJECT_DIR$/IconicDroid" />
             <option value="$PROJECT_DIR$/ImageChooser" />
             <option value="$PROJECT_DIR$/ImageViewer" />
             <option value="$PROJECT_DIR$/PhotoUploader" />
             <option value="$PROJECT_DIR$/PullToRefresh" />
+            <option value="$PROJECT_DIR$/PushSDK" />
             <option value="$PROJECT_DIR$/SVProgressHUD" />
             <option value="$PROJECT_DIR$/SegmentedRadios" />
             <option value="$PROJECT_DIR$/SortListView" />
             <option value="$PROJECT_DIR$/StaggeredGridVIew" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/leancloudchatkit" />
+            <option value="$PROJECT_DIR$/olaenglish" />
             <option value="$PROJECT_DIR$/vitamio" />
+            <option value="$PROJECT_DIR$/weekcalendarlib" />
           </set>
         </option>
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/AnimtabsView" />
-            <option value="$PROJECT_DIR$/CircularImageView" />
-            <option value="$PROJECT_DIR$/IconicDroid" />
-            <option value="$PROJECT_DIR$/ImageChooser" />
-            <option value="$PROJECT_DIR$/ImageViewer" />
-            <option value="$PROJECT_DIR$/PhotoUploader" />
-            <option value="$PROJECT_DIR$/PullToRefresh" />
-            <option value="$PROJECT_DIR$/SVProgressHUD" />
-            <option value="$PROJECT_DIR$/SegmentedRadios" />
-            <option value="$PROJECT_DIR$/SortListView" />
-            <option value="$PROJECT_DIR$/StaggeredGridVIew" />
-            <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/vitamio" />
-          </set>
-        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
